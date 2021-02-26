@@ -1,0 +1,4 @@
+# Only trigger rule if a non-ssl port is being used
+RewriteCond %{SERVER_PORT} !443
+# Redirect to HTTPS
+RewriteRule (.*) https://www.86never.com/$1 [R=301]
