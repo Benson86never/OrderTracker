@@ -25,9 +25,6 @@ component  {
         S.zip,
         P.email,
         P.phone,
-        p.CompanyName,
-        p.Position,
-        p.Website,
         p.Type,
         P.carrier,
         p.Password,
@@ -63,16 +60,15 @@ component  {
       local.details['email'] = local.userDetails.email;
       local.details['phone'] = local.userDetails.phone;
       local.details['type'] = local.userDetails.name;
-      local.details['CompanyName'] = local.userDetails.CompanyName;
-      local.details['Position'] = local.userDetails.Position;
-      local.details['Website'] = local.userDetails.Website;
       local.details['carrier'] = local.userDetails.carrier;
       local.details['Password'] = local.userDetails.Password;
       local.details['Salt'] = local.userDetails.Salt;
       local.details['subAccountName'] = local.userDetails.subAccountName;
       local.details['accountName'] = local.userDetails.accountName;
       local.details['active'] = local.userDetails.active;
-       local.details['PhoneExtension'] = local.userDetails.PhoneExtension;
+      local.details['PhoneExtension'] = local.userDetails.PhoneExtension;
+      local.details['accountid'] = local.userDetails.subaccountId;
+      local.details['typeid'] = local.userDetails.Type;
       arrayAppend(local.users, local.details);
     }
     local.result['users'] = local.users;
@@ -256,6 +252,7 @@ component  {
       }
         return local.result;
     } catch (any e){
+      writeDump(e);abort;
     }
   }
 
@@ -311,7 +308,7 @@ component  {
       'accounts' : []
     }
     try {
-      local.countryDetails = queryExecute("
+      /*local.countryDetails = queryExecute("
         SELECT
           country_Id,
           name,
@@ -348,7 +345,7 @@ component  {
         local.details['countryId'] = local.stateDetails.countryId;
         local.details['stateCode'] = local.stateDetails.stateCode;
         arrayAppend(local.result.states, local.details);
-      }
+      }*/
       local.roleDetails = queryExecute("
         SELECT
           roleId,

@@ -12,10 +12,7 @@
   <cfscript>
     if(structKeyExists(rc, "userDetails")){
         variables.City = rc.userDetails[1]["city"];
-        variables.CompanyName = rc.userDetails[1]["CompanyName"];
         variables.Country = rc.userDetails[1]["Country"];
-        variables.Position = rc.userDetails[1]["Position"];
-        variables.Website = rc.userDetails[1]["Website"];
         variables.State = rc.userDetails[1]["State"];
         variables.accountName = rc.userDetails[1]["accountName"];
         variables.active = rc.userDetails[1]["active"];
@@ -29,18 +26,17 @@
         variables.address2 = rc.userDetails[1]["address2"];
         variables.subAccountName = rc.userDetails[1]["subAccountName"];
         variables.type = rc.userDetails[1]["type"];
+        variables.roleid = rc.userDetails[1]["typeid"];
         variables.zip = rc.userDetails[1]["zip"];
         variables.PhoneExtension = rc.userDetails[1]["PhoneExtension"];
         variables.personid = rc.userDetails[1]["personid"];
         variables.password = "********";
-        variables.sectionHeader = "Update User"
+        variables.sectionHeader = "Update User";
+        variables.accountid = rc.userDetails[1]["accountid"];
     }
     else{
       variables.City = "";
-      variables.CompanyName = "";
       variables.Country = "";
-      variables.Position = "";
-      variables.Website = "";
       variables.Stateid = "";
       variables.accountName = "";
       variables.active = "";
@@ -104,20 +100,6 @@
           <input type="text" class="form-control inputelement" id="phoneExtension" placeholder="12345" name="phoneExtension" value="#variables.PhoneExtension#" autocomplete="off" style="width: 43%">  
         </div>
       </div>
-      <!---<div class="row">
-        <div class="col-md-1 labelname">
-          Company Name:
-        </div>
-        <div class="col-md-2 ">
-          <input type="text" class="form-control inputelement" id="CompanyName" placeholder="Enter Company Name" name="CompanyName" value="#variables.companyname#" autocomplete="off">
-        </div>
-        <div class="col-md-1 labelname">
-          Position at Company:
-        </div>
-        <div class="col-md-2 ">
-          <input type="text" class="form-control inputelement" id="Position" placeholder="Enter Position at Company" name="Position" value="#variables.position#" autocomplete="off"> 
-        </div>
-      </div>--->
       <div class="row">
         <div class="col-md-1 labelname">
           Carrier:

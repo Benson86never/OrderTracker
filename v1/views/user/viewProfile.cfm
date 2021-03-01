@@ -12,10 +12,7 @@
   <cfscript>
     if(structKeyExists(rc, "userDetails")){
         variables.City = rc.userDetails[1]["city"];
-        variables.CompanyName = rc.userDetails[1]["CompanyName"];
         variables.Country = rc.userDetails[1]["Country"];
-        variables.Position = rc.userDetails[1]["Position"];
-        variables.Website = rc.userDetails[1]["Website"];
         variables.State = rc.userDetails[1]["State"];
         variables.accountName = rc.userDetails[1]["accountName"];
         variables.active = rc.userDetails[1]["active"];
@@ -33,14 +30,13 @@
         variables.PhoneExtension = rc.userDetails[1]["PhoneExtension"];
         variables.personid = rc.userDetails[1]["personid"];
         variables.password = "********";
-        variables.sectionHeader = "My Profile"
+        variables.sectionHeader = "My Profile";
+        variables.accountid = rc.userDetails[1]["accountid"];
+        variables.roleid = rc.userDetails[1]["typeid"];
     }
     else{
       variables.City = "";
-      variables.CompanyName = "";
       variables.Country = "";
-      variables.Position = "";
-      variables.Website = "";
       variables.Stateid = "";
       variables.accountName = "";
       variables.active = "";
@@ -58,7 +54,8 @@
       variables.personid = 0;
       variables.password = "";
       variables.PhoneExtension = "";
-      variables.sectionHeader = "Add User"
+      variables.sectionHeader = "Add User";
+      variables.accountid = 1;
     }
   </cfscript>
   <cfparam  name="variables.countryid" default="1">
@@ -79,6 +76,8 @@
           <input type="text" class="form-control inputelement" id="firstName" placeholder="Enter First name" name="firstName" value="#variables.firstName#" required autocomplete="off">
           <input type="hidden" name="active" value="#rc.active#">
           <input type="hidden" name="personid" value="#variables.personid#">
+          <input type="hidden" name="userType" value="#variables.roleid#">
+          <input type="hidden" name="account" value="#variables.accountid#">
         </div>
         <div class="col-md-1 labelname">
           Last Name<span style="color: red"><b>*<b></span>:
