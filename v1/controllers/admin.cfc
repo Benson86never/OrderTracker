@@ -7,11 +7,26 @@ component accessors="true" {
     public void function manageusers(rc){
       rc.userDetails = adminService.getUserDetails().users;
     }
+     public void function manageBusiness(rc){
+      rc.userDetails = adminService.getBusinessDetails().users;
+      //writedump(rc.userDetails);
+    }
      public void function AddBusiness(rc){
-       if(structKeyExists(form, 'business')) {
-         //writeDump(form);
-        session.userResult = adminService.addBusiness(businessDetails = form); 
-       }
+       if(isDefined("url.businessId") && url.businessId NEQ 0) {
+         writedump(url.businessId);
+            rc.decryptbusinessid = decrypt(url.businessId, application.uEncryptKey, "BLOWFISH", "Hex");
+            writeDump(rc.decryptbusinessid);
+            rc.businessDetails = adminService.getBusinessDetails(businesssId = rc.decryptbusinessid).users;
+        
+            //rc.params = "&businessId=#rc.businessId#";
+           //writeDump(rc.businessDetails)
+          }
+          if(structKeyExists(form, 'business')) {
+            session.businessResult = adminService.saveBusiness(businessDetails = form); 
+             if(isDefined("session.businessResult.errorMsg") && session.userResult.errorMsg == "" && rc.active == 1){
+              location("index.cfm?action=admin.manageBusiness", false);
+            }
+          }
     }
     public void function adduser(rc){
       rc.getuserInfo = adminService.adduserBasicInfo(countryId = 1);

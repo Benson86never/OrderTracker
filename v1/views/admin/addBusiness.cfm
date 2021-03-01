@@ -10,7 +10,37 @@
     </div>
   </cfif>
   <cfscript>
-    variables.sectionHeader ="Add Business"
+   if(structKeyExists(rc, "businessDetails")){
+       variables.businessName = rc.businessDetails[1]["businessName"];
+        variables.City = rc.businessDetails[1]["city"];
+        variables.Country = rc.businessDetails[1]["Country"];
+        variables.State = rc.businessDetails[1]["State"];
+        variables.email = rc.businessDetails[1]["email"];
+        variables.phone = rc.businessDetails[1]["phone"];
+        variables.PhoneExtension = rc.businessDetails[1]["PhoneExtension"];
+        variables.address1 = rc.businessDetails[1]["StreetAddress1"];
+        variables.address2 = rc.businessDetails[1]["StreetAddress2"];
+        variables.zip = rc.businessDetails[1]["zip"];
+        variables.PhoneExtension = rc.businessDetails[1]["PhoneExtension"];
+        variables.businessId = rc.businessDetails[1]["businessId"];
+        variables.subBusiness = rc.businessDetails[1]["subBusiness"];
+        variables.sectionHeader ="Update Business"
+    }
+    else{
+        variables.businessName = "";
+        variables.City = "";
+        variables.Country = "";
+        variables.State = "";
+        variables.email = "";
+        variables.phone = "";
+        variables.PhoneExtension = "";
+        variables.address1 = "";
+        variables.address2 = "";
+        variables.zip = "";
+        variables.PhoneExtension = "";
+        variables.businessId = 0;
+        variables.sectionHeader ="Add Business"
+    }
   </cfscript>
   <cfparam  name="variables.countryid" default="1">
   <cfparam  name="variables.state" default="1">
@@ -19,6 +49,7 @@
 
   <div class = "col-xs-12 sectionHeader">
     #variables.sectionHeader#
+    #variables.businessId#
   </div>
   <div class="container">
     <form class="form-inline" method = "post" id="formSubmit" name="formSubmit">
@@ -27,7 +58,8 @@
                 Business:
             </div>
             <div class="col-md-2 ">
-                <input type="text" class="form-control inputelement" id="business" placeholder="Enter Business" name="business" value="" autocomplete="off">
+                <input type="text" class="form-control inputelement" id="business" placeholder="Enter Business" name="business" value="#variables.businessName#" autocomplete="off">
+                <input type ="hidden" id="businessId" name="businessId" value="#variables.businessId#">
             </div>
         </div>
         <div class="row">
@@ -35,13 +67,13 @@
                 Street <br> Address 1:
             </div>
             <div class="col-md-2 ">
-                <input type="text" class="form-control inputelement" id="address1" placeholder="Enter Street Address 1" name="address1" value="" autocomplete="off">
+                <input type="text" class="form-control inputelement" id="address1" placeholder="Enter Street Address 1" name="address1" value="#variables.address1#" autocomplete="off">
             </div>
             <div class="col-md-1 labelname">
                 Street <br> Address 2:
             </div>
             <div class="col-md-2 ">
-                <input type="text" class="form-control inputelement" id="address2" placeholder="Enter  Street Address 2" name="address2" value="" autocomplete="off">
+                <input type="text" class="form-control inputelement" id="address2" placeholder="Enter  Street Address 2" name="address2" value="#variables.address2#" autocomplete="off">
             </div>
         </div>
          <div class="row">
@@ -49,13 +81,13 @@
                 Zip/Postal Code:
             </div>
             <div class="col-md-2 ">
-                <input type="text" class="form-control inputelement" id="Zip" placeholder="Enter Zip" name="Zip"  value="" autocomplete="off">
+                <input type="text" class="form-control inputelement" id="Zip" placeholder="Enter Zip" name="Zip"  value="#variables.zip#" autocomplete="off">
             </div>
             <div class="col-md-1 labelname">
                 City:
             </div>
             <div class="col-md-2 ">
-                <input type="text" class="form-control inputelement" id="City" placeholder="Enter City" name="City" value="" autocomplete="off" value="">
+                <input type="text" class="form-control inputelement" id="City" placeholder="Enter City" name="City" value="#variables.City#" autocomplete="off" value="">
             </div>
         </div>
         <div class="row">
@@ -63,13 +95,13 @@
                 State/Province:
             </div>
             <div class="col-md-2 ">
-                <input type="text" class="form-control inputelement" id="state" placeholder="Enter State" name="state" value="" autocomplete="off" value="">
+                <input type="text" class="form-control inputelement" id="state" placeholder="Enter State" name="state" value="#variables.State#" autocomplete="off" value="">
             </div>
             <div class="col-md-1 labelname">
                  Country:
             </div>
             <div class="col-md-2 ">
-                <input type="text" class="form-control inputelement" id="country" placeholder="Enter country" name="country" value="" autocomplete="off" value="">
+                <input type="text" class="form-control inputelement" id="country" placeholder="Enter country" name="country" value="#variables.Country#" autocomplete="off" value="">
             </div>
         </div>
         <div class="row">
@@ -77,16 +109,16 @@
                 Email<span style="color: red"><b>*<b></span>:
             </div>
             <div class="col-md-2  required">
-                <input type="text" class="form-control inputelement" id="Email" placeholder="Enter Email" name="Email" autocomplete = "new-password" value="" required autocomplete="off">
+                <input type="text" class="form-control inputelement" id="Email" placeholder="Enter Email" name="Email" value="#variables.Email#" required autocomplete="off">
             </div>
             <div class="col-md-1 labelname">
                 Phone:
             </div>
             <div class="col-md-1">
-                <input type="text" class="form-control inputelement" id="Phone" placeholder="(___)-___-____" name="Phone" value="" autocomplete="off" style="width: 95%"> 
+                <input type="text" class="form-control inputelement" id="Phone" placeholder="(___)-___-____" name="Phone" value="#variables.Phone#" autocomplete="off" style="width: 95%"> 
             </div>
             <div class="col-md-1 ">
-                <input type="text" class="form-control inputelement" id="phoneExtension" placeholder="12345" name="phoneExtension" value="" autocomplete="off" style="width: 43%">  
+                <input type="text" class="form-control inputelement" id="phoneExtension" placeholder="12345" name="phoneExtension" value="#variables.phoneExtension#" autocomplete="off" style="width: 43%">  
             </div>
         </div>
         <div class="row">

@@ -6,4 +6,10 @@ component accessors="true" {
       active = rc.active
     );
   }
+  remote void function manageBusiness(rc){
+    rc.response = adminService.manageBusiness(
+      businessId = rc.businessId,
+      active = rc.active
+    );
+  }
 }

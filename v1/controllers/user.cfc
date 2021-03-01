@@ -4,8 +4,6 @@ component accessors="true" {
       variables.fw = fw;
       return this;
     }
-    public any function login() {
-    }
     public void function viewProfile(rc){
       rc.getuserInfo = adminService.adduserBasicInfo(countryId = 1);
       rc.countries = rc.getuserInfo.countries;
@@ -13,6 +11,7 @@ component accessors="true" {
       rc.roles = rc.getuserInfo.roles;
       rc.accounts = rc.getuserInfo.accounts;
       rc.params = "";
+      //writeDump(rc.userid);abort;
       if(structKeyExists(rc, 'userid')) {
         rc.decryptuserid = decrypt(rc.userid, application.uEncryptKey, "BLOWFISH", "Hex");
         rc.userDetails = adminService.getUserDetails(userid = rc.decryptuserid).users;

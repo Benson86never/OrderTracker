@@ -298,6 +298,28 @@ component  {
     
   }
 
+  remote any function manageBusiness(
+    integer businessId,
+    integer active
+  ){
+    try {
+      local.userDetails = queryExecute("
+        UPDATE
+          Business
+        SET
+          active = :active
+        WHERE
+          businessId = :businessId
+      ",{
+          businessId = {cfsqltype = "integer", value = arguments.businessId},
+          active = {cfsqltype = "integer", value = arguments.active}
+        },{datasource: application.dsn}
+      );
+    } catch(any e) {
+    }
+    
+  }
+
   public any function adduserBasicInfo(
     numeric countyId
   ){
@@ -408,6 +430,27 @@ component  {
       return local.getAdress;
     }
 
+    public any function saveBusiness(
+    struct businessDetails
+  ){
+    try{
+      local.result = {
+        'error' : false,
+        'errorMsg' : ''
+      }
+      if(arguments.businessDetails.BusinessId > 0) {
+        local.result = updateBusiness(businessDetails = arguments.businessDetails);
+      } else {
+       local.result = addBusiness(businessDetails = arguments.businessDetails);
+      }
+
+    } catch(any e) {
+      writeDump(e);abort;
+    }
+    return local.result;
+  }
+
+
     public any function addBusiness(
     struct businessDetails
   ){
@@ -416,7 +459,7 @@ component  {
         'error' : false,
         'errorMsg' : ''
       }
-        if(isDefined("arguments.businessDetails.SubBusiness") and arguments.businessDetails.SubBusiness EQ "") {
+        if(not isDefined("arguments.businessDetails.SubBusiness") ){
           arguments.businessDetails.SubBusiness ="no"
         }
 
@@ -433,7 +476,8 @@ component  {
             City,
             State,
             Country,
-            SubBusiness
+            SubBusiness,
+            active
           ) VALUES (
             :business,
             :Email,
@@ -445,7 +489,8 @@ component  {
             :City,
             :State,
             :Country,
-            :SubBusiness
+            :SubBusiness,
+            :active
           )
         ",{
             business = {cfsqltype = "varchar", value = arguments.businessDetails.business},
@@ -458,7 +503,8 @@ component  {
             City = {cfsqltype = "varchar", value = arguments.businessDetails.City},
             State = {cfsqltype = "varchar", value = arguments.businessDetails.State},
             Country = {cfsqltype = "varchar", value = arguments.businessDetails.Country},
-            SubBusiness = {cfsqltype = "varchar", value = arguments.businessDetails.SubBusiness}
+            SubBusiness = {cfsqltype = "varchar", value = arguments.businessDetails.SubBusiness},
+            active = {cfsqltype = "integer", value = "1" }
           },{datasource: application.dsn, result="local.userresult"}
         );
       return local.result;
@@ -467,6 +513,103 @@ component  {
       //writeDump(arguments);
       writeDump(e);abort;
     }
+  }
+
+   public any function updateBusiness(
+    struct businessDetails
+  ){
+    try {
+      local.result = {
+        'error' : false,
+        'errorMsg' : ''
+      }
+        local.businessDetails = queryExecute("
+          UPDATE
+            Business
+          SET
+            BusinessName = :business,
+            lastname = :lastname,
+            Email = :Email,
+            phone = :phone,
+            StreetAddress1 = :StreetAddress1,
+            StreetAddress2 = :StreetAddress2,
+            Zip = :Zip,
+            City = :City,
+            PhoneExtension = :PhoneExtension,
+            Country = :Country,
+            SubBusiness = :SubBusiness
+          WHERE
+            BusinessId = :BusinessId
+        ",{
+           business = {cfsqltype = "varchar", value = arguments.businessDetails.business},
+            Email = {cfsqltype = "varchar", value = arguments.businessDetails.email},
+            phone = {cfsqltype = "varchar", value = arguments.businessDetails.phone},
+            phoneExtension = {cfsqltype = "varchar", value = arguments.businessDetails.phoneExtension},
+            StreetAddress1 = {cfsqltype = "varchar", value = arguments.businessDetails.address1},
+            StreetAddress2 = {cfsqltype = "varchar", value = arguments.businessDetails.address2},
+            Zip = {cfsqltype = "integer", value =  arguments.businessDetails.Zip},
+            City = {cfsqltype = "varchar", value = arguments.businessDetails.City},
+            State = {cfsqltype = "varchar", value = arguments.businessDetails.State},
+            Country = {cfsqltype = "varchar", value = arguments.businessDetails.Country},
+            SubBusiness = {cfsqltype = "varchar", value = arguments.businessDetails.SubBusiness},
+            BusinessId = {cfsqltype = "integer", value = arguments.businessDetails.BusinessId}
+          },{datasource: application.dsn}
+        );
+      return local.result;
+    } catch (any e){
+    }
+  }
+
+  public any function getBusinessDetails(
+    numeric businesssId = 0
+  ){
+    local.result = {'error' : false};
+    local.users = [];
+    local.condition = "";
+    
+    if(val(arguments.businesssId) > 0) {
+      local.condition &= "AND BusinessId = #arguments.businesssId#";
+    }
+    local.BusinessDetails = queryExecute("
+      SELECT
+        BusinessId,
+        BusinessName,
+        Email,
+        Phone,
+        phoneExtension,
+        StreetAddress1,
+        StreetAddress2,
+        Zip,
+        City,
+        State,
+        Country,
+        SubBusiness
+      FROM 
+        Business
+        WHERE 1=1
+        AND active <> 0
+        #local.condition#
+        ORDER BY BusinessName;
+      ",{},{datasource: application.dsn}
+    );
+    cfloop(query = "local.BusinessDetails" ) {
+      local.details = {};
+      local.details['BusinessId'] = local.BusinessDetails.BusinessId;
+      local.details['BusinessName'] = local.BusinessDetails.BusinessName;
+      local.details['Email'] = local.BusinessDetails.Email;
+      local.details['Phone'] = local.BusinessDetails.Phone;
+      local.details['phoneExtension'] = local.BusinessDetails.phoneExtension;
+      local.details['StreetAddress1'] = local.BusinessDetails.StreetAddress1;
+      local.details['StreetAddress2'] = local.BusinessDetails.StreetAddress2;
+      local.details['zip'] = local.BusinessDetails.zip;
+      local.details['City'] = local.BusinessDetails.City;
+      local.details['State'] = local.BusinessDetails.State;
+      local.details['Country'] = local.BusinessDetails.Country;
+      local.details['SubBusiness'] = local.BusinessDetails.SubBusiness;
+      arrayAppend(local.users, local.details);
+    }
+    local.result['users'] = local.users;
+    return local.result;
   }
   
 }

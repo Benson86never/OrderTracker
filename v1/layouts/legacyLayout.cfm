@@ -22,59 +22,57 @@
     </div>
     <div style = "min-height: 100%;">
       <!--- Main Nav --->
-      <cfif url.action NEQ 'user.login'>
-        <div class="pageHeader">
-          <span>Order Tracker</span>
-          <cfif structKeyExists(session, 'secure')
-            AND session.secure.loggedin>
-            <a href="../login_ctrl.cfm?action=logout" class="logOut mt-5">
-              <i class="fa fa-power-off" aria-hidden="true"></i>
-              LogOut
-            </a>
-            <cfoutput>
-              <a href="index.cfm?action=user.viewProfile&userid=#encrypt(session.secure.personId, application.uEncryptKey, "BLOWFISH", "Hex")#" class="logOut">
-                <i class="fa fa-2x fa-user-circle" aria-hidden="true"></i>
-              </a>
-            </cfoutput>
-          </cfif>
-        </div>
+      <div class="pageHeader">
+        <span>Order Tracker</span>
         <cfif structKeyExists(session, 'secure')
           AND session.secure.loggedin>
-          <div class="tabbar">
-            <ul class="nav nav-tabs">
-              <li class="nav-item">
-                <a class="nav-link active" href="../list.cfm">List</a>
-              </li>
+          <a href="../login_ctrl.cfm?action=logout" class="logOut mt-5">
+            <i class="fa fa-power-off" aria-hidden="true"></i>
+            LogOut
+          </a>
+          <cfoutput>
+            <a href="index.cfm?action=user.viewProfile&userid=#encrypt(session.secure.personId, application.uEncryptKey, "BLOWFISH", "Hex")#" class="logOut">
+              <i class="fa fa-2x fa-user-circle" aria-hidden="true"></i>
+            </a>
+          </cfoutput>
+        </cfif>
+      </div>
+      <cfif structKeyExists(session, 'secure')
+        AND session.secure.loggedin>
+        <div class="tabbar">
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link active" href="../list.cfm">List</a>
+            </li>
+            <li role="presentation" class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                Orders <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="../orders_open.cfm">Open Orders</a></li>
+                <li><a class="dropdown-item" href="../order_email.cfm">Send Orders</a></li>
+                <cfif isDefined('session.cart')>
+                  <li><a class="dropdown-item" href="../cart.cfm">View Cart</a></li>
+                </cfif>
+              </ul>
+            </li>
+            <cfif structKeyExists(session, 'secure')
+              AND session.secure.RoleCode eq 1>
               <li role="presentation" class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                  Orders <span class="caret"></span>
+                  Admin <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="../orders_open.cfm">Open Orders</a></li>
-                  <li><a class="dropdown-item" href="../order_email.cfm">Send Orders</a></li>
-                  <cfif isDefined('session.cart')>
-                    <li><a class="dropdown-item" href="../cart.cfm">View Cart</a></li>
-                  </cfif>
+                  <li><a class="dropdown-item" href="../item.cfm">Edit Items</a></li>
+                  <li><a class="dropdown-item" href="../list_organize.cfm">Organize Lists</a></li>
+                  <li><a class="dropdown-item" href="../list_item.cfm">Manage List Items</a></li>
+                  <li><a class="dropdown-item" href="index.cfm?action=admin.manageUsers">Manage Users</a></li>
+                  <li><a class="dropdown-item" href="index.cfm?action=admin.manageBusiness">Manage Business</a></li>
                 </ul>
               </li>
-              <cfif structKeyExists(session, 'secure')
-                AND session.secure.RoleCode eq 1>
-                <li role="presentation" class="dropdown">
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    Admin <span class="caret"></span>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="../item.cfm">Edit Items</a></li>
-                    <li><a class="dropdown-item" href="../list_organize.cfm">Organize Lists</a></li>
-                    <li><a class="dropdown-item" href="../list_item.cfm">Manage List Items</a></li>
-                    <li><a class="dropdown-item" href="index.cfm?action=admin.manageUsers">Manage Users</a></li>
-                  </ul>
-                </li>
-              </cfif>
-            </ul>
-          </div>
-        </cfif>
-      <cfelse>
+            </cfif>
+          </ul>
+        </div>
       </cfif>
       <div class="main-content">
         <div class="row row-padding">
