@@ -1,5 +1,4 @@
 <cfinclude template="includes/secure.cfm" >
-
 <cfscript>
 	
 	if (isDefined("url.ListID")) {

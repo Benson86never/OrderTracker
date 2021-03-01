@@ -1,0 +1,43 @@
+.pageHeader span{
+  font-size: 18px;
+  font-weight: bold;
+}
+.pageHeader {
+  padding: 10px;
+}
+.sectionHeader {
+  padding: 10px;
+  font-size: 18px;
+}
+.logOut {
+  font-size: 14px !important;
+  float: right;
+  text-decoration: none;
+  color: black;
+  padding : 0px 10px;
+}
+.logOut:hover {
+  font-size: 14px !important;
+  float: right;
+  text-decoration: none;
+}
+.mt-5 {
+  margin-top: 5px;
+}
+.main-content {
+  padding: 20px !important;
+  font-size : 13px !important;
+}
+.btn {
+  font-size : 13px !important;
+}
+.tabbar{
+  background-color: #efefef !important;
+  border-radius: 3px !important;
+}
+.tabbar a{
+  text-decoration : none;
+}
+body{
+  font-family: "Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+}

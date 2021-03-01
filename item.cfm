@@ -32,7 +32,7 @@
 		<cfform name="form01">
 			<cfgrid format="html" preservepageonsort="yes" name="grid01" pagesize=30 selectmode="edit" delete="yes" insert="yes" bindOnLoad="yes"
 			bind="url:getData.cfm?page={cfgridpage}&pagesize={cfgridpagesize}&sort={cfgridsortcolumn}&dir={cfgridsortdirection}" 
-			onchange="cfc:com.item_np.editItem({cfgridaction},{cfgridrow},{cfgridchanged})">                         
+			onchange="cfc:com.item_np.editItem({cfgridaction},{cfgridrow},{cfgridchanged})">
 			<cfgridcolumn name="NAME" display=true header="Name"/> 
 			<cfgridcolumn name="SKU" display=true header="SKU"/> 
 			<cfgridcolumn name="PHOTOURL" display=true header="PhotoURL"/> 

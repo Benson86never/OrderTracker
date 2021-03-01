@@ -1,8 +1,7 @@
 <cfcomponent>
 	
 	<cfinclude template="includes/useragent.cfm">
-	
-	<cfset this.name = hash( getCurrentTemplatePath() ) />
+	<cfset this.name = "ordertracker" />
 	<cfset this.applicationtimeout="#createtimespan(7,0,0,0)#">
 	
 	<cfclientsettings
