@@ -13,9 +13,9 @@ component accessors="true" {
     }
      public void function AddBusiness(rc){
        if(isDefined("url.businessId") && url.businessId NEQ 0) {
-         writedump(url.businessId);
+         //writedump(url.businessId);
             rc.decryptbusinessid = decrypt(url.businessId, application.uEncryptKey, "BLOWFISH", "Hex");
-            writeDump(rc.decryptbusinessid);
+           // writeDump(rc.decryptbusinessid);
             rc.businessDetails = adminService.getBusinessDetails(businesssId = rc.decryptbusinessid).business;
         
             //rc.params = "&businessId=#rc.businessId#";
@@ -50,13 +50,13 @@ component accessors="true" {
       }
       if(structKeyExists(form, 'EMAIL')) {
         session.userResult = adminService.saveUser(userDetails = form);
-       if(isDefined("session.userResult.errorMsg") && session.userResult.errorMsg == "" && rc.active == 1){
+       if(isDefined("session.userResult.errorMsg") && session.userResult.errorMsg == ""){
           location("index.cfm?action=admin.manageusers", false);
        }
-       else if(isDefined("session.userResult.errorMsg") && session.userResult.errorMsg == "" && rc.active == 0){
+      /* else if(isDefined("session.userResult.errorMsg") && session.userResult.errorMsg == "" && rc.active == 0){
         session.userResult.message = 'Account Created. You will be notified when the account is activated.'
         location("../index.cfm", false);
-       }
+       }*/
       }
     }
   }

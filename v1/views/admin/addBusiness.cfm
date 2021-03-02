@@ -49,7 +49,6 @@
 
   <div class = "col-xs-12 sectionHeader">
     #variables.sectionHeader#
-    #variables.businessId#
   </div>
   <div class="container">
     <form class="form-inline" method = "post" id="formSubmit" name="formSubmit">
@@ -58,7 +57,7 @@
                 Business:
             </div>
             <div class="col-md-2 ">
-                <input type="text" class="form-control inputelement" id="business" placeholder="Enter Business" name="business" value="#variables.businessName#" autocomplete="off">
+                <input type="text" class="form-control inputelement" id="business" placeholder="Enter Business" name="business" value="#variables.businessName#" autocomplete="off" required>
                 <input type ="hidden" id="businessId" name="businessId" value="#variables.businessId#">
             </div>
         </div>

@@ -19,7 +19,7 @@
       $('#modal-showAlert .modal-footer .no').show();
       $('#modal-showAlert .modal-footer .yes').click(function(){
         $.ajax({
-          url: 'http://localhost:8500/ordertracker/v1/model/services/admin.cfc?method=manageBusiness',
+          url: '../v1/model/services/admin.cfc?method=manageBusiness',
           type: 'post',
           data: {
             businessId : businessId,
