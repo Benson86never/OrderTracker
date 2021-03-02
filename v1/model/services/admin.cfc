@@ -419,7 +419,6 @@ component  {
         sa.country
         FROM 
           subaccount sa
-        LEFT JOIN State s ON s.statecode = sa.state
         WHERE
           SubAccountId = :subAccountId
           AND active = 1;

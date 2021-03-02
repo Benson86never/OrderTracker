@@ -19,6 +19,7 @@
           <a class="dropdown-item" href="list_organize.cfm">Organize Lists</a>
           <a class="dropdown-item" href="list_item.cfm">Manage List Items</a>
           <a class="dropdown-item" href="v1/index.cfm?action=admin.manageUsers">Manage Users</a>
+          <a class="dropdown-item" href="index.cfm?action=admin.manageBusiness">Manage Business</a>
         </cfif>
       </cfif>
       <br />

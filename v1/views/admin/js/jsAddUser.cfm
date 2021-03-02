@@ -100,7 +100,7 @@ $(document).ready(function(){
 
 function getAddress(){
     $.ajax({
-        url : 'http://localhost:8500/ordertracker/v1/model/services/admin.cfc?method=getAdressDetails',
+        url : '../v1/model/services/admin.cfc?method=getAdressDetails',
         type: "get",
         async : false,
         data: {
