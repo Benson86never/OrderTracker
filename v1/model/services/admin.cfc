@@ -458,8 +458,8 @@ component  {
         'error' : false,
         'errorMsg' : ''
       }
-        if(not isDefined("arguments.businessDetails.SubBusiness") ){
-          arguments.businessDetails.SubBusiness ="no"
+        if(not isDefined("arguments.businessDetails.parentBusinessId") ){
+          arguments.businessDetails.parentBusinessId = 0;
         }
 
         local.businessDetails = queryExecute("
@@ -475,7 +475,7 @@ component  {
             City,
             State,
             Country,
-            SubBusiness,
+            parentBusinessId,
             active
           ) VALUES (
             :business,
@@ -488,7 +488,7 @@ component  {
             :City,
             :State,
             :Country,
-            :SubBusiness,
+            :parentBusinessId,
             :active
           )
         ",{
@@ -502,7 +502,7 @@ component  {
             City = {cfsqltype = "varchar", value = arguments.businessDetails.City},
             State = {cfsqltype = "varchar", value = arguments.businessDetails.State},
             Country = {cfsqltype = "varchar", value = arguments.businessDetails.Country},
-            SubBusiness = {cfsqltype = "varchar", value = arguments.businessDetails.SubBusiness},
+            parentBusinessId = {cfsqltype = "varchar", value = arguments.businessDetails.parentBusinessId},
             active = {cfsqltype = "integer", value = "1" }
           },{datasource: application.dsn, result="local.userresult"}
         );
@@ -522,40 +522,43 @@ component  {
         'error' : false,
         'errorMsg' : ''
       }
-        local.businessDetails = queryExecute("
-          UPDATE
-            Business
-          SET
-            BusinessName = :business,
-            lastname = :lastname,
-            Email = :Email,
-            phone = :phone,
-            StreetAddress1 = :StreetAddress1,
-            StreetAddress2 = :StreetAddress2,
-            Zip = :Zip,
-            City = :City,
-            PhoneExtension = :PhoneExtension,
-            Country = :Country,
-            SubBusiness = :SubBusiness
-          WHERE
-            BusinessId = :BusinessId
-        ",{
-           business = {cfsqltype = "varchar", value = arguments.businessDetails.business},
-            Email = {cfsqltype = "varchar", value = arguments.businessDetails.email},
-            phone = {cfsqltype = "varchar", value = arguments.businessDetails.phone},
-            phoneExtension = {cfsqltype = "varchar", value = arguments.businessDetails.phoneExtension},
-            StreetAddress1 = {cfsqltype = "varchar", value = arguments.businessDetails.address1},
-            StreetAddress2 = {cfsqltype = "varchar", value = arguments.businessDetails.address2},
-            Zip = {cfsqltype = "integer", value =  arguments.businessDetails.Zip},
-            City = {cfsqltype = "varchar", value = arguments.businessDetails.City},
-            State = {cfsqltype = "varchar", value = arguments.businessDetails.State},
-            Country = {cfsqltype = "varchar", value = arguments.businessDetails.Country},
-            SubBusiness = {cfsqltype = "varchar", value = arguments.businessDetails.SubBusiness},
-            BusinessId = {cfsqltype = "integer", value = arguments.businessDetails.BusinessId}
-          },{datasource: application.dsn}
-        );
+      if(not isDefined("arguments.businessDetails.parentBusinessId") ){
+        arguments.businessDetails.parentBusinessId = 0;
+      }
+      local.businessDetails = queryExecute("
+        UPDATE
+          Business
+        SET
+          BusinessName = :business,
+          Email = :Email,
+          phone = :phone,
+          StreetAddress1 = :StreetAddress1,
+          StreetAddress2 = :StreetAddress2,
+          Zip = :Zip,
+          City = :City,
+          PhoneExtension = :PhoneExtension,
+          Country = :Country,
+          parentBusinessId = :parentBusinessId
+        WHERE
+          BusinessId = :BusinessId
+      ",{
+          business = {cfsqltype = "varchar", value = arguments.businessDetails.business},
+          Email = {cfsqltype = "varchar", value = arguments.businessDetails.email},
+          phone = {cfsqltype = "varchar", value = arguments.businessDetails.phone},
+          phoneExtension = {cfsqltype = "varchar", value = arguments.businessDetails.phoneExtension},
+          StreetAddress1 = {cfsqltype = "varchar", value = arguments.businessDetails.address1},
+          StreetAddress2 = {cfsqltype = "varchar", value = arguments.businessDetails.address2},
+          Zip = {cfsqltype = "integer", value =  arguments.businessDetails.Zip},
+          City = {cfsqltype = "varchar", value = arguments.businessDetails.City},
+          State = {cfsqltype = "varchar", value = arguments.businessDetails.State},
+          Country = {cfsqltype = "varchar", value = arguments.businessDetails.Country},
+          parentBusinessId = {cfsqltype = "varchar", value = arguments.businessDetails.parentBusinessId},
+          BusinessId = {cfsqltype = "integer", value = arguments.businessDetails.BusinessId}
+        },{datasource: application.dsn}
+      );
       return local.result;
     } catch (any e){
+      writeDump(e);abort;
     }
   }
 
@@ -563,7 +566,7 @@ component  {
     numeric businesssId = 0
   ){
     local.result = {'error' : false};
-    local.users = [];
+    local.business = [];
     local.condition = "";
     
     if(val(arguments.businesssId) > 0) {
@@ -582,7 +585,7 @@ component  {
         City,
         State,
         Country,
-        SubBusiness
+        parentBusinessId
       FROM 
         Business
         WHERE 1=1
@@ -604,10 +607,10 @@ component  {
       local.details['City'] = local.BusinessDetails.City;
       local.details['State'] = local.BusinessDetails.State;
       local.details['Country'] = local.BusinessDetails.Country;
-      local.details['SubBusiness'] = local.BusinessDetails.SubBusiness;
-      arrayAppend(local.users, local.details);
+      local.details['parentBusinessId'] = local.BusinessDetails.parentBusinessId;
+      arrayAppend(local.business, local.details);
     }
-    local.result['users'] = local.users;
+    local.result['business'] = local.business;
     return local.result;
   }
   

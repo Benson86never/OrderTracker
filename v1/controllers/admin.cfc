@@ -8,7 +8,7 @@ component accessors="true" {
       rc.userDetails = adminService.getUserDetails().users;
     }
      public void function manageBusiness(rc){
-      rc.userDetails = adminService.getBusinessDetails().users;
+      rc.businessDetails = adminService.getBusinessDetails().business;
       //writedump(rc.userDetails);
     }
      public void function AddBusiness(rc){
@@ -16,14 +16,14 @@ component accessors="true" {
          writedump(url.businessId);
             rc.decryptbusinessid = decrypt(url.businessId, application.uEncryptKey, "BLOWFISH", "Hex");
             writeDump(rc.decryptbusinessid);
-            rc.businessDetails = adminService.getBusinessDetails(businesssId = rc.decryptbusinessid).users;
+            rc.businessDetails = adminService.getBusinessDetails(businesssId = rc.decryptbusinessid).business;
         
             //rc.params = "&businessId=#rc.businessId#";
            //writeDump(rc.businessDetails)
           }
           if(structKeyExists(form, 'business')) {
             session.businessResult = adminService.saveBusiness(businessDetails = form); 
-             if(isDefined("session.businessResult.errorMsg") && session.userResult.errorMsg == "" && rc.active == 1){
+             if(isDefined("session.businessResult.errorMsg") && session.businessResult.errorMsg == ""){
               location("index.cfm?action=admin.manageBusiness", false);
             }
           }

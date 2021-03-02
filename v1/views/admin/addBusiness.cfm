@@ -23,7 +23,7 @@
         variables.zip = rc.businessDetails[1]["zip"];
         variables.PhoneExtension = rc.businessDetails[1]["PhoneExtension"];
         variables.businessId = rc.businessDetails[1]["businessId"];
-        variables.subBusiness = rc.businessDetails[1]["subBusiness"];
+        variables.parentBusinessId = rc.businessDetails[1]["parentBusinessId"];
         variables.sectionHeader ="Update Business"
     }
     else{
