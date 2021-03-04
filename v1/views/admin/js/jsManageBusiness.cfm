@@ -5,13 +5,14 @@
 <script src = "https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/js/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript">
   $('#sortTable').DataTable({
-        "columnDefs": [ {
+        "columnDefs": [ { 
           "targets": 'no-sort',
-          "orderable": false,
-    } ]
+          "orderable": false,          
+    } ],   
   });
+  
   $('.deactivateUser').click(function(){
-      var businessId = $(this).attr('businessId');
+      var businessId = $(this).attr('businessId'); 
       $('#modal-showAlert .modal-title').html('Deactivate Business');
       $('#modal-showAlert .modal-body').html('Are you sure you want to deactivate this Business?');
       $('#modal-showAlert .modal-footer .ok').hide();

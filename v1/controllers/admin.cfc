@@ -9,14 +9,17 @@ component accessors="true" {
     }
      public void function manageBusiness(rc){
       rc.businessDetails = adminService.getBusinessDetails().business;
-      //writedump(rc.userDetails);
+     // writedump(rc.subBusinessNamesDetails);
     }
      public void function AddBusiness(rc){
+       rc.BusinessNamesDetails = adminService.getBusinessnames().business;
+      
        if(isDefined("url.businessId") && url.businessId NEQ 0) {
          //writedump(url.businessId);
             rc.decryptbusinessid = decrypt(url.businessId, application.uEncryptKey, "BLOWFISH", "Hex");
            // writeDump(rc.decryptbusinessid);
             rc.businessDetails = adminService.getBusinessDetails(businesssId = rc.decryptbusinessid).business;
+            
         
             //rc.params = "&businessId=#rc.businessId#";
            //writeDump(rc.businessDetails)

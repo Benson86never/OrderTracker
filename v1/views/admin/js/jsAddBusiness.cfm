@@ -23,4 +23,16 @@ $(document).ready(function(){
 
 });
 
+function disableBusinesses()
+ {
+     if(document.getElementById('subBusiness').checked == true)
+     {
+        document.getElementById('parentBusinessId').style.display = "block";
+     }
+     else
+     {
+         document.getElementById('parentBusinessId').style.display = "none";
+     }
+    
+ }
 </script>
