@@ -25,9 +25,11 @@
           <cfloop array="#rc.businessDetails#" item="business">
             <tr>
               <td style="display:none;">#business.sortBusinessName#</td>
-              <td width=300px;><cfif business.parentBusinessId gt 0>
-              #repeatString('&nbsp;&nbsp;&nbsp;&nbsp;', listlen(business.sortBusinessName,'~~'))#
-              </cfif>#business.BusinessName#</td>
+              <td width=300px; >
+                <span class="business-#listlen(business.sortBusinessName,'~~')#">
+                    #business.BusinessName#
+                </span>
+              </td>
               <td class="hidden-xs">#business.Email#</td>
               <td class="hidden-xs hidden-sm">#business.Phone#</td>
               <td class="hidden-xs hidden-sm">#business.zip#</td>

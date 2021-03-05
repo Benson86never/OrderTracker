@@ -370,12 +370,22 @@ component  {
         local.details['stateCode'] = local.stateDetails.stateCode;
         arrayAppend(local.result.states, local.details);
       }*/
+      if(session.secure.RoleCode == 4)
+      {
+        
+        local.rolecondition  = "where roleid!=1";
+      }
+      else
+      {
+        local.rolecondition  = "";
+      }
       local.roleDetails = queryExecute("
         SELECT
           roleId,
           name
         FROM
-          roles
+          roles           
+           #local.rolecondition# 
       ",{},{datasource: application.dsn}
       );
       cfloop(query = "local.roleDetails") {

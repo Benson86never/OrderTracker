@@ -4,12 +4,7 @@
 <script src = "https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/js/jquery.dataTables.min.js"></script>
 <script src = "https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/js/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript">
-  $('#sortTable').DataTable({
-        "columnDefs": [ { 
-          "targets": 'no-sort',
-          "orderable": false,          
-    } ],   
-  });
+
   
   $('.deactivateUser').click(function(){
       var businessId = $(this).attr('businessId'); 
