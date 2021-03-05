@@ -132,7 +132,8 @@
                       <cfif isdefined("variables.parentBusinessId") and variables.parentBusinessId EQ business.businessid>
                       selected
                       </cfif>
-                      value="#business.businessid#" class="businessoption-#listlen(business.sortbusinessname,'~~')#">
+                      value="#business.businessid#">
+                      #repeatString("&nbsp;&nbsp;", (listlen(business.sortbusinessname,'~~')-1))#
                       #business.businessname#
                       </option>
                   </cfloop>

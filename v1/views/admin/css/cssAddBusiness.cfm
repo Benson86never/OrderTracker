@@ -21,19 +21,4 @@
         top: 5px;
         left: 2px;
     }
-    .businessoption-2 {
-        padding-left:10px;
-    }
-    .businessoption-3 {
-        padding-left:20px;
-    }
-    .businessoption-4 {
-        padding-left:30px;
-    }
-    .businessoption-5 {
-        padding-left:40px;
-    }
-    .businessoption-6 {
-        padding-left:50px;
-    }
 </style>
