@@ -6,11 +6,16 @@ component  {
     local.result = {'error' : false};
     local.users = [];
     local.condition = "";
+    local.condition1 = "";
     if(arguments.includeActiveOnly) {
       local.condition = "AND P.active = 1";
     }
-    if(val(arguments.userId) > 0) {
+    if(val(arguments.userId) > 0 ) {
       local.condition &= "AND P.personId = #arguments.userId#";
+    }
+    if(isDefined("url.businessId") )
+    { 
+      local.condition1 &= "AND P.subaccountid = #decrypt(url.BusinessId, application.uEncryptKey, "BLOWFISH", "Hex")#";     
     }
     local.userDetails = queryExecute("
       SELECT
@@ -43,6 +48,7 @@ component  {
           LEFT JOIN masteraccount A ON A.masterId = S.accountId
       WHERE 1=1
       #local.condition#
+      #local.condition1#
       ORDER BY P.active DESC, P.firstName;
       ",{},{datasource: application.dsn}
     );
