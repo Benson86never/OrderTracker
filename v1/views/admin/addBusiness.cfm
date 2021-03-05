@@ -143,7 +143,7 @@
         <div class="row">
         <div class="col-md-7 text-right">
           <cfif structKeyExists(session, 'secure')>
-            <a class="btn btn-danger" href="../login_ctrl.cfm?action=logout">
+            <a class="btn btn-danger" href="index.cfm?action=admin.manageBusiness">
               <i class="fa fa-times" aria-hidden="true"></i>
             </a>
           </cfif>

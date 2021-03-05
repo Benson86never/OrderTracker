@@ -6,7 +6,6 @@ component accessors="true" {
     }
     public void function manageusers(rc){
       param name="rc.businessId" default = 0;
-      writeDump(rc.businessId);
       rc.userDetails = adminService.getUserDetails(
       businessId = rc.businessId).users;
     }
