@@ -5,7 +5,10 @@ component accessors="true" {
       return this;
     }
     public void function manageusers(rc){
-      rc.userDetails = adminService.getUserDetails().users;
+      param name="rc.businessId" default = 0;
+      writeDump(rc.businessId);
+      rc.userDetails = adminService.getUserDetails(
+      businessId = rc.businessId).users;
     }
      public void function manageBusiness(rc){
       rc.businessDetails = adminService.getBusinessDetails().business;

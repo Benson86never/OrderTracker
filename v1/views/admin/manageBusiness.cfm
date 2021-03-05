@@ -45,7 +45,7 @@
                   </a>
                   <a href="index.cfm?action=admin.manageusers&businessId=#encrypt(business.BusinessId, application.uEncryptKey, "BLOWFISH", "Hex")#"
                     class = "btn btn-success">
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                    <i class="fa fa-user" aria-hidden="true"></i>
                   </a>
               </td>
             </tr>  
