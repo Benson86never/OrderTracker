@@ -626,5 +626,33 @@ component  {
     }
     local.result['business'] = local.business;
     return local.result;
-  }   
+  }
+  public any function getBusinessnames(
+  ){
+    local.result = {'error' : false};
+    local.business = [];
+    local.BusinessNamesDetails = queryExecute("
+      SELECT
+        BusinessId,
+        BusinessName,
+        parentBusinessId,
+        fngetBusinees(BusinessId) as sortbusinessname
+      FROM 
+        Business
+        WHERE 1=1
+        AND active =1
+        ORDER BY sortbusinessname;
+      ",{},{datasource: application.dsn}
+    );
+    cfloop(query = "local.BusinessNamesDetails" ) {
+      local.details = {};
+      local.details['BusinessId'] = local.BusinessNamesDetails.BusinessId;
+      local.details['BusinessName'] = local.BusinessNamesDetails.BusinessName;
+      local.details['parentBusinessId'] = local.BusinessNamesDetails.parentBusinessId;
+      local.details['sortbusinessname'] = local.BusinessNamesDetails.sortbusinessname;
+      arrayAppend(local.business, local.details);
+    }
+    local.result['business'] = local.business;
+    return local.result;
+  }
 }

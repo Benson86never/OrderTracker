@@ -126,16 +126,16 @@
             </div>
             <div class="col-md-1">
                  <select class="form-control selectElement" name="parentBusinessId" id="parentBusinessId" <cfif isdefined("variables.parentBusinessId") and variables.parentBusinessId gt 0>checked="true"<cfelse>style="display:none;"</cfif>>
-                        <option value="0" >Select</option>          
-                        <cfloop array="#rc.BusinessNamesDetails#" item="business">     
-                            <option  
-                            <cfif isdefined("variables.parentBusinessId") and variables.parentBusinessId EQ business.businessid>
-                            selected
-                            </cfif>                          
-                                    value="#business.businessid#">
-                                    #business.businessname#
-                            </option>
-                        </cfloop>
+                  <option value="0" >Select</option>
+                  <cfloop array="#rc.BusinessNamesDetails#" item="business">
+                      <option
+                      <cfif isdefined("variables.parentBusinessId") and variables.parentBusinessId EQ business.businessid>
+                      selected
+                      </cfif>
+                      value="#business.businessid#" class="businessoption-#listlen(business.sortbusinessname,'~~')#">
+                      #business.businessname#
+                      </option>
+                  </cfloop>
                 </select>
             </div>
         </div>
