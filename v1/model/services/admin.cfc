@@ -310,7 +310,7 @@ component  {
           active = :active
         WHERE
           businessId = :businessId;
-          
+
           update business set parentbusinessid = 0 where parentbusinessid = :businessid;
       ",{
           businessId = {cfsqltype = "integer", value = arguments.businessId},
@@ -616,37 +616,5 @@ component  {
     }
     local.result['business'] = local.business;
     return local.result;
-  }
-
-    public any function getBusinessnames(
-  ){
-    local.result = {'error' : false};
-    local.business = [];
-
-    local.BusinessNamesDetails = queryExecute("
-      SELECT
-        BusinessId,
-        BusinessName,
-        parentBusinessId
-      FROM 
-        Business
-        WHERE 1=1
-        AND active =1
-        ORDER BY BusinessId desc;
-      ",{},{datasource: application.dsn}
-    );
-    cfloop(query = "local.BusinessNamesDetails" ) {
-      local.details = {};
-      local.details['BusinessId'] = local.BusinessNamesDetails.BusinessId;
-      local.details['BusinessName'] = local.BusinessNamesDetails.BusinessName;
-      local.details['parentBusinessId'] = local.BusinessNamesDetails.parentBusinessId;
-      arrayAppend(local.business, local.details);
-    }
-    local.result['business'] = local.business;
-    return local.result;
-  }
-
-
-    
-  
+  }   
 }

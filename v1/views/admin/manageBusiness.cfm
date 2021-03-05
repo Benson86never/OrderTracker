@@ -18,16 +18,16 @@
                 <a class="btn btn-success" href="index.cfm?action=admin.addBusiness">
                   <i class="fa fa-plus" aria-hidden="true"></i>
                 </a>
-              </th>
-              
+              </th>              
           </tr>
         </thead>
         <tbody>
           <cfloop array="#rc.businessDetails#" item="business">
-
             <tr>
-              <td style="display:none;" >#business.sortBusinessName#</td>
-              <td>#business.BusinessName#</td>
+              <td style="display:none;">#business.sortBusinessName#</td>
+              <td width=300px;><cfif business.parentBusinessId gt 0>
+              #repeatString('&nbsp;&nbsp;&nbsp;&nbsp;', listlen(business.sortBusinessName,'~~'))#
+              </cfif>#business.BusinessName#</td>
               <td class="hidden-xs">#business.Email#</td>
               <td class="hidden-xs hidden-sm">#business.Phone#</td>
               <td class="hidden-xs hidden-sm">#business.zip#</td>
@@ -42,9 +42,7 @@
                     <i class="fa fa-pencil" aria-hidden="true"></i>
                   </a>
               </td>
-            </tr>
-                  
-            
+            </tr>  
           </cfloop>
         </tbody>
       </table>
