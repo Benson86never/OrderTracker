@@ -25,7 +25,7 @@ $(document).ready(function(){
         }
     });
 
-    $('#save').click(function(){
+    $('#save').click(function(){ 
         if($('#password').val() === "********"){
              var passwordRegex = true;
         }

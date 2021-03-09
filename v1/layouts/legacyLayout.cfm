@@ -57,15 +57,17 @@
               </ul>
             </li>
             <cfif structKeyExists(session, 'secure')
-              AND session.secure.RoleCode eq 1>
+              and ListFind('1,4',session.secure.RoleCode)>
               <li role="presentation" class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                   Admin <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
+                  <cfif session.secure.RoleCode eq 1>
                   <li><a class="dropdown-item" href="../item.cfm">Edit Items</a></li>
                   <li><a class="dropdown-item" href="../list_organize.cfm">Organize Lists</a></li>
                   <li><a class="dropdown-item" href="../list_item.cfm">Manage List Items</a></li>
+                  </cfif>
                   <li><a class="dropdown-item" href="index.cfm?action=admin.manageUsers">Manage Users</a></li>
                   <li><a class="dropdown-item" href="index.cfm?action=admin.manageBusiness">Manage Business</a></li>
                 </ul>

@@ -22,12 +22,12 @@ component  {
         P.personId,
         P.firstName,
         P.lastname,
-        S.address1, 
-	      S.address2,
-        S.City,
-        S.State,
-        S.Country,
-        S.zip,
+        b.streetaddress1, 
+	      b.streetaddress2,
+        b.City,
+        b.State,
+        b.Country,
+        b.zip,
         P.email,
         P.phone,
         p.Type,
@@ -37,17 +37,16 @@ component  {
         p.Salt,
         p.subaccountId,
         R.name,
-        S.name AS subAccountName,
-        A.name AS accountName,
+        b.businessname AS subAccountName,
+      
         p.PhoneExtension
       FROM 
           person P
           INNER JOIN roles R ON R.roleId = P.type
-          LEFT JOIN subaccount S ON S.SubAccountID = P.SubAccountID
-            AND S.active = 1
-          LEFT JOIN masteraccount A ON A.masterId = S.accountId
+          INNER JOIN business b ON p.subaccountid = b.businessid
       WHERE 1=1
       #local.condition#
+      AND p.active = 1
       ORDER BY P.active DESC, P.firstName;
       ",{},{datasource: application.dsn}
     );
@@ -56,8 +55,8 @@ component  {
       local.details['personid'] = local.userDetails.personId;
       local.details['firstName'] = local.userDetails.firstName;
       local.details['lastname'] = local.userDetails.lastname;
-      local.details['address1'] = local.userDetails.address1;
-      local.details['address2'] = local.userDetails.address2;
+      local.details['address1'] = local.userDetails.streetaddress1;
+      local.details['address2'] = local.userDetails.streetaddress2;
       local.details['City'] = local.userDetails.City;
       local.details['State'] = local.userDetails.State;
       local.details['Country'] = local.userDetails.Country;
@@ -69,7 +68,7 @@ component  {
       local.details['Password'] = local.userDetails.Password;
       local.details['Salt'] = local.userDetails.Salt;
       local.details['subAccountName'] = local.userDetails.subAccountName;
-      local.details['accountName'] = local.userDetails.accountName;
+    
       local.details['active'] = local.userDetails.active;
       local.details['PhoneExtension'] = local.userDetails.PhoneExtension;
       local.details['accountid'] = local.userDetails.subaccountId;
@@ -79,7 +78,6 @@ component  {
     local.result['users'] = local.users;
     return local.result;
   }
-  
   public any function saveUser(
     struct userDetails
   ){
@@ -99,7 +97,6 @@ component  {
     }
     return local.result;
   }
-
   public any function addUser(
     struct userDetails
   ){
@@ -164,20 +161,7 @@ component  {
             PhoneExtension = {cfsqltype = "varchar", value = arguments.userDetails.PhoneExtension}
           },{datasource: application.dsn, result="local.userresult"}
         );
-        local.accountlink = queryExecute("
-          INSERT INTO joinpersontosubaccount
-          (
-            PersonID,
-            SubAccountID
-          ) VALUES (
-            :personId,
-            :subAccountId
-          )
-        ",{
-            personId = {cfsqltype = "varchar", value = local.userresult.generatedKey},
-            SubAccountID = {cfsqltype = "varchar", value = arguments.userDetails.account}
-          },{datasource: application.dsn}
-        );
+       
       } else {
         local.result['error']  = true;
         local.result['errorMsg'] = 'User with this email already avaialble.';
@@ -188,7 +172,6 @@ component  {
       writeDump(e);abort;
     }
   }
-
   public any function updateUser(
     struct userDetails
   ){
@@ -260,7 +243,6 @@ component  {
       writeDump(e);abort;
     }
   }
-
   public any function manageUser(
     numeric personId,
     numeric active,
@@ -302,7 +284,6 @@ component  {
     }
     
   }
-
   remote any function manageBusiness(
     integer businessId,
     integer active
@@ -326,7 +307,6 @@ component  {
     }
     
   }
-
   public any function adduserBasicInfo(
     numeric countyId
   ){
@@ -401,27 +381,29 @@ component  {
       }
       local.accountDetails = queryExecute("
         SELECT
-          subaccountId,
-          name
+           businessId as subaccountId,
+           businessname as name
         FROM
-          subaccount
+          business
         WHERE
-          Active = 1
+          Active = 1          
       ",{},{datasource: application.dsn}
       );
       cfloop(query = "local.accountDetails") {
+        if(session.secure.roleCode == 1 || session.secure.subaccount == local.accountdetails.subaccountid)
+        {
         local.details = {};
         local.details['id'] = local.accountDetails.subaccountId;
         local.details['name'] = local.accountDetails.name;
         //local.details[id] = 
         arrayAppend(local.result.accounts, local.details);
+        }
       }
       return local.result;
     } catch(any e) {
       writeDump(e); abort;
       /* error email */
-    }
-    
+    }   
   }
   remote any function getAdressDetails(
     integer subAccountId
@@ -435,7 +417,7 @@ component  {
          sa.state,
         sa.country
         FROM 
-          subaccount sa
+          business sa
         WHERE
           SubAccountId = :subAccountId
           AND active = 1;
@@ -445,7 +427,6 @@ component  {
       );
       return local.getAdress;
     }
-
     public any function saveBusiness(
     struct businessDetails
   ){
@@ -465,8 +446,6 @@ component  {
     }
     return local.result;
   }
-
-
     public any function addBusiness(
     struct businessDetails
   ){
@@ -530,7 +509,6 @@ component  {
       writeDump(e);abort;
     }
   }
-
    public any function updateBusiness(
     struct businessDetails
   ){
@@ -578,17 +556,17 @@ component  {
       writeDump(e);abort;
     }
   }
-
   public any function getBusinessDetails(
-    numeric businesssId = 0
+    numeric businessId = 0
   ){
     local.result = {'error' : false};
     local.business = [];
     local.condition = "";
     
-    if(val(arguments.businesssId) > 0) {
-      local.condition &= "AND BusinessId = #arguments.businesssId#";
+    if(val(arguments.businessId) > 0) {
+      local.condition &= "AND BusinessId = #arguments.businessId#";
     }
+
     local.BusinessDetails = queryExecute("
       SELECT
         BusinessId,

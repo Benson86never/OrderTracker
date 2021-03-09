@@ -6,11 +6,21 @@ component accessors="true" {
     }
     public void function manageusers(rc){
       param name="rc.businessId" default = 0;
+      if(session.secure.rolecode == 4)
+      {
+        rc.businessid = encrypt(session.secure.SubAccount, application.uEncryptKey, "BLOWFISH", "Hex");
+      }
       rc.userDetails = adminService.getUserDetails(
       businessId = rc.businessId).users;
     }
      public void function manageBusiness(rc){
-      rc.businessDetails = adminService.getBusinessDetails().business;
+      param name="rc.businessId" default = 0;
+      if(session.secure.rolecode == 4)
+      {
+        rc.businessid =  session.secure.SubAccount;
+      }
+      rc.businessDetails = adminService.getBusinessDetails(businessid = rc.businessid).business;
+      
      // writedump(rc.subBusinessNamesDetails);
     }
      public void function AddBusiness(rc){
@@ -44,14 +54,15 @@ component accessors="true" {
         rc.decryptuserid = decrypt(rc.userid, application.uEncryptKey, "BLOWFISH", "Hex");
         rc.userDetails = adminService.getUserDetails(userid = rc.decryptuserid).users;
         rc.params = "&userId=#rc.userid#";
-        rc.active = rc.userDetails[1]["active"];
+        rc.active = 1;
       } else {
-        if(structKeyExists(session, 'secure')
+      /*  if(structKeyExists(session, 'secure')
           && session.secure.RoleCode == 1) {
           rc.active = 1;
         } else {
           rc.active = 0;
-        }
+        }*/
+        rc.active=1;
       }
       if(structKeyExists(form, 'EMAIL')) {
         session.userResult = adminService.saveUser(userDetails = form);

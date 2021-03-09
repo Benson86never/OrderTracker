@@ -8,5 +8,6 @@ component persistent="true" {
 	property name="type" column="Type" ormtype="int";
 	property name="password" column="Password" ormtype="string";
 	property name="salt" column="Salt" ormtype="string";
+	property name="businessId" column="subaccountId" ormtype="int";
 
 }

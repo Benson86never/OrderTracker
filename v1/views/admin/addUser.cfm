@@ -14,7 +14,7 @@
         variables.City = rc.userDetails[1]["city"];
         variables.Country = rc.userDetails[1]["Country"];
         variables.State = rc.userDetails[1]["State"];
-        variables.accountName = rc.userDetails[1]["accountName"];
+      
         variables.active = rc.userDetails[1]["active"];
         variables.carrier = rc.userDetails[1]["carrier"];
         variables.email = rc.userDetails[1]["email"];
@@ -38,7 +38,7 @@
       variables.City = "";
       variables.Country = "";
       variables.Stateid = "";
-      variables.accountName = "";
+
       variables.active = "";
       variables.carrier = "";
       variables.email = "";
@@ -153,11 +153,13 @@
               </option>
             </cfloop>
           </select>
+          <cfif session.secure.rolecode eq 1>
           <div style="margin-left: 50%; margin-top: 2%">
              <a href="index.cfm?action=admin.addBusiness">
               Add Business
             </a>
           </div>
+          </cfif>
         </div>
       </div>
       <div class="row">

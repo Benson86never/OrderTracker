@@ -1,22 +1,24 @@
 <cfset variables.numIterarions = 0 />
 <cfif isDefined('form.Submit') and form.submit is "login">
-<cfscript>
-Users = EntityLoad( "person", { email=#form.username# } );
-</cfscript>
-<cfif arrayLen(Users) is 0>
-	<cflocation url="index.cfm" addtoken="no">
-<cfelseif Users[1].getpassword() EQ Hash(form.password & Users[1].getsalt(), "SHA-512", "utf-8", variables.numIterarions)>
-<cfset SubAccount = EntityLoad( "JoinPersonToSubaccount", {personid=#Users[1].getid()#} )>
-<cfset session.secure.loggedin="yes">
-<cfset session.secure.MasterAccount="1">
-<cfset session.secure.SubAccount="#SubAccount[1].getsubaccountid()#">
-<cfset session.secure.SubAccountName="#SubAccount[1].subaccount.getname()#">
-<cfset session.secure.PersonID="#Users[1].getid()#">
-<cfset session.secure.RoleCode="#Users[1].gettype()#">
-<cflocation url="list.cfm" addtoken="no">
-</cfif>
+	<cfquery name="qrySelectUser" datasource="#application.dsn#">
+		select * from person where email='#form.username#' 
+	</cfquery>
+	<cfif qrySelectUser.recordCount eq 0>
+		<cflocation url="index.cfm" addtoken="no">
+	<cfelseif qrySelectUser.password EQ Hash(form.password & qrySelectUser.salt, "SHA-512", "utf-8", variables.numIterarions)>
+		<cfset session.secure.loggedin="yes">
+		<cfset session.secure.MasterAccount="1">
+		<cfquery name="qrySelectBusinessname" datasource="#application.dsn#">
+			select * from business where businessid = #qrySelectUser.subaccountid#
+		</cfquery>
+		<cfset session.secure.SubAccount="#qrySelectBusinessname.businessid#">
+		<cfset session.secure.SubAccountName="#qrySelectBusinessname.businessname#">
+		<cfset session.secure.PersonID="#qrySelectUser.personid#">
+		<cfset session.secure.RoleCode="#qrySelectUser.type#">
+		<cflocation url="list.cfm" addtoken="no">
+	</cfif>
 <cfelseif isDefined('url.action') and url.action is "logout">
-<cfset StructDelete(Session, "secure")>
-<cfset StructDelete(Session, "cart")>
-<cflocation url="index.cfm" addtoken="no">
+	<cfset StructDelete(Session, "secure")>
+	<cfset StructDelete(Session, "cart")>
+	<cflocation url="index.cfm" addtoken="no">
 </cfif>

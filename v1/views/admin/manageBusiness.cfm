@@ -14,10 +14,13 @@
               <th class="hidden-xs hidden-sm">City</th>
                <th class="hidden-xs hidden-sm">State</th>
               <th class="no-sort text-center">
+              
                 Action
+                <cfif session.secure.rolecode eq 1>
                 <a class="btn btn-success" href="index.cfm?action=admin.addBusiness">
                   <i class="fa fa-plus" aria-hidden="true"></i>
                 </a>
+                </cfif>
               </th>              
           </tr>
         </thead>
@@ -36,9 +39,11 @@
               <td class="hidden-xs hidden-sm">#business.City#</td>
               <td class="hidden-xs hidden-sm">#business.State#</td>
               <td class="text-center">
+              <cfif session.secure.rolecode eq 1>
                   <button class="btn btn-danger deactivateUser" businessId="#business.BusinessId#">
                     <i class="fa fa-trash" aria-hidden="true"></i>
                   </button>
+              </cfif>
                   <a href="index.cfm?action=admin.addBusiness&businessId=#encrypt(business.BusinessId, application.uEncryptKey, "BLOWFISH", "Hex")#"
                     class = "btn btn-success">
                     <i class="fa fa-pencil" aria-hidden="true"></i>

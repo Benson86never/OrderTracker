@@ -1,11 +1,10 @@
 <cfinclude template="includes/secure.cfm" >
-<cfscript>
-	
+<cfscript>	
 	if (isDefined("url.ListID")) {
 	Lists = EntityLoad( "list", { id=#url.ListID# }, "Orderby Asc" );
 	}
 	else {
-	Lists = EntityLoad( "list", { subaccountid=#session.secure.subaccount# }, "Orderby Asc" );
+	Lists = EntityLoad( "list", { }, "Orderby Asc" );
 	}
 	ListsQuery = EntityToQuery(Lists, "item");
 </cfscript>
@@ -25,7 +24,6 @@
 		<cfinclude template="includes/header.cfm" >
 		<cfoutput>
 			<cfform name="Order" action="cart_ctrl.cfm">
-			
 			<cfloop array="#Lists#" index="list" >
 				<cfif not isDefined("url.ListID")>
 				<div><a href="#cgi.script_name#?ListID=#list.getID()#">#list.getName()#</a></div>

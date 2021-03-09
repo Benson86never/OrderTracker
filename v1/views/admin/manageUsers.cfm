@@ -9,7 +9,7 @@
               <th>First Name</th>
               <th>Last Name</th>
               <th class="hidden-xs">Email</th>
-              <th class="hidden-xs hidden-sm">SubAccount</th>
+              <th class="hidden-xs hidden-sm">Business</th>
               <th class="hidden-xs hidden-sm">Type</th>
               <th class="no-sort text-center">
                 Action
