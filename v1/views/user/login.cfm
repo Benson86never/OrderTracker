@@ -277,9 +277,11 @@ label
     left: 50px;
     background: white;
     margin-top: 20px;
-    color:#0095ff;
+    color: #0095ff;
+    padding-left: 3px;
+    padding-right: 3px;
+    font-weight: normal;
 }
-
     </style>
 <cfoutput>
   

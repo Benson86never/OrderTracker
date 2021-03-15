@@ -38,7 +38,7 @@ component  {
         p.subaccountId,
         R.name,
         b.businessname AS subAccountName,
-      
+        p.account_active,
         p.PhoneExtension
       FROM 
           person P
@@ -68,7 +68,7 @@ component  {
       local.details['Password'] = local.userDetails.Password;
       local.details['Salt'] = local.userDetails.Salt;
       local.details['subAccountName'] = local.userDetails.subAccountName;
-    
+      local.details['account_active'] = local.userDetails.account_active;
       local.details['active'] = local.userDetails.active;
       local.details['PhoneExtension'] = local.userDetails.PhoneExtension;
       local.details['accountid'] = local.userDetails.subaccountId;
@@ -107,7 +107,8 @@ component  {
       }
       local.checkuserDetails = queryExecute("
         SELECT
-          P.personId
+          P.personId,  
+          p.account_active
         FROM 
             person P
         WHERE
@@ -116,10 +117,9 @@ component  {
         ",{
           email = {cfsqltype = "varchar", value = arguments.userDetails.email}
         },{datasource: application.dsn}
-      );
+      ); 
       if(local.checkuserDetails.recordcount == 0) {
-        local.salt = Hash(GenerateSecretKey("AES"), "SHA-512");
-        local.hashedPassword = Hash(arguments.userDetails.password & local.salt, "SHA-512");
+       
         local.userDetails = queryExecute("
           INSERT INTO person
           (
@@ -129,8 +129,8 @@ component  {
             phone,
             type,
             carrier,
-            Password,
-            Salt,
+            account_active,
+
             active,
             subaccountid,
             PhoneExtension
@@ -141,8 +141,8 @@ component  {
             :phone,
             :type,
             :carrier,
-            :Password,
-            :Salt,
+            :account_active,
+
             :active,
             :subaccountid,
             :PhoneExtension
@@ -154,14 +154,37 @@ component  {
             phone = {cfsqltype = "varchar", value = arguments.userDetails.phone},
             type = {cfsqltype = "integer", value = arguments.userDetails.userType},
             carrier = {cfsqltype = "varchar", value = arguments.userDetails.carrier},
-            Password = {cfsqltype = "varchar", value = local.hashedPassword},
-            Salt = {cfsqltype = "varchar", value = local.Salt},
+          
+            account_active = 0,
             active = {cfsqltype = "varchar", value = arguments.userDetails.active},
             subaccountid = {cfsqltype = "integer", value = arguments.userDetails.account},
             PhoneExtension = {cfsqltype = "varchar", value = arguments.userDetails.PhoneExtension}
           },{datasource: application.dsn, result="local.userresult"}
         );
-       
+        mail=new mail();
+ 
+        // Set it's properties
+        mail.setSubject( "Welcome Email" );
+        mail.setTo( arguments.userDetails.email);
+        mail.setFrom( "smucharla@infoane.com" );
+        mail.setCC( "smucharla@infoane.com" );
+        mail.setBCC( "smucharla@infoane.com" );
+      
+        // Add an attachment
+        //mail.addParam( file="C:\foo.txt" );
+      
+        // Add email body content in text and HTML formats
+        mail.addPart( type="text", charset="utf-8", wraptext="72", body="Welcome to Ordertracker." ); 
+        mail.addPart( type="html", charset="utf-8", body="<p> Please find the account information: <br><br>       
+	
+                    login link  : 	https://86never.com<br>
+	                  username : #arguments.userDetails.email#<br><br>
+
+                    To activate your account please clik <a href='http://localhost:8500/ordertracker/v1/index.cfm?action=admin.changepassword&userid=#encrypt(local.userresult.generatedkey,application.uEncryptKey, "BLOWFISH", "Hex")#' >here</a>.
+    " );
+      
+        // Send the email
+        mail.send();
       } else {
         local.result['error']  = true;
         local.result['errorMsg'] = 'User with this email already avaialble.';
@@ -196,14 +219,8 @@ component  {
         },{datasource: application.dsn}
       );
       if(local.checkuserDetails.recordcount == 0) {
-        local.passwordCondition = "";
-        local.salt = "";
-        local.hashedPassword = "";
-        if(arguments.userDetails.password != "********") {
-          local.salt = Hash(GenerateSecretKey("AES"), "SHA-512");
-          local.hashedPassword = Hash(arguments.userDetails.password & local.salt, "SHA-512");
-          local.passwordCondition = ",salt='#local.salt#',password = '#local.hashedPassword#'"; 
-        }
+       
+        
         local.userDetails = queryExecute("
           UPDATE
             person
@@ -216,7 +233,7 @@ component  {
             carrier = :carrier,
             subaccountid = :subaccountid,
             PhoneExtension = :PhoneExtension
-            #local.passwordCondition#
+           
           WHERE
             personId = :personId
         ",{
@@ -226,8 +243,7 @@ component  {
             phone = {cfsqltype = "varchar", value = arguments.userDetails.phone},
             type = {cfsqltype = "integer", value = arguments.userDetails.userType},
             carrier = {cfsqltype = "varchar", value = arguments.userDetails.carrier},
-            Password = {cfsqltype = "varchar", value = local.hashedPassword},
-            Salt = {cfsqltype = "varchar", value = local.Salt},
+          
             subaccountid = {cfsqltype = "integer", value = arguments.userDetails.account},
             PhoneExtension = {cfsqltype = "varchar", value = arguments.userDetails.PhoneExtension},
             personId = {cfsqltype = "integer", value = arguments.userDetails.personId}
@@ -637,5 +653,63 @@ component  {
     }
     local.result['business'] = local.business;
     return local.result;
+  }
+
+  public any function updatepassword(
+    struct userDetails
+  ){     
+    //writeDump(userDetails);abort;
+    try {
+      local.result = {
+        'error' : false,
+        'errorMsg' : ''
+      } 
+      local.checkuserDetails = queryExecute("
+        SELECT
+          P.personId
+        FROM 
+            person P
+        WHERE
+          email = :email          
+          AND active = 1;
+        ",{
+          email = {cfsqltype = "varchar", value = arguments.userDetails.email}
+        },{datasource: application.dsn}
+      );
+      if(local.checkuserDetails.recordcount == 1) {
+        local.passwordCondition = "";
+        local.salt = "";
+        local.hashedPassword = "";
+        if(arguments.userDetails.password != "********") {
+          local.salt = Hash(GenerateSecretKey("AES"), "SHA-512");
+          local.hashedPassword = Hash(arguments.userDetails.password & local.salt, "SHA-512");
+          local.passwordCondition = ",salt='#local.salt#',password = '#local.hashedPassword#'"; 
+        }
+        local.userDetails = queryExecute("
+          UPDATE
+            person
+          SET
+            Password = :Password,
+            Salt = :Salt,
+            account_active = 1
+          
+          WHERE
+            email = :email
+        ",{
+          
+            Password = {cfsqltype = "varchar", value = local.hashedPassword},
+            Salt = {cfsqltype = "varchar", value = local.Salt},           
+           email = {cfsqltype = "varchar", value = arguments.userDetails.email}
+          },{datasource: application.dsn}
+        );
+      }
+      else{
+        local.result['error']  = true;
+        local.result['errorMsg'] = 'User with this email already avaialble.';
+      }
+        return local.result;
+    } catch (any e){
+      writeDump(e);abort;
+    }
   }
 }

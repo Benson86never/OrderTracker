@@ -30,7 +30,7 @@
         variables.zip = rc.userDetails[1]["zip"];
         variables.PhoneExtension = rc.userDetails[1]["PhoneExtension"];
         variables.personid = rc.userDetails[1]["personid"];
-        variables.password = "********";
+     //   variables.password = "********";
         variables.sectionHeader = "Update User";
         variables.accountid = rc.userDetails[1]["accountid"];
     }
@@ -52,7 +52,7 @@
       variables.type = "";
       variables.zip = "";
       variables.personid = 0;
-      variables.password = "";
+     // variables.password = "";
       variables.PhoneExtension = "";
       variables.sectionHeader = "Add User"
     }
@@ -227,7 +227,7 @@
           </select>--->
         </div>
       </div>
-      <div class="row">
+     <!--- <div class="row">
         <div class="col-md-1 labelname">
           Password<span style="color: red"><b>*<b></span>:
         </div>
@@ -244,7 +244,7 @@
             <input type="password" class="form-control inputelement" id="cpassword" placeholder="Enter Password" name="cpassword" value="#variables.password#" autocomplete="off" required minlength="8">
           </div>
         </cfif>
-      </div>
+      </div>--->
       <div class="row">
         <div class="col-md-12" id="passwordERR" style="color: red;text-align: center"></div>
       </div>

@@ -36,7 +36,7 @@
 				<cfset structDelete(session.userResult, 'message')>
 			</cfif>
 			<!---<div><cfinput type="button" name="login" value="login" onclick="window.location='login_ctrl.cfm';" /></div>
-			<div style="display:inline"></div>--->
+			<div style="display:inline"></div>--->			
 		</cfform>
 		<cfinclude template="includes/bootstrap_js.cfm" >
 		</div>

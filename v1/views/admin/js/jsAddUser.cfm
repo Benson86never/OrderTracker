@@ -9,41 +9,18 @@ $(document).ready(function(){
         getAddress();
     });
 
-    if($('#password').val() !== "********"){
-        $('#showPaasword').show();
-    }
-    else{
-        $('#showPaasword').hide();
-    }
 
-    $("#showPaasword").click(function(){
-        var password = document.getElementById("password");
-        if (password.type === "password") {
-            password.type = "text";
-        } else {
-            password.type = "password";
-        }
-    });
 
-    $('#save').click(function(){ 
-        if($('#password').val() === "********"){
-             var passwordRegex = true;
-        }
-        else{
-              var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test($('#password').val());
-        }
+    $('#save').click(function(){
+    
         var emailRegex = /([A-Z0-9a-z_-][^@])+?@[^$#<>?]+?\.[\w]{2,4}/.test($('#Email').val());
         var dynamicFields = "Below fields are missing: <br/><br/>"
-        if($("#firstName").val() === "" || $("#lastName").val() === "" || $("#Email").val() === "" || $("#password").val()!=="" || $("#cpassword").val()!=="" ||($("#password").val()!=="" && $("#password").val()!=="" && ($("#password").val() !== $("#cpassword").val())) || ($("#Email").val() !== "" && emailRegex === false) || ($("#password").val()!=="" && passwordRegex === false)){
+        if($("#firstName").val() === "" || $("#lastName").val() === "" || $("#Email").val() === "" || ($("#Email").val() !== "" && emailRegex === false) ){
             dynamicFields += ($("#firstName").val() === "" ? "Please enter first name <br/>" : "");
             dynamicFields += ($("#lastName").val() === "" ? "Please enter last name <br/>" : "");
             dynamicFields += ($("#Email").val() === "" ? "Please enter Email <br/>" : "");
             dynamicFields += (emailRegex === false && $("#Email").val() !== ""? "Please enter correct email <br/>" : "");
-            dynamicFields += ($("#password").val() === "" ? "Please enter Password <br/>" : "");
-            dynamicFields += (passwordRegex === false && $("#password").val() !== ""? "Password should contain Uppercase letters, Lowercase letters,Numbers and Symbol <br/>" : "");
-            dynamicFields += ($("#cpassword").val() === "" ? "Please enter confirm Password <br/>" : "");
-            dynamicFields += ($("#password").val()!=="" && $("#password").val()!=="" && ($("#password").val() !== $("#cpassword").val()) === "" ? "Pasword and  confirm Password should be same <br/>" : "");
-        }
+           }
        if(dynamicFields === "Below fields are missing: <br/><br/>"){
            $('#formSubmit').submit();
        }
@@ -73,7 +50,7 @@ $(document).ready(function(){
         }
     });
 
-     $('#password').on('blur', function(){
+   /*  $('#password').on('blur', function(){
       if(this.value != '********') {
         $('#showPaasword').show();
         var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(this.value);
@@ -87,7 +64,7 @@ $(document).ready(function(){
       else{
            $('#showPaasword').hide();
       }
-    });
+    });*/
 
 
     $('#phoneExtension').keypress(function(event){

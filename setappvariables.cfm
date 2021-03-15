@@ -7,6 +7,6 @@
 		application.item_np=CreateObject("Component","#Application.ComPath#item_np");
 		application.listsequence_np=CreateObject("Component","#Application.ComPath#listsequence_np");
     application.uEncryptKey = "password";
-    application.publicpages = "admin.adduser"
+    application.publicpages = "admin.adduser,user.login"
 		//application.adminobj =CreateObject("Component","v1/model/services.admin");
 </cfscript>

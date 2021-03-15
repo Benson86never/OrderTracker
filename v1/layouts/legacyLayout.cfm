@@ -23,9 +23,10 @@
     <div style = "min-height: 100%;">
       <!--- Main Nav --->
       <div class="pageHeader">
-        <span>Order Tracker</span>
-        <cfif structKeyExists(session, 'secure')
-          AND session.secure.loggedin>
+      <cfif url.action neq "admin.changepassword">
+        <span>Order Tracker</span>        
+        <cfif structKeyExists(session, 'secure') AND session.secure.loggedin>
+          
           <a href="../login_ctrl.cfm?action=logout" class="logOut mt-5">
             <i class="fa fa-power-off" aria-hidden="true"></i>
             LogOut
@@ -75,6 +76,7 @@
             </cfif>
           </ul>
         </div>
+      </cfif>
       </cfif>
       <div class="main-content">
         <div class="row row-padding">

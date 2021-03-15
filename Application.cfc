@@ -14,6 +14,7 @@
 		this.sessionTimeout=CreateTimeSpan(0, 8, 0, 0);
 		this.mailserver="smtp.zoominternet.net";
 		this.datasource = "ordertracker";
+		this.dsn = "ordertracker";
 		this.ormEnabled = true;
 		this.ormSettings = { logsql : true, cflocatiuon="com"};
 		this.ormsettings.flushAtRequestEnd = false;

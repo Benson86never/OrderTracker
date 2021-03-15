@@ -13,6 +13,7 @@ component accessors="true" {
       rc.userDetails = adminService.getUserDetails(
       businessId = rc.businessId).users;
     }
+    
      public void function manageBusiness(rc){
       param name="rc.businessId" default = 0;
       if(session.secure.rolecode == 4)
@@ -31,8 +32,7 @@ component accessors="true" {
             rc.decryptbusinessid = decrypt(url.businessId, application.uEncryptKey, "BLOWFISH", "Hex");
            // writeDump(rc.decryptbusinessid);
             rc.businessDetails = adminService.getBusinessDetails(businesssId = rc.decryptbusinessid).business;
-            
-        
+
             //rc.params = "&businessId=#rc.businessId#";
            //writeDump(rc.businessDetails)
           }
@@ -75,4 +75,40 @@ component accessors="true" {
        }*/
       }
     }
+    public void function changepassword(rc)
+    {           
+      if(isDefined("rc.userid")) {
+        rc.decryptuserid = decrypt(rc.userid, application.uEncryptKey, "BLOWFISH", "Hex");
+        rc.userDetails = adminService.getUserDetails(userid = rc.decryptuserid).users;             
+        rc.params = "&userId=#rc.userid#";
+        rc.active = 1;
+      } else {     
+        rc.active=1;
+      } 
+      if(structKeyExists(form, 'EMAIL')) {
+        session.userResult = adminService.updatepassword(userDetails = form);
+       if(isDefined("session.userResult.errorMsg") && session.userResult.errorMsg == ""){
+          location("../login_ctrl.cfm?action=logout", false);
+       }
+      } 
+    }
+
+    public void function forgotpassword(rc)
+    {           
+      if(isDefined("rc.userid")) {
+        rc.decryptuserid = decrypt(rc.userid, application.uEncryptKey, "BLOWFISH", "Hex");
+        rc.userDetails = adminService.getUserDetails(userid = rc.decryptuserid).users;             
+        rc.params = "&userId=#rc.userid#";
+        rc.active = 1;
+      } else {     
+        rc.active=1;
+      } 
+      if(structKeyExists(form, 'EMAIL')) {
+        session.userResult = adminService.updatepassword(userDetails = form);
+       if(isDefined("session.userResult.errorMsg") && session.userResult.errorMsg == ""){
+          location("../login_ctrl.cfm?action=logout", false);
+       }
+      } 
+    }
+
   }
