@@ -712,4 +712,68 @@ component  {
       writeDump(e);abort;
     }
   }
+
+
+public any function forgotpassword(
+    struct userDetails
+  ){
+    try {
+      local.result = {
+        'error' : false,
+        'errorMsg' : ''
+      }
+      local.checkuserDetails = queryExecute("
+        SELECT
+          P.personId
+        FROM 
+            person P
+        WHERE
+          email = :email
+          AND active = 1;
+        ",{
+          email = {cfsqltype = "varchar", value = arguments.userDetails.email}
+        },{datasource: application.dsn}
+      ); 
+      if(local.checkuserDetails.recordcount > 0) {
+        
+        mail=new mail();
+ 
+        // Set it's properties
+        mail.setSubject( "Welcome Email" );
+        mail.setTo( arguments.userDetails.email);
+        mail.setFrom( "smucharla@infoane.com" );
+        mail.setCC( "smucharla@infoane.com" );
+        mail.setBCC( "smucharla@infoane.com" );
+      
+        // Add email body content in text and HTML formats
+        mail.addPart( type="text", charset="utf-8", wraptext="72", body="Welcome to Ordertracker." ); 
+        mail.addPart( type="html", charset="utf-8", body="<p> Please find the account information: <br><br>       
+	
+                    login link  : 	https://86never.com<br>
+	                  username : #arguments.userDetails.email#<br><br>
+
+                    To change your password please clik <a href='http://localhost:8500/ordertracker/v1/index.cfm?action=admin.changepassword&login=1&userid=#encrypt(local.checkuserDetails.personid,application.uEncryptKey, "BLOWFISH", "Hex")#' >here</a>.
+    " );
+      
+        // Send the email
+        mail.send();
+      } else {
+        local.result['error']  = true;
+        local.result['errorMsg'] = 'User with this email already avaialble.';
+      }
+      return local.result;
+    } catch (any e){
+      //writeDump(arguments);
+      writeDump(e);abort;
+    }
+  }
+
+
+
+
+
+
+
+
+
 }

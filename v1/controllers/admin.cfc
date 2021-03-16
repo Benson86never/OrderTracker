@@ -93,18 +93,10 @@ component accessors="true" {
       } 
     }
 
-    public void function forgotpassword(rc)
+    public void function forgotpassword()
     {           
-      if(isDefined("rc.userid")) {
-        rc.decryptuserid = decrypt(rc.userid, application.uEncryptKey, "BLOWFISH", "Hex");
-        rc.userDetails = adminService.getUserDetails(userid = rc.decryptuserid).users;             
-        rc.params = "&userId=#rc.userid#";
-        rc.active = 1;
-      } else {     
-        rc.active=1;
-      } 
       if(structKeyExists(form, 'EMAIL')) {
-        session.userResult = adminService.updatepassword(userDetails = form);
+        session.userResult = adminService.forgotpassword(userDetails = form);
        if(isDefined("session.userResult.errorMsg") && session.userResult.errorMsg == ""){
           location("../login_ctrl.cfm?action=logout", false);
        }

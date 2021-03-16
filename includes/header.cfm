@@ -24,7 +24,7 @@
           <a class="dropdown-item" href="v1/index.cfm?action=admin.manageBusiness">Manage Business</a>
         </cfif>
       </cfif>
-      <a href="v1/index.cfm?action=admin.changepassword&login=1&userid=<cfoutput>#encrypt(session.secure.personId, application.uEncryptKey, "BLOWFISH", "Hex")#</cfoutput>" class="dropdown-item">Change Password</a>
+    <!---  <a href="v1/index.cfm?action=admin.changepassword&login=1&userid=<cfoutput>#encrypt(session.secure.personId, application.uEncryptKey, "BLOWFISH", "Hex")#</cfoutput>" class="dropdown-item">Change Password</a> --->
       <br />
       <a class="dropdown-item" href="login_ctrl.cfm?action=logout">Logout</a>
     </div>

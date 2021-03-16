@@ -19,6 +19,8 @@
 		this.ormSettings = { logsql : true, cflocatiuon="com"};
 		this.ormsettings.flushAtRequestEnd = false;
 		this.invokeImplicitAccessor = true;
+		this.publicpages = "admin.adduser,user.login,admin.changepassword,admin.forgotpassword";
+
 	//this.name = "ORM_Search";
 	//this.ormSettings.datasource = "ordertracker";
 	//this.ormSettings.dbcreate = "none";

@@ -37,6 +37,7 @@
 			</cfif>
 			<!---<div><cfinput type="button" name="login" value="login" onclick="window.location='login_ctrl.cfm';" /></div>
 			<div style="display:inline"></div>--->			
+			<br><br><a href='http://localhost:8500/ordertracker/v1/index.cfm?action=admin.forgotpassword' >Forgot Password</a>
 		</cfform>
 		<cfinclude template="includes/bootstrap_js.cfm" >
 		</div>
