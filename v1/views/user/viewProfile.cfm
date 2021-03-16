@@ -14,7 +14,6 @@
         variables.City = rc.userDetails[1]["city"];
         variables.Country = rc.userDetails[1]["Country"];
         variables.State = rc.userDetails[1]["State"];
-        variables.accountName = rc.userDetails[1]["accountName"];
         variables.active = rc.userDetails[1]["active"];
         variables.carrier = rc.userDetails[1]["carrier"];
         variables.email = rc.userDetails[1]["email"];

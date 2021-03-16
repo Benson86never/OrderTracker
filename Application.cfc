@@ -21,6 +21,7 @@
 		this.invokeImplicitAccessor = true;
 		this.publicpages = "admin.adduser,user.login,admin.changepassword,admin.forgotpassword";
 
+		this.uEncryptKey = "password";
 	//this.name = "ORM_Search";
 	//this.ormSettings.datasource = "ordertracker";
 	//this.ormSettings.dbcreate = "none";

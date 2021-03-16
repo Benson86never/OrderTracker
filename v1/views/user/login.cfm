@@ -305,7 +305,7 @@ label
       </div>
       <div style="padding-top:20px;">
         <label>Password</label>
-        <input type="text" id="password" class="second" name="password">
+        <input type="password" id="password" class="second" name="password">
       </div>
       <input type="submit" class="fourth" value="Log In">
     </form>

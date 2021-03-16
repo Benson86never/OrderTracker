@@ -18,9 +18,12 @@
   </div>
 </div>
 <!--- Page specific modals --->
-<cfset viewsPath = expandPath('.') & '/views/'>
-<cfset modalView = replace(rc.action,'.','/modals/modal')>
-<cfset modalFile = viewsPath & modalView & '.cfm'>
-<cfif FileExists(modalFile)>
-  <cfoutput>#view(modalView)#</cfoutput>
+<cfif isdefined('rc')
+  AND structKeyExists(rc, 'action')>
+  <cfset viewsPath = expandPath('.') & '/views/'>
+  <cfset modalView = replace(rc.action,'.','/modals/modal')>
+  <cfset modalFile = viewsPath & modalView & '.cfm'>
+  <cfif FileExists(modalFile)>
+    <cfoutput>#view(modalView)#</cfoutput>
+  </cfif>
 </cfif>
