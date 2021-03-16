@@ -356,7 +356,7 @@
 		</form>
 		<!-- Remind Passowrd -->
 		<div id="formFooter">
-		  <a class="underlineHover" href="">Forgot Password?</a>
+		  <a class="underlineHover" href="v1/index.cfm?action=admin.forgotpassword">Forgot Password?</a>
 		</div>
 	  </div>
 	</div>

@@ -74,7 +74,7 @@
                 </ul>
               </li>
             </cfif>
-            <li><a href='http://localhost:8500/ordertracker/v1/index.cfm?action=admin.forgotpassword' >Forgot Password</a></li>
+            
           </ul>
         </div>
       </cfif>
