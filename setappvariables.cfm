@@ -7,6 +7,10 @@
 		application.item_np=CreateObject("Component","#Application.ComPath#item_np");
 		application.listsequence_np=CreateObject("Component","#Application.ComPath#listsequence_np");
     application.uEncryptKey = "password";
-    application.publicpages = "admin.adduser,user.login"
+    application.publicpages = "admin.adduser,user.login";
+    application.ormEnabled = true;
+		application.ormSettings = { logsql : true, cflocatiuon="com"};
+		application.ormsettings.flushAtRequestEnd = false;
+		application.invokeImplicitAccessor = true;
 		//application.adminobj =CreateObject("Component","v1/model/services.admin");
 </cfscript>

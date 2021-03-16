@@ -19,6 +19,7 @@
 		this.ormSettings = { logsql : true, cflocatiuon="com"};
 		this.ormsettings.flushAtRequestEnd = false;
 		this.invokeImplicitAccessor = true;
+		this.uEncryptKey = "password";
 	//this.name = "ORM_Search";
 	//this.ormSettings.datasource = "ordertracker";
 	//this.ormSettings.dbcreate = "none";
