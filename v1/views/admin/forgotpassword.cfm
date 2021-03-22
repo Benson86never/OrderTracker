@@ -3,7 +3,6 @@
   
 /* BASIC */
 
-
 body {
   font-family: "Poppins", sans-serif;
   height: 100vh;
@@ -25,8 +24,6 @@ h2 {
   margin: 40px 8px 10px 8px; 
   color: #cccccc;
 }
-
-
 
 /* STRUCTURE */
 
@@ -63,8 +60,6 @@ h2 {
   border-radius: 0 0 10px 10px;
 }
 
-
-
 /* TABS */
 
 h2.inactive {
@@ -76,8 +71,6 @@ h2.active {
   border-bottom: 2px solid #5fbae9;
 }
 
-
-
 /* FORM TYPOGRAPHY*/
 
 input[type=button], input[type=submit], input[type=reset]  {
@@ -85,7 +78,7 @@ input[type=button], input[type=submit], input[type=reset]  {
   border: none;
   color: white;
   padding: 15px 80px;
-  text-align: center;
+  text-align: left;
   text-decoration: none;
   display: inline-block;
   text-transform: uppercase;
@@ -118,8 +111,8 @@ input[type=text],input[type=password] {
   background-color: #f6f6f6;
   border: none;
   color: #0d0d0d;
-  padding: 15px 32px;
-  text-align: center;
+  padding: 11px 32px;
+  text-align: left;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
@@ -143,8 +136,6 @@ input[type=text],input[type=password]:focus {
 input[type=text],input[type=password]:placeholder {
   color: #cccccc;
 }
-
-
 
 /* ANIMATIONS */
 
@@ -248,8 +239,6 @@ input[type=text],input[type=password]:placeholder {
   width: 100%;
 }
 
-
-
 /* OTHERS */
 
 *:focus {
@@ -262,6 +251,7 @@ input[type=text],input[type=password]:placeholder {
 div
 {
   position:relative;
+    top:20%;
 }
 #login, #password
 {
@@ -283,8 +273,7 @@ label
   font-weight: normal;
 }
   </style>
-<cfoutput>
-  
+<cfoutput> 
 <div class="wrapper">
   <div id="formContent">
   <!-- Tabs Titles -->
@@ -301,34 +290,10 @@ label
     </div>
     <div style="padding-top:20px;">
     <label>Email</label>
-    <input type="text" id="Email" class="second" name="Email" autocomplete = "new-password">
+    <input type="text" id="Email" class="second" name="Email" autocomplete = "new-password" style="align:left;">
     </div>
-    <input type="submit" class="btn btn-success" value="Submit" name="save" id="save">
+    <input type="button" class="btn btn-success" value="Submit" name="save" id="save">
   </form>
   </div>
 </div>
 </cfoutput>
-<!---<cfoutput>
-<div class="container">
-  <form class="form-inline" method = "post" id="formSubmit" name="formSubmit" >
-    <div class="row">
-      <div class="col-md-1 labelname">
-        Email<span style="color: red"></span>:
-      </div>
-      <div class="col-md-2  required">
-        <input type="text" class="form-control inputelement" id="Email" placeholder="Enter Email" name="Email" autocomplete = "new-password" value=""  >
-      </div>        
-    </div>  
-    <div class="row">
-      <div class="col-md-7 text-right">
-          <a class="btn btn-danger" href="../login_ctrl.cfm?action=logout">
-            <i class="fa fa-times" aria-hidden="true"></i>
-          </a>
-        <button type="button" class="btn btn-success" name="save" id="save">
-          <i class="fa fa-check" aria-hidden="true"></i>
-        </button>
-      </div>
-    </div>
-  </form>
-</div>
-</cfoutput>--->

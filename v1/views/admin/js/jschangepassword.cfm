@@ -30,16 +30,30 @@ $(document).ready(function(){
         var emailRegex = /([A-Z0-9a-z_-][^@])+?@[^$#<>?]+?\.[\w]{2,4}/.test($('#Email').val());
         var dynamicFields = "Below fields are missing: <br/><br/>"
         if( $("#password").val()!=="" || $("#cpassword").val()!=="" || ($("#password").val()=="" && $("#password").val()=="") || ($("#password").val()!=="" && $("#password").val()!=="" && ($("#password").val() !== $("#cpassword").val()))  || ($("#password").val()!=="" && passwordRegex === false)){
-           
-         
+                    
             dynamicFields += ($("#password").val() === "" ? "Please enter Password <br/>" : "");
             dynamicFields += (passwordRegex === false && $("#password").val() !== ""? "Password should contain Uppercase letters, Lowercase letters,Numbers and Symbol <br/>" : "");
             dynamicFields += ($("#cpassword").val() === "" ? "Please enter confirm Password <br/>" : "");
             dynamicFields += ($("#password").val()!=="" && $("#password").val()!=="" && ($("#password").val() !== $("#cpassword").val()) === "" ? "Pasword and  confirm Password should be same <br/>" : "");
         }
        if(dynamicFields === "Below fields are missing: <br/><br/>"){
-           alert("Your Password Successfully Changed.");
-           $('#formSubmit').submit();
+             
+            $('#modal-showAlert').modal('show');             
+            $('.modal-header').css('background-color','white');
+            $('#headerText').html('Password Information');
+            $('.close').css('color','black');
+            $('#modal-showAlert .modal-body').html("Your Password Successfully Changed.");       
+            $('#modal-showAlert .modal-footer .ok').show();    
+            $('#modal-showAlert .modal-footer .yes').hide();
+            $('#modal-showAlert .modal-footer .no').hide();   
+             $('.ok').click(function()
+             {
+                $('#formSubmit').submit();
+             });
+               
+             
+          //
+
        }
        else{
           //alert(dynamicFields);
@@ -82,10 +96,5 @@ $(document).ready(function(){
            $('#showPaasword').hide();
       }
     });
-
-
-
 });
-
-
 </script>

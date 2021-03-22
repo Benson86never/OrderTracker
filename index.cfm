@@ -164,7 +164,7 @@
 	  border: none;
 	  color: #0d0d0d;
 	  padding: 15px 32px;
-	  text-align: center;
+	  text-align: left;
 	  text-decoration: none;
 	  display: inline-block;
 	  font-size: 16px;
@@ -333,16 +333,13 @@
 	<div class="wrapper">
 	  <div id="formContent">
 		<!-- Tabs Titles -->
-	
 		<!-- Icon -->
-		<div class="first">
-		  
-		</div>
-	
+		<div class="first">		  
+		</div>	
 		<!-- Login Form -->
 		<form action="login_ctrl.cfm" method="post">
 		  <div style="font-size: 20px !important;padding: 30px;color:##767272">
-			Sign up with your Email Address
+			Sign in with your Email Address
 		  </div>
 		  <div style="padding-top:20px;">
 			<label>Email</label>

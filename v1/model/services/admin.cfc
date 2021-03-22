@@ -105,6 +105,7 @@ component  {
         'error' : false,
         'errorMsg' : ''
       }
+      
       local.checkuserDetails = queryExecute("
         SELECT
           P.personId,  
@@ -117,6 +118,16 @@ component  {
         ",{
           email = {cfsqltype = "varchar", value = arguments.userDetails.email}
         },{datasource: application.dsn}
+      ); 
+   
+       local.mailcontent = queryExecute("
+        SELECT
+          content_value
+        FROM 
+            Email_Content
+        WHERE
+        content_type=1
+        ",{},{datasource: application.dsn}
       ); 
       if(local.checkuserDetails.recordcount == 0) {
        
@@ -161,28 +172,47 @@ component  {
             PhoneExtension = {cfsqltype = "varchar", value = arguments.userDetails.PhoneExtension}
           },{datasource: application.dsn, result="local.userresult"}
         );
+      local.personDetails = queryExecute("
+        SELECT
+          P.personId,  
+          p.account_active,
+          p.subaccountid
+        FROM 
+            person P
+        WHERE
+          email = :email
+          AND active = 1;
+        ",{
+          email = {cfsqltype = "varchar", value = arguments.userDetails.email}
+        },{datasource: application.dsn}
+      ); 
+         local.checkbusinessDetails = queryExecute("
+        SELECT
+          P.businessId,  
+          p.email
+        FROM 
+            business P
+        WHERE
+          businessid = :businessid
+          AND active = 1;
+        ",{
+          businessid = {cfsqltype = "varchar", value =local.personDetails.subaccountid}
+        },{datasource: application.dsn}
+      ); 
+        msg=local.personDetails.personid;
+        key=application.uEncryptKey; 
+        encMsg = encrypt( msg, key, "BLOWFISH", "HEX");
+
         mail=new mail();
  
         // Set it's properties
         mail.setSubject( "Welcome Email" );
         mail.setTo( arguments.userDetails.email);
-        mail.setFrom( "smucharla@infoane.com" );
-        mail.setCC( "smucharla@infoane.com" );
-        mail.setBCC( "smucharla@infoane.com" );
-      
-        // Add an attachment
-        //mail.addParam( file="C:\foo.txt" );
-      
+        mail.setFrom( local.checkbusinessDetails.email );
+            
         // Add email body content in text and HTML formats
         mail.addPart( type="text", charset="utf-8", wraptext="72", body="Welcome to Ordertracker." ); 
-        mail.addPart( type="html", charset="utf-8", body="<p> Please find the account information: <br><br>       
-	
-                    login link  : 	https://86never.com<br>
-	                  username : #arguments.userDetails.email#<br><br>
-
-                    To activate your account please clik <a href='http://localhost:8500/ordertracker/v1/index.cfm?action=admin.changepassword&userid=#encrypt(local.userresult.generatedkey,application.uEncryptKey, "BLOWFISH", "Hex")#' >here</a>.
-    " );
-      
+        mail.addPart( type="html", charset="utf-8", body="#replace(replace(local.mailcontent.content_value , '{email}' , '#arguments.userDetails.email#'), '{passwordlink}', 'http://#cgi.server_name#/v1/index.cfm?action=admin.changepassword&login=1&userid=#encMsg#')#" );
         // Send the email
         mail.send();
       } else {
@@ -713,7 +743,6 @@ component  {
     }
   }
 
-
 public any function forgotpassword(
     struct userDetails
   ){
@@ -724,7 +753,9 @@ public any function forgotpassword(
       }
       local.checkuserDetails = queryExecute("
         SELECT
-          P.personId
+          P.personId,
+           p.account_active,
+          p.subaccountid
         FROM 
             person P
         WHERE
@@ -735,29 +766,50 @@ public any function forgotpassword(
         },{datasource: application.dsn}
       ); 
       if(local.checkuserDetails.recordcount > 0) {
+
+        local.mailcontent = queryExecute("
+        SELECT
+          content_value
+        FROM 
+            Email_Content
+        WHERE
+        content_type=1
+        ",{},{datasource: application.dsn}
+      ); 
+ 
+         local.checkbusinessDetails = queryExecute("
+        SELECT
+          P.businessId,  
+          p.email
+        FROM 
+            business P
+        WHERE
+          businessid = :businessid
+          AND active = 1;
+        ",{
+          businessid = {cfsqltype = "varchar", value =local.checkuserDetails.subaccountid}
+        },{datasource: application.dsn}
+      );  
+        msg=local.checkuserDetails.personid;
+        key=application.uEncryptKey; 
+        encMsg = encrypt( msg, key, "BLOWFISH", "HEX");
         
         mail=new mail();
  
         // Set it's properties
-        mail.setSubject( "Welcome Email" );
+        mail.setSubject( "Forgot Password Email" );
         mail.setTo( arguments.userDetails.email);
-        mail.setFrom( "smucharla@infoane.com" );
+        mail.setFrom( local.checkbusinessDetails.email );
         mail.setCC( "smucharla@infoane.com" );
         mail.setBCC( "smucharla@infoane.com" );
       
         // Add email body content in text and HTML formats
-        mail.addPart( type="text", charset="utf-8", wraptext="72", body="Welcome to Ordertracker." ); 
-        mail.addPart( type="html", charset="utf-8", body="<p> Please find the account information: <br><br>       
-	
-                    login link  : 	https://86never.com<br>
-	                  username : #arguments.userDetails.email#<br><br>
-
-                    To change your password please clik <a href='http://localhost:8500/ordertracker/v1/index.cfm?action=admin.changepassword&login=1&userid=#encrypt(local.checkuserDetails.personid,application.uEncryptKey, "BLOWFISH", "Hex")#' >here</a>.
-    " );
+       mail.addPart( type="text", charset="utf-8", wraptext="72", body="Welcome to Ordertracker." ); 
+       mail.addPart( type="html", charset="utf-8", body="#replace(replace(local.mailcontent.content_value , '{email}' , '#arguments.userDetails.email#'), '{passwordlink}', 'http://#cgi.server_name#/v1/index.cfm?action=admin.changepassword&login=1&userid=#encMsg#')#" );
       
         // Send the email
         mail.send();
-      } else {
+      } else { 
         local.result['error']  = true;
         local.result['errorMsg'] = 'User with this email already avaialble.';
       }
@@ -768,6 +820,61 @@ public any function forgotpassword(
     }
   }
 
+public any function sendQuery(
+    struct userDetails
+  ){
+    try {
+      local.result = {
+        'error' : false,
+        'errorMsg' : ''
+      }     
+      local.checkuserDetails = queryExecute("
+        SELECT
+          P.personId,
+           p.account_active,
+          p.subaccountid
+        FROM 
+            person P
+        WHERE
+          email = :email
+          AND active = 1;
+        ",{
+          email = {cfsqltype = "varchar", value = arguments.userDetails.email}
+        },{datasource: application.dsn}
+      ); 
+      local.checkbusinessDetails = queryExecute("
+        SELECT
+          P.businessId,  
+          p.email
+        FROM 
+            business P
+        WHERE
+          businessid = :businessid
+          AND active = 1;
+        ",{
+          businessid = {cfsqltype = "varchar", value =local.checkuserDetails.subaccountid}
+        },{datasource: application.dsn}
+      ); 
+        mail=new mail();
+        // Set it's properties
+        mail.setSubject( "Application Error Or Query on Application" );
+        mail.setTo( local.checkbusinessDetails.email);
+        mail.setFrom( arguments.userDetails.email );
+      
+        // Add email body content in text and HTML formats
+       mail.addPart( type="text", charset="utf-8", wraptext="72", body="Application Error Or Query on Application" ); 
+       mail.addPart( type="html", charset="utf-8", body="#reReplace(arguments.userDetails.description, '\n', '<br />', 'ALL')#" );
+      
+        // Send the email
+        mail.send();     
+      return local.result;
+    } catch (any e){
+      //writeDump(arguments);
+      writeDump(e);abort;
+    }
+
+   
+  }
 
 
 

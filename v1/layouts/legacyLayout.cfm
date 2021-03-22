@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" >
   <head>
@@ -21,17 +20,18 @@
       </span>
     </div>
     <div style = "min-height: 100%;">
-      <!--- Main Nav --->
-      <div class="pageHeader">
-      <cfif url.action neq "admin.changepassword">
-        <span>Order Tracker</span>        
-        <cfif structKeyExists(session, 'secure') AND session.secure.loggedin>
+      <!--- Main Nav --->      
+      <cfif url.action neq "admin.changepassword" and url.action neq "admin.forgotpassword">
+        <div class="pageHeader">
+        <span>Order Tracker</span>       
+        <cfif structKeyExists(session, 'secure') AND session.secure.loggedin>     
           
-          <a href="../login_ctrl.cfm?action=logout" class="logOut mt-5">
+          <a href="../login_ctrl.cfm?action=logout" class="logOut mt-5">             
             <i class="fa fa-power-off" aria-hidden="true"></i>
             LogOut
           </a>
           <cfoutput>
+          <a href="../v1/index.cfm?action=user.viewHelp&userid=#encrypt(session.secure.personId, application.uEncryptKey, "BLOWFISH", "Hex")#" class="logOut mt-5">Help</a>           
             <a href="index.cfm?action=user.viewProfile&userid=#encrypt(session.secure.personId, application.uEncryptKey, "BLOWFISH", "Hex")#" class="logOut">
               <i class="fa fa-2x fa-user-circle" aria-hidden="true"></i>
             </a>
@@ -73,8 +73,7 @@
                   <li><a class="dropdown-item" href="index.cfm?action=admin.manageBusiness">Manage Business</a></li>
                 </ul>
               </li>
-            </cfif>
-            
+            </cfif>                 
           </ul>
         </div>
       </cfif>

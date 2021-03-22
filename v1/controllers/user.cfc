@@ -26,4 +26,20 @@ component accessors="true" {
        }
       }
     }
+
+     public void function viewHelp(rc)
+     {
+        if(structKeyExists(rc, 'userid')) {
+          rc.decryptuserid = decrypt(rc.userid, application.uEncryptKey, "BLOWFISH", "Hex");
+          rc.userDetails = adminService.getUserDetails(userid = rc.decryptuserid).users;
+          rc.params = "&userId=#rc.userid#";
+          rc.active = rc.userDetails[1]["active"];
+        }
+       
+          //session.userResult = adminService.saveUser(userDetails = form);
+      if(structKeyExists(form, 'EMAIL')) {
+        session.userResult = adminService.sendQuery(userDetails = form);
+              location("index.cfm?action=user.viewHelp&userid=#encrypt(session.secure.personId, application.uEncryptKey, "BLOWFISH", "Hex")#", false);
+        }       
+    }
   }
