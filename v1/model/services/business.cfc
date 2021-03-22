@@ -11,14 +11,22 @@ component  {
           active = :active
         WHERE
           businessId = :businessId;
-
+      ",{
+          businessId = {cfsqltype = "integer", value = arguments.businessId},
+          active = {cfsqltype = "integer", value = arguments.active}
+        },{datasource: application.dsn}
+      );
+      local.updatebusiness = queryExecute("
           update business set parentbusinessid = 0 where parentbusinessid = :businessid;
       ",{
           businessId = {cfsqltype = "integer", value = arguments.businessId},
           active = {cfsqltype = "integer", value = arguments.active}
         },{datasource: application.dsn}
       );
+      return true;
     } catch(any e) {
+      writeDump(e);abort;
+      return false;
     }
   }
 
@@ -114,7 +122,7 @@ component  {
               phoneExtension = {cfsqltype = "varchar", value = arguments.businessDetails.phoneExtension},
               StreetAddress1 = {cfsqltype = "varchar", value = arguments.businessDetails.address1},
               StreetAddress2 = {cfsqltype = "varchar", value = arguments.businessDetails.address2},
-              Zip = {cfsqltype = "integer", value =  arguments.businessDetails.Zip},
+              Zip = {cfsqltype = "integer", value =  arguments.businessDetails.Zip, null = trim(arguments.businessDetails.Zip) EQ ""},
               City = {cfsqltype = "varchar", value = arguments.businessDetails.City},
               State = {cfsqltype = "varchar", value = arguments.businessDetails.State},
               Country = {cfsqltype = "varchar", value = arguments.businessDetails.Country},
@@ -586,6 +594,16 @@ component  {
               PhotoURL = :photoUrl
             WHERE
               itemId = :itemId;
+            ",{
+              name = {cfsqltype = "varchar", value = arguments.itemDetails.name},
+              SKU = {cfsqltype = "varchar", value = arguments.itemDetails.SKU},
+              UnitID = {cfsqltype = "integer", value = arguments.itemDetails.UnitID},
+              PhotoURL = {cfsqltype = "varchar", value = arguments.itemDetails.PhotoURL},
+              itemId = {cfsqltype = "integer", value = arguments.itemDetails.itemId},
+              supplierId = {cfsqltype = "integer", value = arguments.itemDetails.supplierId}
+            },{datasource: application.dsn, result = "local.itemResult"}
+          );
+          local.qaddlist = queryExecute("
             UPDATE
               JoinSupplierToItem
             SET
@@ -608,6 +626,11 @@ component  {
               JoinSupplierToItem
             WHERE
               itemId = :itemId;
+            ",{
+              itemId = {cfsqltype = "integer", value = arguments.itemDetails.itemId}
+            },{datasource: application.dsn, result = "local.itemResult"}
+          );
+          local.qaddlist = queryExecute("
             DELETE FROM
               item
             WHERE
