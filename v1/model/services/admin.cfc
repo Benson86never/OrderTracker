@@ -1,4 +1,4 @@
-component  {
+component  extends ="business" {
   public any function getUserDetails(
     numeric includeActiveOnly = 0,
     numeric userId = 0,
@@ -15,7 +15,7 @@ component  {
     }
     local.businessId = decrypt(arguments.BusinessId, application.uEncryptKey, "BLOWFISH", "Hex");
     if(val(local.businessId) > 0) {
-      local.condition &= "AND P.subaccountid = #local.businessId#";
+      local.condition &= "AND P.businessId = #local.businessId#";
     }
     local.userDetails = queryExecute("
       SELECT
@@ -35,7 +35,7 @@ component  {
         p.Password,
         P.active,
         p.Salt,
-        p.subaccountId,
+        p.businessId,
         R.name,
         b.businessname AS subAccountName,
         p.account_active,
@@ -43,7 +43,7 @@ component  {
       FROM 
           person P
           INNER JOIN roles R ON R.roleId = P.type
-          INNER JOIN business b ON p.subaccountid = b.businessid
+          INNER JOIN business b ON p.businessId = b.businessid
       WHERE 1=1
       #local.condition#
       AND p.active = 1
@@ -71,13 +71,14 @@ component  {
       local.details['account_active'] = local.userDetails.account_active;
       local.details['active'] = local.userDetails.active;
       local.details['PhoneExtension'] = local.userDetails.PhoneExtension;
-      local.details['accountid'] = local.userDetails.subaccountId;
+      local.details['accountid'] = local.userDetails.businessId;
       local.details['typeid'] = local.userDetails.Type;
       arrayAppend(local.users, local.details);
     }
     local.result['users'] = local.users;
     return local.result;
   }
+
   public any function saveUser(
     struct userDetails
   ){
@@ -130,9 +131,8 @@ component  {
             type,
             carrier,
             account_active,
-
             active,
-            subaccountid,
+            businessId,
             PhoneExtension
           ) VALUES (
             :firstName,
@@ -142,9 +142,8 @@ component  {
             :type,
             :carrier,
             :account_active,
-
             :active,
-            :subaccountid,
+            :businessId,
             :PhoneExtension
           )
         ",{
@@ -157,7 +156,7 @@ component  {
           
             account_active = 0,
             active = {cfsqltype = "varchar", value = arguments.userDetails.active},
-            subaccountid = {cfsqltype = "integer", value = arguments.userDetails.account},
+            businessId = {cfsqltype = "integer", value = arguments.userDetails.account},
             PhoneExtension = {cfsqltype = "varchar", value = arguments.userDetails.PhoneExtension}
           },{datasource: application.dsn, result="local.userresult"}
         );
@@ -195,6 +194,7 @@ component  {
       writeDump(e);abort;
     }
   }
+
   public any function updateUser(
     struct userDetails
   ){
@@ -231,7 +231,7 @@ component  {
             phone = :phone,
             type = :type,
             carrier = :carrier,
-            subaccountid = :subaccountid,
+            businessId = :businessId,
             PhoneExtension = :PhoneExtension
            
           WHERE
@@ -244,7 +244,7 @@ component  {
             type = {cfsqltype = "integer", value = arguments.userDetails.userType},
             carrier = {cfsqltype = "varchar", value = arguments.userDetails.carrier},
           
-            subaccountid = {cfsqltype = "integer", value = arguments.userDetails.account},
+            businessId = {cfsqltype = "integer", value = arguments.userDetails.account},
             PhoneExtension = {cfsqltype = "varchar", value = arguments.userDetails.PhoneExtension},
             personId = {cfsqltype = "integer", value = arguments.userDetails.personId}
           },{datasource: application.dsn}
@@ -259,6 +259,7 @@ component  {
       writeDump(e);abort;
     }
   }
+
   public any function manageUser(
     numeric personId,
     numeric active,
@@ -298,31 +299,8 @@ component  {
     } catch(any e) {
       /* error email */
     }
-    
   }
-  remote any function manageBusiness(
-    integer businessId,
-    integer active
-  ){
-    try {
-      local.userDetails = queryExecute("
-        UPDATE
-          Business
-        SET
-          active = :active
-        WHERE
-          businessId = :businessId;
 
-          update business set parentbusinessid = 0 where parentbusinessid = :businessid;
-      ",{
-          businessId = {cfsqltype = "integer", value = arguments.businessId},
-          active = {cfsqltype = "integer", value = arguments.active}
-        },{datasource: application.dsn}
-      );
-    } catch(any e) {
-    }
-    
-  }
   public any function adduserBasicInfo(
     numeric countyId
   ){
@@ -397,7 +375,7 @@ component  {
       }
       local.accountDetails = queryExecute("
         SELECT
-           businessId as subaccountId,
+           businessId as businessId,
            businessname as name
         FROM
           business
@@ -406,10 +384,10 @@ component  {
       ",{},{datasource: application.dsn}
       );
       cfloop(query = "local.accountDetails") {
-        if(session.secure.roleCode == 1 || session.secure.subaccount == local.accountdetails.subaccountid)
+        if(session.secure.roleCode == 1 || session.secure.subaccount == local.accountdetails.businessId)
         {
         local.details = {};
-        local.details['id'] = local.accountDetails.subaccountId;
+        local.details['id'] = local.accountDetails.businessId;
         local.details['name'] = local.accountDetails.name;
         //local.details[id] = 
         arrayAppend(local.result.accounts, local.details);
@@ -419,10 +397,11 @@ component  {
     } catch(any e) {
       writeDump(e); abort;
       /* error email */
-    }   
+    }
   }
+
   remote any function getAdressDetails(
-    integer subAccountId
+    integer businessId
   )returnformat="JSON"{
     local.getAdress = queryExecute("
         SELECT
@@ -435,224 +414,13 @@ component  {
         FROM 
           business sa
         WHERE
-          SubAccountId = :subAccountId
+          businessId = :businessId
           AND active = 1;
         ",{
-          subAccountId = {cfsqltype = "integer", value = arguments.subAccountId}
+          businessId = {cfsqltype = "integer", value = arguments.businessId}
         },{datasource: application.dsn}
       );
       return local.getAdress;
-    }
-    public any function saveBusiness(
-    struct businessDetails
-  ){
-    try{
-      local.result = {
-        'error' : false,
-        'errorMsg' : ''
-      }
-      if(arguments.businessDetails.BusinessId > 0) {
-        local.result = updateBusiness(businessDetails = arguments.businessDetails);
-      } else {
-       local.result = addBusiness(businessDetails = arguments.businessDetails);
-      }
-
-    } catch(any e) {
-      writeDump(e);abort;
-    }
-    return local.result;
-  }
-    public any function addBusiness(
-    struct businessDetails
-  ){
-    try {
-      local.result = {
-        'error' : false,
-        'errorMsg' : ''
-      }
-        if(not isDefined("arguments.businessDetails.parentBusinessId") ){
-          arguments.businessDetails.parentBusinessId = 0;
-        }
-
-        local.businessDetails = queryExecute("
-          INSERT INTO Business
-          (
-            BusinessName,
-            Email,
-            Phone,
-            phoneExtension,
-            StreetAddress1,
-            StreetAddress2,
-            Zip,
-            City,
-            State,
-            Country,
-            parentBusinessId,
-            active
-          ) VALUES (
-            :business,
-            :Email,
-            :Phone,
-            :phoneExtension,
-            :StreetAddress1,
-            :StreetAddress2,
-            :Zip,
-            :City,
-            :State,
-            :Country,
-            :parentBusinessId,
-            :active
-          )
-        ",{
-            business = {cfsqltype = "varchar", value = arguments.businessDetails.business},
-            Email = {cfsqltype = "varchar", value = arguments.businessDetails.email},
-            phone = {cfsqltype = "varchar", value = arguments.businessDetails.phone},
-            phoneExtension = {cfsqltype = "varchar", value = arguments.businessDetails.phoneExtension},
-            StreetAddress1 = {cfsqltype = "varchar", value = arguments.businessDetails.address1},
-            StreetAddress2 = {cfsqltype = "varchar", value = arguments.businessDetails.address2},
-            Zip = {cfsqltype = "integer", value =  arguments.businessDetails.Zip},
-            City = {cfsqltype = "varchar", value = arguments.businessDetails.City},
-            State = {cfsqltype = "varchar", value = arguments.businessDetails.State},
-            Country = {cfsqltype = "varchar", value = arguments.businessDetails.Country},
-            parentBusinessId = {cfsqltype = "varchar", value = arguments.businessDetails.parentBusinessId},
-            active = {cfsqltype = "integer", value = "1" }
-          },{datasource: application.dsn, result="local.userresult"}
-        );
-      return local.result;
-    } 
-    catch (any e){
-      //writeDump(arguments);
-      writeDump(e);abort;
-    }
-  }
-   public any function updateBusiness(
-    struct businessDetails
-  ){
-    try {
-      local.result = {
-        'error' : false,
-        'errorMsg' : ''
-      }
-      if(not isDefined("arguments.businessDetails.parentBusinessId") ){
-        arguments.businessDetails.parentBusinessId = 0;
-      }
-      local.businessDetails = queryExecute("
-        UPDATE
-          Business
-        SET
-          BusinessName = :business,
-          Email = :Email,
-          phone = :phone,
-          StreetAddress1 = :StreetAddress1,
-          StreetAddress2 = :StreetAddress2,
-          Zip = :Zip,
-          City = :City,
-          PhoneExtension = :PhoneExtension,
-          Country = :Country,
-          parentBusinessId = :parentBusinessId
-        WHERE
-          BusinessId = :BusinessId
-      ",{
-          business = {cfsqltype = "varchar", value = arguments.businessDetails.business},
-          Email = {cfsqltype = "varchar", value = arguments.businessDetails.email},
-          phone = {cfsqltype = "varchar", value = arguments.businessDetails.phone},
-          phoneExtension = {cfsqltype = "varchar", value = arguments.businessDetails.phoneExtension},
-          StreetAddress1 = {cfsqltype = "varchar", value = arguments.businessDetails.address1},
-          StreetAddress2 = {cfsqltype = "varchar", value = arguments.businessDetails.address2},
-          Zip = {cfsqltype = "integer", value =  arguments.businessDetails.Zip},
-          City = {cfsqltype = "varchar", value = arguments.businessDetails.City},
-          State = {cfsqltype = "varchar", value = arguments.businessDetails.State},
-          Country = {cfsqltype = "varchar", value = arguments.businessDetails.Country},
-          parentBusinessId = {cfsqltype = "varchar", value = arguments.businessDetails.parentBusinessId},
-          BusinessId = {cfsqltype = "integer", value = arguments.businessDetails.BusinessId}
-        },{datasource: application.dsn}
-      );
-      return local.result;
-    } catch (any e){
-      writeDump(e);abort;
-    }
-  }
-  public any function getBusinessDetails(
-    numeric businessId = 0
-  ){
-    local.result = {'error' : false};
-    local.business = [];
-    local.condition = "";
-    
-    if(val(arguments.businessId) > 0) {
-      local.condition &= "AND BusinessId = #arguments.businessId#";
-    }
-
-    local.BusinessDetails = queryExecute("
-      SELECT
-        BusinessId,
-        BusinessName,
-        Email,
-        Phone,
-        phoneExtension,
-        StreetAddress1,
-        StreetAddress2,
-        Zip,
-        City,
-        State,
-        Country,
-        parentBusinessId,
-        fngetBusinees(BusinessId) as sortbusinessname
-      FROM 
-        Business
-        WHERE 1=1
-        AND active <> 0
-        #local.condition#
-        order by sortbusinessname;
-      ",{},{datasource: application.dsn}
-    );
-    cfloop(query = "local.BusinessDetails" ) {
-      local.details = {};
-      local.details['BusinessId'] = local.BusinessDetails.BusinessId;
-      local.details['BusinessName'] = local.BusinessDetails.BusinessName;
-      local.details['Email'] = local.BusinessDetails.Email;
-      local.details['Phone'] = local.BusinessDetails.Phone;
-      local.details['phoneExtension'] = local.BusinessDetails.phoneExtension;
-      local.details['StreetAddress1'] = local.BusinessDetails.StreetAddress1;
-      local.details['StreetAddress2'] = local.BusinessDetails.StreetAddress2;
-      local.details['zip'] = local.BusinessDetails.zip;
-      local.details['City'] = local.BusinessDetails.City;
-      local.details['State'] = local.BusinessDetails.State;
-      local.details['Country'] = local.BusinessDetails.Country;
-      local.details['parentBusinessId'] = local.BusinessDetails.parentBusinessId;
-      local.details['sortbusinessname'] = local.BusinessDetails.sortbusinessname;
-      arrayAppend(local.business, local.details);
-    }
-    local.result['business'] = local.business;
-    return local.result;
-  }
-  public any function getBusinessnames(
-  ){
-    local.result = {'error' : false};
-    local.business = [];
-    local.BusinessNamesDetails = queryExecute("
-      SELECT
-        BusinessId,
-        BusinessName,
-        parentBusinessId,
-        fngetBusinees(BusinessId) as sortbusinessname
-      FROM 
-        Business
-        WHERE 1=1
-        AND active =1
-        ORDER BY sortbusinessname;
-      ",{},{datasource: application.dsn}
-    );
-    cfloop(query = "local.BusinessNamesDetails" ) {
-      local.details = {};
-      local.details['BusinessId'] = local.BusinessNamesDetails.BusinessId;
-      local.details['BusinessName'] = local.BusinessNamesDetails.BusinessName;
-      local.details['parentBusinessId'] = local.BusinessNamesDetails.parentBusinessId;
-      local.details['sortbusinessname'] = local.BusinessNamesDetails.sortbusinessname;
-      arrayAppend(local.business, local.details);
-    }
-    local.result['business'] = local.business;
-    return local.result;
   }
 
   public any function updatepassword(
@@ -670,7 +438,7 @@ component  {
         FROM 
             person P
         WHERE
-          email = :email          
+          email = :email
           AND active = 1;
         ",{
           email = {cfsqltype = "varchar", value = arguments.userDetails.email}
@@ -713,8 +481,7 @@ component  {
     }
   }
 
-
-public any function forgotpassword(
+  public any function forgotpassword(
     struct userDetails
   ){
     try {
@@ -767,13 +534,4 @@ public any function forgotpassword(
       writeDump(e);abort;
     }
   }
-
-
-
-
-
-
-
-
-
 }

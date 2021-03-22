@@ -142,7 +142,7 @@
          Business<span style="color: red"><b>*<b></span>:
         </div>
         <div class="col-md-2 ">
-          <select class="form-control selectElement" name="account" style="width: 100%;" id="subAccount">
+          <select class="form-control selectElement" name="account" style="width: 100%;" id="business">
             <cfloop array="#rc.accounts#" item="account">
               <option
                 <cfif variables.accountid EQ account.id>

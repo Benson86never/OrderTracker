@@ -1,8 +1,6 @@
 <cfinclude template="includes/secure.cfm" >
-<cfscript>
-// load open and non checked in orders
-Orders = EntityLoad( "orders", { checkedin = 0 }, "datetime desc" );
-</cfscript>
+<cfset orders = CreateObject("Component","v1.model.services.order").getOpenOrders(
+		checkedIn = 0).openOrders>
 <style>
 	.orders{
 		padding: 10px;
@@ -17,16 +15,16 @@ Orders = EntityLoad( "orders", { checkedin = 0 }, "datetime desc" );
 </div>
 <div class="page-content">
 	<cfloop array="#Orders#" index="order">
-		<cfset Supplier = EntityLoad("supplier", {id=#order.getsupplierid()#})>
-		<cfset Person = EntityLoad("person", {id=#order.getpersonid()#})>
 		<cfoutput>
-			<cfif order.getClosed() eq 1>
+			<cfif order.closed eq 1>
 				<div class="orders">
-					#order.getid()#-<a href="order_detail.cfm?orderid=#order.getid()#&supplier=#Supplier[1].getname()#" class="text-success">#Supplier[1].getname()# - #dateTimeFormat(order.getdatetime(),"m/d/y h:nn:ss tt")# - #Person[1].getemail()#</a>
+					#order.id#-<a href="order_detail.cfm?orderid=#order.id#&supplier=#order.supplierName#" class="text-success">
+						#order.supplierName# - #dateTimeFormat(order.dateTime,"m/d/y h:nn:ss tt")# - #order.email#</a>
 				</div>
 			<cfelse>
 				<div class="orders">
-					#order.getid()#-<a href="order_detail.cfm?orderid=#order.getid()#&supplier=#Supplier[1].getname()#" class="text-danger">#Supplier[1].getname()# - #dateTimeFormat(order.getdatetime(),"m/d/y h:nn:ss tt")# - #Person[1].getemail()#</a><br />
+					#order.id#-<a href="order_detail.cfm?orderid=#order.id#&supplier=#order.supplierName#" class="text-danger">
+						#order.supplierName# - #dateTimeFormat(order.dateTime,"m/d/y h:nn:ss tt")# - #order.email#</a><br />
 				</div>
 			</cfif>
 		</cfoutput>

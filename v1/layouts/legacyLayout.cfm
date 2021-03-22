@@ -43,10 +43,16 @@
         <div class="tabbar">
           <ul class="nav nav-tabs">
             <li class="nav-item">
-              <a class="nav-link active" href="../list.cfm">List</a>
+              <a class="nav-link <cfif cgi.script_name contains "list.cfm">
+                active
+               </cfif>" href="../list.cfm">List</a>
             </li>
-            <li role="presentation" class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+            <li class="nav-item">
+              <a class="nav-link
+                <cfif cgi.script_name contains "orders_open.cfm"
+                    OR cgi.script_name contains "order_email.cfm">
+                    active
+                  </cfif>" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                 Orders <span class="caret"></span>
               </a>
               <ul class="dropdown-menu">
@@ -59,8 +65,12 @@
             </li>
             <cfif structKeyExists(session, 'secure')
               and ListFind('1,4',session.secure.RoleCode)>
-              <li role="presentation" class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+              <li class="nav-item">
+                <a class="nav-link
+                  <cfif rc.action contains "admin.manageUsers"
+                    OR rc.action contains "admin.manageBusiness">
+                    active
+                  </cfif>" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                   Admin <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
@@ -74,13 +84,12 @@
                 </ul>
               </li>
             </cfif>
-            <li><a href='http://localhost:8500/ordertracker/v1/index.cfm?action=admin.forgotpassword' >Forgot Password</a></li>
           </ul>
         </div>
       </cfif>
       </cfif>
       <div class="main-content">
-        <div class="row row-padding">
+        <div class="">
           <div class="col-sm-12 content_sec">
             <div class="fw1-body-wrapper">
               <cfoutput>#body#</cfoutput><!--- body is result of views --->

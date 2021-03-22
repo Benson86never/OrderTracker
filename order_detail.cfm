@@ -1,8 +1,6 @@
 <cfinclude template="includes/secure.cfm" >
-<cfscript>
-// load open and non checked in orders
-OrderDetail = EntityLoad( "JoinOrderToItem", { orderid = #url.orderid# } );
-</cfscript>
+<cfset orderItems = CreateObject("Component","v1.model.services.order").getOrderDetails(
+			orderId = url.orderid).items>
 <style>
 	.order-detail,.orderItem{
 		padding: 10px;
@@ -19,22 +17,22 @@ OrderDetail = EntityLoad( "JoinOrderToItem", { orderid = #url.orderid# } );
 	<div class="order-detail">
 		<cfoutput><strong>#url.supplier# #url.orderid#</strong></cfoutput>
 		<cfform name="checkedin" action="order_ctrl.cfm?action=checkin&orderid=#url.orderid#&supplier=#url.supplier#" >
-			<cfloop array="#OrderDetail#" index="item">
+			<cfloop array="#orderItems#" index="item">
 				<div class="orderItem">
-					<cfset orderitem = EntityLoad("item", {id = #item.getitemid()#})>
-					<cfif item.getcheckedin() eq 0>
+					<cfif item.checkedIn eq 0>
 						<cfset OrderComplete = "no">
 					</cfif>
 					<cfoutput>
-						Received Yes <input type="radio" name="#item.getid()#" value="yes" <cfif item.getcheckedin() eq 1>checked="yes"</cfif> >&nbsp
-						No <input type="radio" name="#item.getid()#" value="No" <cfif item.getcheckedin() eq 0>checked="yes"</cfif>>
-						(#item.getquantity()#) #orderitem[1].getName()#<br />
+						Received Yes <input type="radio" name="#item.id#" value="yes" <cfif item.checkedIn eq 1>checked="yes"</cfif> >&nbsp
+						No <input type="radio" name="#item.id#" value="No" <cfif item.checkedIn eq 0>checked="yes"</cfif>>
+						(#item.quantity#) #item.itemName#<br />
 					</cfoutput>
 				</div>
 			</cfloop>
+			<input type="button" onclick="window.location.href='orders_open.cfm'" class="btn btn-danger" class="btn btn-cancel" value="Cancel"/>
 			<cfinput name="submit" type="submit" Value="Check In" class="btn btn-primary">
 			<cfif not isDefined('OrderComplete')>
-			<cfinput name="Action" type="Button" value="Close Order" onclick="window.location.href = 'order_ctrl.cfm?orderid=#url.orderid#&action=close';" class="btn btn-success">
+				&nbsp;<cfinput name="Action" type="Button" value="Close Order" onclick="window.location.href = 'order_ctrl.cfm?orderid=#url.orderid#&action=close';" class="btn btn-success">
 			</cfif>
 		</cfform>
 	</div>

@@ -24,9 +24,6 @@
 .mt-5 {
   margin-top: 5px;
 }
-.main-content {
-  font-size : 13px !important;
-}
 .btn {
   font-size : 13px !important;
 }
@@ -39,4 +36,20 @@
 }
 body{
   font-family: "Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+}
+.nav{
+  font-size: 14px;
+  font-weight: bold;
+}
+.nav-link{
+  color : #666363;
+}
+.nav-link.active{
+  color : #337ab7 !important;
+}
+.content_sec{
+  padding: 0px;
+}
+.container {
+  padding-top: 20px;
 }

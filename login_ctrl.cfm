@@ -10,7 +10,7 @@
 		<cfset session.secure.loggedin="yes">
 		<cfset session.secure.MasterAccount="1">
 		<cfquery name="qrySelectBusinessname" datasource="#application.datasource#">
-			select * from business where businessid = #qrySelectUser.subaccountid#
+			select * from business where businessid = #qrySelectUser.businessId#
 		</cfquery>
 		<cfset session.secure.SubAccount="#qrySelectBusinessname.businessid#">
 		<cfset session.secure.SubAccountName="#qrySelectBusinessname.businessname#">

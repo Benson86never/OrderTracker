@@ -1,1 +1,0 @@
-<cfcollection action = "create" collection = "ordertracker" engine = "solr">
