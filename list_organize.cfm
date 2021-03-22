@@ -1,13 +1,9 @@
 <cfinclude template="includes/secure.cfm" >
-<cfscript>
-  if (isDefined("url.ListID")) {
-    Lists = EntityLoad( "list", { id=#url.ListID# }, "Orderby Asc" );
-  }
-  else {
-    Lists = EntityLoad( "list", { }, "Orderby Asc" );
-  }
-  ListsQuery = EntityToQuery(Lists, "item");
-</cfscript>
+<cfparam name="url.ListID" default="0">
+<cfset Lists = CreateObject("Component","v1.model.services.admin").getListDetails(
+    ListID = url.ListID,
+    businessId = session.secure.subaccount,
+    includeItems = val(url.listId) ? 1 : 0)>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <style>
   .page-content{
@@ -75,22 +71,21 @@
     Organize List Items
   </div>
   <div class="page-content">
-    <cfif isDefined("url.ListID")>
+    <cfif val(url.ListID)>
       <a href="#cgi.script_name#" class="btn btn-success"> <-return to lists</a>
     </cfif>
     <cfloop array="#Lists#" index="list" >
-      <cfif not isDefined("url.ListID")>
-        <div class="list-item"><a href="#cgi.script_name#?ListID=#list.getID()#">#list.getName()#</a></div>
+      <cfif not val(url.ListID)>
+        <div class="list-item"><a href="#cgi.script_name#?ListID=#list.id#">#list.name#</a></div>
       </cfif>
     </cfloop>
-    <cfif isDefined("url.ListID")>
+    <cfif val(url.ListID)>
       <ul id="sortable">
         <cfloop array="#Lists#" index="list" >
-          <cfloop array="#list.getitem()#" index="item" >
-            <cfset OrderBy = EntityLoad( "joinitemtolist", { itemid=#item.getid()#, listid=#url.listid# })>
-            <li class="ui-state-default" id="item_#Orderby[1].getid()#">
+          <cfloop array="#list.items#" index="item" >
+            <li class="ui-state-default" id="item_#item.id#">
               <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-              <span>#item.getname()#</span>
+              <span>#item.name#</span>
             </li>
           </cfloop>
         </cfloop>
@@ -105,7 +100,7 @@
     console.log('running persist....')
     var data = $("#sortable").sortable('toArray')
     console.dir(data)
-    $.post('com/listsequence_np.cfc?method=saveData',{order:data},function(res,txtStatus) {
+    $.post('v1/model/services/business.cfc?method=saveListItems',{listItems:data},function(res,txtStatus) {
       console.log(txtStatus);
       $('#modal-showAlert').modal('show');
       $('.modal-header').css('background-color','white');

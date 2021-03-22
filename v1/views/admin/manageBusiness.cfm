@@ -21,40 +21,46 @@
                   <i class="fa fa-plus" aria-hidden="true"></i>
                 </a>
                 </cfif>
-              </th>              
+              </th>
           </tr>
         </thead>
         <tbody>
-          <cfloop array="#rc.businessDetails#" item="business">
+          <cfif NOT arrayLen(rc.businessDetails)>
             <tr>
-              <td style="display:none;">#business.sortBusinessName#</td>
-              <td width=300px; >
-                <span class="business-#listlen(business.sortBusinessName,'~~')#">
-                    #business.BusinessName#
-                </span>
-              </td>
-              <td class="hidden-xs">#business.Email#</td>
-              <td class="hidden-xs hidden-sm">#business.Phone#</td>
-              <td class="hidden-xs hidden-sm">#business.zip#</td>
-              <td class="hidden-xs hidden-sm">#business.City#</td>
-              <td class="hidden-xs hidden-sm">#business.State#</td>
-              <td class="text-center">
-              <cfif session.secure.rolecode eq 1>
-                  <button class="btn btn-danger deactivateUser" businessId="#business.BusinessId#">
-                    <i class="fa fa-trash" aria-hidden="true"></i>
-                  </button>
-              </cfif>
-                  <a href="index.cfm?action=admin.addBusiness&businessId=#encrypt(business.BusinessId, application.uEncryptKey, "BLOWFISH", "Hex")#"
-                    class = "btn btn-success">
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                  </a>
-                  <a href="index.cfm?action=admin.manageusers&businessId=#encrypt(business.BusinessId, application.uEncryptKey, "BLOWFISH", "Hex")#"
-                    class = "btn btn-info">
-                    <i class="fa fa-user" aria-hidden="true"></i>
-                  </a>
-              </td>
-            </tr>  
-          </cfloop>
+              <td colspan="7">No Business available</td>
+            </tr>
+          <cfelse>
+            <cfloop array="#rc.businessDetails#" item="business">
+              <tr>
+                <td style="display:none;">#business.sortBusinessName#</td>
+                <td width=300px; >
+                  <span class="business-#listlen(business.sortBusinessName,'~~')#">
+                      #business.BusinessName#
+                  </span>
+                </td>
+                <td class="hidden-xs">#business.Email#</td>
+                <td class="hidden-xs hidden-sm">#business.Phone#</td>
+                <td class="hidden-xs hidden-sm">#business.zip#</td>
+                <td class="hidden-xs hidden-sm">#business.City#</td>
+                <td class="hidden-xs hidden-sm">#business.State#</td>
+                <td class="text-center">
+                <cfif session.secure.rolecode eq 1>
+                    <button class="btn btn-danger deactivateUser" businessId="#business.BusinessId#">
+                      <i class="fa fa-trash" aria-hidden="true"></i>
+                    </button>
+                </cfif>
+                    <a href="index.cfm?action=admin.addBusiness&businessId=#encrypt(business.BusinessId, application.uEncryptKey, "BLOWFISH", "Hex")#"
+                      class = "btn btn-success">
+                      <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </a>
+                    <a href="index.cfm?action=admin.manageusers&businessId=#encrypt(business.BusinessId, application.uEncryptKey, "BLOWFISH", "Hex")#"
+                      class = "btn btn-info">
+                      <i class="fa fa-user" aria-hidden="true"></i>
+                    </a>
+                </td>
+              </tr>  
+            </cfloop>
+          </cfif>
         </tbody>
       </table>
     </div>

@@ -4,171 +4,107 @@
 <cfset ORMYesterday = #DateTimeFormat(Yesterday,"yyyy-mm-dd HH:nn:ss")#>
 <cfset CCEmail = "orders@porthousegrill.com">
 <cfset FromEmail = "orders@porthousegrill.com">
-<cftry>
-<cfscript>
-//TodayOrders = ORMExecuteQuery( "from orders where datetime <= '2019-06-21 02:33:19' and datetime > '2019-06-19 02:33:19'" );
-//TodayOrders = ORMExecuteQuery( "from orders where datetime <= '#ORMToday#' and datetime > '#ORMYesterday#'" );
-//AllOrders = ORMExecuteQuery( "from orders where datetime = '2019-06-21 12:20:38'" );
-TodayOrders = ORMExecuteQuery( "from orders where closed = 0" );
-
-</cfscript>
-
 <cfoutput>
-#ORMToday#
-#ORMYesterday#<br />
-<cfset itemArray=ArrayNew(2)>
-<cfloop array="#TodayOrders#" index="orders">
-	<cfset LoopSupplier = #orders.getsupplierid()#>
-	<cfset OrderID = #orders.getid()#>
-	#OrderID#
-	<cfset SupplierID = #orders.getsupplierid()#>
-	#SupplierID#
-	<!---<cfdump var="#orders.getitem()#" label="Query Items">--->
-	<cfset o = 1>
-	<cfloop array="#orders.getitem()#" index="item" >
-		Loop number #o# Item = #item.getname()# #item.getid()#
-		<cfset loopunits = #item.getunits()#>
-		<cfset itemArray[o][1] = #item.id#>
-		<cfset itemArray[o][2] = #item.sku#>
-		<cfset itemArray[o][3] = #item.name#>
-		<cfset Quantity = EntityLoad( "JoinOrderToItem", { itemid=#item.getid()#, orderid=#orders.getid()# } )>
-		<cfloop array="#Quantity#" index="quantity" >
-		<cfset itemArray[o][4] = #quantity.getquantity()#>
+	<cftry>
+		<cfset TodayOrders = CreateObject("Component","v1.model.services.order").sendOrders().orders>
+		#ORMToday#
+		#ORMYesterday#<br />
+		<cfset itemArray=ArrayNew(2)>
+		<cfloop array="#TodayOrders#" index="orders">
+			<cfif len(trim(orders.email)) >
+				<!---<cfmail from="#FromEmail#" subject="#orders.supplierName# order #orders.OrderID#" to="#orders.email#" cc="#CCEmail#" type="text/html">
+					
+					<cfmailpart type="html">--->
+						<table cellpadding="5" cellspacing="5">
+							<tr>
+								<td colspan="4" style="padding: 5px;">
+									Supplier is #orders.SupplierName#
+								</td>
+							</tr>
+							<tr>
+								<td colspan="4" style="padding: 5px;">
+									Dear #orders.FirstName#,
+								</td>
+							</tr>
+							<tr>
+								<td colspan="4" style="padding: 5px;">
+									Please deliver the following tomorrow.
+								</td>
+							</tr>
+						</table>
+						<table border="1" cellpadding="5">
+							<tr>
+								<td style="text-align:center;padding: 5px;">
+									OrderID
+								</td>
+								<td style="text-align:center;padding: 5px;">
+									Quantity
+								</td>
+								<td style="text-align:center;padding: 5px;">
+									Units
+								</td>
+								<td style="text-align:center;padding: 5px;">
+									SKU
+								</td>
+								<td style="text-align:center;padding: 5px;">
+									Name
+								</td>
+							</tr>
+							<cfloop array="#orders.items#" index="item">	
+								<tr style="border-left:1pt solid black;">
+									<td style="text-align:center;padding: 5px;">
+										#item.id#
+									</td>
+									<td style="text-align:center;padding: 5px;">
+										#item.quantity#
+									</td>
+									<td style="text-align:center;padding: 5px;">
+										#item.unitname#
+									</td>
+									<td style="text-align:center;padding: 5px;">
+										<cfif item.sku is not 1> #item.sku#</cfif>
+									</td>
+									<td style="text-align:center;padding: 5px;">
+										#item.itemname#
+									</td>
+								</tr>
+								<cfquery datasource="#application.datasource#">
+									Update Orders
+									Set Closed = 1
+									where OrderID = "#item.id#"
+								</cfquery>
+							</cfloop>
+						</table>
+						<table cellpadding="5" cellspacing="5">
+							<tr>
+								<td colspan="4" style="padding: 5px;">
+									Thank you from the Port House Grill team.
+								</td>
+							</tr> 
+							<tr>
+								<td colspan="4" style="padding: 5px;">
+									Please reply RECEIVED to this note to confirm your receipt.
+								</td>
+							</tr> 
+							<tr>
+								<td colspan="4" style="padding: 5px;">
+									POWERED BY ORDERTRACKER&trade;
+								</td>
+							</tr>
+						</table>
+					<!---</cfmailpart>
+				</cfmail>---->
+				---Mail Sent---<br />
+				
+			</cfif>
 		</cfloop>
-		<cfset itemArray[o][5] = #item.units.name#>
-		<cfset o = o + 1>
-	</cfloop>
-	<cfdump var="#itemArray#" label="Array Items">
-	<cfset Subaccount = EntityLoad( "subaccount", { id=#orders.getsubaccountid()# } )>
-	<cfset SubaccountName = "#Subaccount[1].getname()#">
-	<cfset Supplier = EntityLoad( "supplier", { id=#orders.getsupplierid()# } )>
-		<cfset FirstNameList = "">
-		<cfset EmailList = "">
-		<cfloop array="#Supplier#" index="supplier">
-			<cfset SupplierName = #supplier.getname()#>
-			<cfloop array="#Supplier.getPerson()#" index="rep">
-			<cfset RepFirstName = #rep.getfirstname()#>
-			<cfset RepEmail = #rep.getemail()#>
-			<cfset FirstNameList = ListAppend(FirstNameList, RepFirstName)>
-			<cfset EmailList = ListAppend(EmailList, RepEmail)>
-			</cfloop>
-		</cfloop>
-		#FirstNameList#
-		#EmailList#
-<cfif isDefined("EmailList") and EmailList is not "">
-<cfmail from="#FromEmail#" subject="#SubaccountName# order #OrderID#" to="#EmailList#" cc="#CCEmail#" type="text/html">
-<cfmailpart type="text" wraptext="72">
----------------------------------------------------------
-OrderID is #OrderID#
-Supplier is #SupplierName#
-Hi #FirstNameList#,
-Please deliver the following tomorrow.
-
-Quantity--Units--Name
-
-<cfloop from="1" to="#ArrayLen(itemArray)#" index="i">
-#itemArray[i][4]#--#itemArray[i][5]#--<cfif itemArray[i][2] is not 1>(#itemArray[i][2]#)</cfif>#itemArray[i][3]#
------
-</cfloop>
-
-Thank you from the Port House Grill team.
-
-POWERED BY ORDERTRACKER(tm)
-</cfmailpart>
-<cfmailpart type="html">
-<table>
-<tr>
-<td colspan="4">
-OrderID is #OrderID#
-</td>
-</tr>
-<tr>
-<td colspan="4">
-Supplier is #SupplierName#
-</td>
-</tr>
-<tr>
-<td colspan="4">
-Dear #FirstNameList#,
-</td>
-</tr>
-<tr>
-<td colspan="4">
-Please deliver the following tomorrow.
-</td>
-</tr> 
-<tr>
-	<td style="text-align:center";>
-Quantity
-	</td>
-	<td style="text-align:center";>
-Units
-	</td>
-	<td style="text-align:center";>
-	SKU
-	</td>
-	<td style="text-align:center";>
-Name
-	</td>
-</tr>
-<cfloop from="1" to="#ArrayLen(itemArray)#" index="i">
-	
-<tr style="border-left:1pt solid black;">
-	<td style="text-align:center";>
-#itemArray[i][4]#
-	</td>
-	<td style="text-align:center";>
-#itemArray[i][5]#
-	</td>
-	<td style="text-align:center";>
-	<cfif itemArray[i][2] is not 1> #itemArray[i][2]#</cfif>
-	</td>
-	<td style="text-align:left";>
-#itemArray[i][3]#
-	</td>
-</tr>
-	
-</cfloop>
-<tr>
-<td colspan="4">
-Thank you from the Port House Grill team.
-</td>
-</tr> 
-<tr>
-<td colspan="4">
-Please reply RECEIVED to this note to confirm your receipt.
-</td>
-</tr> 
-<tr>
-<td colspan="4">
-POWERED BY ORDERTRACKER&trade;
-</td>
-</tr>
-</table>
-</cfmailpart>
-</cfmail>
-
----Mail Sent---<br />
-
-<cfquery datasource="#application.datasource#">
-	Update Orders
-	Set Closed = 1
-	where OrderID = "#OrderID#"
-</cfquery>
-
-</cfif>
-<cfset ArrayClear(itemArray)>
-<cfset EmailList = "">
-<cfset FirstNameList = "">
-
-</cfloop>
-
+		<cfcatch>
+			<cfdump  var="#cfcatch#" abort>
+			<cfmail from="#FromEmail#" subject="Port House Grill order mail error" to="#CCEmail#" type="text/html">
+				An error sending the order email occurred:
+				<cfoutput>#cfcatch.message# - #cfcatch.detail#</cfoutput>
+			</cfmail>
+		</cfcatch>
+	</cftry>
+	<cflocation url="list.cfm" addtoken="no">
 </cfoutput>
-<cfcatch>
- <cfmail from="#FromEmail#" subject="Port House Grill order mail error" to="#CCEmail#" type="text/html">
- 	An error sending the order email occurred:
-    <cfoutput>#cfcatch.message# - #cfcatch.detail#</cfoutput>
- </cfmail>
-</cfcatch>
-</cftry>
-<cflocation url="list.cfm" addtoken="no">

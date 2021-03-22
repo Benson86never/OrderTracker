@@ -5,7 +5,7 @@ $(document).ready(function(){
     //When page loads 
     getAddress();
     //onchange
-    $("#subAccount").change(function(){ 
+    $("#business").change(function(){ 
         getAddress();
     });
 
@@ -81,7 +81,7 @@ function getAddress(){
         type: "get",
         async : false,
         data: {
-            "subAccountId" : $('#subAccount').val()
+            "businessId" : $('#subAccount').val()
         },
         success: function (rawData){
             let parsedData = $.parseJSON(rawData)["DATA"];

@@ -31,7 +31,10 @@ component accessors="true" {
          //writedump(url.businessId);
             rc.decryptbusinessid = decrypt(url.businessId, application.uEncryptKey, "BLOWFISH", "Hex");
            // writeDump(rc.decryptbusinessid);
-            rc.businessDetails = adminService.getBusinessDetails(businesssId = rc.decryptbusinessid).business;
+            rc.businessInfo = adminService.getBusinessDetails(businessId = rc.decryptbusinessid);
+            rc.businessDetails = rc.businessInfo.business;
+            rc.supplierDetails = rc.businessInfo.supplier;
+            rc.listDetails = rc.businessInfo.list;
 
             //rc.params = "&businessId=#rc.businessId#";
            //writeDump(rc.businessDetails)
