@@ -17,6 +17,8 @@
 		<cfset session.secure.PersonID="#qrySelectUser.personid#">
 		<cfset session.secure.RoleCode="#qrySelectUser.type#">
 		<cflocation url="list.cfm" addtoken="no">
+	<cfelse>
+	
 	</cfif>
 <cfelseif isDefined('url.action') and url.action is "logout">
 	<cfset StructDelete(Session, "secure")>

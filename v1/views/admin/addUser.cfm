@@ -62,13 +62,13 @@
   <cfparam  name="variables.roleid" default="2">
   <cfparam  name="variables.accountid" default="1">
 
-  <div class = "col-xs-12 sectionHeader">
-    #variables.sectionHeader#
-  </div>
   <div class="container">
+  <div class="panel panel-default">
+      <div class="panel-heading">Add User</div>
+      <div class="panel-body">
     <form class="form-inline" method = "post" id="formSubmit" name="formSubmit">
       <div class="row">
-        <div class="col-md-1 labelname">
+        <div class="col-md-2 labelname">
           First Name<span style="color: red"><b>*<b></span>:
         </div>
         <div class="col-md-2 ">
@@ -76,7 +76,7 @@
           <input type="hidden" name="active" value="#rc.active#">
           <input type="hidden" name="personid" value="#variables.personid#">
         </div>
-        <div class="col-md-1 labelname">
+        <div class="col-md-2 labelname">
           Last Name<span style="color: red"><b>*<b></span>:
         </div>
         <div class="col-md-2 ">
@@ -84,24 +84,24 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-1 labelname">
+        <div class="col-md-2 labelname">
           Email<span style="color: red"><b>*<b></span>:
         </div>
         <div class="col-md-2  required">
           <input type="text" class="form-control inputelement" id="Email" placeholder="Enter Email" name="Email" autocomplete = "new-password" value="#variables.email#" required autocomplete="off">
         </div>
-        <div class="col-md-1 labelname">
+        <div class="col-md-2 labelname">
           Phone:
         </div>
-        <div class="col-md-1">
+        <div class="col-md-2">
           <input type="text" class="form-control inputelement" id="Phone" placeholder="(___)-___-____" name="Phone" value="#variables.phone#" autocomplete="off" style="width: 95%"> 
         </div>
-        <div class="col-md-1 ">
+        <div class="col-md-2 ">
           <input type="text" class="form-control inputelement" id="phoneExtension" placeholder="12345" name="phoneExtension" value="#variables.PhoneExtension#" autocomplete="off" style="width: 43%">  
         </div>
       </div>
       <div class="row">
-        <div class="col-md-1 labelname">
+        <div class="col-md-2 labelname">
           Carrier:
         </div>
         <div class="col-md-2 ">
@@ -122,7 +122,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-1 labelname">
+        <div class="col-md-2 labelname">
           User Type:
         </div>
         <div class="col-md-2 ">
@@ -138,7 +138,7 @@
             </cfloop>
           </select>
         </div>
-        <div class="col-md-1 labelname">
+        <div class="col-md-2 labelname">
          Business<span style="color: red"><b>*<b></span>:
         </div>
         <div class="col-md-2 ">
@@ -154,7 +154,7 @@
             </cfloop>
           </select>
           <cfif session.secure.rolecode eq 1>
-          <div style="margin-left: 50%; margin-top: 2%">
+          <div style="margin-left: 40%; margin-top: 5%">
              <a href="index.cfm?action=admin.addBusiness">
               Add Business
             </a>
@@ -163,13 +163,13 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-1 labelname">
+        <div class="col-md-2 labelname">
           Street <br> Address 1:
         </div>
         <div class="col-md-2 ">
           <input type="text" class="form-control inputelement" id="address1" placeholder="Enter Street Address 1" name="address1" value="#variables.address1#" autocomplete="off" readonly>
         </div>
-        <div class="col-md-1 labelname">
+        <div class="col-md-2 labelname">
           Street <br> Address 2:
         </div>
         <div class="col-md-2 ">
@@ -177,13 +177,13 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-1 labelname">
+        <div class="col-md-2 labelname">
           City:
         </div>
         <div class="col-md-2 ">
           <input type="text" class="form-control inputelement" id="City" placeholder="Enter City" name="City" value="#variables.city#" autocomplete="off" readonly >
         </div>
-        <div class="col-md-1 labelname">
+        <div class="col-md-2 labelname">
           State/Province:
         </div>
         <div class="col-md-2 ">
@@ -202,13 +202,13 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-1 labelname">
+        <div class="col-md-2 labelname">
           Zip/Postal Code:
         </div>
         <div class="col-md-2 ">
           <input type="text" class="form-control inputelement" id="Zip" placeholder="Enter Zip" name="Zip"  value="#variables.zip#" autocomplete="off" readonly>
         </div>
-        <div class="col-md-1 labelname">
+        <div class="col-md-2 labelname">
           Country:
         </div>
         <div class="col-md-2 ">
@@ -266,6 +266,9 @@
         </div>
       </div>
     </form>
+    </div>
+    </div>
+    </div>
   </div>
 </cfoutput>
  

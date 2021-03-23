@@ -51,7 +51,7 @@
 	
 	body {
 	  font-family: "Poppins", sans-serif;
-	  height: 100vh;
+	  height: 82vh;
 	}
 	
 	a {
@@ -80,7 +80,7 @@
 	  align-items: center;
 	  flex-direction: column; 
 	  justify-content: center;
-	  width: 100%;
+	  width: 98%;
 	  min-height: 100%;
 	  padding: 20px;
 	}
@@ -145,6 +145,7 @@
 	  -ms-transition: all 0.3s ease-in-out;
 	  -o-transition: all 0.3s ease-in-out;
 	  transition: all 0.3s ease-in-out;
+	  cursor:pointer;
 	}
 	
 	input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover  {
@@ -160,7 +161,7 @@
 	}
 	
 	input[type=text],input[type=password] {
-	  background-color: #f6f6f6;
+	 /* background-color: #f6f6f6;*/
 	  border: none;
 	  color: #0d0d0d;
 	  padding: 15px 32px;
@@ -178,6 +179,7 @@
 	  transition: all 0.5s ease-in-out;
 	  -webkit-border-radius: 5px 5px 5px 5px;
 	  border-radius: 5px 5px 5px 5px;
+	  
 	}
 	
 	input[type=text],input[type=password]:focus {
@@ -327,9 +329,14 @@
 		padding-right: 3px;
 		font-weight: normal;
 	}
-		</style>
-	<cfoutput>
-	  
+</style>
+ 
+      <link rel="stylesheet" href="v1/css/bootstrap.css" />
+     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script type="text/javascript" src="v1/scripts/bootstrap.min.js"></script>
+	<cfinclude template="v1/views/_includes/modals.cfm">
+ <cfoutput>
 	<div class="wrapper">
 	  <div id="formContent">
 		<!-- Tabs Titles -->
@@ -337,19 +344,21 @@
 		<div class="first">		  
 		</div>	
 		<!-- Login Form -->
-		<form action="login_ctrl.cfm" method="post">
+			<form action="login_ctrl.cfm" method="post" id="formSubmit" name="formSubmit">
+		
 		  <div style="font-size: 20px !important;padding: 30px;color:##767272">
 			Sign in with your Email Address
 		  </div>
 		  <div style="padding-top:20px;">
 			<label>Email</label>
-			<input type="text" id="login" class="second" name="userName">
+			<input type="text" id="userName" class="second" name="userName">
 		  </div>
 		  <div style="padding-top:20px;">
 			<label>Password</label>
 			<input type="password" id="password" class="second" name="password">
 		  </div>
-		  <input type="submit" class="fourth" value="Login" name="submit">
+		  <input type="button" class="fourth" value="Login" name="btnsubmit"  id="btnsubmit" >
+		  <input type="submit" value="Login" name="submit"  id="submit" style="display:none;">
 		</form>
 		<!-- Remind Passowrd -->
 		<div id="formFooter">
@@ -357,5 +366,26 @@
 		</div>
 	  </div>
 	</div>
-	</cfoutput>
-	 
+</cfoutput>
+<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/jquery.inputmask.bundle.js"></script>
+<script>
+   $(document).ready(function(){       
+           $('#btnsubmit').click(function(){			
+			if( $("#password").val() == "" || $("#userName").val() == "")
+			{ 
+				$('#modal-showAlert').modal('show');             
+				$('.modal-header').css('background-color','white');
+				$('#headerText').html('Login Information');
+				$('.close').css('color','black');
+				$('#modal-showAlert .modal-body').html("Please Fill Username and Password");       
+				$('#modal-showAlert .modal-footer .ok').show();    
+				$('#modal-showAlert .modal-footer .yes').hide();
+				$('#modal-showAlert .modal-footer .no').hide();   			
+			}
+			else
+			{			
+					$('#submit').click();				
+			}               
+    });	 
+});
+</script> 

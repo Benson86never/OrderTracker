@@ -1,5 +1,5 @@
 <cfoutput>
-    <div class = "col-xs-12 sectionHeader">
+    <div class = "col-xs-12 sectionHeader" >
       Manage Business
     </div>
     <div class="container table-responsive">
@@ -12,9 +12,8 @@
               <th class="hidden-xs hidden-sm">Mobile Number</th>
               <th class="hidden-xs hidden-sm">Zip</th>
               <th class="hidden-xs hidden-sm">City</th>
-               <th class="hidden-xs hidden-sm">State</th>
-              <th class="no-sort text-center">
-              
+              <th class="hidden-xs hidden-sm">State</th>
+              <th class="no-sort text-center">              
                 Action
                 <cfif session.secure.rolecode eq 1>
                 <a class="btn btn-success" href="index.cfm?action=admin.addBusiness">

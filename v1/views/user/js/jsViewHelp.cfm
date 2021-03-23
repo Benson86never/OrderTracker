@@ -7,7 +7,7 @@ $(document).ready(function(){
         {
             $('#modal-showAlert').modal('show');             
             $('.modal-header').css('background-color','white');
-            $('#headerText').html('Password Information');
+            $('#headerText').html('Help');
             $('.close').css('color','black');
             $('#modal-showAlert .modal-body').html("Please Enter Description.");       
             $('#modal-showAlert .modal-footer .ok').show();    
@@ -18,7 +18,7 @@ $(document).ready(function(){
         {
             $('#modal-showAlert').modal('show');             
             $('.modal-header').css('background-color','white');
-            $('#headerText').html('Password Information');
+            $('#headerText').html('Help');
             $('.close').css('color','black');
             $('#modal-showAlert .modal-body').html("Your Request has been Successfully Submitted.");       
             $('#modal-showAlert .modal-footer .ok').show();    

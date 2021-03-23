@@ -8,6 +8,7 @@
     .labelname{
         margin-top: 0.8%;
         font-weight: bold;
+        text-align: right;
     }
     .row{
         margin-top: 1.2%

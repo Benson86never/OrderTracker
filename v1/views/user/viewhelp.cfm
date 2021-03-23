@@ -40,7 +40,7 @@
             Subject :
           </div>
           <div class="col-md-2 ">
-            <input type="text" class="form-control inputelement" id="subject" name="subject" value="Application Error Or Query on Application" readonly autocomplete="off" style="width:530px;">
+            <input type="text" class="form-control inputelement" id="subject" name="subject" value="Application Error or Query in Application" readonly autocomplete="off" style="width:530px;">
           </div>        
       </div>
       <div class="row">
@@ -56,7 +56,7 @@
       </div>
       <div class="row">
         <div class="col-md-7 text-right">          
-            <a class="btn btn-danger" href="../login_ctrl.cfm?action=logout">
+           <a class="btn btn-danger" href="../list.cfm">
               <i class="fa fa-times" aria-hidden="true"></i>
             </a>     
           <button type="button" class="btn btn-success" name="save" id="save">

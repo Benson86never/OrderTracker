@@ -175,7 +175,7 @@ component  extends ="business" {
         SELECT
           P.personId,  
           p.account_active,
-          p.subaccountid
+          p.businessid
         FROM 
             person P
         WHERE
@@ -195,7 +195,7 @@ component  extends ="business" {
           businessid = :businessid
           AND active = 1;
         ",{
-          businessid = {cfsqltype = "varchar", value =local.personDetails.subaccountid}
+          businessid = {cfsqltype = "varchar", value =local.personDetails.businessid}
         },{datasource: application.dsn}
       ); 
         msg=local.personDetails.personid;
@@ -568,8 +568,6 @@ component  extends ="business" {
         mail.setSubject( "Forgot Password Email" );
         mail.setTo( arguments.userDetails.email);
         mail.setFrom( local.checkbusinessDetails.email );
-        mail.setCC( "smucharla@infoane.com" );
-        mail.setBCC( "smucharla@infoane.com" );
       
         // Add email body content in text and HTML formats
        mail.addPart( type="text", charset="utf-8", wraptext="72", body="Welcome to Ordertracker." ); 
@@ -600,7 +598,7 @@ public any function sendQuery(
         SELECT
           P.personId,
            p.account_active,
-          p.subaccountid
+          p.businessid
         FROM 
             person P
         WHERE
@@ -620,17 +618,17 @@ public any function sendQuery(
           businessid = :businessid
           AND active = 1;
         ",{
-          businessid = {cfsqltype = "varchar", value =local.checkuserDetails.subaccountid}
+          businessid = {cfsqltype = "varchar", value =local.checkuserDetails.businessid}
         },{datasource: application.dsn}
       ); 
         mail=new mail();
         // Set it's properties
-        mail.setSubject( "Application Error Or Query on Application" );
+        mail.setSubject( "Application Error or Query in Application" );
         mail.setTo( local.checkbusinessDetails.email);
         mail.setFrom( arguments.userDetails.email );
       
         // Add email body content in text and HTML formats
-       mail.addPart( type="text", charset="utf-8", wraptext="72", body="Application Error Or Query on Application" ); 
+       mail.addPart( type="text", charset="utf-8", wraptext="72", body="Application Error or Query in Application" ); 
        mail.addPart( type="html", charset="utf-8", body="#reReplace(arguments.userDetails.description, '\n', '<br />', 'ALL')#" );
       
         // Send the email

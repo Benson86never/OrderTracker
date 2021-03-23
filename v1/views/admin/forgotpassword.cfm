@@ -5,7 +5,7 @@
 
 body {
   font-family: "Poppins", sans-serif;
-  height: 100vh;
+  height: 82vh;
 }
 
 a {
@@ -32,8 +32,8 @@ h2 {
   align-items: center;
   flex-direction: column; 
   justify-content: center;
-  width: 100%;
-  min-height: 100%;
+  width: 98%;
+  min-height: 80%;
   padding: 20px;
 }
 
