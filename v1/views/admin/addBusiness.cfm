@@ -127,6 +127,7 @@
                       <select class="form-control selectElement" name="parentBusinessId" id="parentBusinessId" <cfif isdefined("variables.parentBusinessId") and variables.parentBusinessId gt 0>checked="true"<cfelse>style="display:none;"</cfif>>
                       <option value="0" >Select</option>
                       <cfloop array="#rc.BusinessNamesDetails#" item="business">
+                        <cfif business.businessid NEQ rc.decryptbusinessid>
                           <option
                           <cfif isdefined("variables.parentBusinessId") and variables.parentBusinessId EQ business.businessid>
                           selected
@@ -135,6 +136,7 @@
                           #repeatString("&nbsp;&nbsp;", (listlen(business.sortbusinessname,'~~')-1))#
                           #business.businessname#
                           </option>
+                        </cfif>
                       </cfloop>
                     </select>
                 </div>

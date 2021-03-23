@@ -81,7 +81,7 @@ function getAddress(){
         type: "get",
         async : false,
         data: {
-            "businessId" : $('#subAccount').val()
+            "businessId" : $('#business').val()
         },
         success: function (rawData){
             let parsedData = $.parseJSON(rawData)["DATA"];

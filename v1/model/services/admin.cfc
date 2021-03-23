@@ -167,7 +167,7 @@ component  extends ="business" {
           
             account_active = 0,
             active = {cfsqltype = "varchar", value = arguments.userDetails.active},
-            businessId = {cfsqltype = "integer", value = arguments.userDetails.account},
+            businessId = {cfsqltype = "integer", value = arguments.userDetails.business},
             PhoneExtension = {cfsqltype = "varchar", value = arguments.userDetails.PhoneExtension}
           },{datasource: application.dsn, result="local.userresult"}
         );
@@ -393,7 +393,7 @@ component  extends ="business" {
           roleId,
           name
         FROM
-          roles           
+          roles
            #local.rolecondition# 
       ",{},{datasource: application.dsn}
       );
@@ -410,7 +410,7 @@ component  extends ="business" {
         FROM
           business
         WHERE
-          Active = 1          
+          Active = 1
       ",{},{datasource: application.dsn}
       );
       cfloop(query = "local.accountDetails") {
@@ -435,8 +435,8 @@ component  extends ="business" {
   )returnformat="JSON"{
     local.getAdress = queryExecute("
         SELECT
-         sa.Address1,
-         sa.Address2,
+         sa.StreetAddress1,
+         sa.StreetAddress2,
          sa.Zip,
          sa.City,
          sa.state,
@@ -523,7 +523,7 @@ component  extends ="business" {
         SELECT
           P.personId,
            p.account_active,
-          p.subaccountid
+          p.businessid
         FROM 
             person P
         WHERE
@@ -555,7 +555,7 @@ component  extends ="business" {
           businessid = :businessid
           AND active = 1;
         ",{
-          businessid = {cfsqltype = "varchar", value =local.checkuserDetails.subaccountid}
+          businessid = {cfsqltype = "varchar", value =local.checkuserDetails.businessid}
         },{datasource: application.dsn}
       );  
         msg=local.checkuserDetails.personid;
