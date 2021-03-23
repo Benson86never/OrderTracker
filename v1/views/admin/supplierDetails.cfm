@@ -47,9 +47,6 @@
       display: inline-block;
       margin: 0 5px;
       min-width: 24px;
-  }    
-  table.table td a.add, table.table td .addlist {
-      color: #27C46B;
   }
   table.table td a.edit {
       color: #FFC107;
@@ -74,6 +71,7 @@
   }
   .addlist {
       display: none;
+      margin-left: 10px;
   }
   input[type="text"] {
     width: 90%;

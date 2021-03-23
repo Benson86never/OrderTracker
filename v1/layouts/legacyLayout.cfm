@@ -2,6 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
   <head>
     <cfoutput>#view('/_includes/css')#</cfoutput>
+    <style>
+      .nav .nav-item .dropdown-menu{ display: none; }
+      .nav .nav-item:hover .nav-link{ color: #337ab7;  }
+      .nav .nav-item:hover .dropdown-menu{ display: block; }
+      .nav .nav-item .dropdown-menu{ margin-top:0; }
+    </style>
   </head>
   <body class="<cfif structKeyExists(rc, 'fullWidth') AND rc.fullWidth EQ 1>fullWidth</cfif>">
     <div id = "loaderOverlay"><!--- For loader --->
@@ -83,7 +89,7 @@
                   <li><a class="dropdown-item" href="index.cfm?action=admin.manageBusiness">Manage Business</a></li>
                 </ul>
               </li>
-            </cfif>                 
+            </cfif>
           </ul>
         </div>
       </cfif>

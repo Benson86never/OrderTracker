@@ -68,11 +68,11 @@
 										#item.itemname#
 									</td>
 								</tr>
-								<cfquery datasource="#application.datasource#">
+								<!---<cfquery datasource="#application.datasource#">
 									Update Orders
 									Set Closed = 1
 									where OrderID = "#item.id#"
-								</cfquery>
+								</cfquery>--->
 							</cfloop>
 						</table>
 						<table cellpadding="5" cellspacing="5">
@@ -106,5 +106,5 @@
 			</cfmail>
 		</cfcatch>
 	</cftry>
-	<cflocation url="list.cfm" addtoken="no">
+	<!---<cflocation url="list.cfm" addtoken="no">--->
 </cfoutput>

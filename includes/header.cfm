@@ -8,6 +8,12 @@
       <link rel="stylesheet" href="v1/css/bootstrap.css" />
       <link rel="stylesheet" href="v1/css/default.css?<cfoutput>#rand()#</cfoutput>" />
       <link rel="stylesheet" href="v1/css/fontawesome/css/font-awesome.min.css" />
+      <style>
+        .nav .nav-item .dropdown-menu{ display: none; }
+        .nav .nav-item:hover .nav-link{ color: #337ab7;  }
+        .nav .nav-item:hover .dropdown-menu{ display: block; }
+        .nav .nav-item .dropdown-menu{ margin-top:0; }
+      </style>
     </head>
     <body>
       <div>

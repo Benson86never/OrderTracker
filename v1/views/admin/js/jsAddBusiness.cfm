@@ -15,7 +15,7 @@ $(document).ready(function(){
         }
     });
 
-    $('#phoneExtension').keypress(function(event){
+    $('#phoneExtension, #Zip').keypress(function(event){
        if(event.which > 57 || event.which < 48){
            event.preventDefault();
        }

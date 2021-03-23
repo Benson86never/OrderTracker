@@ -25,8 +25,12 @@
                         <tr>
                             <td>#supplier.name#</td>
                             <td>
-                                <a class="addlist" id="#supplier.id#" title="Add" ><i class="fa fa-plus"></i></a>
-                                <a class="delete" id="#supplier.id#" title="Delete" ><i class="fa fa-trash"></i></a>
+                                <button class="addlist btn btn-success" id="#supplier.id#" title="Add" >
+                                  <i class="fa fa-plus"></i>
+                                </button>
+                                <button class="delete btn btn-danger" id="#supplier.id#" title="Delete" >
+                                  <i class="fa fa-trash"></i>
+                                </button>
                             </td>
                         </tr>
                       </cfloop>
@@ -41,8 +45,8 @@
 <script>
   $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
-    var actions = '<a class="addlist" id="0" title="Add" ><i class="fa fa-plus"></i></a>'+
-                  '<a class="delete" id="0" title="Delete" ><i class="fa fa-trash"></i></a>';
+    var actions = '<button class="delete btn btn-danger" id="0" title="Delete" ><i class="fa fa-trash"></i></button>'+
+                  '<button class="addlist btn btn-success" id="0" title="Add" ><i class="fa fa-plus"></i></button>';
     // Append table with add row form on add new button click
       $(".add-newlist").click(function(){
       $(this).attr("disabled", "disabled");

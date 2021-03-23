@@ -26,7 +26,7 @@ component accessors="true" {
     }
      public void function AddBusiness(rc){
        rc.BusinessNamesDetails = adminService.getBusinessnames().business;
-      
+       rc.decryptbusinessid = 0;
        if(isDefined("url.businessId") && url.businessId NEQ 0) {
          //writedump(url.businessId);
             rc.decryptbusinessid = decrypt(url.businessId, application.uEncryptKey, "BLOWFISH", "Hex");

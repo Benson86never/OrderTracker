@@ -255,6 +255,15 @@ component  {
               :supplierId,
               0
             );
+          ",{
+              itemId = {cfsqltype = "integer", value = cart.itemId},
+              orderId = {cfsqltype = "integer", value = local.orderResult.generatedkey},
+              quantity = {cfsqltype = "integer", value = cart.quantity},
+              cartId = {cfsqltype = "integer", value = cart.cartId},
+              supplierId = {cfsqltype = "integer", value = cart.supplierId}
+            },{datasource: application.dsn, result = "local.cartResult"}
+          );
+          local.insertOrderItemDetails = queryExecute("
             UPDATE
               carts
             SET
