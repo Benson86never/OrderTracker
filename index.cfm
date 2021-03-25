@@ -1,48 +1,3 @@
-<!---<cfinclude template="includes/secure.cfm" >
-<html>
-	<head>
-		<cfinclude template="includes/bootstrap_head.cfm" >
-		<title>86Never.com OrderTracker login.</title>
-		<style>
-			#signup {
-				border: 1px solid #888;
-				padding: 3px;
-				border-radius: 3px;
-				color: black;
-				background-color: #efefef;
-			}
-			.succesMsg{
-				color: green;
-				margin-top: 0.5%;
-				font-weight: bold;
-			}
-		</style>
-	</head>
-	<body>
-		<div class="container-fluid">
-		<cfinclude template="includes/header.cfm" >
-		<cfform name="login" action="login_ctrl.cfm">
-			<div><cfinput type="text" name="username" required="true" message="You must provide a username" /></div>
-			<div><cfinput type="password" name="password" required="true"message="You must provide a password" /></div>
-			<div style="display:inline"><cfinput type="submit" name="Submit" value="login" /></div>
-			<!---<div style="display:inline">
-				<a id="signup" href="v1/index.cfm?action=admin.adduser"> Sign Up</a>
-			</div>--->
-			<cfif structKeyExists(session, 'userResult')
-				AND structKeyExists(session.userResult, 'message')>
-				<div class="succesMsg">
-					<cfoutput>#session.userResult.message#</cfoutput>
-				</div>
-				<cfset structDelete(session.userResult, 'message')>
-			</cfif>
-			<!---<div><cfinput type="button" name="login" value="login" onclick="window.location='login_ctrl.cfm';" /></div>
-			<div style="display:inline"></div>--->			
-			<br><br><a href='http://localhost:8500/ordertracker/v1/index.cfm?action=admin.forgotpassword' >Forgot Password</a>
-		</cfform>
-		<cfinclude template="includes/bootstrap_js.cfm" >
-		</div>
-	</body>
-</html>--->
 
 <style>
     
@@ -55,10 +10,21 @@
 	}
 	
 	a {
-	  color: #92badd;
+	  color: #1a73e8;
 	  display:inline-block;
 	  text-decoration: none;
-	  font-weight: 400;
+	  font-weight: bold;
+	  font-size:14px;
+	  font-family:roboto,'Noto Sans Myanmar UI',arial,sans-serif;
+	}
+
+	#rememberme {
+	  color: #1a73e8;
+	  display:inline-block;
+	  text-decoration: none;
+	  font-weight: bold;
+	  font-size:14px;
+	  font-family:roboto,'Noto Sans Myanmar UI',arial,sans-serif;
 	}
 	
 	h2 {
@@ -97,6 +63,7 @@
 	  -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
 	  box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
 	  text-align: center;
+	  color: #92badd;
 	}
 	
 	#formFooter {
@@ -107,9 +74,7 @@
 	  -webkit-border-radius: 0 0 10px 10px;
 	  border-radius: 0 0 10px 10px;
 	}
-	
-	
-	
+		
 	/* TABS */
 	
 	h2.inactive {
@@ -122,34 +87,13 @@
 	}
 	
 	
-	
 	/* FORM TYPOGRAPHY*/
 	
-	input[type=button], input[type=submit], input[type=reset]  {
-	  background-color: #56baed;
-	  border: none;
-	  color: white;
-	  padding: 15px 80px;
-	  text-align: center;
-	  text-decoration: none;
-	  display: inline-block;
-	  text-transform: uppercase;
-	  font-size: 13px;
-	  -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
-	  box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
-	  -webkit-border-radius: 5px 5px 5px 5px;
-	  border-radius: 5px 5px 5px 5px;
-	  margin: 5px 20px 40px 20px;
-	  -webkit-transition: all 0.3s ease-in-out;
-	  -moz-transition: all 0.3s ease-in-out;
-	  -ms-transition: all 0.3s ease-in-out;
-	  -o-transition: all 0.3s ease-in-out;
-	  transition: all 0.3s ease-in-out;
-	  cursor:pointer;
-	}
+	 
 	
 	input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover  {
 	  background-color: #39ace7;
+	  
 	}
 	
 	input[type=button]:active, input[type=submit]:active, input[type=reset]:active  {
@@ -163,7 +107,7 @@
 	input[type=text],input[type=password] {
 	 /* background-color: #f6f6f6;*/
 	  border: none;
-	  color: #0d0d0d;
+	   color: #0d0d0d;
 	  padding: 15px 32px;
 	  text-align: left;
 	  text-decoration: none;
@@ -190,8 +134,6 @@
 	input[type=text],input[type=password]:placeholder {
 	  color: #cccccc;
 	}
-	
-	
 	
 	/* ANIMATIONS */
 	
@@ -285,17 +227,22 @@
 	  background-color: #56baed;
 	  content: "";
 	  transition: width 0.2s;
+
 	}
 	
 	.underlineHover:hover {
 	  color: #0d0d0d;
+	  	 
+	}
+
+	.underlineHover {
+	  margin-left:25px;
+	  	 
 	}
 	
 	.underlineHover:hover:after{
 	  width: 100%;
 	}
-	
-	
 	
 	/* OTHERS */
 	
@@ -310,9 +257,9 @@
 	{
 		position:relative;
 	}
-	#login, #password
+	#userName, #password
 	{
-		border: 1px solid #0095ff;
+		border: 1px solid #C0C0C0;
 		border-radius: 4px;
 		padding: 15px;
 	}
@@ -324,18 +271,19 @@
 		left: 50px;
 		background: white;
 		margin-top: 20px;
-		color: #0095ff;
+		color: #C0C0C0;
 		padding-left: 3px;
 		padding-right: 3px;
-		font-weight: normal;
+		font-weight: normal !important;
 	}
 </style>
  
-      <link rel="stylesheet" href="v1/css/bootstrap.css" />
+    <link rel="stylesheet" href="v1/css/bootstrap.css" />
      <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script type="text/javascript" src="v1/scripts/bootstrap.min.js"></script>
-	<cfinclude template="v1/views/_includes/modals.cfm">
+	<cfinclude template="v1/views/_includes/modals.cfm"> 
+	
  <cfoutput>
 	<div class="wrapper">
 	  <div id="formContent">
@@ -344,25 +292,52 @@
 		<div class="first">		  
 		</div>	
 		<!-- Login Form -->
-			<form action="login_ctrl.cfm" method="post" id="formSubmit" name="formSubmit">
-		
+		<cfform action="login_ctrl.cfm" method="post" id="formSubmit" name="formSubmit">		
 		  <div style="font-size: 20px !important;padding: 30px;color:##767272">
-			Sign in with your Email Address
+			Sign in
 		  </div>
 		  <div style="padding-top:20px;">
-			<label>Email</label>
-			<input type="text" id="userName" class="second" name="userName">
+			<label id="labelEmail" style="display: none;">Email</label>
+			 <cfif isdefined("cookie.rememberme") and cookie.rememberme eq "Yes">
+				<cfinput type="text" id="userName" class="second" name="userName" value="#cookie.userName#" placeholder="Email">			
+			<cfelse> 
+				<cfinput type="text" id="userName" class="second" name="userName" value="" required="yes" placeholder="Email">				
+			</cfif> 
+			<span id="errorEmailText" style="display:none;margin-left:45;font-size:12px;" align="left">Enter an email</span>
 		  </div>
-		  <div style="padding-top:20px;">
-			<label>Password</label>
-			<input type="password" id="password" class="second" name="password">
+ 
+		  <div style="padding-top:20px;">		 
+			<label id="labelpassword" style="display: none;">Password</label>
+			 <cfif IsDefined("cookie.rememberme") and cookie.rememberme eq "Yes">
+				<cfinput type="password" id="password" class="second" name="password" value="#cookie.password#" placeholder="Password">
+			<cfelse>
+				<cfinput type="password" id="password" class="second" name="password" required="yes" placeholder="Password">
+			 </cfif>
+			 <span id="errorPasswordText" style="display:none;margin-left:45;font-size:12px;" align="left">Enter a password</span>
 		  </div>
-		  <input type="button" class="fourth" value="Login" name="btnsubmit"  id="btnsubmit" >
-		  <input type="submit" value="Login" name="submit"  id="submit" style="display:none;">
-		</form>
+		  <div  class="row" style="padding-top:4px;margin-left:20px;margin-left:-100px;">	
+			<cfif isdefined("url.err") and url.err eq 1>
+				<image src="/ordertracker/images/errorimage.PNG"><font color="red" size="2px;">Please enter correct email and password</font>
+			<cfelseif isdefined("url.err") and url.err eq 2>
+				<image src="/ordertracker/images/errorimage.PNG"><font color="red" size="2px;">Couldn't find your Order Tracker Account</font>
+			</cfif>	
+		  </div>	 
+		<div  class="row" style="padding-top:5px;">		 
+				<div class="col-md-4" style="margin-left:35px;">
+				<input type="checkbox" name="rememberme" id="rememberme" value="Yes" <cfif IsDefined("cookie.rememberme") and cookie.rememberme eq "Yes">CHECKED</cfif> ><span id="rememberme" >&nbsp;Remember Me</span> 					
+				</div>
+				<div class="col-md-4 text-right" style="margin-left:15px;">
+				<a class="underlineHover" href="v1/index.cfm?action=admin.forgotpassword"  >Forgot Password?</a>					
+				</div>
+		</div>
+		<div  class="row" style="padding-top:25px;">
+			<input type="button" class="btn btn-info" value="Login" name="btnsubmit" id="btnsubmit" style="background-color:##1a73e8;">
+		  			<input type="submit" value="Login" name="submit"  id="submit" style="display:none;">
+		</div>
+		</cfform>
 		<!-- Remind Passowrd -->
 		<div id="formFooter">
-		  <a class="underlineHover" href="v1/index.cfm?action=admin.forgotpassword">Forgot Password?</a>
+		   <a class="underlineHover" href="v1/index.cfm?action=user.viewTroubleHelp">Trouble Logging in?</a>
 		</div>
 	  </div>
 	</div>
@@ -370,22 +345,81 @@
 <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/jquery.inputmask.bundle.js"></script>
 <script>
    $(document).ready(function(){       
-           $('#btnsubmit').click(function(){			
-			if( $("#password").val() == "" || $("#userName").val() == "")
+           $('#btnsubmit').click(function(){	
+
+			 if ($("#password").val() == "" && 	$("#userName").val() == "")
+			 {
+				 $("#password").css('border-color', 'red');		
+				 $("#userName").css('border-color', 'red');		
+				 $("#errorPasswordText").css({'color':'red','display':'block'});	
+				  $("#errorEmailText").css({'color':'red','display':'block'});	
+			}			 
+			else if( $("#password").val() == "" )
 			{ 
-				$('#modal-showAlert').modal('show');             
-				$('.modal-header').css('background-color','white');
-				$('#headerText').html('Login Information');
-				$('.close').css('color','black');
-				$('#modal-showAlert .modal-body').html("Please Fill Username and Password");       
-				$('#modal-showAlert .modal-footer .ok').show();    
-				$('#modal-showAlert .modal-footer .yes').hide();
-				$('#modal-showAlert .modal-footer .no').hide();   			
+				 $("#password").css('border-color', 'red');	
+				 $("#errorPasswordText").css({'color':'red','display':'block'});	
+				 	
 			}
-			else
+			else if ($("#userName").val() == "")
 			{			
-					$('#submit').click();				
-			}               
+				 $("#userName").css('border-color', 'red');	
+			     $("#errorEmailText").css({'color':'red','display':'block'});
+			}  
+			else
+		   {
+			   	$('#submit').click();	
+		   }             
     });	 
+
+	$("#userName").focusin(function(){  
+
+		$("#userName").css('border','1px solid #0095ff');
+		$("#userName").attr("placeholder",'');
+		$("#labelEmail").css({'color':'#0095ff','display':'block'});
+		
+	});
+
+	$("#password").focusin(function(){  
+
+		$("#password").css('border','1px solid #0095ff');
+		$("#password").attr("placeholder",'');
+		$("#labelpassword").css({'color':'#0095ff','display':'block'});
+		
+	});
+
+	$("#userName").focusout(function(){  
+		$("#userName").css('border','1px solid #C0C0C0');
+		if($("#userName").val() === ''){
+			$("#labelEmail").css({'color':'#C0C0C0','display':'none'});
+		}
+		else{
+			$("#labelEmail").css({'color':'#C0C0C0','display':'block'});
+		}
+		$("#userName").attr("placeholder",'Email');
+		
+	});
+
+	$("#password").focusout(function(){  
+
+		$("#password").css('border','1px solid #C0C0C0');
+		if($("#password").val() === '')
+		{
+			$("#labelpassword").css({'color':'#C0C0C0','display':'none'});
+		}
+		else
+		{
+			$("#labelpassword").css({'color':'#C0C0C0','display':'block'});
+		}
+		$("#password").attr("placeholder",'Password');
+	});
+
+	$("#rememberme").click(function(){
+		if($("#rememberme").prop('checked') === false){
+			$("#password").val('');
+			$("#userName").val('');
+		}
+	});
+   
 });
 </script> 
+

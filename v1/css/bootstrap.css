@@ -4660,6 +4660,8 @@ a.list-group-item-danger.active:focus {
   color: #333333;
   background-color: #f5f5f5;
   border-color: #dddddd;
+  text-align: center;
+  font-size: 24px;
 }
 .panel-default > .panel-heading + .panel-collapse .panel-body {
   border-top-color: #dddddd;

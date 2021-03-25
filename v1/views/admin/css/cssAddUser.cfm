@@ -8,7 +8,8 @@
     .labelname{
         margin-top: 0.8%;
         font-weight: bold;
-        text-align: right;
+        text-align: left;
+        left: 100px;
     }
     .row{
         margin-top: 1.2%
@@ -24,4 +25,8 @@
         z-index: 2;
         color: #807b7b;
     }
+    .panel-default > .panel-heading {
+  text-align: center;
+  font-size: 24px;
+}
 </style>

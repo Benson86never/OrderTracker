@@ -94,10 +94,11 @@
           Phone:
         </div>
         <div class="col-md-2">
-          <input type="text" class="form-control inputelement" id="Phone" placeholder="(___)-___-____" name="Phone" value="#variables.phone#" autocomplete="off" style="width: 95%"> 
+          <input type="text" class="form-control inputelement" id="Phone" placeholder="(___)-___-____" name="Phone" value="#variables.phone#" autocomplete="off" style="width: 50%"> 
+          <input type="text" class="form-control inputelement" id="phoneExtension" placeholder="  Ext " name="phoneExtension" value="#variables.PhoneExtension#" autocomplete="off" style="width:20%">  
         </div>
         <div class="col-md-2 ">
-          <input type="text" class="form-control inputelement" id="phoneExtension" placeholder="12345" name="phoneExtension" value="#variables.PhoneExtension#" autocomplete="off" style="width: 43%">  
+          
         </div>
       </div>
       <div class="row">
@@ -154,7 +155,7 @@
             </cfloop>
           </select>
           <cfif session.secure.rolecode eq 1>
-          <div style="margin-left: 40%; margin-top: 5%">
+          <div style="margin-left: 58%; margin-top: 5%">
              <a href="index.cfm?action=admin.addBusiness">
               Add Business
             </a>
@@ -212,8 +213,7 @@
           Country:
         </div>
         <div class="col-md-2 ">
-          <input type="text" class="form-control inputelement" id="country" placeholder="Enter country" name="country" value="#variables.country#" autocomplete="off" readonly>
-        
+          <input type="text" class="form-control inputelement" id="country" placeholder="Enter country" name="country" value="#variables.country#" autocomplete="off" readonly>        
           <!---<select class="form-control selectElement" name="country" style="width: 100%;" autocomplete="off" disabled>
             <cfloop array="#rc.countries#" item="country">
               <option
@@ -249,7 +249,7 @@
         <div class="col-md-12" id="passwordERR" style="color: red;text-align: center"></div>
       </div>
       <div class="row">
-        <div class="col-md-7 text-right">
+        <div class="col-md-9 text-right">
           <cfif structKeyExists(session, 'secure')
             AND session.secure.loggedin>
             <a class="btn btn-danger" href="index.cfm?action=admin.manageUsers">

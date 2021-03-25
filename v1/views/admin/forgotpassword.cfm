@@ -77,7 +77,7 @@ input[type=button], input[type=submit], input[type=reset]  {
   background-color: #56baed;
   border: none;
   color: white;
-  padding: 15px 80px;
+  padding: 12px 12px;
   text-align: left;
   text-decoration: none;
   display: inline-block;
@@ -117,7 +117,7 @@ input[type=text],input[type=password] {
   display: inline-block;
   font-size: 16px;
   margin: 5px;
-  width: 80%;
+  width: 73%;
   border: 2px solid #f6f6f6;
   -webkit-transition: all 0.5s ease-in-out;
   -moz-transition: all 0.5s ease-in-out;
@@ -253,12 +253,13 @@ div
   position:relative;
     top:20%;
 }
-#login, #password
+#login, #password, #Email
 {
-  border: 1px solid #0095ff;
+  border: 1px solid #C0C0C0;
   border-radius: 4px;
   padding: 15px;
 }
+
 label
 {
   position: absolute;
@@ -267,7 +268,7 @@ label
   left: 50px;
   background: white;
   margin-top: 20px;
-  color: #0095ff;
+  color: #C0C0C0;
   padding-left: 3px;
   padding-right: 3px;
   font-weight: normal;
@@ -287,12 +288,16 @@ label
   <form method = "post" id="formSubmit" name="formSubmit" >
     <div style="font-size: 20px !important;padding: 30px;color:##767272">
     Forgot Password
+    </div>    
+    <div style="padding-top:20px;">
+    
+    <input type="text" id="Email" class="second" name="Email" placeholder="Email" >
+    <label id="labelEmail" style="display:none;">Email</label>
+    <span id="errorEmailText" style="display:none;font-size:12px;" >Enter an email</span>
     </div>
     <div style="padding-top:20px;">
-    <label>Email</label>
-    <input type="text" id="Email" class="second" name="Email" autocomplete = "new-password" style="align:left;">
+    <input type="button" class="btn btn-info" value="Submit" name="save" id="save">
     </div>
-    <input type="button" class="btn btn-success" value="Submit" name="save" id="save">
   </form>
   </div>
 </div>

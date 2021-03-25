@@ -27,7 +27,7 @@
     </div>
     <div style = "min-height: 100%;">
       <!--- Main Nav --->      
-      <cfif url.action neq "admin.changepassword" and url.action neq "admin.forgotpassword">
+      <cfif url.action neq "admin.changepassword" and url.action neq "admin.forgotpassword" and url.action neq "user.viewTroubleHelp">
         <div class="pageHeader">
         <span>Order Tracker</span>       
         <cfif structKeyExists(session, 'secure') AND session.secure.loggedin>     

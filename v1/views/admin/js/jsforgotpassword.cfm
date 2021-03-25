@@ -15,15 +15,10 @@ $(document).ready(function(){
            $('#formSubmit').submit();
        }
        else{
-          //alert(dynamicFields);
-            $('#modal-showAlert').modal('show');
-            $('.modal-header').css('background-color','white');
-            $('#headerText').html('Missing Information');
-            $('.close').css('color','black');
-            $('#modal-showAlert .modal-body').html(dynamicFields);
-            $('#modal-showAlert .modal-footer .ok').show();
-            $('#modal-showAlert .modal-footer .yes').hide();
-            $('#modal-showAlert .modal-footer .no').hide();
+          				
+				 $("#Email").css('border-color', 'red');	
+			     $("#errorEmailText").css({'color':'red','display':'block'});
+			
        }
     });
 
@@ -37,7 +32,20 @@ $(document).ready(function(){
         }
     });
    
+   $("#Email").focusin(function(){  
 
+		$("#Email").css('border','1px solid #0095ff');
+		$("#Email").attr("placeholder",'');
+		$("#labelEmail").css({'color':'#0095ff','display':'block'});
+		
+	});
+
+$("#Email").focusout(function(){  
+		$("#Email").css('border','1px solid #C0C0C0');
+		$("#labelEmail").css({'color':'#C0C0C0','display':'none'});
+		$("#Email").attr("placeholder",'Email');
+		
+	});
 });
 
 

@@ -35,11 +35,23 @@ component accessors="true" {
           rc.params = "&userId=#rc.userid#";
           rc.active = rc.userDetails[1]["active"];
         }
-       
+       writedump(rc)abort;
           //session.userResult = adminService.saveUser(userDetails = form);
       if(structKeyExists(form, 'EMAIL')) {
         session.userResult = adminService.sendQuery(userDetails = form);
               location("index.cfm?action=user.viewHelp&userid=#encrypt(session.secure.personId, application.uEncryptKey, "BLOWFISH", "Hex")#", false);
         }       
     }
+
+    public void function viewTroubleHelp(rc)
+     {
+        if(structKeyExists(form, 'EMAIL')) {
+        session.userResult = adminService.sendTroubleQuery(userDetails = form);
+       if(isDefined("session.userResult.errorMsg") && session.userResult.errorMsg == ""){
+          location("../login_ctrl.cfm?action=logout", false);
+       }
+      } 
+    }
+  
+    
   }

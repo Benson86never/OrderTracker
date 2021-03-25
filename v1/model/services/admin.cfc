@@ -236,7 +236,8 @@ component  extends ="business" {
       }
       local.checkuserDetails = queryExecute("
         SELECT
-          P.personId
+          P.personId,
+          p.businessid
         FROM 
             person P
         WHERE
@@ -274,7 +275,7 @@ component  extends ="business" {
             type = {cfsqltype = "integer", value = arguments.userDetails.userType},
             carrier = {cfsqltype = "varchar", value = arguments.userDetails.carrier},
           
-            businessId = {cfsqltype = "integer", value = arguments.userDetails.account},
+            businessId = {cfsqltype = "integer", value = arguments.userDetails.business},
             PhoneExtension = {cfsqltype = "varchar", value = arguments.userDetails.PhoneExtension},
             personId = {cfsqltype = "integer", value = arguments.userDetails.personId}
           },{datasource: application.dsn}
@@ -637,16 +638,60 @@ public any function sendQuery(
     } catch (any e){
       //writeDump(arguments);
       writeDump(e);abort;
-    }
-
-   
+    }   
   }
 
-
-
-
-
-
-
-
+  public any function sendTroubleQuery(
+    struct userDetails
+  ){
+    try {
+      local.result = {
+        'error' : false,
+        'errorMsg' : ''
+      }     
+      local.checkuserDetails = queryExecute("
+        SELECT
+          P.personId,
+           p.account_active,
+          p.businessid
+        FROM 
+            person P
+        WHERE
+          email = :email
+          AND active = 1;
+        ",{
+          email = {cfsqltype = "varchar", value = arguments.userDetails.email}
+        },{datasource: application.dsn}
+      ); 
+      local.checkbusinessDetails = queryExecute("
+        SELECT
+          P.businessId,  
+          p.email
+        FROM 
+            business P
+        WHERE
+          businessid = :businessid
+          AND active = 1;
+        ",{
+          businessid = {cfsqltype = "varchar", value =local.checkuserDetails.businessid}
+        },{datasource: application.dsn}
+      ); 
+        mail=new mail();
+        // Set it's properties
+        mail.setSubject( "Trouble Logging In" );
+        mail.setTo( local.checkbusinessDetails.email);
+        mail.setFrom( arguments.userDetails.email );
+      
+        // Add email body content in text and HTML formats
+       mail.addPart( type="text", charset="utf-8", wraptext="72", body="Trouble Logging In" ); 
+       mail.addPart( type="html", charset="utf-8", body="#reReplace(arguments.userDetails.description, '\n', '<br />', 'ALL')#" );
+      
+        // Send the email
+        mail.send();     
+      return local.result;
+    } catch (any e){
+      //writeDump(arguments);
+      writeDump(e);abort;
+    }   
+  }
 }

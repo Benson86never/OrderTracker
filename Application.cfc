@@ -16,12 +16,13 @@
 		<cfset this.onApplicationStart() />
 	</cfif>
 	<cfscript>
+
 		this.sessionManagement="Yes";
 		this.sessionTimeout=CreateTimeSpan(0, 8, 0, 0);
 		this.mailserver="smtp.zoominternet.net";
 		this.datasource = "ordertracker";
 		this.dsn = "ordertracker";
-		this.publicpages = "admin.adduser,user.login,admin.changepassword,admin.forgotpassword";
+		this.publicpages = "admin.adduser,user.login,admin.changepassword,admin.forgotpassword,user.viewTroubleHelp";
 
 		this.uEncryptKey = "password";
 	//this.name = "ORM_Search";
@@ -32,7 +33,7 @@
 	//this.ormSettings.search.indexDir = "Applications/ColdFusionBuilder2018⁩/⁨ColdFusion⁩/cfusion/ormcollections⁩";
 	//this.ormSettings.search.language = "English";
 	</cfscript>
-	
+
 	<!---<cferror type="exception" mailto="hud@zoominternet.net" template="exception.cfm" exception="any">
 	<cferror type="request" mailto="hud@zoominternet.net" template="exception.cfm">--->
 	<cffunction name="onApplicationStart" returnType="boolean" output="false">
@@ -47,10 +48,12 @@
 		application.carts_np=CreateObject("Component","#Application.ComPath#carts_np");
 		application.item_np=CreateObject("Component","#Application.ComPath#item_np");
 		application.listsequence_np=CreateObject("Component","#Application.ComPath#listsequence_np");
+		application.publicpages = "admin.adduser,user.login,admin.changepassword,admin.forgotpassword,user.viewTroubleHelp";
+
 		</cfscript>
 		<cfreturn true />
 	</cffunction>
-	
+		
 	
 
 </cfcomponent>
