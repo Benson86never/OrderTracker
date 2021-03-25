@@ -1,9 +1,6 @@
 
 <style>
-    
 	/* BASIC */
-	
-	
 	body {
 	  font-family: "Poppins", sans-serif;
 	  height: 82vh;
@@ -36,8 +33,6 @@
 	  margin: 40px 8px 10px 8px; 
 	  color: #cccccc;
 	}
-	
-	
 	
 	/* STRUCTURE */
 	
@@ -85,11 +80,8 @@
 	  color: #0d0d0d;
 	  border-bottom: 2px solid #5fbae9;
 	}
-	
-	
+		
 	/* FORM TYPOGRAPHY*/
-	
-	 
 	
 	input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover  {
 	  background-color: #39ace7;
@@ -122,8 +114,7 @@
 	  -o-transition: all 0.5s ease-in-out;
 	  transition: all 0.5s ease-in-out;
 	  -webkit-border-radius: 5px 5px 5px 5px;
-	  border-radius: 5px 5px 5px 5px;
-	  
+	  border-radius: 5px 5px 5px 5px;	  
 	}
 	
 	input[type=text],input[type=password]:focus {
@@ -227,12 +218,10 @@
 	  background-color: #56baed;
 	  content: "";
 	  transition: width 0.2s;
-
 	}
 	
 	.underlineHover:hover {
-	  color: #0d0d0d;
-	  	 
+	  color: #0d0d0d;	  	 
 	}
 
 	.underlineHover {
@@ -257,12 +246,14 @@
 	{
 		position:relative;
 	}
+
 	#userName, #password
 	{
 		border: 1px solid #C0C0C0;
 		border-radius: 4px;
 		padding: 15px;
 	}
+
 	label
 	{
 		position: absolute;
@@ -303,23 +294,23 @@
 			<cfelse> 
 				<cfinput type="text" id="userName" class="second" name="userName" value="" required="yes" placeholder="Email">				
 			</cfif> 
-			<span id="errorEmailText" style="display:none;margin-left:45;font-size:12px;" align="left">Enter an email</span>
+			<span id="errorEmailText" style="display:none;margin-left:45;font-size:12px;" align="left"><image src="/ordertracker/images/errorimage.PNG">Enter an email</span>
 		  </div>
  
 		  <div style="padding-top:20px;">		 
 			<label id="labelpassword" style="display: none;">Password</label>
 			 <cfif IsDefined("cookie.rememberme") and cookie.rememberme eq "Yes">
-				<cfinput type="password" id="password" class="second" name="password" value="#cookie.password#" placeholder="Password">
+				<cfinput type="password" id="password" class="second" name="password" value="#cookie.password#" placeholder="Password" >
 			<cfelse>
-				<cfinput type="password" id="password" class="second" name="password" required="yes" placeholder="Password">
+				<cfinput type="password" id="password" class="second" name="password" required="yes" placeholder="Password" >
 			 </cfif>
-			 <span id="errorPasswordText" style="display:none;margin-left:45;font-size:12px;" align="left">Enter a password</span>
+			 <span id="errorPasswordText" style="display:none;margin-left:45;font-size:12px;" align="left"><image src="/ordertracker/images/errorimage.PNG">Enter a password</span>
 		  </div>
 		  <div  class="row" style="padding-top:4px;margin-left:20px;margin-left:-100px;">	
 			<cfif isdefined("url.err") and url.err eq 1>
-				<image src="/ordertracker/images/errorimage.PNG"><font color="red" size="2px;">Please enter correct email and password</font>
+				<image src="/ordertracker/images/errorimage.PNG"><font color="red" size="2px;" ><span id="errmessage">Please enter correct email and password</span></font>
 			<cfelseif isdefined("url.err") and url.err eq 2>
-				<image src="/ordertracker/images/errorimage.PNG"><font color="red" size="2px;">Couldn't find your Order Tracker Account</font>
+				<image src="/ordertracker/images/errorimage.PNG"><font color="red" size="2px;" ><span id="errmessage">Couldn't find your Order Tracker Account</span></font>
 			</cfif>	
 		  </div>	 
 		<div  class="row" style="padding-top:5px;">		 
@@ -344,9 +335,18 @@
 </cfoutput>
 <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/jquery.inputmask.bundle.js"></script>
 <script>
-   $(document).ready(function(){       
-           $('#btnsubmit').click(function(){	
+   $(document).ready(function(){ 
+	   if($("#errmessage").is(":visible") === true)      
+	   {
+		   $("#userName").css('border','1px solid red');
+			$("#userName").attr("placeholder",'');
+			$("#labelEmail").css({'color':'red','display':'block'});
+			$("#password").css('border','1px solid red');
+			$("#password").attr("placeholder",'');
+			$("#labelpassword").css({'color':'red','display':'block'});
+	   }	  
 
+    $('#btnsubmit').click(function(){	
 			 if ($("#password").val() == "" && 	$("#userName").val() == "")
 			 {
 				 $("#password").css('border-color', 'red');		
@@ -372,45 +372,87 @@
     });	 
 
 	$("#userName").focusin(function(){  
-
-		$("#userName").css('border','1px solid #0095ff');
-		$("#userName").attr("placeholder",'');
-		$("#labelEmail").css({'color':'#0095ff','display':'block'});
-		
+		if($("#errorEmailText").is(":visible") === true || $("#errmessage").is(":visible") === true)
+		{
+			$("#userName").css('border','1px solid red');
+			$("#userName").attr("placeholder",'');
+			$("#labelEmail").css({'color':'red','display':'block'});
+		}	
+		else
+		{
+			$("#userName").css('border','1px solid #0095ff');
+			$("#userName").attr("placeholder",'');
+			$("#labelEmail").css({'color':'#0095ff','display':'block'});
+		}		
 	});
 
 	$("#password").focusin(function(){  
-
-		$("#password").css('border','1px solid #0095ff');
-		$("#password").attr("placeholder",'');
-		$("#labelpassword").css({'color':'#0095ff','display':'block'});
-		
-	});
-
-	$("#userName").focusout(function(){  
-		$("#userName").css('border','1px solid #C0C0C0');
-		if($("#userName").val() === ''){
-			$("#labelEmail").css({'color':'#C0C0C0','display':'none'});
-		}
-		else{
-			$("#labelEmail").css({'color':'#C0C0C0','display':'block'});
-		}
-		$("#userName").attr("placeholder",'Email');
-		
-	});
-
-	$("#password").focusout(function(){  
-
-		$("#password").css('border','1px solid #C0C0C0');
-		if($("#password").val() === '')
+		if($("#errorPasswordText").is(":visible") === true || $("#errmessage").is(":visible") === true)
 		{
-			$("#labelpassword").css({'color':'#C0C0C0','display':'none'});
+			$("#password").css('border','1px solid red');
+			$("#password").attr("placeholder",'');
+			$("#labelpassword").css({'color':'red','display':'block'});
 		}
 		else
 		{
-			$("#labelpassword").css({'color':'#C0C0C0','display':'block'});
+			$("#password").css('border','1px solid #0095ff');
+			$("#password").attr("placeholder",'');
+			$("#labelpassword").css({'color':'#0095ff','display':'block'});
+		}		
+	});
+
+	$("#userName").focusout(function(){  
+		if($("#errorEmailText").is(":visible") === true || $("#errmessage").is(":visible") === true)
+		{
+			$("#userName").css('border','1px solid red');
+			if($("#userName").val() === ''){
+				$("#labelEmail").css({'color':'red','display':'none'});
+			}
+			else{
+				$("#labelEmail").css({'color':'red','display':'block'});
+			}
+			$("#userName").attr("placeholder",'Email');	
 		}
-		$("#password").attr("placeholder",'Password');
+		else
+		{
+			$("#userName").css('border','1px solid #C0C0C0');
+			if($("#userName").val() === ''){
+				$("#labelEmail").css({'color':'#C0C0C0','display':'none'});
+			}
+			else{
+				$("#labelEmail").css({'color':'#C0C0C0','display':'block'});
+			}
+			$("#userName").attr("placeholder",'Email');	
+		}	
+	});
+
+	$("#password").focusout(function(){  
+		if($("#errorPasswordText").is(":visible") === true || $("#errmessage").is(":visible") === true)
+		{
+			$("#password").css('border','1px solid red');
+			if($("#password").val() === '')
+			{
+				$("#labelpassword").css({'color':'red','display':'none'});
+			}
+			else
+			{
+				$("#labelpassword").css({'color':'red','display':'block'});
+			}
+			$("#password").attr("placeholder",'Password');
+		}
+		else
+		{
+			$("#password").css('border','1px solid #C0C0C0');
+			if($("#password").val() === '')
+			{
+				$("#labelpassword").css({'color':'#C0C0C0','display':'none'});
+			}
+			else
+			{
+				$("#labelpassword").css({'color':'#C0C0C0','display':'block'});
+			}
+			$("#password").attr("placeholder",'Password');
+		}		
 	});
 
 	$("#rememberme").click(function(){
@@ -418,8 +460,7 @@
 			$("#password").val('');
 			$("#userName").val('');
 		}
-	});
-   
+	});   
 });
 </script> 
 
