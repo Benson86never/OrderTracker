@@ -340,6 +340,7 @@ label
           <input type="password" class="form-control inputelement" id="cpassword" placeholder="Confirm Password" name="cpassword" value="" autocomplete="off" required minlength="8">
           <label id="labelcPassword" style="display:none;">Confirm Password</label>    
           <span id="errorcPasswordText" style="display:none;margin-left:45px;font-size:12px;" align="left"><image src="/ordertracker/images/errorimage.PNG">Enter a Confirm Password</span>
+          <span id="errorMessage" style="display:none;margin-left:45px;font-size:12px;" align="left"><image src="/ordertracker/images/errorimage.PNG">Password and Confirm Password should be same.</span>
     </div> 
     <div style="padding-top:20px;">
      <input type="button" class="btn btn-success" value="Submit" name="save" id="save" style="background-color:##1a73e8;">         

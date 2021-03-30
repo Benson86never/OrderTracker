@@ -1,5 +1,5 @@
 <cfoutput>
-    <div class = "col-xs-12 sectionHeader" >
+    <div class = "col-xs-12 sectionHeader" style="font-size:22px;margin-left:360px;padding-top:40px;">
       Manage Business
     </div>
     <div class="container table-responsive">
@@ -7,12 +7,12 @@
         <thead>
           <tr>
               <th style="display:none;">&nbsp;</th>
-              <th>Business Name</th>
-              <th class="hidden-xs">Email</th>
-              <th class="hidden-xs hidden-sm">Mobile Number</th>
-              <th class="hidden-xs hidden-sm">Zip</th>
-              <th class="hidden-xs hidden-sm">City</th>
-              <th class="hidden-xs hidden-sm">State</th>
+              <th style="text-align:center;">Business Name</th>
+              <th class="hidden-xs" style="text-align:center;">Email</th>
+              <th class="hidden-xs hidden-sm" style="text-align:center;">Mobile Number</th>
+              <th class="hidden-xs hidden-sm" style="text-align:center;">Zip</th>
+              <th class="hidden-xs hidden-sm" style="text-align:center;">City</th>
+              <th class="hidden-xs hidden-sm" style="text-align:center;">State</th>
               <th class="no-sort text-center">              
                 Action
                 <cfif session.secure.rolecode eq 1>

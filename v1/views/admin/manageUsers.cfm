@@ -1,16 +1,16 @@
 <cfoutput>
-    <div class = "col-xs-12 sectionHeader">
-      Manage Users
+    <div class = "col-xs-12 sectionHeader" style="font-size:22px;margin-left:360px;padding-top:40px;">
+     Manage Users
     </div>
     <div class="container table-responsive">
       <table class="table table-bordered table-hover table-striped" cellspacing = "0" id="sortTable">
         <thead>
           <tr>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th class="hidden-xs">Email</th>
-              <th class="hidden-xs hidden-sm">Business</th>
-              <th class="hidden-xs hidden-sm">Type</th>
+              <th style="text-align:center;">First Name</th>
+              <th style="text-align:center;">Last Name</th>
+              <th class="hidden-xs" style="text-align:center;">Email</th>
+              <th class="hidden-xs hidden-sm" style="text-align:center;">Business</th>
+              <th class="hidden-xs hidden-sm" style="text-align:center;">Type</th>
               <th class="no-sort text-center">
                 Action
                 <a class="btn btn-success" href="index.cfm?action=admin.adduser<cfif isdefined("url.businessid")>&businessid=#url.businessid#</cfif>">

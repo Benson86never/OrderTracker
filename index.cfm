@@ -290,13 +290,12 @@
 		  <div style="padding-top:20px;">
 			<label id="labelEmail" style="display: none;">Email</label>
 			 <cfif isdefined("cookie.rememberme") and cookie.rememberme eq "Yes">
-				<cfinput type="text" id="userName" class="second" name="userName" value="#cookie.userName#" placeholder="Email">			
+				<cfinput type="text" id="userName" class="second" name="userName" value="#cookie.userName#" placeholder="Email"  >			
 			<cfelse> 
-				<cfinput type="text" id="userName" class="second" name="userName" value="" required="yes" placeholder="Email">				
+				<cfinput type="text" id="userName" class="second" name="userName" value="" required="yes" placeholder="Email" >				
 			</cfif> 
 			<span id="errorEmailText" style="display:none;margin-left:45;font-size:12px;" align="left"><image src="images/errorimage.PNG">Enter an email</span>
-		  </div>
- 
+		  </div> 
 		  <div style="padding-top:20px;">		 
 			<label id="labelpassword" style="display: none;">Password</label>
 			 <cfif IsDefined("cookie.rememberme") and cookie.rememberme eq "Yes">
