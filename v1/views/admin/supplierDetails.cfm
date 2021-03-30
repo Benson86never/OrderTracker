@@ -34,11 +34,6 @@
   table.table tr th, table.table tr td {
       border-color: #e9e9e9;
   }
-  table.table th i {
-      font-size: 13px;
-      margin: 0 5px;
-      cursor: pointer;
-  }
   table.table th:last-child {
       width: 100px;
   }
@@ -56,12 +51,6 @@
   }
   table.table td i {
       font-size: 19px;
-  }  
-  table.table .form-control {
-      height: 32px;
-      line-height: 32px;
-      box-shadow: none;
-      border-radius: 2px;
   }
   table.table .form-control.error {
       border-color: #f50000;
@@ -69,15 +58,29 @@
   table.table td .add, table.listtable td .addlist {
       display: none;
   }
+  .save, .cancel {
+    display: none;
+  }
   .addlist {
       display: none;
-      margin-left: 10px;
+      margin-left: 8px;
   }
   input[type="text"] {
     width: 90%;
   }
-  </style>
-
+  table.table td {
+    font-weight: normal;
+  }
+  .ui-menu .ui-menu-item{
+    padding: 2px !important;
+  }
+  .ui-state-focus{
+    background-color : #efefef !important;
+  }
+  .editlist {
+    margin-left: 5px;
+  }
+</style>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
   <div class="panel panel-default">
@@ -94,11 +97,18 @@
                       </div>
                   </div>
               </div>
-              <table class="table table-bordered">
+              <table class="table table-bordered" cellspacing="0">
                   <thead>
                       <tr>
-                          <th>Name</th>
-                          <!--- <th>Actions</th>--->
+                          <th style="width:60%">Name</th>
+                          <th style="width:40%">
+                            <div class="col-md-8">Seller</div>
+                            <div class="col-md-2 text-right">
+                              <a class="saveseller btn btn-success" title="Save" >
+                                <i class="fa fa-save"></i>
+                              </a>
+                            </div>
+                          </th>
                       </tr>
                   </thead>
                   <tbody>
@@ -106,10 +116,18 @@
                       <cfloop array="#rc.supplierDetails#" item="supplier">
                         <tr>
                             <td>#supplier.name#</td>
-                           <!---  <td>
-                               <a class="add" id="#supplier.id#" title="Add" ><i class="fa fa-plus"></i></a>
-                                <a class="delete" id="#supplier.id#" title="Delete" ><i class="fa fa-trash"></i></a>
-                            </td>--->
+                            <td>
+                              <cfif arraylen(supplier.seller)>
+                                <cfloop array="#supplier.seller#" index="sellerindex" item="seller">
+                                  <input type="text" class="form-control inputelement seller" target="sellerid_#supplier.id#_#sellerindex#" id="seller_#supplier.id#" value="#seller.name#"/>
+                                  <input type="hidden" name="sellerid_#supplier.id#_#sellerindex#" id="sellerid_#supplier.id#_#sellerindex#" value="#seller.id#">
+                                </cfloop>
+                              <cfelse>
+                                <input type="text" class="form-control inputelement seller" target="sellerid_#supplier.id#_1" 
+                                    id="seller_#supplier.id#_1" />
+                                <input type="hidden" name="sellerid_#supplier.id#_1" id="sellerid_#supplier.id#_1" value="">
+                              </cfif>
+                            </td>
                         </tr>
                       </cfloop>
                     </cfoutput>
@@ -120,64 +138,3 @@
   </div>     
   </div>
 </div>
-<script>
-  $(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-    var actions = $("table td:last-child").html();
-    // Append table with add row form on add new button click
-      $(".add-new").click(function(){
-      $(this).attr("disabled", "disabled");
-      var index = $("table tbody tr:last-child").index();
-          var row = '<tr>' +
-              '<td><input type="text" class="form-control" name="name" id="name"></td>' +
-        '<td>' + actions + '</td>' +
-          '</tr>';
-        $("table").append(row);		
-        $("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
-      });
-    // Add row on add button click
-    $(document).on("click", ".add", function(){
-      var empty = false;
-      var input = $(this).parents("tr").find('input[type="text"]');
-          input.each(function(){
-        if(!$(this).val()){
-          $(this).addClass("error");
-          empty = true;
-        } else{
-                  $(this).removeClass("error");
-              }
-      });
-      $(this).parents("tr").find(".error").first().focus();
-      if(!empty){
-        input.each(function(){
-          $(this).parent("td").html($(this).val());
-        });
-        $(this).parents("tr").find(".add, .edit").toggle();
-        $(".add-new").removeAttr("disabled");
-        $.ajax({
-          url: '../v1/model/services/admin.cfc?method=addSupplier',
-          type: 'post',
-          data: {
-            name : $(this).val()
-          },
-          success: function(data){
-            location.reload();
-          }
-        });
-      }		
-    });
-    // Edit row on edit button click
-    $(document).on("click", ".edit", function(){		
-          $(this).parents("tr").find("td:not(:last-child)").each(function(){
-        $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
-      });		
-      $(this).parents("tr").find(".add, .edit").toggle();
-      $(".add-new").attr("disabled", "disabled");
-      });
-    // Delete row on delete button click
-    $(document).on("click", ".delete", function(){
-          $(this).parents("tr").remove();
-      $(".add-new").removeAttr("disabled");
-      });
-  });
-  </script>

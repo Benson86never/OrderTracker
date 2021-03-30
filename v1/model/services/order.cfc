@@ -114,13 +114,18 @@ component  {
     
   }
   public any function getOpenOrders(
-    integer checkedin = 0
+    integer checkedin = 0,
+    integer businessid = 0
   ){
     try {
       local.result = {
         'error' : false,
         'errorMsg' : '',
         'openOrders' : []
+      }
+      local.condition = "";
+      if(val(arguments.businessId) > 0) {
+        local.condition &= "AND P.BusinessId = #arguments.businessId#";
       }
       local.getOpenOrders = queryExecute("
         SELECT
@@ -136,6 +141,7 @@ component  {
             INNER JOIN person P ON P.personId = O.personId
           WHERE
             O.checkedin = :checkedin
+            #local.condition#
           ORDER BY dateTime DESC
       ",{
           checkedin = {cfsqltype = "integer", value = arguments.checkedin}
@@ -382,12 +388,18 @@ component  {
     
   }
 
-  public any function sendOrders(){
+  public any function sendOrders(
+    numeric businessId = 0
+  ){
     try {
       local.result = {
         'error' : false,
         'errorMsg' : '',
         'orders' : []
+      }
+      local.condition = "";
+      if(val(arguments.businessId) > 0) {
+        local.condition &= "AND P.BusinessId = #arguments.businessId#";
       }
       local.getOrders = queryExecute("
         SELECT
@@ -401,15 +413,10 @@ component  {
           I.sku AS sku,
           U.name AS unitName,
           S.name AS supplierName,
-          B.businessName,
-          Rep.firstname,
-          Rep.lastname,
-          Rep.email
+          B.businessName
           FROM
             orders O
             INNER JOIN supplier S ON S.supplierId = O.supplierId
-            INNER JOIN joinsuppliertoperson JSP ON JSP.supplierId = S.supplierId
-            INNER JOIN person Rep ON Rep.personId = JSP.personId
             INNER JOIN person P ON P.personId = O.personId
             INNER JOIN business B ON B.businessId = P.businessId
             INNER JOIN joinordertoitem JOI ON JOI.OrderID = O.OrderID
@@ -417,6 +424,7 @@ component  {
             INNER JOIN Units U ON U.UnitID = I.UnitID
           WHERE
             O.closed = 0
+            #local.condition#
           ORDER BY supplierId DESC
       ",{},{datasource: application.dsn}
       );
@@ -425,9 +433,31 @@ component  {
         local.details['orderId'] = local.getOrders.orderId;
         local.details['supplierId'] = local.getOrders.supplierId;
         local.details['supplierName'] = local.getOrders.supplierName;
-        local.details['firstname'] = local.getOrders.firstname;
-        local.details['lastname'] = local.getOrders.lastname;
-        local.details['email'] = local.getOrders.email;
+        local.getreps = queryExecute("
+          SELECT
+            Rep.firstname,
+            Rep.lastname,
+            Rep.email
+            FROM
+              joinsuppliertoperson JSP
+              INNER JOIN person Rep ON Rep.personId = JSP.personId
+            WHERE
+              JSP.supplierId = :supplierId
+              AND JSP.businessId = :businessId
+            ORDER BY supplierId DESC
+          ",{
+            supplierId = {cfsqltype = "integer", value = local.getOrders.supplierId},
+            businessId = {cfsqltype = "integer", value = arguments.businessId}
+          },{datasource: application.dsn}
+        );
+        local.details['reps'] = [];
+        cfloop(query="local.getreps") {
+          local.repDetails = {};
+          local.repDetails['firstname'] = local.getreps.firstname;
+          local.repDetails['lastname'] = local.getreps.lastname;
+          local.repDetails['email'] = local.getreps.email;
+          arrayAppend(local.details['reps'], local.repDetails)
+        }
         local.details['items'] = [];
         cfloop() { 
           local.itemDetails = {};

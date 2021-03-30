@@ -1,6 +1,7 @@
 <cfinclude template="includes/secure.cfm" >
 <cfset orders = CreateObject("Component","v1.model.services.order").getOpenOrders(
-		checkedIn = 0).openOrders>
+		checkedIn = 0,
+		businessId = session.secure.subaccount).openOrders>
 <style>
 	.orders{
 		padding: 10px;
@@ -14,20 +15,24 @@
 	Open Orders
 </div>
 <div class="page-content">
-	<cfloop array="#Orders#" index="order">
-		<cfoutput>
-			<cfif order.closed eq 1>
-				<div class="orders">
-					#order.id#-<a href="order_detail.cfm?orderid=#order.id#&supplier=#order.supplierName#" class="text-success">
-						#order.supplierName# - #dateTimeFormat(order.dateTime,"m/d/y h:nn:ss tt")# - #order.email#</a>
-				</div>
-			<cfelse>
-				<div class="orders">
-					#order.id#-<a href="order_detail.cfm?orderid=#order.id#&supplier=#order.supplierName#" class="text-danger">
-						#order.supplierName# - #dateTimeFormat(order.dateTime,"m/d/y h:nn:ss tt")# - #order.email#</a><br />
-				</div>
-			</cfif>
-		</cfoutput>
-	</cfloop>
+	<cfif arraylen(orders)>
+		<cfloop array="#Orders#" index="order">
+			<cfoutput>
+				<cfif order.closed eq 1>
+					<div class="orders">
+						#order.id#-<a href="order_detail.cfm?orderid=#order.id#&supplier=#order.supplierName#" class="text-success">
+							#order.supplierName# - #dateTimeFormat(order.dateTime,"m/d/y h:nn:ss tt")# - #order.email#</a>
+					</div>
+				<cfelse>
+					<div class="orders">
+						#order.id#-<a href="order_detail.cfm?orderid=#order.id#&supplier=#order.supplierName#" class="text-danger">
+							#order.supplierName# - #dateTimeFormat(order.dateTime,"m/d/y h:nn:ss tt")# - #order.email#</a><br />
+					</div>
+				</cfif>
+			</cfoutput>
+		</cfloop>
+	<cfelse>
+		No orders.
+	</cfif>
 </div>
 <cfinclude template="includes/footer.cfm" >

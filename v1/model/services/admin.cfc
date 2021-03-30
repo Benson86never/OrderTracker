@@ -2,20 +2,24 @@ component  extends ="business" {
   public any function getUserDetails(
     numeric includeActiveOnly = 0,
     numeric userId = 0,
-    string businessId = 0
+    string businessId = 0,
+    numeric includeSupplierOnly = 0
   ){
     local.result = {'error' : false};
     local.users = [];
     local.condition = "";
     if(arguments.includeActiveOnly) {
-      local.condition = "AND P.active = 1";
+      local.condition = " AND P.active = 1";
+    }
+    if(arguments.includeSupplierOnly) {
+      local.condition = " AND P.type = 3";
     }
     if(val(arguments.userId) > 0 ) {
-      local.condition &= "AND P.personId = #arguments.userId#";
+      local.condition &= " AND P.personId = #arguments.userId#";
     }
     local.businessId = decrypt(arguments.BusinessId, application.uEncryptKey, "BLOWFISH", "Hex");
     if(val(local.businessId) > 0) {
-      local.condition &= "AND P.businessId = #local.businessId#";
+      local.condition &= " AND P.businessId = #local.businessId#";
     }
     local.userDetails = queryExecute("
       SELECT
@@ -168,7 +172,7 @@ component  extends ="business" {
             account_active = 0,
             active = {cfsqltype = "varchar", value = arguments.userDetails.active},
             businessId = {cfsqltype = "integer", value = arguments.userDetails.business},
-            PhoneExtension = {cfsqltype = "varchar", value = arguments.userDetails.PhoneExtension}
+            PhoneExtension = {cfsqltype = "varchar", value = arguments.userDetails.PhoneExtension, null= NOT len(arguments.userDetails.PhoneExtension)}
           },{datasource: application.dsn, result="local.userresult"}
         );
       local.personDetails = queryExecute("
@@ -638,7 +642,7 @@ public any function sendQuery(
     } catch (any e){
       //writeDump(arguments);
       writeDump(e);abort;
-    }   
+    }
   }
 
   public any function sendTroubleQuery(
@@ -648,7 +652,7 @@ public any function sendQuery(
       local.result = {
         'error' : false,
         'errorMsg' : ''
-      }     
+  }
       local.checkuserDetails = queryExecute("
         SELECT
           P.personId,
@@ -681,17 +685,17 @@ public any function sendQuery(
         mail.setSubject( "Trouble Logging In" );
         mail.setTo( local.checkbusinessDetails.email);
         mail.setFrom( arguments.userDetails.email );
-      
+
         // Add email body content in text and HTML formats
        mail.addPart( type="text", charset="utf-8", wraptext="72", body="Trouble Logging In" ); 
        mail.addPart( type="html", charset="utf-8", body="#reReplace(arguments.userDetails.description, '\n', '<br />', 'ALL')#" );
-      
+
         // Send the email
         mail.send();     
       return local.result;
     } catch (any e){
       //writeDump(arguments);
       writeDump(e);abort;
-    }   
+}
   }
 }
