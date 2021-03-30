@@ -294,7 +294,7 @@
 			<cfelse> 
 				<cfinput type="text" id="userName" class="second" name="userName" value="" required="yes" placeholder="Email">				
 			</cfif> 
-			<span id="errorEmailText" style="display:none;margin-left:45;font-size:12px;" align="left"><image src="/ordertracker/images/errorimage.PNG">Enter an email</span>
+			<span id="errorEmailText" style="display:none;margin-left:45;font-size:12px;" align="left"><image src="images/errorimage.PNG">Enter an email</span>
 		  </div>
  
 		  <div style="padding-top:20px;">		 
@@ -304,13 +304,13 @@
 			<cfelse>
 				<cfinput type="password" id="password" class="second" name="password" required="yes" placeholder="Password" >
 			 </cfif>
-			 <span id="errorPasswordText" style="display:none;margin-left:45;font-size:12px;" align="left"><image src="/ordertracker/images/errorimage.PNG">Enter a password</span>
+			 <span id="errorPasswordText" style="display:none;margin-left:45;font-size:12px;" align="left"><image src="images/errorimage.PNG">Enter a password</span>
 		  </div>
 		  <div  class="row" style="padding-top:4px;margin-left:20px;margin-left:-100px;">	
 			<cfif isdefined("url.err") and url.err eq 1>
-				<image src="/ordertracker/images/errorimage.PNG"><font color="red" size="2px;" ><span id="errmessage">Please enter correct email and password</span></font>
+				<image src="images/errorimage.PNG"><font color="red" size="2px;" ><span id="errmessage">Please enter correct email and password</span></font>
 			<cfelseif isdefined("url.err") and url.err eq 2>
-				<image src="/ordertracker/images/errorimage.PNG"><font color="red" size="2px;" ><span id="errmessage">Couldn't find your Order Tracker Account</span></font>
+				<image src="images/errorimage.PNG"><font color="red" size="2px;" ><span id="errmessage">Couldn't find your Order Tracker Account</span></font>
 			</cfif>	
 		  </div>	 
 		<div  class="row" style="padding-top:5px;">		 
@@ -318,12 +318,12 @@
 				<input type="checkbox" name="rememberme" id="rememberme" value="Yes" <cfif IsDefined("cookie.rememberme") and cookie.rememberme eq "Yes">CHECKED</cfif> ><span id="rememberme" >&nbsp;Remember Me</span> 					
 				</div>
 				<div class="col-md-4 text-right" style="margin-left:15px;">
-				<a class="underlineHover" href="v1/index.cfm?action=admin.forgotpassword"  >Forgot Password?</a>					
+				<a class="underlineHover" href="v1/index.cfm?action=admin.forgotpassword" >Forgot Password?</a>					
 				</div>
 		</div>
 		<div  class="row" style="padding-top:25px;">
 			<input type="button" class="btn btn-info" value="Login" name="btnsubmit" id="btnsubmit" style="background-color:##1a73e8;">
-		  			<input type="submit" value="Login" name="submit"  id="submit" style="display:none;">
+		  	<input type="submit" value="Login" name="submit"  id="submit" style="display:none;">
 		</div>
 		</cfform>
 		<!-- Remind Passowrd -->
@@ -352,18 +352,20 @@
 				 $("#password").css('border-color', 'red');		
 				 $("#userName").css('border-color', 'red');		
 				 $("#errorPasswordText").css({'color':'red','display':'block'});	
-				  $("#errorEmailText").css({'color':'red','display':'block'});	
+				 $("#errorEmailText").css({'color':'red','display':'block'});	
 			}			 
 			else if( $("#password").val() == "" )
 			{ 
 				 $("#password").css('border-color', 'red');	
-				 $("#errorPasswordText").css({'color':'red','display':'block'});	
+				 $("#errorPasswordText").css({'color':'red','display':'block'});
+				 $("#password").focus();	
 				 	
 			}
 			else if ($("#userName").val() == "")
 			{			
 				 $("#userName").css('border-color', 'red');	
 			     $("#errorEmailText").css({'color':'red','display':'block'});
+				  $("#userName").focus();	
 			}  
 			else
 		   {

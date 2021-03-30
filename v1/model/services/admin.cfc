@@ -578,7 +578,7 @@ component  extends ="business" {
         mail.send();
       } else { 
         local.result['error']  = true;
-        local.result['errorMsg'] = 'User with this email already avaialble.';
+        local.result['errorMsg'] = 'Couldnt find your Order Tracker Account';
       }
       return local.result;
     } catch (any e){

@@ -1,4 +1,5 @@
 
+
 <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/jquery.inputmask.bundle.js"></script>
 <script>
 $(document).ready(function(){
@@ -8,17 +9,18 @@ $(document).ready(function(){
         var dynamicFields = "Below fields are missing: <br/><br/>"
         if( $("#Email").val() === "" || ($("#Email").val() !== "" && emailRegex === false) )
         {
-              dynamicFields += ($("#Email").val() === "" ? "Please enter Email <br/>" : "");
+            dynamicFields += ($("#Email").val() === "" ? "Please enter Email <br/>" : "");
             dynamicFields += (emailRegex === false && $("#Email").val() !== ""? "Please enter correct email <br/>" : "");
         }
-       if(dynamicFields === "Below fields are missing: <br/><br/>"){
+       if(dynamicFields === "Below fields are missing: <br/><br/>")
+       {
            $('#formSubmit').submit();
        }
-       else{
-          				
+       else
+       {          				
 				 $("#Email").css('border-color', 'red');	
-			     $("#errorEmailText").css({'color':'red','display':'block'});
-			
+			     $("#errorEmailText").css({'color':'red','display':'block'});	
+                 $("#Email").focus();
        }
     });
 
@@ -34,18 +36,53 @@ $(document).ready(function(){
    
    $("#Email").focusin(function(){  
 
-		$("#Email").css('border','1px solid #0095ff');
-		$("#Email").attr("placeholder",'');
-		$("#labelEmail").css({'color':'#0095ff','display':'block'});
-		
+        if($("#errorEmailText").is(":visible") === true || $("#errmessage").is(":visible") === true)
+        {
+	    	$("#Email").css('border','1px solid red');
+	    	$("#Email").attr("placeholder",'');
+	    	$("#labelEmail").css({'color':'red','display':'block'});
+        }
+        else
+        {
+        	$("#Email").css('border','1px solid #0095ff');
+		    $("#Email").attr("placeholder",'');
+		    $("#labelEmail").css({'color':'#0095ff','display':'block'});
+        }		
 	});
 
-$("#Email").focusout(function(){  
-		$("#Email").css('border','1px solid #C0C0C0');
-		$("#labelEmail").css({'color':'#C0C0C0','display':'none'});
-		$("#Email").attr("placeholder",'Email');
-		
+    $("#Email").focusout(function(){  
+        if($("#errorEmailText").is(":visible") === true || $("#errmessage").is(":visible") === true)
+        {
+		    $("#Email").css('border','1px solid red');
+            if($("#Email").val() === ''){
+				$("#labelEmail").css({'color':'red','display':'none'});
+			}
+			else{
+				$("#labelEmail").css({'color':'red','display':'block'});
+			}
+		    $("#Email").attr("placeholder",'Email');
+        }
+        else
+        {
+            $("#Email").css('border','1px solid #C0C0C0');
+		    if($("#Email").val() === ''){
+				$("#labelEmail").css({'color':'#C0C0C0','display':'none'});
+			}
+			else{
+				$("#labelEmail").css({'color':'#C0C0C0','display':'block'});
+			}
+		    $("#Email").attr("placeholder",'Email');
+        }		
 	});
+
+       if($("#errmessage").is(":visible") === true)      
+	   {
+		   $("#Email").css('border','1px solid red');
+			$("#Email").attr("placeholder",'');
+			$("#labelEmail").css({'color':'red','display':'block'});
+		    $("#Email").focus();
+	   }	
+
 });
 
 

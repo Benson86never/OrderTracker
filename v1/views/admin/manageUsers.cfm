@@ -13,7 +13,7 @@
               <th class="hidden-xs hidden-sm">Type</th>
               <th class="no-sort text-center">
                 Action
-                <a class="btn btn-success" href="index.cfm?action=admin.adduser">
+                <a class="btn btn-success" href="index.cfm?action=admin.adduser<cfif isdefined("url.businessid")>&businessid=#url.businessid#</cfif>">
                   <i class="fa fa-plus" aria-hidden="true"></i>
                 </a>
               </th>

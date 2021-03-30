@@ -74,7 +74,7 @@ h2.active {
 /* FORM TYPOGRAPHY*/
 
 input[type=button], input[type=submit], input[type=reset]  {
-  background-color: #56baed;
+  background-color: #1a73e8;;
   border: none;
   color: white;
   padding: 12px 12px;
@@ -272,6 +272,7 @@ label
   padding-left: 3px;
   padding-right: 3px;
   font-weight: normal;
+
 }
   </style>
 <cfoutput> 
@@ -280,25 +281,27 @@ label
   <!-- Tabs Titles -->
 
   <!-- Icon -->
-  <div class="first">
-    
+  <div class="first">    
   </div>
-
   <!-- Login Form -->
-  <form method = "post" id="formSubmit" name="formSubmit" >
+  <cfform method = "post" id="formSubmit" name="formSubmit" >
     <div style="font-size: 20px !important;padding: 30px;color:##767272">
     Forgot Password
     </div>    
-    <div style="padding-top:20px;">
-    
+    <div style="padding-top:20px;">    
     <input type="text" id="Email" class="second" name="Email" placeholder="Email" >
-    <label id="labelEmail" style="display:none;">Email</label>
-    <span id="errorEmailText" style="display:none;font-size:12px;" >Enter an email</span>
+    <label id="labelEmail" style="display:none;">Email</label>    
+    <span id="errorEmailText" style="display:none;margin-left:45px;font-size:12px;" align="left"><image src="/ordertracker/images/errorimage.PNG">Enter an email</span>       
+    </div>
+    <div>
+    <cfif isdefined("url.err") and url.err eq 1>
+       <image src="/ordertracker/images/errorimage.PNG"><font color="red" size="2px;" ><span id="errmessage">Couldn't find your Order Tracker Account</span></font>
+    </cfif> 
     </div>
     <div style="padding-top:20px;">
-    <input type="button" class="btn btn-info" value="Submit" name="save" id="save">
+    <input type="button" class="btn btn-info" value="Submit" name="save" id="save" style="background-color:##1a73e8;">
     </div>
-  </form>
+  </cfform>
   </div>
 </div>
 </cfoutput>

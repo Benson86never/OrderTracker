@@ -98,11 +98,18 @@ component accessors="true" {
 
     public void function forgotpassword()
     {           
-      if(structKeyExists(form, 'EMAIL')) {
-        session.userResult = adminService.forgotpassword(userDetails = form);
-       if(isDefined("session.userResult.errorMsg") && session.userResult.errorMsg == ""){
-          location("../login_ctrl.cfm?action=logout", false);
-       }
+      if(structKeyExists(form, 'EMAIL')) 
+      {
+           session.userResult = adminService.forgotpassword(userDetails = form);
+          
+         if(isDefined("session.userResult.errorMsg") && session.userResult.errorMsg == "")
+         {
+           location("../login_ctrl.cfm?action=logout", false);
+         }
+         else if(isDefined("session.userResult.error") && session.userResult.error == "true")
+         {
+           location("../v1/index.cfm?action=admin.forgotpassword&err=1", false);
+         }
       } 
     }
 

@@ -225,7 +225,7 @@ component  {
         joinmasteraccounttosupplier JS
         INNER JOIN supplier S ON S.SupplierID = JS.SupplierID
       WHERE
-        js.BusinessId = :businessId
+        BusinessId = :businessId
       ",{
         businessId = {cfsqltype = "integer", value = arguments.BusinessId}
       },{datasource: application.dsn}

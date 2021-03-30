@@ -76,7 +76,7 @@ input[type=button], input[type=submit], input[type=reset]  {
   background-color: #56baed;
   border: none;
   color: white;
-  padding: 15px 80px;
+  padding: 12px 12px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -107,16 +107,16 @@ input[type=button]:active, input[type=submit]:active, input[type=reset]:active  
 }
 
 input[type=text],input[type=password] {
-  background-color: #f6f6f6;
+
   border: none;
   color: #0d0d0d;
-  padding: 11px 32px;
+  padding: 15px;
   text-align: left important!;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
   margin: 5px;
-  width: 80%;
+  width: 73%;
   height: 20px;
   border: 2px solid #f6f6f6;
   -webkit-transition: all 0.5s ease-in-out;
@@ -254,9 +254,9 @@ div
   top:20%;
 
 }
-#login, #password
+#login, #password, #cpassword
 {
-  border: 1px solid #0095ff;
+  border: 1px solid #C0C0C0;
   border-radius: 4px;
   
 }
@@ -268,7 +268,7 @@ label
   left: 50px;
   background: white;
   margin-top: 20px;
-  color: #0095ff;
+  color: #C0C0C0;
   padding-left: 3px;
   padding-right: 3px;
   font-weight: normal;
@@ -279,9 +279,10 @@ label
         margin-right: 6px;
         margin-top: 15px;
         position: absolute;
-        left:400px;
+        left:375px;
         z-index: 2;
         color: #807b7b;
+        cursor:pointer;
     }
   </style>
    <cfset personid = decrypt(url.userid, application.uEncryptKey, "BLOWFISH", "Hex")>
@@ -326,20 +327,22 @@ label
     </div>     
     <div style="padding-top:20px;">
     <label>Email</label>
-    <input type="text" id="Email" class="second" name="Email" autocomplete = "new-password" readonly value="#qrySelectPerson.email#">
+    <input type="text" id="Email" class="form-control inputelement" name="Email" readonly value="#qrySelectPerson.email#" style="border: 1px solid ##C0C0C0;">
     </div>
-    <div style="padding-top:20px;">
-    <label> Password<span style="color: red"><b>&nbsp;*&nbsp;<b></span></label>
-     <input type="password" class="form-control inputelement" id="password" placeholder="Enter Password" name="password" value="" autocomplete="off" required  minlength="8">
+    <div style="padding-top:20px;">   
+     <input type="password" class="form-control inputelement" id="password" placeholder="Password" name="password" value="" autocomplete="off" required  minlength="8">
           <i class="fa fa-2x fa-eye" aria-hidden="true" id="showPaasword"></i>
-           <span style="margin-top: 1%;font-size: 10px"><i>Password should contain Uppercase letters, Lowercase letters,Numbers and Symbol</i></span>       
+          <!--- <span style="margin-top: 1%;font-size: 10px;margin-left:35px;float:left;"><i>Password should contain Uppercase letters, Lowercase letters,Numbers and Symbol</i></span>  --->
+           <label id="labelPassword" style="display:none;">Password</label>    
+          <span id="errorPasswordText" style="display:none;margin-left:45px;font-size:12px;" align="left"><image src="/ordertracker/images/errorimage.PNG">Enter a Password</span>
     </div>
-    <div style="padding-top:20px;">
-    <label>Confirm Password<span style="color: red"><b>&nbsp;*&nbsp;<b></span></label>
-     <input type="password" class="form-control inputelement" id="cpassword" placeholder="Enter Password" name="cpassword" value="" autocomplete="off" required minlength="8">
+    <div style="padding-top:20px;">  
+          <input type="password" class="form-control inputelement" id="cpassword" placeholder="Confirm Password" name="cpassword" value="" autocomplete="off" required minlength="8">
+          <label id="labelcPassword" style="display:none;">Confirm Password</label>    
+          <span id="errorcPasswordText" style="display:none;margin-left:45px;font-size:12px;" align="left"><image src="/ordertracker/images/errorimage.PNG">Enter a Confirm Password</span>
     </div> 
     <div style="padding-top:20px;">
-     <input type="button" class="btn btn-success" value="Submit" name="save" id="save">         
+     <input type="button" class="btn btn-success" value="Submit" name="save" id="save" style="background-color:##1a73e8;">         
      </div>
   </form>
   </div>

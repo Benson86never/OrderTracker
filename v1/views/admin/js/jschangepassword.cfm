@@ -34,35 +34,34 @@ $(document).ready(function(){
             dynamicFields += ($("#cpassword").val() === "" ? "Please enter confirm Password <br/>" : "");
             dynamicFields += ($("#password").val()!=="" && $("#password").val()!=="" && ($("#password").val() !== $("#cpassword").val()) === "" ? "Pasword and  confirm Password should be same <br/>" : "");
         }
-       if(dynamicFields === "Below fields are missing: <br/><br/>"){
-             
-            $('#modal-showAlert').modal('show');             
-            $('.modal-header').css('background-color','white');
-            $('#headerText').html('Password Information');
-            $('.close').css('color','black');
-            $('#modal-showAlert .modal-body').html("Your Password Successfully Changed.");       
-            $('#modal-showAlert .modal-footer .ok').show();    
-            $('#modal-showAlert .modal-footer .yes').hide();
-            $('#modal-showAlert .modal-footer .no').hide();   
-             $('.ok').click(function()
-             {
-                $('#formSubmit').submit();
-             });
-               
-             
-          //
-
+       if(dynamicFields === "Below fields are missing: <br/><br/>"){                        
+                $('#formSubmit').submit();          
        }
        else{
-          //alert(dynamicFields);
-            $('#modal-showAlert').modal('show');
-            $('.modal-header').css('background-color','white');
-            $('#headerText').html('Missing Information');
-            $('.close').css('color','black');
-            $('#modal-showAlert .modal-body').html(dynamicFields);
-            $('#modal-showAlert .modal-footer .ok').show();
-            $('#modal-showAlert .modal-footer .yes').hide();
-            $('#modal-showAlert .modal-footer .no').hide();
+            if ($("#password").val() == "" && 	$("#cpassword").val() == "")
+			{
+				 $("#password").css('border-color', 'red');		
+				 $("#cpassword").css('border-color', 'red');		
+				 $("#errorPasswordText").css({'color':'red','display':'block'});	
+				 $("#errorcPasswordText").css({'color':'red','display':'block'});	
+		    }			 
+			else if( $("#password").val() == "" )
+			{ 
+				 $("#password").css('border-color', 'red');	
+				 $("#errorPasswordText").css({'color':'red','display':'block'});
+				 $("#password").focus();	
+				 	
+			}
+			else if ($("#cpassword").val() == "")
+			{			
+				 $("#cpassword").css('border-color', 'red');	
+			     $("#errorcPasswordText").css({'color':'red','display':'block'});
+				  $("#cpassword").focus();	
+			}  
+			else
+		   {
+			    $('#formSubmit').submit();      
+		   }             			     
        }
     });
 
@@ -82,17 +81,101 @@ $(document).ready(function(){
      $('#password').on('blur', function(){
       if(this.value != '********') {
         $('#showPaasword').show();
-        var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(this.value);
-        if(!passwordRegex) {
-            $('#password').css("border-color","red");
-        } 
-        else{
-            $('#password').css("border-color","");
-        }
+       
       }
       else{
            $('#showPaasword').hide();
       }
     });
+
+     $("#password").focusin(function(){  
+
+        if($("#errorPasswordText").is(":visible") === true )
+        {
+	    	$("#password").css('border','1px solid red');
+	    	$("#password").attr("placeholder",'');
+	    	$("#labelPassword").css({'color':'red','display':'block'});
+        }
+        else
+        {
+        	$("#password").css('border','1px solid #0095ff');
+		    $("#password").attr("placeholder",'');
+		    $("#labelPassword").css({'color':'#0095ff','display':'block'});
+        }		
+	});
+
+    $("#password").focusout(function(){  
+        if($("#errorPasswordText").is(":visible") === true )
+        {
+		    $("#password").css('border','1px solid red');
+		   if($("#password").val() === '')
+			{
+				$("#labelPassword").css({'color':'red','display':'none'});
+			}
+			else
+			{
+				$("#labelPassword").css({'color':'red','display':'block'});
+			}
+		    $("#password").attr("placeholder",'Password');
+        }
+        else
+        {
+            $("#password").css('border','1px solid #C0C0C0');
+		    if($("#password").val() === '')
+			{
+				$("#labelPassword").css({'color':'#C0C0C0','display':'none'});
+			}
+			else
+			{
+				$("#labelPassword").css({'color':'#C0C0C0','display':'block'});
+			}
+		    $("#password").attr("placeholder",'Password');
+        }		
+	});
+
+     $("#cpassword").focusin(function(){  
+
+        if($("#errorcPasswordText").is(":visible") === true )
+        {
+	    	$("#cpassword").css('border','1px solid red');
+	    	$("#cpassword").attr("placeholder",'');
+	    	$("#labelcPassword").css({'color':'red','display':'block'});
+        }
+        else
+        {
+        	$("#cpassword").css('border','1px solid #0095ff');
+		    $("#cpassword").attr("placeholder",'');
+		    $("#labelcPassword").css({'color':'#0095ff','display':'block'});
+        }		
+	});
+
+    $("#cpassword").focusout(function(){  
+        if($("#errorcPasswordText").is(":visible") === true )
+        {
+		    $("#cpassword").css('border','1px solid red');
+		   if($("#cpassword").val() === '')
+			{
+				$("#labelcPassword").css({'color':'red','display':'none'});
+			}
+			else
+			{
+				$("#labelcPassword").css({'color':'red','display':'block'});
+			}
+		    $("#cpassword").attr("placeholder",'Confirm Password');
+        }
+        else
+        {
+            $("#cpassword").css('border','1px solid #C0C0C0');
+		     if($("#cpassword").val() === '')
+			{
+				$("#labelcPassword").css({'color':'#C0C0C0','display':'none'});
+			}
+			else
+			{
+				$("#labelcPassword").css({'color':'#C0C0C0','display':'block'});
+			}
+		    $("#cpassword").attr("placeholder",'Confirm Password');
+        }		
+	});
 });
 </script>

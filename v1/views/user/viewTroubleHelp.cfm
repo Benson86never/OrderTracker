@@ -19,17 +19,20 @@
       variables.lastname = "";      
     }
   </cfscript>
-  <div class="container">
+  <div class="container" >
+  <div class="panel panel-default">
+      <div class="panel-heading">Trouble Logging In?</div>
+      <div class="panel-body" style="margin-left: 200px;">
     <form class="form-inline" method = "post" id="formSubmit" name="formSubmit">
-      <div class="row">
+      <div class="row" >
         <div class="col-md-1 labelname">
-          Full Name :
+          Full Name<span style="color: red"><b>*<b></span>:
         </div>
         <div class="col-md-2 ">
           <input type="text" class="form-control inputelement" id="firstName" name="firstName" value=""  autocomplete="off">
         </div>
-        <div class="col-md-1 labelname">
-          Email ID:
+        <div class="col-md-1 labelname" style="margin-left: 60px;">
+          Email ID<span style="color: red"><b>*<b></span>:
         </div>
         <div class="col-md-2 ">
           <input type="text" class="form-control inputelement" id="email"  name="email" value=""  autocomplete="off" >
@@ -37,7 +40,7 @@
       </div>
       <div class="row">
           <div class="col-md-1 labelname">
-            Subject :
+            Subject<span style="color: red"><b>*<b></span>:
           </div>
           <div class="col-md-2 ">
             <input type="text" class="form-control inputelement" id="subject" name="subject" value="Trouble Logging In" autocomplete="off" style="width:530px;">
@@ -45,7 +48,7 @@
       </div>
       <div class="row">
         <div class="col-md-1 labelname">
-          Description :
+          Description<span style="color: red"><b>*<b></span>:
         </div>
         <div class="col-md-2 ">
           <textarea type="text" class="form-control inputelement" id="description" name="description" value="" rows="8" columns="335" style="width:530px;"></textarea>
@@ -54,7 +57,7 @@
       <div class="row">
         <div class="col-md-12" id="passwordERR" style="color: red;text-align: center"></div>
       </div>
-      <div class="row">
+      <div class="row" style="margin-left:220px;">
         <div class="col-md-7 text-right">          
            <a class="btn btn-danger" href="../list.cfm">
               <i class="fa fa-times" aria-hidden="true"></i>
@@ -63,6 +66,9 @@
             <i class="fa fa-check" aria-hidden="true"></i>
           </button>
         </div>
+      </div>
+      </div>
+      </div>
       </div>
     </form>
   </div>

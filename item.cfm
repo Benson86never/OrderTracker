@@ -35,6 +35,8 @@ table.table {
 }
 table.table tr th, table.table tr td {
     border-color: #e9e9e9;
+        overflow: hidden;
+    text-overflow: ellipsis;
 }
 table.table th i {
     cursor: pointer;
@@ -147,7 +149,7 @@ table.table .form-control.error {
             <tr class="list-item items" data-filter-item data-filter-name="#lcase(item.name)# #lcase(item.supplierName)#">
               <td fid="name">#item.name#</td>
               <td fid="sku">#item.sku#</td>
-              <td fid="photourl">#item.photoUrl#</td>
+              <td fid="photourl" title="#item.photoUrl#">#item.photoUrl#</td>
               <td fid="units" type="unit">#item.unitName#</td>
               <td fid="supplier" type="supplier">#item.supplierName#</td>
               <td>
@@ -239,6 +241,7 @@ table.table .form-control.error {
           supplierid : $(this).parents("tr").find('#supplier').val(),
           itemid : $(this).attr('id')
         };
+           $(this).parents("tr").find(" .edit, .delete, .save, .cancel ").toggle();
         $.ajax({
           url: 'v1/model/services/admin.cfc?method=manageItem',
           type: 'post',
@@ -253,9 +256,11 @@ table.table .form-control.error {
             select.each(function(){
               $(this).parent("td").html($(this).find('option:selected').text());
             });
-            $(this).parents("tr").find(".add, .edit").toggle();
+         
             $(".add-new").removeAttr("disabled");
-            location.href = "";
+
+            location.href = window.location.href;
+            
           }
         });
       }

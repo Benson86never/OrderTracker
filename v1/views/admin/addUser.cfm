@@ -140,14 +140,19 @@
           </select>
         </div>
         <div class="col-md-2 labelname">
+        <cfif isdefined("url.businessid")>
+        <cfset urlbusinessid = decrypt(url.businessid, application.uEncryptKey, "BLOWFISH", "Hex")>
+        </cfif>
          Business<span style="color: red"><b>*<b></span>:
         </div>
         <div class="col-md-2 ">
           <select class="form-control selectElement" name="business" style="width: 100%;" id="business">
             <cfloop array="#rc.accounts#" item="account">
               <option
-                <cfif variables.accountid EQ account.id>
+                <cfif isdefined("url.businessid") and urlbusinessid eq account.id>
                   selected
+                <cfelseif variables.accountid EQ account.id>
+                selected
                 </cfif>
                 value="#account.id#">
                 #account.name#
