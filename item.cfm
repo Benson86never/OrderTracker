@@ -136,12 +136,12 @@ table.table .form-control.error {
         <table class="list-wrapper table table-bordered table-responsive-md table-striped" cellspacing="0" cellpadding="0">
           <thead>
             <tr>
-            <th width="40%">Name</th>
-            <th width="10%">SKU</th>
-            <th width="10%">Photo URL</th>
-            <th width="10%">Units</th>
-            <th width="20%">Supplier</th>
-            <th width="10%">Actions</th>
+            <th width="40%" style="text-align:center;">Name</th>
+            <th width="10%" style="text-align:center;">SKU</th>
+            <th width="10%" style="text-align:center;">Photo URL</th>
+            <th width="10%" style="text-align:center;">Units</th>
+            <th width="20%" style="text-align:center;">Supplier</th>
+            <th width="10%" style="text-align:center;">Actions</th>
             </tr>
           </thead>
           <tbody>
