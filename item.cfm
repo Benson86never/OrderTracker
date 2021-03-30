@@ -242,6 +242,7 @@ table.table .form-control.error {
           itemid : $(this).attr('id')
         };
            $(this).parents("tr").find(" .edit, .delete, .save, .cancel ").toggle();
+           caction = $(this).attr('action');
         $.ajax({
           url: 'v1/model/services/admin.cfc?method=manageItem',
           type: 'post',
@@ -258,8 +259,11 @@ table.table .form-control.error {
             });
          
             $(".add-new").removeAttr("disabled");
-
-            location.href = window.location.href;
+            if(caction == 'add') {
+              location.href = "";
+            } else {
+              location.href = window.location.href;
+            }
             
           }
         });
