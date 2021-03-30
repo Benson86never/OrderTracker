@@ -289,7 +289,7 @@ label
     Forgot Password
     </div>    
     <div style="padding-top:20px;">    
-    <input type="text" id="Email" class="second" name="Email" placeholder="Email" >
+    <input type="text" id="Email" class="second" name="Email" placeholder="Email"  autocomplete="off">
     <label id="labelEmail" style="display:none;">Email</label>    
     <span id="errorEmailText" style="display:none;margin-left:45px;font-size:12px;" align="left"><image src="/ordertracker/images/errorimage.PNG">Enter an email</span>       
     </div>

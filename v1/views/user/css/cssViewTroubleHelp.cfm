@@ -27,4 +27,8 @@
     .container {
     padding-top: 100px;
 }
+ .panel-default > .panel-heading {
+  text-align: center;
+  font-size: 24px;
+}
 </style>

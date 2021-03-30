@@ -60,7 +60,14 @@ $(document).ready(function(){
 			}  
 			else
 		   {
-			    $('#formSubmit').submit();      
+			     if ($("#password").val() ===	$("#cpassword").val() )
+               {
+                      $('#formSubmit').submit();      
+               }
+               else
+               {
+                      $("#errorMessage").css({'color':'red','display':'block'});
+               }		     
 		   }             			     
        }
     });

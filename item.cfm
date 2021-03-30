@@ -241,7 +241,7 @@ table.table .form-control.error {
           supplierid : $(this).parents("tr").find('#supplier').val(),
           itemid : $(this).attr('id')
         };
-           $(this).parents("tr").find(" .edit, .delete, .save, .cancel ").toggle();
+        $(this).parents("tr").find(".save, .edit, .delete, .cancel").toggle();
         $.ajax({
           url: 'v1/model/services/admin.cfc?method=manageItem',
           type: 'post',
@@ -255,12 +255,9 @@ table.table .form-control.error {
             });
             select.each(function(){
               $(this).parent("td").html($(this).find('option:selected').text());
-            });
-         
+            });         
             $(".add-new").removeAttr("disabled");
-
-            location.href = window.location.href;
-            
+            location.href = window.location.href;          
           }
         });
       }

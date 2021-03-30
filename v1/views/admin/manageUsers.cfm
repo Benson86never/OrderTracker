@@ -1,6 +1,6 @@
 <cfoutput>
-    <div class = "col-xs-12 sectionHeader">
-      Manage Users
+    <div class = "col-xs-12 sectionHeader" style="font-size:22px;margin-left:360px;padding-top:40px;">
+     Manage Users
     </div>
     <div class="container table-responsive">
       <table class="table table-bordered table-hover table-striped" cellspacing = "0" id="sortTable">
