@@ -25,7 +25,9 @@ component accessors="true" {
      // writedump(rc.subBusinessNamesDetails);
     }
      public void function AddBusiness(rc){
-       rc.BusinessNamesDetails = adminService.getBusinessnames().business;
+       rc.Business = adminService.getBusinessnames();
+       rc.BusinessNamesDetails = rc.Business.business;
+       rc.Businesstypes = rc.Business.types;
        rc.decryptbusinessid = 0;
        if(isDefined("url.businessId") && url.businessId NEQ 0) {
          //writedump(url.businessId);

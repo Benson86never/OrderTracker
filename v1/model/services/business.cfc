@@ -488,6 +488,7 @@ component  {
   ){
     local.result = {'error' : false};
     local.business = [];
+    local.types = [];
     local.BusinessNamesDetails = queryExecute("
       SELECT
         BusinessId,
@@ -501,6 +502,23 @@ component  {
         ORDER BY sortbusinessname;
       ",{},{datasource: application.dsn}
     );
+    local.BusinessTypes = queryExecute("
+      SELECT
+        businessType_Id,
+        name
+      FROM
+        businesstype
+      WHERE
+        active =1
+        ORDER BY name;
+      ",{},{datasource: application.dsn}
+    );
+    cfloop(query = "local.BusinessTypes" ) {
+      local.typeDetails = {};
+      local.typeDetails['id'] = local.BusinessNamesDetails.BusinessId;
+      local.typeDetails['name'] = local.BusinessNamesDetails.BusinessName;
+      arrayAppend(local.types, local.typeDetails);
+    }
     cfloop(query = "local.BusinessNamesDetails" ) {
       local.details = {};
       local.details['BusinessId'] = local.BusinessNamesDetails.BusinessId;
@@ -510,6 +528,7 @@ component  {
       arrayAppend(local.business, local.details);
     }
     local.result['business'] = local.business;
+    local.result['types'] = local.types;
     return local.result;
   }
 

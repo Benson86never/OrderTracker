@@ -11,23 +11,25 @@
   </cfif>
   <cfscript>
    if(structKeyExists(rc, "businessDetails")){
-       variables.businessName = rc.businessDetails[1]["businessName"];
-        variables.City = rc.businessDetails[1]["city"];
-        variables.Country = rc.businessDetails[1]["Country"];
-        variables.State = rc.businessDetails[1]["State"];
-        variables.email = rc.businessDetails[1]["email"];
-        variables.phone = rc.businessDetails[1]["phone"];
-        variables.PhoneExtension = rc.businessDetails[1]["PhoneExtension"];
-        variables.address1 = rc.businessDetails[1]["StreetAddress1"];
-        variables.address2 = rc.businessDetails[1]["StreetAddress2"];
-        variables.zip = rc.businessDetails[1]["zip"];
-        variables.PhoneExtension = rc.businessDetails[1]["PhoneExtension"];
-        variables.businessId = rc.businessDetails[1]["businessId"];
-        variables.parentBusinessId = rc.businessDetails[1]["parentBusinessId"];
-        variables.sectionHeader ="Update Business"
+      variables.businessName = rc.businessDetails[1]["businessName"];
+      variables.businessType = rc.businessDetails[1]["businessType"];
+      variables.City = rc.businessDetails[1]["city"];
+      variables.Country = rc.businessDetails[1]["Country"];
+      variables.State = rc.businessDetails[1]["State"];
+      variables.email = rc.businessDetails[1]["email"];
+      variables.phone = rc.businessDetails[1]["phone"];
+      variables.PhoneExtension = rc.businessDetails[1]["PhoneExtension"];
+      variables.address1 = rc.businessDetails[1]["StreetAddress1"];
+      variables.address2 = rc.businessDetails[1]["StreetAddress2"];
+      variables.zip = rc.businessDetails[1]["zip"];
+      variables.PhoneExtension = rc.businessDetails[1]["PhoneExtension"];
+      variables.businessId = rc.businessDetails[1]["businessId"];
+      variables.parentBusinessId = rc.businessDetails[1]["parentBusinessId"];
+      variables.sectionHeader ="Update Business"
     }
     else{
         variables.businessName = "";
+        variables.businessType = "";
         variables.City = "";
         variables.Country = "";
         variables.State = "";
@@ -59,6 +61,23 @@
                     <input type="text" class="form-control inputelement" id="business" placeholder="Enter Business" name="business" value="#variables.businessName#" autocomplete="off" required>
                     <input type ="hidden" id="businessId" name="businessId" value="#variables.businessId#">
                 </div>
+                <div class="col-md-2 labelname">
+                  Business Type:
+              </div>
+              <div class="col-md-2 ">
+                <select class="form-control selectElement" name="type" id="type" >
+                  <cfloop array="#rc.Businesstypes#" item="businesstype">
+                      <option
+                      <cfif variables.businessType EQ businesstype.id>
+                      selected
+                      </cfif>
+                      value="#businesstype.id#">
+                      #businesstype.name#
+                      </option>
+                    </cfif>
+                  </cfloop>
+                </select>
+              </div>
             </div>
             <div class="row">
                 <div class="col-md-2 labelname">
