@@ -35,7 +35,7 @@ component accessors="true" {
           rc.params = "&userId=#rc.userid#";
           rc.active = rc.userDetails[1]["active"];
         }
-       writedump(rc)abort;
+     
           //session.userResult = adminService.saveUser(userDetails = form);
       if(structKeyExists(form, 'EMAIL')) {
         session.userResult = adminService.sendQuery(userDetails = form);

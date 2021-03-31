@@ -16,7 +16,6 @@
 		<cfset this.onApplicationStart() />
 	</cfif>
 	<cfscript>
-
 		this.sessionManagement="Yes";
 		this.sessionTimeout=CreateTimeSpan(0, 8, 0, 0);
 		this.mailserver="smtp.zoominternet.net";
@@ -33,7 +32,7 @@
 	//this.ormSettings.search.indexDir = "Applications/ColdFusionBuilder2018⁩/⁨ColdFusion⁩/cfusion/ormcollections⁩";
 	//this.ormSettings.search.language = "English";
 	</cfscript>
-
+	
 	<!---<cferror type="exception" mailto="hud@zoominternet.net" template="exception.cfm" exception="any">
 	<cferror type="request" mailto="hud@zoominternet.net" template="exception.cfm">--->
 	<cffunction name="onApplicationStart" returnType="boolean" output="false">
@@ -53,7 +52,7 @@
 		</cfscript>
 		<cfreturn true />
 	</cffunction>
-		
+	
 	
 
 </cfcomponent>

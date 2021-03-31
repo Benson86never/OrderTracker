@@ -33,8 +33,9 @@ h2 {
   flex-direction: column; 
   justify-content: center;
   width: 98%;
-  min-height: 80%;
+  min-height: 100%;
   padding: 20px;
+  margin-top: 40px;
 }
 
 #formContent {
@@ -291,7 +292,7 @@ label
     <div style="padding-top:20px;">    
     <input type="text" id="Email" class="second" name="Email" placeholder="Email"  autocomplete="off">
     <label id="labelEmail" style="display:none;">Email</label>    
-    <span id="errorEmailText" style="display:none;margin-left:45px;font-size:12px;" align="left"><image src="/ordertracker/images/errorimage.PNG">Enter an email</span>       
+    <span id="errorEmailText" style="display:none;margin-left:45px;font-size:12px;" align="left"><image src="/ordertracker/images/errorimage.PNG">Enter a valid email</span>       
     </div>
     <div>
     <cfif isdefined("url.err") and url.err eq 1>
