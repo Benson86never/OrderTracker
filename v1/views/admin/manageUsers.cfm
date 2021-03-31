@@ -1,8 +1,8 @@
-<cfoutput>
-    <div class = "col-xs-12 sectionHeader" style="font-size:22px;margin-left:360px;padding-top:40px;">
+<cfoutput>   
+    <div class="container table-responsive">
+     <div class = "col-xs-12 sectionHeader" style="font-size:22px;padding-top:40px;">
      Manage Users
     </div>
-    <div class="container table-responsive">
       <table class="table table-bordered table-hover table-striped" cellspacing = "0" id="sortTable">
         <thead>
           <tr>
