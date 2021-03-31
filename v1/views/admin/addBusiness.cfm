@@ -65,16 +65,15 @@
                   Business Type:
               </div>
               <div class="col-md-2 ">
-                <select class="form-control selectElement" name="type" id="type" >
-                  <cfloop array="#rc.Businesstypes#" item="businesstype">
+                <select class="form-control businessType" name="type" id="type" multiple>
+                  <cfloop array="#rc.Businesstypes#" index="btype">
                       <option
-                      <cfif variables.businessType EQ businesstype.id>
+                      <cfif variables.businessType EQ btype.id>
                       selected
                       </cfif>
-                      value="#businesstype.id#">
-                      #businesstype.name#
+                      value="#btype.id#">
+                      #btype.name#
                       </option>
-                    </cfif>
                   </cfloop>
                 </select>
               </div>

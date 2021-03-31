@@ -515,8 +515,8 @@ component  {
     );
     cfloop(query = "local.BusinessTypes" ) {
       local.typeDetails = {};
-      local.typeDetails['id'] = local.BusinessNamesDetails.BusinessId;
-      local.typeDetails['name'] = local.BusinessNamesDetails.BusinessName;
+      local.typeDetails['id'] = local.BusinessTypes.businessType_Id;
+      local.typeDetails['name'] = local.BusinessTypes.name;
       arrayAppend(local.types, local.typeDetails);
     }
     cfloop(query = "local.BusinessNamesDetails" ) {

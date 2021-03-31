@@ -21,4 +21,8 @@
         top: 5px;
         left: 2px;
     }
+    .businessType {
+        width: 100% !important;
+        height: 60px !important;
+    }
 </style>
