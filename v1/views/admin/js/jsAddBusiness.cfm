@@ -114,6 +114,7 @@
       });
       $('.saveseller').click(function() {
         var sellers = {};
+        var suppliers = {};
         currentlist = "";
         <cfloop array="#rc.supplierDetails#" item="supplier" >
           <cfif arraylen(supplier.seller)>
@@ -133,17 +134,18 @@
             currentlist = currentvalue;
           </cfif>
           sellers[supplierid] = currentlist;
+          suppliers['supplier_#supplier.id#'] = $( "##supplier_#supplier.id#" ).prop("checked");
         </cfloop>
-        console.log(sellers);
         $.ajax({
           url: '../v1/model/services/admin.cfc?method=manageSeller',
           type: 'post',
           data: {
             sellers : JSON.stringify(sellers),
+            suppliers : JSON.stringify(suppliers),
             businessid : '#variables.businessId#'
           },
           success: function(data){
-            location.href = "";
+            //location.href = "";
           }
         });
       })

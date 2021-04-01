@@ -21,23 +21,23 @@
                   </thead>
                   <tbody>
                     <cfoutput>
-                      <cfloop array="#rc.listDetails#" item="supplier">
+                      <cfloop array="#rc.listDetails#" item="list">
                         <tr>
-                            <td>#supplier.name#</td>
+                            <td>#list.name#</td>
                             <td>
-                                <button class="addlist btn btn-success" id="#supplier.id#" title="Add" >
+                                <button class="addlist btn btn-success" id="#list.id#" title="Add" >
                                   <i class="fa fa-plus"></i>
                                 </button>
-                                <button class="delete btn btn-danger" id="#supplier.id#" title="Delete" >
+                                <button class="delete btn btn-danger" id="#list.id#" title="Delete" >
                                   <i class="fa fa-trash"></i>
                                 </button>
-                                <button class="editlist btn btn-success" id="#supplier.id#" title="Edit" >
+                                <button class="editlist btn btn-success" id="#list.id#" title="Edit" >
                                   <i class="fa fa-pencil"></i>
                                 </button>
-                                <button class="cancel btn btn-danger" id="#supplier.id#" title="Cancel" >
+                                <button class="cancel btn btn-danger" id="#list.id#" title="Cancel" >
                                   <i class="fa fa-times"></i>
                                 </button>
-                                <button class="save btn btn-success" id="#supplier.id#" title="Save" >
+                                <button class="save btn btn-success" id="#list.id#" title="Save" >
                                   <i class="fa fa-save"></i>
                                 </button>
                             </td>

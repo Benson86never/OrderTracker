@@ -8,6 +8,7 @@
           <tr>
               <th style="display:none;">&nbsp;</th>
               <th style="text-align:center;">Business Name</th>
+              <th style="text-align:center;">Business Type</th>
               <th class="hidden-xs" style="text-align:center;">Email</th>
               <th class="hidden-xs hidden-sm" style="text-align:center;">Mobile Number</th>
               <th class="hidden-xs hidden-sm" style="text-align:center;">Zip</th>
@@ -37,6 +38,7 @@
                       #business.BusinessName#
                   </span>
                 </td>
+                <td>#business.businessTypes#</td>
                 <td class="hidden-xs">#business.Email#</td>
                 <td class="hidden-xs hidden-sm">#business.Phone#</td>
                 <td class="hidden-xs hidden-sm">#business.zip#</td>

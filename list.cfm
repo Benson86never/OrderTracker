@@ -28,7 +28,7 @@
 					<cfif arraylen(list.items)>
 						<cfloop array="#list.items#" index="item" >
 							<div class="listItem">
-								<cfinput type="text" name="#item.itemId#;#item.SupplierID#;ITEM"
+								<cfinput type="text" class="items" name="#item.itemId#;#item.SupplierID#;ITEM"
 									size="3" validate="integer"
 									message="#item.name# Quantity must be an integer.">
 									<cfif item.unitId eq 2>
@@ -51,3 +51,10 @@
 	</div>
 </cfoutput>
 <cfinclude template="includes/footer.cfm" >
+<script>
+	$('.items').keypress(function(event){
+       if(event.which > 57 || event.which < 48){
+           event.preventDefault();
+       }
+   });
+</script>

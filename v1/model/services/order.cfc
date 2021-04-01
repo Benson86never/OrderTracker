@@ -10,7 +10,7 @@ component  {
       }
       local.cartDetails = queryExecute("
         SELECT
-          S.Name AS SupplierName, 
+          S.BusinessName AS SupplierName, 
           I.Name AS ItemName, 
           U.Name AS UnitName, 
           JCI.CartQuantity AS Quantity,
@@ -24,11 +24,11 @@ component  {
             JoinCartToItem JCI
             INNER JOIN Carts C ON C.CartID = JCI.CartID
             INNER JOIN Item I ON I.ItemID = JCI.ItemID
-            INNER JOIN Supplier S ON S.SupplierID = JCI.SupplierID
+            INNER JOIN business S ON S.businessId = JCI.SupplierID
             INNER JOIN Units U ON U.UnitID = I.UnitID
           WHERE
             C.CartID = :cartId
-          ORDER BY S.SupplierID, I.ItemID
+          ORDER BY S.businessId, I.ItemID
       ",{
           cartId = {cfsqltype = "integer", value = arguments.cartId}
         },{datasource: application.dsn}
@@ -132,12 +132,12 @@ component  {
           O.orderId,
           O.dateTime,
           O.closed,
-          S.supplierId,
-          S.name AS supplierName,
+          S.businessId AS supplierId,
+          S.BusinessName AS supplierName,
           P.email
           FROM
             orders O
-            INNER JOIN supplier S ON S.supplierId = O.supplierId
+            INNER JOIN business S ON S.businessId = O.supplierId
             INNER JOIN person P ON P.personId = O.personId
           WHERE
             O.checkedin = :checkedin
@@ -412,11 +412,11 @@ component  {
           I.name AS itemName,
           I.sku AS sku,
           U.name AS unitName,
-          S.name AS supplierName,
+          S.BusinessName AS supplierName,
           B.businessName
           FROM
             orders O
-            INNER JOIN supplier S ON S.supplierId = O.supplierId
+            INNER JOIN business S ON S.businessId = O.supplierId
             INNER JOIN person P ON P.personId = O.personId
             INNER JOIN business B ON B.businessId = P.businessId
             INNER JOIN joinordertoitem JOI ON JOI.OrderID = O.OrderID

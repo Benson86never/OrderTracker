@@ -12,7 +12,7 @@
   <cfscript>
    if(structKeyExists(rc, "businessDetails")){
       variables.businessName = rc.businessDetails[1]["businessName"];
-      variables.businessType = rc.businessDetails[1]["businessType"];
+      variables.businessType = rc.businessDetails[1]["businessTypeIds"];
       variables.City = rc.businessDetails[1]["city"];
       variables.Country = rc.businessDetails[1]["Country"];
       variables.State = rc.businessDetails[1]["State"];
@@ -65,10 +65,10 @@
                   Business Type:
               </div>
               <div class="col-md-2 ">
-                <select class="form-control businessType" name="type" id="type" multiple>
+                <select class="form-control businessType" name="businessType" id="businessType" multiple>
                   <cfloop array="#rc.Businesstypes#" index="btype">
                       <option
-                      <cfif variables.businessType EQ btype.id>
+                      <cfif listfind(variables.businessType,btype.id)>
                       selected
                       </cfif>
                       value="#btype.id#">
@@ -175,8 +175,8 @@
       </div>
     </div>
     <cfif structKeyExists(rc, "businessDetails")>
-        <cfinclude template = "supplierDetails.cfm">
-        <cfinclude template = "ListDetails.cfm">
+      <cfinclude template = "supplierDetails.cfm">
+      <cfinclude template = "ListDetails.cfm">
     </cfif>
   </div>
 </cfoutput>

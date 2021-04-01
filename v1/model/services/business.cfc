@@ -128,31 +128,25 @@ component  {
               Country = {cfsqltype = "varchar", value = arguments.businessDetails.Country},
               parentBusinessId = {cfsqltype = "varchar", value = arguments.businessDetails.parentBusinessId},
               active = {cfsqltype = "integer", value = "1" }
-            },{datasource: application.dsn, result="local.userresult"}
+            },{datasource: application.dsn, result="local.businessresult"}
           );
-          local.getSupplier = queryExecute("
-            SELECT
-              SupplierID
-            FROM 
-              supplier
-            ",{},{datasource: application.dsn}
-          );
-          cfloop(query="local.getSupplier") {
-            local.businessSupplierDetails = queryExecute("
-              INSERT INTO joinmasteraccounttosupplier
+          for(local.type in arguments.businessDetails.businessType) {
+            local.businesstypeDetails = queryExecute("
+              INSERT INTO joinbusinesstotype
               (
-                BusinessId,
-                SupplierID
+                businessId,
+                typeId
               ) VALUES (
                 :businessId,
-                :supplierId
+                :typeId
               )
             ",{
-                businessId = {cfsqltype = "varchar", value = local.userresult.generatedkey},
-                supplierId = {cfsqltype = "varchar", value = local.getSupplier.SupplierID}
-              }, {datasource: application.dsn}
+                business = {cfsqltype = "varchar", value = local.businessresult.generatedKey},
+                typeId = {cfsqltype = "varchar", value = local.type}
+              },{datasource: application.dsn, result="local.userresult"}
             );
           }
+          
           transaction action="commit"; 
           return local.result;
       } 
@@ -167,48 +161,98 @@ component  {
   public any function updateBusiness(
     struct businessDetails
   ){
-    try {
-      local.result = {
-        'error' : false,
-        'errorMsg' : ''
+    transaction {
+      try {
+        local.result = {
+          'error' : false,
+          'errorMsg' : ''
+        }
+        if(not isDefined("arguments.businessDetails.parentBusinessId") ){
+          arguments.businessDetails.parentBusinessId = 0;
+        }
+        local.businessDetails = queryExecute("
+          UPDATE
+            Business
+          SET
+            BusinessName = :business,
+            Email = :Email,
+            phone = :phone,
+            StreetAddress1 = :StreetAddress1,
+            StreetAddress2 = :StreetAddress2,
+            Zip = :Zip,
+            City = :City,
+            PhoneExtension = :PhoneExtension,
+            Country = :Country,
+            parentBusinessId = :parentBusinessId
+          WHERE
+            BusinessId = :BusinessId
+        ",{
+            business = {cfsqltype = "varchar", value = arguments.businessDetails.business},
+            Email = {cfsqltype = "varchar", value = arguments.businessDetails.email},
+            phone = {cfsqltype = "varchar", value = arguments.businessDetails.phone},
+            phoneExtension = {cfsqltype = "varchar", value = arguments.businessDetails.phoneExtension},
+            StreetAddress1 = {cfsqltype = "varchar", value = arguments.businessDetails.address1},
+            StreetAddress2 = {cfsqltype = "varchar", value = arguments.businessDetails.address2},
+            Zip = {cfsqltype = "integer", value =  arguments.businessDetails.Zip},
+            City = {cfsqltype = "varchar", value = arguments.businessDetails.City},
+            State = {cfsqltype = "varchar", value = arguments.businessDetails.State},
+            Country = {cfsqltype = "varchar", value = arguments.businessDetails.Country},
+            parentBusinessId = {cfsqltype = "varchar", value = arguments.businessDetails.parentBusinessId},
+            BusinessId = {cfsqltype = "integer", value = arguments.businessDetails.BusinessId}
+          },{datasource: application.dsn}
+        );
+        local.businesstype = queryExecute("
+            SELECT
+              typeId
+            FROM
+              joinbusinesstotype
+            WHERE
+              businessId = :businessId
+          ",{
+              businessId = {cfsqltype = "varchar", value = arguments.businessDetails.BusinessId}
+            },{datasource: application.dsn, result="local.userresult"}
+        );
+        local.typeList = valuelist(local.businesstype.typeId);
+        for(local.type in arguments.businessDetails.businessType) {
+          if(!listfind(local.typeList, local.type)) {
+            local.businesstypeDetails = queryExecute("
+              INSERT INTO joinbusinesstotype
+              (
+                businessId,
+                typeId
+              ) VALUES (
+                :businessId,
+                :typeId
+              )
+            ",{
+                businessId = {cfsqltype = "varchar", value = arguments.businessDetails.BusinessId},
+                typeId = {cfsqltype = "varchar", value = local.type}
+              },{datasource: application.dsn, result="local.userresult"}
+            );
+          } else {
+            local.typeList = ListDeleteAt(local.typeList, listFind(local.typeList, local.type));
+          }
+        }
+        if(listlen(local.typeList)) {
+          for(local.type in local.typeList) {
+            local.businesstypeDetails = queryExecute("
+              DELETE FROM joinbusinesstotype
+              WHERE
+                businessId = :businessId
+                AND typeId = :typeId
+            ",{
+                businessId = {cfsqltype = "varchar", value = arguments.businessDetails.BusinessId},
+                typeId = {cfsqltype = "varchar", value = local.type}
+              },{datasource: application.dsn, result="local.userresult"}
+            );
+          }
+        }
+        transaction action="commit"; 
+        return local.result;
+      } catch (any e){
+        transaction action="rollback"; 
+        writeDump(e);abort;
       }
-      if(not isDefined("arguments.businessDetails.parentBusinessId") ){
-        arguments.businessDetails.parentBusinessId = 0;
-      }
-      local.businessDetails = queryExecute("
-        UPDATE
-          Business
-        SET
-          BusinessName = :business,
-          Email = :Email,
-          phone = :phone,
-          StreetAddress1 = :StreetAddress1,
-          StreetAddress2 = :StreetAddress2,
-          Zip = :Zip,
-          City = :City,
-          PhoneExtension = :PhoneExtension,
-          Country = :Country,
-          parentBusinessId = :parentBusinessId
-        WHERE
-          BusinessId = :BusinessId
-      ",{
-          business = {cfsqltype = "varchar", value = arguments.businessDetails.business},
-          Email = {cfsqltype = "varchar", value = arguments.businessDetails.email},
-          phone = {cfsqltype = "varchar", value = arguments.businessDetails.phone},
-          phoneExtension = {cfsqltype = "varchar", value = arguments.businessDetails.phoneExtension},
-          StreetAddress1 = {cfsqltype = "varchar", value = arguments.businessDetails.address1},
-          StreetAddress2 = {cfsqltype = "varchar", value = arguments.businessDetails.address2},
-          Zip = {cfsqltype = "integer", value =  arguments.businessDetails.Zip},
-          City = {cfsqltype = "varchar", value = arguments.businessDetails.City},
-          State = {cfsqltype = "varchar", value = arguments.businessDetails.State},
-          Country = {cfsqltype = "varchar", value = arguments.businessDetails.Country},
-          parentBusinessId = {cfsqltype = "varchar", value = arguments.businessDetails.parentBusinessId},
-          BusinessId = {cfsqltype = "integer", value = arguments.businessDetails.BusinessId}
-        },{datasource: application.dsn}
-      );
-      return local.result;
-    } catch (any e){
-      writeDump(e);abort;
     }
   }
 
@@ -219,13 +263,17 @@ component  {
     local.supplier = []
     local.supplierDetails = queryExecute("
       SELECT
-        S.SupplierID,
-        S.NAME
+        S.businessId AS supplierId,
+        S.BusinessName AS NAME,
+        JS.businessId AS businessId
       FROM 
-        joinmasteraccounttosupplier JS
-        INNER JOIN supplier S ON S.SupplierID = JS.SupplierID
+        business S
+        INNER JOIN joinbusinesstotype JBT ON JBT.businessId = S.businessId
+        LEFT JOIN joinmasteraccounttosupplier JS ON S.businessId = JS.SupplierID
+          AND JS.businessId = :businessId
       WHERE
-        js.BusinessId = :businessId
+        S.active = 1
+        AND JBT.typeId = 2
       ",{
         businessId = {cfsqltype = "integer", value = arguments.BusinessId}
       },{datasource: application.dsn}
@@ -234,6 +282,7 @@ component  {
       local.details = {};
       local.details['id'] = local.supplierDetails.SupplierID;
       local.details['name'] = local.supplierDetails.name;
+      local.details['businessId'] = local.supplierDetails.businessId;
       local.qsellerDetails = queryExecute("
         SELECT
           P.personId,
@@ -346,13 +395,13 @@ component  {
             I.name,
             I.unitId,
             U.name as unitName,
-            S.SupplierID,
-            S.name AS supplierName
+            S.businessId AS SupplierID,
+            S.BusinessName AS supplierName
           FROM 
             joinitemtolist JIL
             INNER JOIN item I ON I.itemId = JIL.itemId
             INNER JOIN joinsuppliertoitem JSI ON JSI.itemId = I.itemId
-            INNER JOIN supplier S ON S.SupplierID = JSI.SupplierID
+            INNER JOIN business S ON S.businessId = JSI.SupplierID
             INNER JOIN units U ON U.unitId = I.unitId
           WHERE
             JIL.listId = :listId
@@ -385,31 +434,36 @@ component  {
     local.condition = "";
     
     if(val(arguments.businessId) > 0) {
-      local.condition &= "AND BusinessId = #arguments.businessId#";
+      local.condition &= "AND B.BusinessId = #arguments.businessId#";
     }
     local.result['supplier'] = [];
     local.result['list'] = [];
     local.BusinessDetails = queryExecute("
       SELECT
-        BusinessId,
-        BusinessName,
-        Email,
-        Phone,
-        phoneExtension,
-        StreetAddress1,
-        StreetAddress2,
-        Zip,
-        City,
-        State,
-        Country,
-        parentBusinessId,
-        fngetBusinees(BusinessId) as sortbusinessname
-      FROM 
-        Business
-        WHERE 1=1
-        AND active <> 0
+        B.BusinessId,
+        B.BusinessName,
+        B.Email,
+        B.Phone,
+        B.phoneExtension,
+        B.StreetAddress1,
+        B.StreetAddress2,
+        B.Zip,
+        B.City,
+        B.State,
+        B.Country,
+        B.parentBusinessId,
+        fngetBusinees(B.BusinessId) as sortbusinessname,
+        GROUP_CONCAT(BT.name) AS businessTypes,
+        GROUP_CONCAT(BT.businesstype_id) AS businessTypeIds
+      FROM
+        Business B
+        INNER JOIN joinbusinesstotype JBT ON JBT.businessId = B.BusinessId
+        INNER JOIN businesstype BT ON BT.businesstype_id = JBT.typeId
+      WHERE
+        B.active <> 0
         #local.condition#
-        order by sortbusinessname;
+      GROUP BY B.BusinessId
+      order by JBT.typeId,sortbusinessname;
       ",{},{datasource: application.dsn}
     );
     if(val(arguments.businessId) > 0) {
@@ -420,6 +474,8 @@ component  {
       local.details = {};
       local.details['BusinessId'] = local.BusinessDetails.BusinessId;
       local.details['BusinessName'] = local.BusinessDetails.BusinessName;
+      local.details['businessTypeIds'] = local.BusinessDetails.businessTypeIds;
+      local.details['businessTypes'] = local.BusinessDetails.businessTypes;
       local.details['Email'] = local.BusinessDetails.Email;
       local.details['Phone'] = local.BusinessDetails.Phone;
       local.details['phoneExtension'] = local.BusinessDetails.phoneExtension;
@@ -458,13 +514,13 @@ component  {
         I.ItemID as id,
         U.Name as unitname,
         U.UnitID,
-        S.SupplierID,
-        S.Name as suppliername
+        S.businessId AS SupplierID,
+        S.BusinessName as suppliername
         FROM
           Item I
           INNER JOIN Units U ON U.UnitID = I.UnitID
           INNER JOIN JoinSupplierToItem JSI on JSI.ItemID = I.ItemID
-          INNER JOIN Supplier S ON S.SupplierID = JSI.SupplierID
+          INNER JOIN business S ON S.businessId = JSI.SupplierID
         ORDER BY I.name asc
         ",{},{datasource: application.dsn}
     );
@@ -750,10 +806,60 @@ component  {
 
   remote any function manageSeller(
     struct sellers,
+    struct suppliers,
     numeric businessId
   ){
     local.result = {'error' : false};
     try{
+      for(local.supplier in arguments.suppliers) {
+        local.supplierkey = local.supplier;
+        local.supplierId = listgetat(local.supplierkey, 2, '_');
+        local.supplier = arguments.suppliers[local.supplierkey];
+        local.qGetsupplier = queryExecute("
+          SELECT
+            1
+          FROM
+            joinmasteraccounttosupplier
+          WHERE
+            SupplierID = :supplierId
+            AND BusinessId = :businessId
+          ",{
+            supplierId = {cfsqltype = "integer", value = local.supplierId},
+            businessId = {cfsqltype = "integer", value = arguments.businessId}
+          },{datasource: application.dsn}
+        );
+        if(local.qGetsupplier.recordcount) {
+          if(!local.supplier) {
+            local.qGetseller = queryExecute("
+              DELETE FROM  joinmasteraccounttosupplier
+              WHERE
+                SupplierID = :supplierId
+                AND BusinessId = :businessId
+              ",{
+                supplierId = {cfsqltype = "integer", value = local.supplierId},
+                businessId = {cfsqltype = "integer", value = arguments.businessId}
+              },{datasource: application.dsn}
+            );
+          }
+        } else {
+          if(local.supplier) {
+            local.qaddseller = queryExecute("
+              INSERT INTO joinmasteraccounttosupplier (
+                SupplierID,
+                BusinessId
+              ) VALUES (
+                :supplierId,
+                :businessId
+              )
+              ",{
+                supplierId = {cfsqltype = "integer", value = local.supplierId},
+                businessId = {cfsqltype = "integer", value = arguments.businessId}
+              },{datasource: application.dsn}
+            );
+          }
+        }
+
+      }
       for(local.seller in arguments.sellers) {
         local.supplierkey = local.seller;
         local.supplierId = listgetat(local.supplierkey, 2, '_');

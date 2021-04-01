@@ -137,41 +137,41 @@ table.table .form-control.error {
           </div>
           </div>
         </div>
-		<cfif session.secure.RoleCode eq 1>
-				<cfscript>
-					local.accounts = [];
-					local.accountDetails = queryExecute("
-						SELECT
-						businessId as businessId,
-						businessname as name
-						FROM
-						business
-						WHERE
-						Active = 1
-					",{},{datasource: application.dsn}
-					);
-					cfloop(query = "local.accountDetails") {
-						local.details = {};
-						local.details['id'] = local.accountDetails.businessId;
-						local.details['name'] = local.accountDetails.name;
-						arrayAppend(local.accounts, local.details);
-					}
-				</cfscript>
-			</cfif>
-			<div style="padding-bottom:20px;" >
-			Orders from business: 
-			<select name="business" onchange="changeBusiness(this.value)" class="form-select form-select-lg mb-3" >
-				<cfloop array="#local.accounts#" item="account">
-					<option
-					<cfif isdefined("url.businessid") and url.businessid eq account.id>
-						selected
-					</cfif>
-					value="#account.id#">
-					#account.name#
-					</option>
-				</cfloop>
-			</select>
-			</div>
+		    <cfif session.secure.RoleCode eq 1>
+          <cfscript>
+            local.accounts = [];
+            local.accountDetails = queryExecute("
+              SELECT
+              businessId as businessId,
+              businessname as name
+              FROM
+              business
+              WHERE
+              Active = 1
+            ",{},{datasource: application.dsn}
+            );
+            cfloop(query = "local.accountDetails") {
+              local.details = {};
+              local.details['id'] = local.accountDetails.businessId;
+              local.details['name'] = local.accountDetails.name;
+              arrayAppend(local.accounts, local.details);
+            }
+          </cfscript>
+          <div style="padding-bottom:20px;" >
+          Orders from business: 
+          <select name="business" onchange="changeBusiness(this.value)" class="form-select form-select-lg mb-3" >
+            <cfloop array="#local.accounts#" item="account">
+              <option
+              <cfif isdefined("url.businessid") and url.businessid eq account.id>
+                selected
+              </cfif>
+              value="#account.id#">
+              #account.name#
+              </option>
+            </cfloop>
+          </select>
+          </div>
+			  </cfif>
         <table class="list-wrapper table table-bordered table-responsive-md table-striped" cellspacing="0" cellpadding="0">
           <thead>
             <tr>
