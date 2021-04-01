@@ -4,12 +4,14 @@
     }
     .inputelement{
         height: 23px;
+        
     }
     .labelname{
         margin-top: 0.8%;
         font-weight: bold;
         text-align: left;
         left: 100px;
+        
     }
     .row{
         margin-top: 1.2%
@@ -27,4 +29,8 @@
         width: 100% !important;
         height: 60px !important;
     }
+    .panel-default > .panel-heading {
+  text-align: center;
+  font-size: 24px;
+}
 </style>

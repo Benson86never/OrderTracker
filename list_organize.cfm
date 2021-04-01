@@ -37,7 +37,6 @@
       background-color: #ff0000; /* Green */
     }
   }
-
   @media (orientation: landscape) {
       /* For horizontal viewports */
     #sortable { 
@@ -63,13 +62,18 @@
     .button:active {
       background-color: #ff0000; /* Green */
     }
+    .panel-default > .panel-heading {
+  text-align: center;
+  font-size: 24px;
+}
   }
 </style>
+<cfinclude template="includes/header.cfm" >
 <cfoutput>
-  <cfinclude template="includes/header.cfm" >
-  <div class = "col-xs-12 sectionHeader">
-    Organize List Items
-  </div>
+<div class="container">
+    <div class="panel panel-default">
+      <div class="panel-heading">Organize List Items</div>
+      <div class="panel-body">
   <div class="page-content">
     <cfif val(url.ListID)>
       <a href="#cgi.script_name#" class="btn btn-success"> <-return to lists</a>
@@ -92,6 +96,9 @@
       </ul> 
       <input type="button" id="saveBtn" value="Save" class="btn btn-success">
     </cfif>
+  </div>
+  </div>
+    </div>
   </div>
 </cfoutput>
 <cfinclude template="includes/footer.cfm" >

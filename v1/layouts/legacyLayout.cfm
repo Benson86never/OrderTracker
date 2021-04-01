@@ -30,8 +30,7 @@
       <cfif url.action neq "admin.changepassword" and url.action neq "admin.forgotpassword" and url.action neq "user.viewTroubleHelp">
         <div class="pageHeader">
         <span>Order Tracker</span>       
-        <cfif structKeyExists(session, 'secure') AND session.secure.loggedin>     
-          
+        <cfif structKeyExists(session, 'secure') AND session.secure.loggedin>               
           <a href="../login_ctrl.cfm?action=logout" class="logOut mt-5">             
             <i class="fa fa-power-off" aria-hidden="true"></i>
             LogOut
