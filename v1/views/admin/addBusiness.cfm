@@ -65,7 +65,7 @@
                   Business Type:
               </div>
               <div class="col-md-2 ">
-                <select class="form-control businessType" name="businessType" id="businessType" multiple>
+                <select required class="form-control businessType" name="businessType" id="businessType" multiple>
                   <cfloop array="#rc.Businesstypes#" index="btype">
                       <option
                       <cfif listfind(variables.businessType,btype.id)>

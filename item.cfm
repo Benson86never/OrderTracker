@@ -255,12 +255,12 @@ table.table .form-control.error {
             });
             select.each(function(){
               $(this).parent("td").html($(this).find('option:selected').text());
-            });         
+            });
             $(".add-new").removeAttr("disabled");
             if(caction == 'add') {
-              location.href = "";
+              //location.href = "";
             } else {
-              location.href = window.location.href;
+              //location.href = window.location.href;
             }
             
           }

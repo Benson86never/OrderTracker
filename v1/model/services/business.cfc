@@ -141,7 +141,7 @@ component  {
                 :typeId
               )
             ",{
-                business = {cfsqltype = "varchar", value = local.businessresult.generatedKey},
+                businessId = {cfsqltype = "varchar", value = local.businessresult.generatedKey},
                 typeId = {cfsqltype = "varchar", value = local.type}
               },{datasource: application.dsn, result="local.userresult"}
             );
@@ -258,9 +258,14 @@ component  {
 
   public any function getSupplierDetails(
     numeric businessId = 0,
-    numeric includeItems = 0
+    numeric includeItems = 0,
+    numeric linked = 0
   ) {
-    local.supplier = []
+    local.supplier = [];
+    local.condition = "";
+    if(arguments.linked > 0) {
+      local.condition = " AND JS.SupplierID IS NOT NULL";
+    }
     local.supplierDetails = queryExecute("
       SELECT
         S.businessId AS supplierId,
@@ -274,6 +279,7 @@ component  {
       WHERE
         S.active = 1
         AND JBT.typeId = 2
+        #local.condition#
       ",{
         businessId = {cfsqltype = "integer", value = arguments.BusinessId}
       },{datasource: application.dsn}
@@ -402,12 +408,14 @@ component  {
             INNER JOIN item I ON I.itemId = JIL.itemId
             INNER JOIN joinsuppliertoitem JSI ON JSI.itemId = I.itemId
             INNER JOIN business S ON S.businessId = JSI.SupplierID
+            INNER JOIN joinmasteraccounttosupplier JMS ON JMS.`SupplierID` = JSI.SupplierID AND JMS.businessId = :businessId
             INNER JOIN units U ON U.unitId = I.unitId
           WHERE
             JIL.listId = :listId
           ORDER BY JIL.orderby
           ",{
-            listId = {cfsqltype = "integer", value = local.listDetails.listId}
+            listId = {cfsqltype = "integer", value = local.listDetails.listId},
+            businessId = {cfsqltype = "integer", value = arguments.BusinessId}
           },{datasource: application.dsn}
         );
         cfloop(query = "local.qitemDetails" ) {

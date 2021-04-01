@@ -1,11 +1,13 @@
 <cfinclude template="includes/secure.cfm" >
+<cfparam  name="url.businessid" default="#session.secure.subaccount#">
 <cfscript>
 // load Account Suppliers
 Suppliers = CreateObject("Component","v1.model.services.admin").getSupplierDetails(
-	businessId = session.secure.subaccount,
-	includeItems = 1);
+	businessId = url.businessid,
+	includeItems = 1,
+	linked = 1);
 listdetails = CreateObject("Component","v1.model.services.admin").getListDetails(
-		businessId = session.secure.subaccount,
+		businessId = url.businessid,
 		includeItems = 1);
 </cfscript>
 <cfparam name="listLinked" default="none">
@@ -151,7 +153,42 @@ table.table .form-control.error {
           </div>
           </div>
         </div>
-		
+		<cfif session.secure.RoleCode eq 1>
+			<cfscript>
+			  local.accounts = [];
+			  local.accountDetails = queryExecute("
+				SELECT
+					B.businessId as businessId,
+					B.businessname as name
+				FROM
+					business B
+					INNER JOIN joinbusinesstotype JBT ON JBT.businessId = B.businessId AND JBT.typeId = 1
+				WHERE
+					B.Active = 1
+			  ",{},{datasource: application.dsn}
+			  );
+			  cfloop(query = "local.accountDetails") {
+				local.details = {};
+				local.details['id'] = local.accountDetails.businessId;
+				local.details['name'] = local.accountDetails.name;
+				arrayAppend(local.accounts, local.details);
+			  }
+			</cfscript>
+			<div style="padding-bottom:20px;" >
+			Orders from business: 
+			<select name="business" onchange="changeBusiness(this.value)" class="form-select form-select-lg mb-3" >
+			  <cfloop array="#local.accounts#" item="account">
+				<option
+				<cfif isdefined("url.businessid") and url.businessid eq account.id>
+				  selected
+				</cfif>
+				value="#account.id#">
+				#account.name#
+				</option>
+			  </cfloop>
+			</select>
+			</div>
+				</cfif>
 		<cfform name="LinkLists" action="list_ctrl.cfm">
 		 <table class="list-wrapper table table-bordered table-responsive-md table-striped" cellspacing="0" cellpadding="0" >
           <thead>
@@ -201,3 +238,8 @@ table.table .form-control.error {
 	</cfoutput>
 </div>
 <cfinclude template="includes/footer.cfm" >
+<script>
+	function changeBusiness(businessId) {
+		location.href = 'list_item.cfm?businessid=' + businessId
+	}
+</script>
