@@ -122,17 +122,16 @@ table.table .form-control.error {
     <div class="table-wrapper">
       <div class="table-title">
         <div class="row">
-          <div class="col-xs-6"><h2>Item Details</h2></div>
-          <div class="col-xs-2">
-            <!---<div class="search">
-              <input type="text" placeholder="search" data-search ="" class="form-control"/>
-            </div>--->
+          <div class="col-xs-4"><h2>Item Details</h2></div>
+          <div class="col-xs-3" >
+            <input type="search" id="search" class="form-control" placeholder="Search"/>
           </div>
-          <div class="col-xs-3 text-right">
-            <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>
+          <div class="col-xs-4 text-right">
+             <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>
           </div>
           </div>
         </div>
+      
         <table class="list-wrapper table table-bordered table-responsive-md table-striped" cellspacing="0" cellpadding="0">
           <thead>
             <tr>
@@ -345,7 +344,7 @@ table.table .form-control.error {
             items.hide().slice(showFrom, showTo).show();
         }
     });
-    $('[data-search]').on('keyup', function() {
+    $('#search').on('keyup', function() {
     var searchVal = $(this).val();
     var filterItems = $('[data-filter-item]');
 

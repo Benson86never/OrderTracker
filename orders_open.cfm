@@ -121,7 +121,6 @@ table.table .form-control.error {
 }
 </style>
 <cfoutput>
-
   <div class="container table-responsive">
     <div class="table-wrapper">
       <div class="table-title">
@@ -175,8 +174,8 @@ table.table .form-control.error {
         <table class="list-wrapper table table-bordered table-responsive-md table-striped" cellspacing="0" cellpadding="0">
           <thead>
             <tr>
-            <th width="10px;" style="text-align:center;">Order ID</th>
-            <th  style="text-align:center;">Order Details</th>
+            <th width="2%" style="text-align:center;">Order ID</th>
+            <th  width="98%" style="text-align:center;">Order Details</th>
             </tr>
           </thead>
           <tbody>
@@ -219,7 +218,7 @@ table.table .form-control.error {
   
   var items = $(".list-wrapper .list-item");
   var numItems = items.length;
-  var perPage = 12;
+  var perPage = 15;
   items.slice(perPage).hide();
   $('#pagination-container').pagination({
         items: numItems,

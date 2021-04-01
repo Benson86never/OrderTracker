@@ -273,8 +273,7 @@
      <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script type="text/javascript" src="v1/scripts/bootstrap.min.js"></script>
-	<cfinclude template="v1/views/_includes/modals.cfm"> 
-	
+	<cfinclude template="v1/views/_includes/modals.cfm"> 	
  <cfoutput>
 	<div class="wrapper">
 	  <div id="formContent">
@@ -290,9 +289,9 @@
 		  <div style="padding-top:20px;">
 			<label id="labelEmail" style="display: none;">Email</label>
 			 <cfif isdefined("cookie.rememberme") and cookie.rememberme eq "Yes">
-				<cfinput type="text" id="userName" class="second" name="userName" value="#cookie.userName#" placeholder="Email"  autocomplete="off">			
+				<cfinput type="text" id="userName" class="second" name="userName" value="#cookie.userName#" placeholder="Email" >			
 			<cfelse> 
-				<cfinput type="text" id="userName" class="second" name="userName" value="" required="yes" placeholder="Email"  autocomplete="off">				
+				<cfinput type="text" id="userName" class="second" name="userName" value="" required="yes" placeholder="Email" >				
 			</cfif> 
 			<span id="errorEmailText" style="display:none;margin-left:45;font-size:12px;" align="left"><image src="images/errorimage.PNG">Enter a valid email</span>
 		  </div> 

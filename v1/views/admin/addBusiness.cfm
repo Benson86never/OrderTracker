@@ -120,7 +120,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-2 " style="margin-left:90px;">
+                <div class="col-md-2 " style="text-align: right;">
                     <input  type="checkbox" class="" id="subBusiness"  name="subBusiness" value="yes" autocomplete="off" onclick="disableBusinesses();" <cfif isdefined("variables.parentBusinessId") and variables.parentBusinessId gt 0>checked="true"</cfif>><span style="margin-left: 5%" >Sub Business<span>
                 </div>
                 <div class="col-md-2">
