@@ -122,16 +122,13 @@ table.table .form-control.error {
     <div class="table-wrapper">
       <div class="table-title">
         <div class="row">
-          <div class="col-xs-4"><h2>Item Details</h2></div>
-          <div class="col-xs-3" >
-            <input type="search" id="search" class="form-control" placeholder="Search"/>
-          </div>
-          <div class="col-xs-4 text-right">
-             <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>
-          </div>
+            <div class="col-md-2"><h2>Item Details</h2></div>       
+            <div class="col-md-7 text-right" >
+              <input type="search" id="search" class="form-control" placeholder="Search" style="width:200px;margin-left:550px;"/>
+            </div>
+            <div class="col-md-2 text-right"><button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>   </div>
           </div>
         </div>
-      
         <table class="list-wrapper table table-bordered table-responsive-md table-striped" cellspacing="0" cellpadding="0">
           <thead>
             <tr>
