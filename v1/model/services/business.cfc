@@ -939,4 +939,112 @@ component  {
     }
     return local.result;
   }
+
+  remote any function addSupplierSeller(
+    numeric sellerid,
+    numeric supplierid,
+    numeric businessId
+  ){
+    local.result = {'error' : false};
+    try{
+      local.qaddseller = queryExecute("
+        INSERT INTO joinmasteraccounttosupplier (
+          SupplierID,
+          BusinessId
+        ) VALUES (
+          :supplierId,
+          :businessId
+        )
+        ",{
+          supplierId = {cfsqltype = "integer", value = arguments.supplierId},
+          businessId = {cfsqltype = "integer", value = arguments.businessId}
+        },{datasource: application.dsn}
+      );
+      local.qaddseller = queryExecute("
+        INSERT INTO joinsuppliertoperson (
+          SupplierID,
+          PersonID,
+          BusinessId
+        ) VALUES (
+          :supplierId,
+          :personId,
+          :businessId
+        )
+        ",{
+          supplierId = {cfsqltype = "integer", value = arguments.supplierId},
+          personId = {cfsqltype = "integer", value = arguments.sellerId},
+          businessId = {cfsqltype = "integer", value = arguments.businessId}
+        },{datasource: application.dsn}
+      );
+    } catch (any e) {
+      local.result['error'] = true;
+      writeDump(e);abort;
+    }
+    return local.result;
+  }
+
+  remote any function deleteSupplier(
+    numeric sellerid,
+    numeric supplierid,
+    numeric businessId
+  ){
+    local.result = {'error' : false};
+    try{
+      local.qaddseller = queryExecute("
+        DELETE FROM
+          joinmasteraccounttosupplier
+        WHERE
+          SupplierID = :supplierId
+          AND BusinessId = :businessId
+        ",{
+          supplierId = {cfsqltype = "integer", value = arguments.supplierId},
+          businessId = {cfsqltype = "integer", value = arguments.businessId}
+        },{datasource: application.dsn}
+      );
+      local.qaddseller = queryExecute("
+        DELETE FROM joinsuppliertoperson
+        WHERE
+          SupplierID = :supplierId
+          AND BusinessId = :businessId
+          AND personId = :personId
+        ",{
+          supplierId = {cfsqltype = "integer", value = arguments.supplierId},
+          personId = {cfsqltype = "integer", value = arguments.sellerId},
+          businessId = {cfsqltype = "integer", value = arguments.businessId}
+        },{datasource: application.dsn}
+      );
+    } catch (any e) {
+      local.result['error'] = true;
+      writeDump(e);abort;
+    }
+    return local.result;
+  }
+
+  remote any function updateSeller(
+    numeric sellerid,
+    numeric supplierid,
+    numeric businessId
+  ){
+    local.result = {'error' : false};
+    try{
+      local.qaddseller = queryExecute("
+        UPDATE
+          joinsuppliertoperson
+        SET
+          personId = :personId
+        WHERE
+          SupplierID = :supplierId
+          AND BusinessId = :businessId
+        ",{
+          supplierId = {cfsqltype = "integer", value = arguments.supplierId},
+          personId = {cfsqltype = "integer", value = arguments.sellerId},
+          businessId = {cfsqltype = "integer", value = arguments.businessId}
+        },{datasource: application.dsn}
+      );
+    } catch (any e) {
+      local.result['error'] = true;
+      writeDump(e);abort;
+    }
+    return local.result;
+  }
 }

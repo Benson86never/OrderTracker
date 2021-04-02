@@ -18,11 +18,9 @@
   .table-title .add-new {
       float: right;
       height: 30px;
-      font-weight: bold;
       font-size: 12px;
       text-shadow: none;
-      min-width: 100px;
-      border-radius: 50px;
+      border-radius: 3px;
       line-height: 13px;
   }
   .table-title .add-new i {
@@ -55,13 +53,13 @@
   table.table .form-control.error {
       border-color: #f50000;
   }
-  table.table td .add, table.listtable td .addlist {
-      display: none;
-  }
   .save, .cancel {
     display: none;
   }
-  .addlist {
+  .savesupplier, .cancelsupplier {
+    display: none;
+  }
+  .addlist, .addsupplier {
       display: none;
       margin-left: 8px;
   }
@@ -77,7 +75,7 @@
   .ui-state-focus{
     background-color : #efefef !important;
   }
-  .editlist {
+  .editlist, .editsupplier {
     margin-left: 5px;
   }
   .switch {
@@ -152,53 +150,61 @@ input:checked + .slider:before {
                 <div class="table-title">
                     <div class="row">
                         <div class="col-sm-8"></div>
-                        <div class="col-sm-4">
-                            <!---<button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>--->
+                        <div class="col-sm-3 text-right">
+                            <button type="button" class="btn btn-info add-newsupplier"><i class="fa fa-plus"></i> Add New</button>
                         </div>
                     </div>
                 </div>
-                <table class="table table-bordered" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th style="width:60%">Name</th>
-                            <th style="width:40%">
-                              <div class="col-md-8">Seller</div>
-                              <div class="col-md-2 text-right">
-                                <a class="saveseller btn btn-success" title="Save" >
-                                  <i class="fa fa-save"></i>
-                                </a>
-                              </div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                      <cfoutput>
-                        <cfloop array="#rc.supplierDetails#" item="supplier">
+                <table class="suppliertable table table-bordered">
+                  <thead>
+                      <tr>
+                          <th>Supplier</th>
+                          <th>Seller</th>
+                          <th>Actions</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    <cfoutput>
+                      <cfset rc.newsupplierDetails = []>
+                      <cfloop array="#rc.supplierDetails#" item="supplier">
+                        <cfif val(supplier.businessId)>
                           <tr>
-                              <td>
-                                <label class="switch">
-                                  <input type="checkbox" id="supplier_#supplier.id#" <cfif val(supplier.businessId)>checked</cfif>>
-                                  <span class="slider round"></span>
-                                </label>
-                                #supplier.name#
+                              <td element="supplier">#supplier.name#</td>
+                              <td element="seller">
+                                <cfloop array="#supplier.seller#" index="sellerindex" item="seller">
+                                  #seller.name#
+                                  <cfset sellerid = seller.id>
+                                </cfloop>
                               </td>
                               <td>
-                                <cfif arraylen(supplier.seller)>
-                                  <cfloop array="#supplier.seller#" index="sellerindex" item="seller">
-                                    <input type="text" class="form-control inputelement seller" target="sellerid_#supplier.id#_#sellerindex#" id="seller_#supplier.id#" value="#seller.name#"/>
-                                    <input type="hidden" name="sellerid_#supplier.id#_#sellerindex#" id="sellerid_#supplier.id#_#sellerindex#" value="#seller.id#">
-                                  </cfloop>
-                                <cfelse>
-                                  <input type="text" class="form-control inputelement seller" target="sellerid_#supplier.id#_1" 
-                                      id="seller_#supplier.id#_1" />
-                                  <input type="hidden" name="sellerid_#supplier.id#_1" id="sellerid_#supplier.id#_1" value="">
-                                </cfif>
+                                  <button class="deletesupplier btn btn-danger" supplierid="#supplier.id#"
+                                    sellerid ="#sellerid#" title="Delete" >
+                                    <i class="fa fa-trash"></i>
+                                  </button>
+                                  <button class="addsupplier btn btn-success" supplierid="#supplier.id#" title="Add" >
+                                    <i class="fa fa-plus"></i>
+                                  </button>
+                                  <button class="editsupplier btn btn-success" supplierid="#supplier.id#"
+                                  sellerid ="#sellerid#" title="Edit" >
+                                    <i class="fa fa-pencil"></i>
+                                  </button>
+                                  <button class="cancelsupplier btn btn-danger" supplierid="#supplier.id#" title="Cancel" >
+                                    <i class="fa fa-times"></i>
+                                  </button>
+                                  <button class="savesupplier btn btn-success" supplierid="#supplier.id#" title="Save" >
+                                    <i class="fa fa-save"></i>
+                                  </button>
                               </td>
                           </tr>
-                        </cfloop>
-                      </cfoutput>
-                    </tbody>
-                </table>
+                        <cfelse>
+                          <cfset arrayappend(rc.newsupplierDetails,supplier)>
+                        </cfif>
+                      </cfloop>
+                    </cfoutput>
+                    <input type="hidden" name="sellerid" id="sellerid" value="0">
+                    <input type="hidden" name="supplierid" id="supplierid" value="0">
+                  </tbody>
+              </table>
             </div>
         </div>
     </div>

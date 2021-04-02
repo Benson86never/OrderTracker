@@ -32,20 +32,55 @@
   <cfif isDefined("url.businessId") && url.businessId NEQ 0>
     $(document).ready(function(){
       $('[data-toggle="tooltip"]').tooltip();
-      var actions = $("table td:last-child").html();
+      var actions = '<button class="deletesupplier btn btn-danger" id="0" title="Delete" ><i class="fa fa-trash"></i></button>'+
+                  '<button class="editsupplier btn btn-success" style="margin-left: 8px !important;" id="0" title="Edit" ><i class="fa fa-pencil"></i></button>'+
+                  '<button class="addsupplier btn btn-success" id="0" title="Add" ><i class="fa fa-plus"></i></button>';
       // Append table with add row form on add new button click
-      $(".add-new").click(function(){
+      $(".add-newsupplier").click(function(){
         $(this).attr("disabled", "disabled");
-        var index = $("table tbody tr:last-child").index();
+        var index = $(".suppliertable tr").length;
         var row = '<tr>' +
-          '<td><input type="text" class="form-control" name="name" id="name"></td>' +
+          '<td><input type="text" class="form-control inputelement supplier" name="supplier" id="supplier"></td>' +
+          '<td><input type="text" class="form-control inputelement seller" name="seller" id="seller"></td>' +
           '<td>' + actions + '</td>' +
           '</tr>';
-        $("table").append(row);		
-        $("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
+        $(".suppliertable").append(row);
+        $(".suppliertable tbody tr").eq(index - 1).find(".addsupplier, .editsupplier").toggle();
+        <cfoutput>
+          $('.seller').autocomplete({
+            source: [
+              <cfloop array="#rc.businessDetails[1].sellers#" index="i" item="seller">
+                { label: "#seller.firstname# #seller.lastname#", value: "#seller.personid#" }
+                <cfif i NEQ arraylen(rc.businessDetails[1].sellers)>,</cfif>
+              </cfloop>
+            ],
+            select: function (event, ui) {
+              // Set selection
+              $('##seller').val(ui.item.label); // display the selected text
+              $('##sellerid').val(ui.item.value); // save selected id to input
+              return false;
+            }
+          });
+          $('.supplier').autocomplete({
+            source: [
+              <cfloop array="#rc.newsupplierDetails#" index="i" item="supplier">
+                { label: "#supplier.name#", value: "#supplier.id#" }
+                <cfif i NEQ arraylen(rc.newsupplierDetails)>,</cfif>
+              </cfloop>
+            ],
+            select: function (event, ui) {
+              // Set selection
+              $('##supplier').val(ui.item.label); // display the selected text
+              $('##supplierid').val(ui.item.value); // save selected id to input
+              return false;
+            }
+          });
+        </cfoutput>
+        
       });
       // Add row on add button click
-      $(document).on("click", ".add", function(){
+      
+      $(document).on("click", ".addsupplier", function(){
         var empty = false;
         var input = $(this).parents("tr").find('input[type="text"]');
             input.each(function(){
@@ -56,39 +91,118 @@
             $(this).removeClass("error");
           }
         });
+        if(!empty){
+          if($('#sellerid').val() == 0) {
+            empty = true;
+            $('#seller').addClass("error");
+          }
+          if($('#supplierid').val() == 0) {
+            empty = true;
+            $('#supplier').addClass("error");
+          }
+        }
         $(this).parents("tr").find(".error").first().focus();
         if(!empty){
           input.each(function(){
             $(this).parent("td").html($(this).val());
           });
-          $(this).parents("tr").find(".add, .edit").toggle();
-          $(".add-new").removeAttr("disabled");
+          $(this).parents("tr").find(".addsupplier, .editsupplier").toggle();
+          $(".add-newsupplier").removeAttr("disabled");
           $.ajax({
-            url: '../v1/model/services/admin.cfc?method=addSupplier',
+            url: '../v1/model/services/admin.cfc?method=addSupplierSeller',
             type: 'post',
             data: {
-              name : $(this).val()
+              businessid : <cfoutput>#variables.businessId#</cfoutput>,
+              sellerid : $('#sellerid').val(),
+              supplierid : $('#supplierid').val()
             },
             success: function(data){
-              location.reload();
+              //location.reload();
             }
           });
         }		
       });
 
       // Edit row on edit button click
-      $(document).on("click", ".edit", function(){		
-            $(this).parents("tr").find("td:not(:last-child)").each(function(){
-          $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
+      $(document).on("click", ".editsupplier", function(){		
+        $(this).parents("tr").find("td:not(:last-child)").each(function(){
+          element = $(this).attr('element');
+          if(element == 'seller') {
+            $(this).html('<input type="text" class="form-control inputelement seller" name="seller" id="seller" value="' +$.trim($(this).text()) + '">');
+          }
+          <cfoutput>
+            $('.seller').autocomplete({
+              source: [
+                <cfloop array="#rc.businessDetails[1].sellers#" index="i" item="seller">
+                  { label: "#seller.firstname# #seller.lastname#", value: "#seller.personid#" }
+                  <cfif i NEQ arraylen(rc.businessDetails[1].sellers)>,</cfif>
+                </cfloop>
+              ],
+              select: function (event, ui) {
+                // Set selection
+                $('##seller').val(ui.item.label); // display the selected text
+                $('##sellerid').val(ui.item.value); // save selected id to input
+                return false;
+              }
+            });
+          </cfoutput>
         });		
-        $(this).parents("tr").find(".add, .edit").toggle();
-        $(".add-new").attr("disabled", "disabled");
-        });
+        $(this).parents("tr").find(".deletesupplier, .editsupplier").toggle();
+        $(this).parents("tr").find(".savesupplier, .cancelsupplier").toggle();
+        $(".add-newsupplier").attr("disabled", "disabled");
+      });
+      $(document).on("click", ".cancelsupplier", function(){		
+          $(this).parents("tr").find("input").each(function(){
+            $(this).parent("td").html($(this).val());
+          });
+        $(this).parents("tr").find(".deletesupplier, .editsupplier").toggle();
+        $(this).parents("tr").find(".savesupplier, .cancelsupplier").toggle();
+        $(".add-newsupplier").removeAttr("disabled");
+      });
       // Delete row on delete button click
-      $(document).on("click", ".delete", function(){
-            $(this).parents("tr").remove();
-        $(".add-new").removeAttr("disabled");
-        });
+      $(document).on("click", ".deletesupplier", function(){
+        $(this).parents("tr").remove();
+        $(".add-newsupplier").removeAttr("disabled");
+        if($(this).attr('sellerid') > 0
+          && $(this).attr('supplierid') > 0) {
+            $.ajax({
+              url: '../v1/model/services/admin.cfc?method=deleteSupplier',
+              type: 'post',
+              data: {
+                businessid : <cfoutput>#variables.businessId#</cfoutput>,
+                sellerid : $(this).attr('sellerid'),
+                supplierid : $(this).attr('supplierid')
+              },
+              success: function(data){
+                $(this).parents("tr").find(".addsupplier, .editsupplier").toggle();
+                $(".add-newsupplier").removeAttr("disabled");
+              }
+            });
+        }
+      });
+      // save seller
+      $(document).on("click", ".savesupplier", function(){
+        if($('#sellerid').val() > 0
+          && $(this).attr('supplierid') > 0) {
+            $(this).parents("tr").find(".deletesupplier, .editsupplier, .savesupplier, .cancelsupplier").toggle();
+            $(".add-newsupplier").removeAttr("disabled");
+            $(this).parents("tr").find("input").each(function(){
+              $(this).parent("td").html($(this).val());
+            });
+            $.ajax({
+              url: '../v1/model/services/admin.cfc?method=updateSeller',
+              type: 'post',
+              data: {
+                businessid : <cfoutput>#variables.businessId#</cfoutput>,
+                sellerid : $('#sellerid').val(),
+                supplierid : $(this).attr('supplierid')
+              },
+              success: function(data){
+                
+              }
+            });
+        }
+      });
     });
 
     <cfoutput>
