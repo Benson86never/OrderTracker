@@ -25,11 +25,11 @@
                         <tr>
                             <td>#list.name#</td>
                             <td>
-                                <button class="addlist btn btn-success" id="#list.id#" title="Add" >
-                                  <i class="fa fa-plus"></i>
-                                </button>
                                 <button class="delete btn btn-danger" id="#list.id#" title="Delete" >
                                   <i class="fa fa-trash"></i>
+                                </button>
+                                <button class="addlist btn btn-success" id="#list.id#" title="Add" >
+                                  <i class="fa fa-plus"></i>
                                 </button>
                                 <button class="editlist btn btn-success" id="#list.id#" title="Edit" >
                                   <i class="fa fa-pencil"></i>
