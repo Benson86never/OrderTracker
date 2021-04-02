@@ -169,6 +169,7 @@ input:checked + .slider:before {
                       <cfloop array="#rc.supplierDetails#" item="supplier">
                         <cfif val(supplier.businessId)>
                           <tr>
+                              <cfset sellerid = 0>
                               <td element="supplier">#supplier.name#</td>
                               <td element="seller">
                                 <cfloop array="#supplier.seller#" index="sellerindex" item="seller">

@@ -29,7 +29,8 @@
       document.getElementById('parentBusinessId').style.display = "none";
     }
   }
-  <cfif isDefined("url.businessId") && url.businessId NEQ 0>
+  <cfif variables.businessId NEQ 0
+    AND listfind(variables.businessType,1)>
     $(document).ready(function(){
       $('[data-toggle="tooltip"]').tooltip();
       var actions = '<button class="deletesupplier btn btn-danger" id="0" title="Delete" ><i class="fa fa-trash"></i></button>'+

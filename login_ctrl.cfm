@@ -16,8 +16,17 @@
 		<cfset session.secure.loggedin="yes">
 		<cfset session.secure.MasterAccount="1">
 		<cfquery name="qrySelectBusinessname" datasource="#application.datasource#">
-			select * from business where businessid = #qrySelectUser.businessId#
+			SELECT
+				B.businessid,
+				B.businessname,
+				GROUP_CONCAT(JBT.typeid) AS businessType
+			FROM
+				business B
+				INNER JOIN joinbusinesstotype JBT ON JBT.businessid = B.businessid
+			WHERE
+				B.businessid = #qrySelectUser.businessId#
 		</cfquery>
+		<cfset session.secure.businessType="#qrySelectBusinessname.businessType#">
 		<cfset session.secure.SubAccount="#qrySelectBusinessname.businessid#">
 		<cfset session.secure.SubAccountName="#qrySelectBusinessname.businessname#">
 		<cfset session.secure.PersonID="#qrySelectUser.personid#">
