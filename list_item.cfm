@@ -174,7 +174,7 @@ table.table .form-control.error {
 				arrayAppend(local.accounts, local.details);
 			  }
 			</cfscript>
-			<div style="padding-bottom:20px;" >
+			<!--- <div style="padding-bottom:20px;" >
 			Orders from business: 
 			<select name="business" onchange="changeBusiness(this.value)" class="form-select form-select-lg mb-3" >
 			  <cfloop array="#local.accounts#" item="account">
@@ -187,13 +187,13 @@ table.table .form-control.error {
 				</option>
 			  </cfloop>
 			</select>
-			</div>
+			</div>--->
 				</cfif>
 		<cfform name="LinkLists" action="list_ctrl.cfm">
 		 <table class="list-wrapper table table-bordered table-responsive-md table-striped" cellspacing="0" cellpadding="0" >
           <thead>
             <tr>
-            <th  style="text-align:center;">List Items</th>
+            <th style="text-align:center;">List Items</th>
             </tr>
           </thead>
           <tbody>		 
@@ -202,11 +202,20 @@ table.table .form-control.error {
 		            <td style="font-size:24;">
 					   #supplier.name#
 					</td>
-			    </tr>			
+			    </tr>	
+				<tr><td>	
+				     <cfif 	ArrayLen(supplier.items) gt 0>
+					 <table class="list-wrapper table table-bordered table-responsive-md table-striped" cellspacing="0" cellpadding="0" >									 
+					 <thead>
+                       <tr>
+                         <th style="text-align:center;width:500px;">Item Name</th>
+						 <th style="text-align:center;width:100px;">General Orders</th>
+						 <th style="text-align:center;width:100px;">Beverages</th>
+                       </tr>
+                     </thead>					 
 					<cfloop array="#supplier.items#" index="item">		
 					 <tr>
-		               <td>				
-							#item.name# (#item.unitName#)
+		               <td>#item.name# (#item.unitName#)</td>
 							<cfloop array="#listdetails#" index="list">
 								<cfset joinItemtoListId = 0>
 								<cfloop array="#list.items#" index="listItem">
@@ -214,6 +223,7 @@ table.table .form-control.error {
 										<cfset joinItemtoListId = listItem.Id>
 									</cfif>
 								</cfloop>
+								<td>
 								<cfif joinItemtoListId>
 									<span style="color:green">#list.name#</span>
 									<a href="list_ctrl.cfm?action=removeList&JoinID=#joinItemtoListId#&ItemID=#item.id#&SupplierID=#supplier.id#">(Remove)</a>
@@ -221,13 +231,15 @@ table.table .form-control.error {
 									<span style="color:##c0c0c0">#list.name#</span>
 									<a href="list_ctrl.cfm?action=addList&ListID=#List.id#&ItemID=#item.id#&SupplierID=#supplier.id#">(Add)</a>
 								</cfif>
-								&nbsp|&nbsp
+								</td>							
 							</cfloop> 	
 							</td>
 			         </tr>					
-					</cfloop>				
-			</cfloop>
-			
+					</cfloop>	
+					</table>	
+					</cfif>
+					</td></tr>		
+			</cfloop>			
 			</tbody>
 			</table>
 		</cfform>

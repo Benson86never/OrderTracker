@@ -124,12 +124,12 @@ table.table .form-control.error {
         <div class="row">
             <div class="col-md-2"><h2>Item Details</h2></div>       
             <div class="col-md-7 text-right" >
-              <input type="search" id="search" class="form-control" placeholder="Search" style="width:200px;margin-left:550px;"/>
+              <input type="search" id="search" class="form-control" onkeyup="searchTable();" placeholder="Search" style="width:200px;margin-left:550px;"/> 
             </div>
             <div class="col-md-2 text-right"><button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>   </div>
           </div>
         </div>
-        <table class="list-wrapper table table-bordered table-responsive-md table-striped" cellspacing="0" cellpadding="0">
+        <table class="list-wrapper table table-bordered table-responsive-md table-striped" cellspacing="0" cellpadding="0" id="searchTab">
           <thead>
             <tr>
             <th width="40%" style="text-align:center;">Name</th>
@@ -344,7 +344,6 @@ table.table .form-control.error {
     $('#search').on('keyup', function() {
     var searchVal = $(this).val();
     var filterItems = $('[data-filter-item]');
-
     if ( searchVal != '' ) {
       filterItems.addClass('hidden');
       console.log('[data-filter-item][data-filter-name*="' + searchVal.toLowerCase() + '"]');
@@ -354,5 +353,29 @@ table.table .form-control.error {
     }
   });
   </script>
-  
+  <script>
+function searchTable() {
+  // Declare variables
+  var input, filter, tab, tr, a, i, txtValue;
+  input = document.getElementById('search');
+  filter = input.value.toUpperCase();
+  tab = document.getElementById("searchTab");
+  tr = tab.getElementsByTagName('tr');
+   
+  // Loop through all list items, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    a = tr[i];
+    txtValue = a.textContent || a.innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      tr[i].style.display = "";
+    } else {
+      tr[i].style.display = "none";
+    }
+    if(filter == "")
+    {
+      window.location.reload();
+    }
+  }  
+}
+</script>
 <cfinclude template="includes/footer.cfm" >
