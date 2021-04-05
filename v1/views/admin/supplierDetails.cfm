@@ -64,7 +64,7 @@
       margin-left: 8px;
   }
   input[type="text"] {
-    width: 90%;
+    width: 90% !important;
   }
   table.table td {
     font-weight: normal;
@@ -166,6 +166,7 @@ input:checked + .slider:before {
                   <tbody>
                     <cfoutput>
                       <cfset rc.newsupplierDetails = []>
+                      <cfset rc.suppliernames = []>
                       <cfloop array="#rc.supplierDetails#" item="supplier">
                         <cfif val(supplier.businessId)>
                           <tr>
@@ -198,7 +199,8 @@ input:checked + .slider:before {
                               </td>
                           </tr>
                         <cfelse>
-                          <cfset arrayappend(rc.newsupplierDetails,supplier)>
+                          <cfset arrayappend(rc.newsupplierDetails, supplier)>
+                          <cfset arrayappend(rc.suppliernames, supplier.name)>
                         </cfif>
                       </cfloop>
                     </cfoutput>
