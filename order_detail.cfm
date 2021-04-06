@@ -10,9 +10,10 @@
 	}
 </style>
 <cfinclude template="includes/header.cfm" >
-<div class = "col-xs-12 sectionHeader">
-	Order Details
-</div>
+<div class="container">
+    <div class="panel panel-default">
+      <div class="panel-heading">Order Details</div>
+      <div class="panel-body">
 <div class="page-content">
 	<div class="order-detail">
 		<cfoutput><strong>#url.supplier# #url.orderid#</strong></cfoutput>
@@ -36,5 +37,9 @@
 			</cfif>
 		</cfform>
 	</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <cfinclude template="includes/footer.cfm" >

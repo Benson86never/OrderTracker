@@ -11,13 +11,17 @@
 	.page-content{
 		padding-left: 20px;
 	}
+	.panel-default > .panel-heading {
+    text-align: center;
+    font-size: 24px;
+}
 </style>
 <cfinclude template="includes/header.cfm" >
 <cfoutput>
-	<div class = "col-xs-12 sectionHeader">
-		Lists
-	</div>
-	<div class="page-content">
+ <div class="container">
+   <div class="panel panel-default">
+      <div class="panel-heading">Lists</div>
+      <div class="panel-body" style="margin-left: 200px;">
 		<cfform name="Order" action="cart_ctrl.cfm">
 			<cfloop array="#listdetails#" index="list" >
 				<cfif NOT val(url.ListID)>
@@ -49,11 +53,14 @@
 			</cfloop>
 		</cfform>
 	</div>
+		</div>
+			</div>
+				</div>
 </cfoutput>
 <cfinclude template="includes/footer.cfm" >
 <script>
 	$('.items').keypress(function(event){
-       if(event.which > 57 || event.which < 48){
+       if(event.which > 57 || event.which <= 48){
            event.preventDefault();
        }
    });

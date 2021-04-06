@@ -5,7 +5,7 @@
 
 body {
   font-family: "Poppins", sans-serif;
-  height: 82vh;
+  height: 100vh;
 }
 
 a {
@@ -32,7 +32,7 @@ h2 {
   align-items: center;
   flex-direction: column; 
   justify-content: center;
-  width: 98%;
+  width: 100%;
   min-height: 100%;
   padding: 20px;
   margin-top: 40px;
@@ -78,7 +78,7 @@ input[type=button], input[type=submit], input[type=reset]  {
   background-color: #1a73e8;;
   border: none;
   color: white;
-  padding: 12px 12px;
+  padding: 6px 12px;
   text-align: left;
   text-decoration: none;
   display: inline-block;
@@ -299,8 +299,8 @@ label
        <image src="/ordertracker/images/errorimage.PNG"><font color="red" size="2px;"><span id="errmessage"  >Couldn't find your Order Tracker Account</span></font>
     </cfif> 
     </div>
-    <div style="padding-top:20px;">
-    <input type="button" class="btn btn-info" value="Submit" name="save" id="save" style="background-color:##1a73e8;">
+    <div style="padding-top:20px;" class="row">
+    <a href="../index.cfm" type="Cancel" class="btn btn-info" value="CANCEL" name="cancel" id="cancel" style="background-color:##Be2528;margin-bottom: 34px;">CANCEL</a><input type="button" class="btn btn-info" value="Submit" name="save" id="save" style="background-color:##1a73e8;margin-left:10px;">
     </div>
   </cfform>
   </div>

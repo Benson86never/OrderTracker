@@ -174,8 +174,8 @@ table.table .form-control.error {
 				arrayAppend(local.accounts, local.details);
 			  }
 			</cfscript>
-			 <div style="padding-bottom:20px;" >
-			Orders from business: 
+			<div style="padding-bottom:20px;" >
+			Business: &nbsp;
 			<select name="business" onchange="changeBusiness(this.value)" class="form-select form-select-lg mb-3" >
 			  <cfloop array="#local.accounts#" item="account">
 				<option
@@ -193,7 +193,7 @@ table.table .form-control.error {
 		 <table class="list-wrapper table table-bordered table-responsive-md table-striped" cellspacing="0" cellpadding="0" >
           <thead>
             <tr>
-            <th style="text-align:center;">List Items</th>
+            <th  style="text-align:center;">List Items</th>
             </tr>
           </thead>
           <tbody>		 
@@ -204,15 +204,8 @@ table.table .form-control.error {
 					</td>
 			    </tr>	
 				<tr><td>	
-				     <cfif 	ArrayLen(supplier.items) gt 0>
-					 <table class="list-wrapper table table-bordered table-responsive-md table-striped" cellspacing="0" cellpadding="0" >									 
-					 <thead>
-                       <tr>
-                         <th style="text-align:center;width:500px;">Item Name</th>
-						 <th style="text-align:center;width:100px;">General Orders</th>
-						 <th style="text-align:center;width:100px;">Beverages</th>
-                       </tr>
-                     </thead>					 
+					<cfif 	ArrayLen(supplier.items) gt 0>
+					 <table class="list-wrapper table table-bordered table-responsive-md table-striped" cellspacing="0" cellpadding="0" >									 					 			 
 					<cfloop array="#supplier.items#" index="item">		
 					 <tr>
 		               <td>#item.name# (#item.unitName#)</td>

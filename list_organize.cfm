@@ -76,7 +76,7 @@
       <div class="panel-body">
   <div class="page-content">
     <cfif val(url.ListID)>
-      <a href="#cgi.script_name#" class="btn btn-success"> <-return to lists</a>
+      <a href="#cgi.script_name#" class="btn btn-success" style="margin-left:800px;"> <-return to lists</a>
     </cfif>
     <cfloop array="#Lists#" index="list" >
       <cfif not val(url.ListID)>
@@ -89,12 +89,12 @@
           <cfloop array="#list.items#" index="item" >
             <li class="ui-state-default" id="item_#item.id#">
               <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-              <span>#item.name#</span>
+              <span >#item.name#</span>
             </li>
           </cfloop>
         </cfloop>
       </ul> 
-      <input type="button" id="saveBtn" value="Save" class="btn btn-success">
+      <input type="button" id="saveBtn" value="Save" class="btn btn-success" style="margin-left:800px;">
     </cfif>
   </div>
   </div>

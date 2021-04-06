@@ -157,7 +157,7 @@ table.table .form-control.error {
             }
           </cfscript>
           <div style="padding-bottom:20px;" >
-          Orders from business: 
+          Business:&nbsp;
           <select name="business" onchange="changeBusiness(this.value)" class="form-select form-select-lg mb-3" >
             <cfloop array="#local.accounts#" item="account">
               <option

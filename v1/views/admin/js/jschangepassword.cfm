@@ -59,14 +59,28 @@ $(document).ready(function(){
 				  $("#cpassword").focus();	
 			}  
 			else
-		   {
-			     if ($("#password").val() ===	$("#cpassword").val() )
+		   {       
+			     if ($("#password").val() === $("#cpassword").val() )
                {
-                      $('#formSubmit').submit();      
+
+                   if(passwordRegex === false && $("#password").val() !== "")
+                   {
+                         $("#errorcPasswordText").css({'color':'red','display':'none'});
+                           $("#errorPasswordText").css({'color':'red','display':'none'});
+                        $("#errorMessage").css({'color':'red','display':'none'});
+                      $("#errorPasswordMessage").css({'color':'red','display':'block'});
+                   }
+                   else
+                   {
+                         $('#formSubmit').submit();      
+                   }                     
                }
                else
-               {
-                      $("#errorMessage").css({'color':'red','display':'block'});
+               {          $("#password").css('border-color', 'red');		
+				          $("#cpassword").css('border-color', 'red');	
+                          $("#errorPasswordText").css({'color':'red','display':'none'});
+                          $("#errorcPasswordText").css({'color':'red','display':'none'});
+                        $("#errorMessage").css({'color':'red','display':'block'});
                }		     
 		   }             			     
        }
@@ -97,7 +111,7 @@ $(document).ready(function(){
 
      $("#password").focusin(function(){  
 
-        if($("#errorPasswordText").is(":visible") === true )
+        if($("#errorPasswordText").is(":visible") === true || $("#errorMessage").is(":visible") === true )
         {
 	    	$("#password").css('border','1px solid red');
 	    	$("#password").attr("placeholder",'');
@@ -112,7 +126,7 @@ $(document).ready(function(){
 	});
 
     $("#password").focusout(function(){  
-        if($("#errorPasswordText").is(":visible") === true )
+        if($("#errorPasswordText").is(":visible") === true || $("#errorMessage").is(":visible") === true )
         {
 		    $("#password").css('border','1px solid red');
 		   if($("#password").val() === '')
@@ -142,7 +156,7 @@ $(document).ready(function(){
 
      $("#cpassword").focusin(function(){  
 
-        if($("#errorcPasswordText").is(":visible") === true )
+        if($("#errorcPasswordText").is(":visible") === true || $("#errorMessage").is(":visible") === true )
         {
 	    	$("#cpassword").css('border','1px solid red');
 	    	$("#cpassword").attr("placeholder",'');
@@ -157,7 +171,7 @@ $(document).ready(function(){
 	});
 
     $("#cpassword").focusout(function(){  
-        if($("#errorcPasswordText").is(":visible") === true )
+        if($("#errorcPasswordText").is(":visible") === true || $("#errorMessage").is(":visible") === true )
         {
 		    $("#cpassword").css('border','1px solid red');
 		   if($("#cpassword").val() === '')

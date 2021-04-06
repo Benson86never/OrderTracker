@@ -10,7 +10,7 @@ $(document).ready(function(){
         if($("#firstName").val() === "" || $("#subject").val() === "" || $("#email").val() === "" || $("#description").val() === "" || ($("#email").val() !== "" && emailRegex === false) ){
             dynamicFields += ($("#firstName").val() === "" ? "Please enter first name <br/>" : "");
             dynamicFields += ($("#subject").val() === "" ? "Please enter subject <br/>" : "");
-            dynamicFields += ($("#description").val() === "" ? "Please enter description <br/>" : "");
+            dynamicFields += ($("#description").val() === "" ? "Please enter issue description <br/>" : "");
             dynamicFields += ($("#email").val() === "" ? "Please enter Email <br/>" : "");
             dynamicFields += (emailRegex === false && $("#email").val() !== ""? "Please enter correct email <br/>" : "");
            }

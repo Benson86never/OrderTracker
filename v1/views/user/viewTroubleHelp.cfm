@@ -32,7 +32,7 @@
           <input type="text" class="form-control inputelement" id="firstName" name="firstName" value=""  autocomplete="off">
         </div>
         <div class="col-md-1 labelname" style="margin-left: 60px;">
-          Email ID<span style="color: red"><b>*<b></span>:
+          Email<span style="color: red"><b>*<b></span>:
         </div>
         <div class="col-md-2 ">
           <input type="text" class="form-control inputelement" id="email"  name="email" value=""  autocomplete="off" >
@@ -48,14 +48,14 @@
       </div>
       <div class="row">
         <div class="col-md-1 labelname">
-          Description<span style="color: red"><b>*<b></span>:
+          Issue Description<span style="color: red"><b>*<b></span>:
         </div>
         <div class="col-md-2 ">
           <textarea type="text" class="form-control inputelement" id="description" name="description" value="" rows="8" columns="335" style="width:530px;"></textarea>
         </div>        
       </div>
       <div class="row">
-        <div class="col-md-12" id="passwordERR" style="color: red;text-align: center"></div>
+        <div class="col-md-12" id="passwordERR" style="color:red;text-align:center"></div>
       </div>
       <div class="row" style="margin-left:220px;">
         <div class="col-md-7 text-right">          
@@ -63,7 +63,7 @@
               <i class="fa fa-times" aria-hidden="true"></i>
             </a>     
           <button type="button" class="btn btn-success" name="save" id="save">
-            <i class="fa fa-check" aria-hidden="true"></i>
+            <i class="fa fa-check " aria-hidden="true"></i>
           </button>
         </div>
       </div>

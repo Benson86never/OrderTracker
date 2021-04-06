@@ -10,7 +10,7 @@
 	  color: #1a73e8;
 	  display:inline-block;
 	  text-decoration: none;
-	  font-weight: bold;
+	  font-weight: normal;
 	  font-size:14px;
 	  font-family:roboto,'Noto Sans Myanmar UI',arial,sans-serif;
 	}
@@ -19,7 +19,7 @@
 	  color: #1a73e8;
 	  display:inline-block;
 	  text-decoration: none;
-	  font-weight: bold;
+	  font-weight: normal;
 	  font-size:14px;
 	  font-family:roboto,'Noto Sans Myanmar UI',arial,sans-serif;
 	}
@@ -268,7 +268,6 @@
 		font-weight: normal !important;
 	}
 </style>
- 
     <link rel="stylesheet" href="v1/css/bootstrap.css" />
      <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -291,11 +290,15 @@
 			 <cfif isdefined("cookie.rememberme") and cookie.rememberme eq "Yes">
 				<cfinput type="text" id="userName" class="second" name="userName" value="#cookie.userName#" placeholder="Email" >			
 			<cfelse> 
-				<cfinput type="text" id="userName" class="second" name="userName" value="" required="yes" placeholder="Email" >				
+			   <cfif isdefined("url.err") and url.err eq 1>
+				<cfinput type="text" id="userName" class="second" name="userName" value="#cookie.hdnUserName#" required="yes" placeholder="Email" >	
+				<cfelse>
+				<cfinput type="text" id="userName" class="second" name="userName" value="" required="yes" placeholder="Email" >
+				</cfif>			
 			</cfif> 
 			<span id="errorEmailText" style="display:none;margin-left:45;font-size:12px;" align="left"><image src="images/errorimage.PNG">Enter a valid email</span>
 		  </div> 
-		  <div style="padding-top:20px;">		 
+		  <div style="padding-top:20px;">
 			<label id="labelpassword" style="display: none;">Password</label>
 			 <cfif IsDefined("cookie.rememberme") and cookie.rememberme eq "Yes">
 				<cfinput type="password" id="password" class="second" name="password" value="#cookie.password#" placeholder="Password" >
@@ -313,14 +316,14 @@
 		  </div>	 
 		<div  class="row" style="padding-top:5px;">		 
 				<div class="col-md-4" style="margin-left:35px;">
-				<input type="checkbox" name="rememberme" id="rememberme" value="Yes" <cfif IsDefined("cookie.rememberme") and cookie.rememberme eq "Yes">CHECKED</cfif> ><span id="rememberme" >&nbsp;Remember Me</span> 					
+				<input type="checkbox" name="rememberme" id="rememberme" value="Yes" <cfif IsDefined("cookie.rememberme") and cookie.rememberme eq "Yes">CHECKED</cfif> ><span id="rememberme" style="margin-right: 20px;" >&nbsp;Remember Me</span> 					
 				</div>
 				<div class="col-md-4 text-right" style="margin-left:15px;">
 				<a class="underlineHover" href="v1/index.cfm?action=admin.forgotpassword" >Forgot Password?</a>					
 				</div>
 		</div>
 		<div  class="row" style="padding-top:25px;">
-			<input type="button" class="btn btn-info" value="Login" name="btnsubmit" id="btnsubmit" style="background-color:##1a73e8;">
+			<input type="button" class="btn btn-info" value="Submit" name="btnsubmit" id="btnsubmit" style="background-color:##1a73e8;">
 		  	<input type="submit" value="Login" name="submit"  id="submit" style="display:none;">
 		</div>
 		</cfform>
@@ -333,7 +336,9 @@
 </cfoutput>
 <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/jquery.inputmask.bundle.js"></script>
 <script>
-   $(document).ready(function(){ 
+   $(document).ready(function(){ 	  
+	  $("#userName").focus();
+
 	   if($("#errmessage").is(":visible") === true)      
 	   {
 		   $("#userName").css('border','1px solid red');
@@ -351,6 +356,7 @@
 				 $("#userName").css('border-color', 'red');		
 				 $("#errorPasswordText").css({'color':'red','display':'block'});	
 				 $("#errorEmailText").css({'color':'red','display':'block'});	
+				 $("#userName").focus();
 			}			 
 			else if( $("#password").val() == "" )
 			{ 

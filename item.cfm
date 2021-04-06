@@ -113,7 +113,29 @@ table.table .form-control.error {
 .simple-pagination .next.current {
 	background: #e04e60;
 }
+
+.uploadfile
+{
+  border:0;
+}
 </style>
+<cfif isdefined("url.err") and url.err eq 1>
+<div class="modal fade modal-warning" id="modal-showAlert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index: 9000;">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header alert alert-danger" >
+        <span id="headerText"></span>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"></h4>
+      </div>
+      <div class="modal-body">Please Upload only XLSX file types.</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default ok" data-dismiss="modal"><cfoutput>OK</cfoutput></button>
+      </div>
+    </div>
+  </div>
+</div>
+</cfif>
 <cfoutput>
   <cfset items = CreateObject("Component","v1.model.services.admin").getItems().items>
   <cfset units = CreateObject("Component","v1.model.services.admin").getUnitDetails()>
@@ -121,13 +143,21 @@ table.table .form-control.error {
   <div class="container table-responsive">
     <div class="table-wrapper">
       <div class="table-title">
-        <div class="row">
-            <div class="col-md-2"><h2>Item Details</h2></div>       
-            <div class="col-md-7 text-right" >
-              <input type="search" id="search" class="form-control" onkeyup="searchTable();" placeholder="Search" style="width:200px;margin-left:550px;"/> 
+         <div class="row">
+            <div class="col-md-2"><h2>Item Details</h2></div>                
+            <div class="col-md-3">   
+                 <div id="dialog-form" title="Add Items">                
+					            <cfform id="addItem" action="add_item_action.cfm" method="post" enctype="multipart/form-data">
+						              <cfinput type="file" name="uploadfile" required="yes" message="You must select a file." class="form-control" style="width:200px;display:inline-flex;">
+                          <input type="submit" name="Submit2" value="Upload" class="btn btn-info " style="width:70px;display:inline-flex;">
+					            </cfform>					
+			  	       </div>  
+            </div>     
+            <div class="col-md-3 text-right" >
+              <input type="search" id="search" name="search" class="form-control" onkeyup="searchTable();" placeholder="Search" style="width:200px;margin-left:200px;"/> 
             </div>
             <div class="col-md-2 text-right"><button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>   </div>
-          </div>
+          </div>                
         </div>
         <table class="list-wrapper table table-bordered table-responsive-md table-striped" cellspacing="0" cellpadding="0" id="searchTab">
           <thead>
@@ -174,12 +204,14 @@ table.table .form-control.error {
     </div>
   </div>
 </cfoutput>
-
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/jquery.simplePagination.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script>
   $(document).ready(function(){
+    <cfif isdefined("url.err") and url.err eq 1>
+    $('#modal-showAlert').modal('show');   
+    </cfif>
    // $('[data-toggle="tooltip"]').tooltip();
     var actions = $("table td:last-child").html();
     var unithtml = "";
@@ -258,8 +290,7 @@ table.table .form-control.error {
               //location.href = "";
             } else {
               //location.href = window.location.href;
-            }
-            
+            }            
           }
         });
       }
@@ -323,9 +354,7 @@ table.table .form-control.error {
         });
       });
     });
-
   });
-  
   var items = $(".list-wrapper .list-item");
   var numItems = items.length;
   var perPage = 12;

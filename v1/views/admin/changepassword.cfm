@@ -76,7 +76,7 @@ input[type=button], input[type=submit], input[type=reset]  {
   background-color: #56baed;
   border: none;
   color: white;
-  padding: 12px 12px;
+  padding: 6px 12px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -330,20 +330,21 @@ label
     <input type="text" id="Email" class="form-control inputelement" name="Email" readonly value="#qrySelectPerson.email#" style="border: 1px solid ##C0C0C0;">
     </div>
     <div style="padding-top:20px;">   
-     <input type="password" class="form-control inputelement" id="password" placeholder="Password" name="password" value="" autocomplete="off" required  minlength="8">
+     <input type="password" class="form-control inputelement" id="password" placeholder="Password" name="password" value="" autocomplete="off" required  minlength="8" maxlength="8">
           <i class="fa fa-2x fa-eye" aria-hidden="true" id="showPaasword"></i>
           <!--- <span style="margin-top: 1%;font-size: 10px;margin-left:35px;float:left;"><i>Password should contain Uppercase letters, Lowercase letters,Numbers and Symbol</i></span>  --->
            <label id="labelPassword" style="display:none;">Password</label>    
           <span id="errorPasswordText" style="display:none;margin-left:45px;font-size:12px;" align="left"><image src="/ordertracker/images/errorimage.PNG">Enter a Password</span>
     </div>
     <div style="padding-top:20px;">  
-          <input type="password" class="form-control inputelement" id="cpassword" placeholder="Confirm Password" name="cpassword" value="" autocomplete="off" required minlength="8">
+          <input type="password" class="form-control inputelement" id="cpassword" placeholder="Confirm Password" name="cpassword" value="" autocomplete="off" required minlength="8" maxlength="8">
           <label id="labelcPassword" style="display:none;">Confirm Password</label>    
           <span id="errorcPasswordText" style="display:none;margin-left:45px;font-size:12px;" align="left"><image src="/ordertracker/images/errorimage.PNG">Enter a Confirm Password</span>
           <span id="errorMessage" style="display:none;margin-left:45px;font-size:12px;" align="left"><image src="/ordertracker/images/errorimage.PNG">Password and Confirm Password should be same.</span>
+          <span id="errorPasswordMessage" style="display:none;margin-left:45px;font-size:12px;" align="left"><image src="/ordertracker/images/errorimage.PNG">Password should contain Uppercase letters, Lowercase letters,<br/>Numbers and Symbol </span>
     </div> 
     <div style="padding-top:20px;">
-     <input type="button" class="btn btn-success" value="Submit" name="save" id="save" style="background-color:##1a73e8;">         
+    <a href="../index.cfm" type="Cancel" class="btn btn-info" value="CANCEL" name="cancel" id="cancel" style="background-color:##Be2528;margin-bottom: 34px;">CANCEL</a> <input type="button" class="btn btn-success" value="Submit" name="save" id="save" style="background-color:##1a73e8;margin-left:10px;">         
      </div>
   </form>
   </div>

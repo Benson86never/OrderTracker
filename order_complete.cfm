@@ -6,12 +6,17 @@
 	.page-content{
 		padding-left: 20px;
 	}
+	.panel-default > .panel-heading {
+    text-align: center;
+    font-size: 24px;
+}
 </style>
 <cfinclude template="includes/header.cfm" >
+	<div class="container">
+   <div class="panel panel-default">
+      <div class="panel-heading">Complete Order</div>
+      <div class="panel-body" style="margin-left: 200px;">
 <cfoutput>
-	<div class = "col-xs-12 sectionHeader">
-		Complete Order
-	</div>
 	<div class="page-content">
 		<div class="order-item"> 
 			Your order is now listed in open orders.
@@ -24,3 +29,7 @@
 		</div>
 	</div>
 </cfoutput>
+</div>
+</div>
+</div>
+</div>

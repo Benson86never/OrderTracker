@@ -6,12 +6,17 @@
 	.page-content{
 		padding-left: 20px;
 	}
+	.panel-default > .panel-heading {
+    text-align: center;
+    font-size: 24px;
+}
 </style>
 <cfinclude template="includes/header.cfm" >
 <cfoutput>
-	<div class = "col-xs-12 sectionHeader">
-		Cart
-	</div>
+	<div class="container">
+   <div class="panel panel-default">
+      <div class="panel-heading">Cart</div>
+      <div class="panel-body" style="margin-left: 200px;">
 	<div class="page-content">
 		<cfif isDefined("Session.cart.id")>
 			<cfscript>
@@ -39,6 +44,10 @@
 			</cfform>	
 		</cfif>
 		<cfinclude template="includes/bootstrap_js.cfm" >
+	</div>
+	</div>
+	</div>
+	</div>
 	</div>
 </cfoutput>
 <cfinclude template="includes/footer.cfm" >

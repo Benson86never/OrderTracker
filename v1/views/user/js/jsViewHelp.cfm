@@ -9,7 +9,7 @@ $(document).ready(function(){
             $('.modal-header').css('background-color','white');
             $('#headerText').html('Help');
             $('.close').css('color','black');
-            $('#modal-showAlert .modal-body').html("Please Enter Description.");       
+            $('#modal-showAlert .modal-body').html("Please Enter issue Description.");       
             $('#modal-showAlert .modal-footer .ok').show();    
             $('#modal-showAlert .modal-footer .yes').hide();
             $('#modal-showAlert .modal-footer .no').hide();                
