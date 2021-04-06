@@ -137,7 +137,13 @@ table.table .form-control.error {
 </div>
 </cfif>
 <cfoutput>
-  <cfset items = CreateObject("Component","v1.model.services.admin").getItems().items>
+  <cfif listfind(session.secure.businessType, 2)
+    AND session.secure.RoleCode NEQ 1>
+    <cfset supplierid = session.secure.SubAccount>
+  <cfelse>
+    <cfset supplierId = 0>
+  </cfif>
+  <cfset items = CreateObject("Component","v1.model.services.admin").getItems(supplierId = supplierId).items>
   <cfset units = CreateObject("Component","v1.model.services.admin").getUnitDetails()>
   <cfset suppliers = CreateObject("Component","v1.model.services.admin").getSupplierDetails(businessId = session.secure.subaccount)>
   <div class="container table-responsive">
@@ -156,6 +162,7 @@ table.table .form-control.error {
             <div class="col-md-3 text-right" >
               <input type="search" id="search" name="search" class="form-control" onkeyup="searchTable();" placeholder="Search" style="width:200px;margin-left:200px;"/> 
             </div>
+            <cfif session.secure.RoleCode EQ 1>
             <div class="col-md-2 text-right"><button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>   </div>
           </div>                
         </div>
@@ -167,7 +174,9 @@ table.table .form-control.error {
             <th width="10%" style="text-align:center;">Photo URL</th>
             <th width="10%" style="text-align:center;">Units</th>
             <th width="20%" style="text-align:center;">Supplier</th>
-            <th width="10%" style="text-align:center;">Actions</th>
+            <cfif session.secure.RoleCode EQ 1>
+              <th width="10%" style="text-align:center;">Actions</th>
+            </cfif>
             </tr>
           </thead>
           <tbody>
@@ -178,23 +187,25 @@ table.table .form-control.error {
               <td fid="photourl" title="#item.photoUrl#">#item.photoUrl#</td>
               <td fid="units" type="unit">#item.unitName#</td>
               <td fid="supplier" type="supplier">#item.supplierName#</td>
-              <td>
-                <button class="cancel btn btn-danger" title="cancel">
-                  <i class="fa fa-times" aria-hidden="true"></i>
-                </button>
-                <button class="add delete btn btn-danger"  action = "delete" id="#item.id#" title="Delete">
-                  <i class="fa fa-trash" aria-hidden="true"></i>
-                </button>
-                <button class="add btn btn-success"  id="#item.id#" action = "add"  title="Add">
-                  <i class="fa fa-plus" aria-hidden="true"></i>
-                </button>
-                <button class="edit btn btn-warning" title="Edit">
-                  <i class="fa fa-pencil" aria-hidden="true"></i>
-                </button>
-                <button class="add save btn btn-success" action = "update" id="#item.id#" title="save">
-                  <i class="fa fa-save" aria-hidden="true"></i>
-                </button>
-              </td>
+              <cfif session.secure.RoleCode EQ 1>
+                <td>
+                  <button class="cancel btn btn-danger" title="cancel">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                  </button>
+                  <button class="add delete btn btn-danger"  action = "delete" id="#item.id#" title="Delete">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                  </button>
+                  <button class="add btn btn-success"  id="#item.id#" action = "add"  title="Add">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                  </button>
+                  <button class="edit btn btn-warning" title="Edit">
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                  </button>
+                  <button class="add save btn btn-success" action = "update" id="#item.id#" title="save">
+                    <i class="fa fa-save" aria-hidden="true"></i>
+                  </button>
+                </td>
+              </cfif>
             </tr>
             </cfloop>
           </tbody>
@@ -287,9 +298,9 @@ table.table .form-control.error {
             });
             $(".add-new").removeAttr("disabled");
             if(caction == 'add') {
-              //location.href = "";
+              location.href = "";
             } else {
-              //location.href = window.location.href;
+              location.href = window.location.href;
             }            
           }
         });

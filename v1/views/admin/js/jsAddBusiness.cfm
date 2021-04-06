@@ -29,7 +29,8 @@
       document.getElementById('parentBusinessId').style.display = "none";
     }
   }
-  <cfif isDefined("url.businessId") && url.businessId NEQ 0>
+  <cfif variables.businessId NEQ 0
+    AND listfind(variables.businessType,1)>
     $(document).ready(function(){
       $('[data-toggle="tooltip"]').tooltip();
       var actions = '<button class="deletesupplier btn btn-danger" id="0" title="Delete" ><i class="fa fa-trash"></i></button>'+
@@ -37,6 +38,8 @@
                   '<button class="addsupplier btn btn-success" id="0" title="Add" ><i class="fa fa-plus"></i></button>';
       // Append table with add row form on add new button click
       $(".add-newsupplier").click(function(){
+        $('#supplierid').val(0);
+        $('#sellerid').val(0);
         $(this).attr("disabled", "disabled");
         var index = $(".suppliertable tr").length;
         var row = '<tr>' +
@@ -101,6 +104,30 @@
             $('#supplier').addClass("error");
           }
         }
+        suppliername = [];
+        <cfloop array="#rc.suppliernames#" item="sname">
+          suppliername.push('<cfoutput>#sname#</cfoutput>');
+        </cfloop>
+        if(suppliername.indexOf($('#supplier').val()) == -1) {
+          $('#modal-supplierNotfound').modal('show');
+          $('.modal-header').css('background-color','white');
+          $('.close').css('color','black');
+          $('#modal-showAlert .modal-footer .yes').click(function(){
+            itemdetails = {itemid : eid}
+            $.ajax({
+              url: 'v1/model/services/admin.cfc?method=manageItem',
+              type: 'post',
+              data: {
+                itemDetails : JSON.stringify(itemdetails),
+                action : action
+              },
+              success: function(data){
+                parenttr.remove();
+              }
+            });
+          });
+          $('#supplier').addClass("error");
+        }
         $(this).parents("tr").find(".error").first().focus();
         if(!empty){
           input.each(function(){
@@ -163,8 +190,7 @@
       $(document).on("click", ".deletesupplier", function(){
         $(this).parents("tr").remove();
         $(".add-newsupplier").removeAttr("disabled");
-        if($(this).attr('sellerid') > 0
-          && $(this).attr('supplierid') > 0) {
+        if($(this).attr('supplierid') > 0) {
             $.ajax({
               url: '../v1/model/services/admin.cfc?method=deleteSupplier',
               type: 'post',

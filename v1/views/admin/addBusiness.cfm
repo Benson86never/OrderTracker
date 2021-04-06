@@ -54,15 +54,15 @@
       <div class="panel-body">
         <form class="form-inline" method = "post" id="formSubmit" name="formSubmit">
             <div class="row">
-                <div class="col-md-2 labelname">
-                    Business:
-                </div>
-                <div class="col-md-2 ">
-                    <input type="text" class="form-control inputelement" id="business" placeholder="Enter Business" name="business" value="#variables.businessName#" autocomplete="off" required>
-                    <input type ="hidden" id="businessId" name="businessId" value="#variables.businessId#">
-                </div>
-                <div class="col-md-2 labelname">
-                  Business Type:
+              <div class="col-md-2 labelname">
+                  Business:
+              </div>
+              <div class="col-md-2 ">
+                  <input type="text" class="form-control inputelement" id="business" placeholder="Enter Business" name="business" value="#variables.businessName#" autocomplete="off" required>
+                  <input type ="hidden" id="businessId" name="businessId" value="#variables.businessId#">
+              </div>
+              <div class="col-md-2 labelname">
+                Business Type:
               </div>
               <div class="col-md-2 ">
                 <select required class="form-control businessType" name="businessType" id="businessType" multiple>

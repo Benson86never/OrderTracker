@@ -505,14 +505,18 @@ component  {
   }
 
   public any function getItems(
-    numeric itemId = 0
+    numeric itemId = 0,
+    numeric supplierId = 0
   ){
     local.result = {'error' : false};
     local.items = [];
-    local.condition = "";
+    local.condition = "1 = 1";
     
     if(val(arguments.itemId) > 0) {
-      local.condition &= "AND itemId = #arguments.itemId#";
+      local.condition &= " AND I.itemId = #arguments.itemId#";
+    }
+    if(val(arguments.supplierId) > 0) {
+      local.condition &= " AND JSI.supplierId = #arguments.supplierId#";
     }
     local.itemDetails = queryExecute("
       SELECT
@@ -529,6 +533,8 @@ component  {
           INNER JOIN Units U ON U.UnitID = I.UnitID
           INNER JOIN JoinSupplierToItem JSI on JSI.ItemID = I.ItemID
           INNER JOIN business S ON S.businessId = JSI.SupplierID
+        WHERE
+          #local.condition#
         ORDER BY I.name asc
         ",{},{datasource: application.dsn}
     );

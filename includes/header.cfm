@@ -72,7 +72,8 @@
                     Admin <span class="caret"></span>
                   </a>
                   <ul class="dropdown-menu">
-                    <cfif session.secure.RoleCode eq 1>
+                    <cfif session.secure.RoleCode EQ 1
+                    OR listfind(session.secure.businessType, 2)>
                       <li><a class="dropdown-item" href="item.cfm">Edit Items</a></li>
                       <li><a class="dropdown-item" href="list_organize.cfm">Organize Lists</a></li>
                       <li><a class="dropdown-item" href="list_item.cfm">Manage List Items</a></li>
