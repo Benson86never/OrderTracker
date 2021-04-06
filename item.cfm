@@ -267,9 +267,9 @@ table.table .form-control.error {
             });
             $(".add-new").removeAttr("disabled");
             if(caction == 'add') {
-              //location.href = "";
+              location.href = "";
             } else {
-              //location.href = window.location.href;
+              location.href = window.location.href;
             }
             
           }

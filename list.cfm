@@ -53,7 +53,7 @@
 <cfinclude template="includes/footer.cfm" >
 <script>
 	$('.items').keypress(function(event){
-       if(event.which > 57 || event.which < 48){
+       if(event.which > 57 || event.which <= 48){
            event.preventDefault();
        }
    });

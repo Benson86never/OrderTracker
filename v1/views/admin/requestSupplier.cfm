@@ -40,8 +40,7 @@
   </cfoutput>
 </cfsavecontent>
 <cfmail from = "info@porthousegrill.com"
-  <!---to = "info@porthousegrill.com"--->
-  to = "bmadaveni@infoane.com"
+  to = "info@porthousegrill.com,bmadaveni@infoane.com"
   subject = "New Supplier Request">
   #mailcontent#
 </cfmail>
