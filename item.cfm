@@ -1,5 +1,3 @@
-<cfinclude template="includes/secure.cfm" >
-<cfinclude template="includes/header.cfm" >
 <style>
 input, select{
   font-size: 12px !important;
@@ -118,6 +116,9 @@ table.table .form-control.error {
 {
   border:0;
 }
+#pagination-container{
+  margin-bottom: 20px;
+}
 </style>
 <cfif isdefined("url.err") and url.err eq 1>
 <div class="modal fade modal-warning" id="modal-showAlert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index: 9000;">
@@ -221,8 +222,10 @@ table.table .form-control.error {
   </div>
 </cfoutput>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/jquery.simplePagination.js"></script>
+<!---<script src="https://cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/jquery.simplePagination.js"></script>--->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script type="text/javascript" src="js/px-pagination.js"></script>
+<link href = "js/px-pagination.css" rel = "stylesheet">
 <script>
   $(document).ready(function(){
     <cfif isdefined("url.err") and url.err eq 1>
@@ -371,21 +374,32 @@ table.table .form-control.error {
       });
     });
   });
+  
+
+  
+
   var items = $(".list-wrapper .list-item");
   var numItems = items.length;
   var perPage = 12;
   items.slice(perPage).hide();
-  $('#pagination-container').pagination({
-        items: numItems,
-        itemsOnPage: perPage,
-        prevText: "&laquo;",
-        nextText: "&raquo;",
-        onPageClick: function (pageNumber) {
-            var showFrom = perPage * (pageNumber - 1);
-            var showTo = showFrom + perPage;
-            items.hide().slice(showFrom, showTo).show();
-        }
+    $("#pagination-container").pxpaginate({
+      currentpage: 1,
+      totalPageCount: items.length/12,
+      maxBtnCount: 5,
+      align: 'center',
+      nextPrevBtnShow: true,
+      firstLastBtnShow: true,
+      prevPageName: '<',
+      nextPageName: '>',
+      lastPageName: '<<',
+      firstPageName: '>>',
+      callback: function(pagenumber){
+        var showFrom = perPage * (pagenumber - 1);
+        var showTo = showFrom + perPage;
+        items.hide().slice(showFrom, showTo).show();
+      }
     });
+
     $('#search').on('keyup', function() {
     var searchVal = $(this).val();
     var filterItems = $('[data-filter-item]');
@@ -423,4 +437,3 @@ function searchTable() {
   }  
 }
 </script>
-<cfinclude template="includes/footer.cfm" >
