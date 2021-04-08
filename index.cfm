@@ -288,12 +288,12 @@
 		  <div style="padding-top:20px;">
 			<label id="labelEmail" style="display: none;">Email</label>
 			 <cfif isdefined("cookie.rememberme") and cookie.rememberme eq "Yes">
-				<cfinput type="text" id="userName" class="second" name="userName" value="#cookie.userName#" placeholder="Email" >			
+				<cfinput type="text" id="userName" class="second" name="userName" value="#cookie.userName#" placeholder="Email" autocomplete="off">			
 			<cfelse> 
 			   <cfif isdefined("url.err") and url.err eq 1>
-				<cfinput type="text" id="userName" class="second" name="userName" value="#cookie.hdnUserName#" required="yes" placeholder="Email" >	
+				<cfinput type="text" id="userName" class="second" name="userName" value="#cookie.hdnUserName#" required="yes" placeholder="Email" autocomplete="off">	
 				<cfelse>
-				<cfinput type="text" id="userName" class="second" name="userName" value="" required="yes" placeholder="Email" >
+				<cfinput type="text" id="userName" class="second" name="userName" value="" required="yes" placeholder="Email" autocomplete="off">
 				</cfif>			
 			</cfif> 
 			<span id="errorEmailText" style="display:none;margin-left:45;font-size:12px;" align="left"><image src="images/errorimage.PNG">Enter a valid email</span>
@@ -307,9 +307,9 @@
 			 </cfif>
 			 <span id="errorPasswordText" style="display:none;margin-left:45;font-size:12px;" align="left"><image src="images/errorimage.PNG">Enter a password</span>
 		  </div>
-		  <div  class="row" style="padding-top:4px;margin-left:20px;margin-left:-100px;">	
+		  <div  class="row" style="padding-top:4px;margin-left:20px;margin-left:-110px;">	
 			<cfif isdefined("url.err") and url.err eq 1>
-				<image src="images/errorimage.PNG"><font color="red" size="2px;" ><span id="errmessage">Please enter valid email and password</span></font>
+				<image src="images/errorimage.PNG"><font color="red" size="2px;" ><span id="errmessage">Please enter valid email and password   </span></font>
 			<cfelseif isdefined("url.err") and url.err eq 2>
 				<image src="images/errorimage.PNG"><font color="red" size="2px;" ><span id="errmessage">Couldn't find your Order Tracker Account</span></font>
 			</cfif>	
@@ -338,6 +338,9 @@
 <script>
    $(document).ready(function(){ 	  
 	  $("#userName").focus();
+	  $("#labelEmail").css({'color':'#0095ff','display':'block'});
+	  $("#userName").attr("placeholder",'');
+	  $("#userName").css('border','1px solid #0095ff');
 
 	   if($("#errmessage").is(":visible") === true)      
 	   {

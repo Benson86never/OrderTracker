@@ -17,9 +17,10 @@ $(document).ready(function(){
            $('#formSubmit').submit();
        }
        else
-       {          				
+       {          $("#errmessage").css({'color':'red','display':'none'});	
+                  $("#errimage").css({'color':'red','display':'none'});
 				 $("#Email").css('border-color', 'red');	
-			     $("#errorEmailText").css({'color':'red','display':'block'});	
+			     $("#errorEmailText").css({'color':'red','display':'block'});	                
                  $("#Email").focus();
        }
     });

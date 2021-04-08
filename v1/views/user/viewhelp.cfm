@@ -1,3 +1,9 @@
+<style>
+	.panel-default > .panel-heading {
+  text-align: center;
+  font-size: 24px;
+}
+</style>
 <cfoutput>
   <cfif structKeyExists(session, 'userResult') AND session.userResult.error>
     <div class="row">
@@ -19,6 +25,7 @@
       variables.lastname = "";      
     }
   </cfscript>
+  
   <div class="container">
    <div class="panel panel-default">
       <div class="panel-heading">Help</div>
