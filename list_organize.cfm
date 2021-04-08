@@ -69,7 +69,7 @@
 .buttondiv{
   margin-bottom: 20px;
 }
-.listitems span {
+.itemelement span {
   position: relative;
   top: 8px;
 }
@@ -83,9 +83,9 @@
           <div class="page-content">
             <!--- <div class="list-item"><a href="#cgi.script_name#?ListID=#list.id#">#list.name#</a></div>--->
             <cfif arraylen(list.items)>
-              <ul id="sortable">
+              <ul id="sortable" class="sortable">
                 <cfloop array="#list.items#" index="item" >
-                  <li class="ui-state-default listitems" id="item_#item.id#">
+                  <li class="ui-state-default itemelement" id="item_#item.id#">
                     <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
                     <span >#item.name#</span>
                   </li>
@@ -105,24 +105,26 @@
 </cfoutput>
 <script>
   function persist() {
-    console.log('running persist....')
-    var data = $("#sortable").sortable('toArray')
-    console.dir(data)
-    $.post('v1/model/services/business.cfc?method=saveListItems',{listItems:data},function(res,txtStatus) {
-      console.log(txtStatus);
-      $('#modal-showAlert').modal('show');
-      $('.modal-header').css('background-color','white');
-      $('#headerText').html('Organize List Items');
-      $('.close').css('color','black');
-      $('#modal-showAlert .modal-body').html(txtStatus);
-      $('#modal-showAlert .modal-footer .ok').show();
-      $('#modal-showAlert .modal-footer .yes').hide();
-      $('#modal-showAlert .modal-footer .no').hide();
-    })
+    console.log('running persist....');
+    $(".sortable").each(function(){
+      var data = $(this).sortable('toArray');
+      console.log(data)
+      $.post('v1/model/services/business.cfc?method=saveListItems',{listItems:data},function(res,txtStatus) {
+        console.log(txtStatus);
+        $('#modal-showAlert').modal('show');
+        $('.modal-header').css('background-color','white');
+        $('#headerText').html('Organize List Items');
+        $('.close').css('color','black');
+        $('#modal-showAlert .modal-body').html(txtStatus);
+        $('#modal-showAlert .modal-footer .ok').show();
+        $('#modal-showAlert .modal-footer .yes').hide();
+        $('#modal-showAlert .modal-footer .no').hide();
+      });
+    });
   }
   $(document).ready(function(){
     jQuery.ajaxSettings.traditional = true;
-    $("#sortable").sortable();
+    $(".sortable").sortable();
     $("#saveBtn").click(persist)
   });
 </script>

@@ -148,7 +148,7 @@ OR session.secure.RoleCode EQ 1>
     $('.tab-pane').hide();
     $('#'+setId).show();
   }
-  $('li').click(function(){
+  $('.steps li').click(function(){
     showtab($(this).find('a').attr('href'));
   });
   showtab(page);
