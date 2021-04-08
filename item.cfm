@@ -150,20 +150,25 @@ table.table .form-control.error {
     <div class="table-wrapper">
       <div class="table-title">
          <div class="row">
-            <div class="col-md-2"><h2>Item Details</h2></div>                
-            <div class="col-md-3">   
+            <div class="col-md-2"><h2>Item Details</h2></div>    
+            <cfif session.secure.RoleCode EQ 1>   
+            <div class="col-md-6">   
                  <div id="dialog-form" title="Add Items">                
 					            <cfform id="addItem" action="add_item_action.cfm" method="post" enctype="multipart/form-data">
 						              <cfinput type="file" name="uploadfile" required="yes" message="You must select a file." class="form-control" style="width:200px;display:inline-flex;">
                           <input type="submit" name="Submit2" value="Upload" class="btn btn-info " style="width:70px;display:inline-flex;">
+                           <a href="DownloadItem.cfm"  class="btn btn-info  "style="width:110px;display:inline-flex;" >Download Item List</a>
+                           <a href="DownloadTemplate.cfm"  class="btn btn-info  "style="width:110px;display:inline-flex;" >Download Template</a>
 					            </cfform>					
 			  	       </div>  
             </div>     
-            <div class="col-md-3 text-right" >
-              <input type="search" id="search" name="search" class="form-control" onkeyup="searchTable();" placeholder="Search" style="width:200px;margin-left:200px;"/> 
+            </cfif>
+            <div class="col-md-1 text-right" >
+              <input type="search" id="search" name="search" class="form-control" onkeyup="searchTable();" placeholder="Search" style="width:150px;"/> 
             </div>
             <cfif session.secure.RoleCode EQ 1>
-            <div class="col-md-2 text-right"><button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>   </div>
+            <div class="col-md-1 text-right" style="margin-left:50px;"><button type="button" class="btn btn-info add-new"  ><i class="fa fa-plus"></i> Add New</button></div>
+            </cfif>
           </div>                
         </div>
         <table class="list-wrapper table table-bordered table-responsive-md table-striped" cellspacing="0" cellpadding="0" id="searchTab">
@@ -413,7 +418,7 @@ function searchTable() {
     }
     if(filter == "")
     {
-      window.location.reload();
+     window.location.reload();    
     }
   }  
 }

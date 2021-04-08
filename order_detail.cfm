@@ -8,6 +8,10 @@
 	.page-content{
 		padding-left: 20px;
 	}
+	.panel-default > .panel-heading {
+  text-align: center;
+  font-size: 24px;
+}
 </style>
 <cfinclude template="includes/header.cfm" >
 <div class="container">

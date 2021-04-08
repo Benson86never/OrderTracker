@@ -296,7 +296,7 @@ label
     </div>
     <div style="margin-left:45px;font-size:12px;" align="left">
     <cfif isdefined("url.err") and url.err eq 1>
-       <image src="/ordertracker/images/errorimage.PNG"><font color="red" size="2px;"><span id="errmessage"  >Couldn't find your Order Tracker Account</span></font>
+       <image src="/ordertracker/images/errorimage.PNG" id="errimage"><font color="red" size="2px;"><span id="errmessage"  >Couldn't find your Order Tracker Account</span></font>
     </cfif> 
     </div>
     <div style="padding-top:20px;" class="row">
