@@ -27,9 +27,11 @@
 }
 
 @media (min-width: 768px) {
-  .steps>li { float: left; }
-  .steps li { color: #666; background: #8BBFE6; }
-  .steps .active { color: #000; background: #3E95D6;}
+  .steps>li { float: left; cursor: pointer}
+  .steps li { color: #45afe4; background: rgb(216, 241, 255); }
+  .steps li a { color: #45afe4; text-decoration: none;}
+  .steps .active { color: #fff; background: #45afe4;}
+  .steps .active a { color: #fff; text-decoration: none;}
   /*.steps .future { color: #777; background: #8BBFE6; }*/
 
   .steps li > span:after,
@@ -42,7 +44,7 @@
     top: 0;
     left: 0;
     border: solid transparent;
-    border-left-color: #8BBFE6;
+    border-left-color: rgb(216, 241, 255);
     border-width: 30px;
   }
 
@@ -55,9 +57,9 @@
 
   .steps li > span:before { z-index: 2; }
 
-  .steps li + li > span:before { border-left-color: #8BBFE6; }
-  .steps li.active + li > span:before { border-left-color: #3E95D6; }
-  .steps li.future + li > span:before { border-left-color: #8BBFE6; }
+  .steps li + li > span:before { border-left-color:rgb(216, 241, 255); }
+  .steps li.active + li > span:before { border-left-color: #45afe4; }
+  .steps li.future + li > span:before { border-left-color: rgb(216, 241, 255); }
 
   .steps li:first-child > span:after,
   .steps li:first-child > span:before { display: none; }
@@ -99,21 +101,27 @@ OR session.secure.RoleCode EQ 1>
       OR session.secure.RoleCode EQ 1>
       <li <cfif url.page EQ "items">class="active"</cfif>>
         <span>
-          <strong><a data-toggle="tab" href="items">Items</a></strong>
-          Add/edit/delete list of items
+          <a data-toggle="tab" href="items">
+            <strong>Items</strong>
+            Add/edit/delete list of items
+          </a>
         </span><i></i>
       </li>
     </cfif>
     <li <cfif url.page EQ "listitems">class="active"</cfif>>
       <span>
-        <strong><a data-toggle="tab" href="listitems">Manage List Items</a></strong>
-        Add/remove items to list
+        <a data-toggle="tab" href="listitems">
+          <strong>Manage List Items</strong>
+          Add/remove items to list
+        </a>
       </span><i></i>
     </li>
     <li <cfif url.page EQ "listorganize">class="active"</cfif>>
       <span>
-        <strong><a data-toggle="tab" href="listorganize">Organize Lists</a></strong>
-        Change order of items
+        <a data-toggle="tab" href="listorganize">
+          <strong>Organize Lists</strong>
+          Change order of items
+        </a>
       </span><i></i>
     </li>
   </ul>
