@@ -309,9 +309,9 @@
 		  </div>
 		  <div  class="row" style="padding-top:4px;margin-left:20px;margin-left:-110px;">	
 			<cfif isdefined("url.err") and url.err eq 1>
-				<image src="images/errorimage.PNG"><font color="red" size="2px;" ><span id="errmessage">Please enter valid email and password   </span></font>
+				<image src="images/errorimage.PNG" id="errimage"><font color="red" size="2px;" ><span id="errmessage">Please enter valid email and password   </span></font>
 			<cfelseif isdefined("url.err") and url.err eq 2>
-				<image src="images/errorimage.PNG"><font color="red" size="2px;" ><span id="errmessage">Couldn't find your Order Tracker Account</span></font>
+				<image src="images/errorimage.PNG" id="errimage"><font color="red" size="2px;" ><span id="errmessage">Couldn't find your Order Tracker Account</span></font>
 			</cfif>	
 		  </div>	 
 		<div  class="row" style="padding-top:5px;">		 
@@ -355,27 +355,34 @@
     $('#btnsubmit').click(function(){	
 			 if ($("#password").val() == "" && 	$("#userName").val() == "")
 			 {
+				  $("#errmessage").css({'color':'red','display':'none'});	
+                  $("#errimage").css({'color':'red','display':'none'});
 				 $("#password").css('border-color', 'red');		
 				 $("#userName").css('border-color', 'red');		
 				 $("#errorPasswordText").css({'color':'red','display':'block'});	
 				 $("#errorEmailText").css({'color':'red','display':'block'});	
 				 $("#userName").focus();
-			}			 
-			else if( $("#password").val() == "" )
-			{ 
-				 $("#password").css('border-color', 'red');	
-				 $("#errorPasswordText").css({'color':'red','display':'block'});
-				 $("#password").focus();	
-				 	
-			}
+			}			 			
 			else if ($("#userName").val() == "")
-			{			
+			{			$("#errmessage").css({'color':'red','display':'none'});	
+                  $("#errimage").css({'color':'red','display':'none'});
 				 $("#userName").css('border-color', 'red');	
 			     $("#errorEmailText").css({'color':'red','display':'block'});
 				  $("#userName").focus();	
 			}  
+			else if( $("#password").val() == "" )
+			{ 
+				
+				 $("#password").css('border-color', 'red');	
+				 $("#errorPasswordText").css({'color':'red','display':'block'});
+				 $("#password").focus();	
+				 $("#errmessage").css({'color':'red','display':'none'});	
+                 $("#errimage").css({'color':'red','display':'none'});
+				 	
+			}
 			else
 		   {
+			   
 			   	$('#submit').click();	
 		   }             
     });	 

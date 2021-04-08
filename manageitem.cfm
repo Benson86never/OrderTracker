@@ -119,7 +119,11 @@ OR session.secure.RoleCode EQ 1>
   </ul>
   <div class="tab-content">
     <div id="items" class="tab-pane">
+    <cfif isdefined("url.err") and url.err eq 1>
+      <cfinclude template="item.cfm?err=1">
+      <cfelse>
       <cfinclude template="item.cfm">
+      </cfif>
     </div>
     <div id="listitems" class="tab-pane">
       <cfinclude template="list_item.cfm">
