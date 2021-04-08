@@ -79,15 +79,16 @@
                   Admin <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                  <cfif session.secure.RoleCode eq 1
+                  <!---<cfif session.secure.RoleCode eq 1
                     OR listfind(session.secure.businessType, 2) >
-                    <li><a class="dropdown-item" href="../item.cfm">Edit Items</a></li>
-                    <li><a class="dropdown-item" href="../list_organize.cfm">Organize Lists</a></li>
-                    <li><a class="dropdown-item" href="../list_item.cfm">Manage List Items</a></li>
+                    <li><a class="dropdown-item" href="../item.cfm">Manage Items</a></li>
+                    <!---<li><a class="dropdown-item" href="../list_organize.cfm">Organize Lists</a></li>
+                    <li><a class="dropdown-item" href="../list_item.cfm">Manage List Items</a></li>--->
                   <cfelseif session.secure.RoleCode eq 4>
                     <li><a class="dropdown-item" href="../list_organize.cfm">Organize Lists</a></li>
                     <li><a class="dropdown-item" href="../list_item.cfm">Manage List Items</a></li>
-                  </cfif>
+                  </cfif>--->
+                  <li><a class="dropdown-item" href="../manageitem.cfm">Manage Items</a></li>
                   <li><a class="dropdown-item" href="index.cfm?action=admin.manageUsers">Manage Users</a></li>
                   <li><a class="dropdown-item" href="index.cfm?action=admin.manageBusiness">Manage Business</a></li>
                 </ul>

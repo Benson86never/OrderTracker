@@ -1,9 +1,8 @@
-<cfinclude template="includes/secure.cfm" >
 <cfparam name="url.ListID" default="0">
 <cfset Lists = CreateObject("Component","v1.model.services.admin").getListDetails(
     ListID = url.ListID,
     businessId = session.secure.subaccount,
-    includeItems = val(url.listId) ? 1 : 0)>
+    includeItems = 1)>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <style>
   .page-content{
@@ -66,42 +65,44 @@
   text-align: center;
   font-size: 24px;
 }
-  }
+}
+.buttondiv{
+  margin-bottom: 20px;
+}
+.listitems span {
+  position: relative;
+  top: 8px;
+}
 </style>
-<cfinclude template="includes/header.cfm" >
 <cfoutput>
-<div class="container">
-    <div class="panel panel-default">
-      <div class="panel-heading">Organize List Items</div>
-      <div class="panel-body">
-  <div class="page-content">
-    <cfif val(url.ListID)>
-      <a href="#cgi.script_name#" class="btn btn-success" style="margin-left:800px;"> <-return to lists</a>
-    </cfif>
+  <div class="container">
     <cfloop array="#Lists#" index="list" >
-      <cfif not val(url.ListID)>
-        <div class="list-item"><a href="#cgi.script_name#?ListID=#list.id#">#list.name#</a></div>
-      </cfif>
+      <div class="panel panel-default">
+        <div class="panel-heading">#list.name#</div>
+        <div class="panel-body">
+          <div class="page-content">
+            <!--- <div class="list-item"><a href="#cgi.script_name#?ListID=#list.id#">#list.name#</a></div>--->
+            <cfif arraylen(list.items)>
+              <ul id="sortable">
+                <cfloop array="#list.items#" index="item" >
+                  <li class="ui-state-default listitems" id="item_#item.id#">
+                    <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+                    <span >#item.name#</span>
+                  </li>
+                </cfloop>
+              </ul>
+            <cfelse>
+              No items available.
+            </cfif>
+          </div>
+        </div>
+      </div>
     </cfloop>
-    <cfif val(url.ListID)>
-      <ul id="sortable">
-        <cfloop array="#Lists#" index="list" >
-          <cfloop array="#list.items#" index="item" >
-            <li class="ui-state-default" id="item_#item.id#">
-              <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-              <span >#item.name#</span>
-            </li>
-          </cfloop>
-        </cfloop>
-      </ul> 
-      <input type="button" id="saveBtn" value="Save" class="btn btn-success" style="margin-left:800px;">
-    </cfif>
-  </div>
-  </div>
+    <div class="buttondiv pull-right">
+      <input type="button" id="saveBtn" value="Save" class="btn btn-success" >
     </div>
   </div>
 </cfoutput>
-<cfinclude template="includes/footer.cfm" >
 <script>
   function persist() {
     console.log('running persist....')
