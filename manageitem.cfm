@@ -21,7 +21,7 @@
   position: relative;
   display: block;
   /* border: 1px solid #ddd; */
-  padding: 12px 50px 8px 50px; 
+  padding: 12px 50px 7px 50px; 
   width: 290px;
   height: 40px;
 }
@@ -88,6 +88,11 @@
   position: relative;
   top: 40px;
 }
+.listlink{
+  width: 337px;
+  height: 40px;
+  display: block;
+}
 </style>
 <cfif listfind(session.secure.businessType, 2)
 OR session.secure.RoleCode EQ 1>
@@ -101,7 +106,7 @@ OR session.secure.RoleCode EQ 1>
       OR session.secure.RoleCode EQ 1>
       <li <cfif url.page EQ "items">class="active"</cfif>>
         <span>
-          <a data-toggle="tab" href="items">
+          <a data-toggle="tab" href="items" class="listlink">
             <strong>Items</strong>
             Add/edit/delete list of items
           </a>
@@ -110,7 +115,7 @@ OR session.secure.RoleCode EQ 1>
     </cfif>
     <li <cfif url.page EQ "listitems">class="active"</cfif>>
       <span>
-        <a data-toggle="tab" href="listitems">
+        <a data-toggle="tab" href="listitems" class="listlink">
           <strong>Manage List Items</strong>
           Add/remove items to list
         </a>
@@ -118,7 +123,7 @@ OR session.secure.RoleCode EQ 1>
     </li>
     <li <cfif url.page EQ "listorganize">class="active"</cfif>>
       <span>
-        <a data-toggle="tab" href="listorganize">
+        <a data-toggle="tab" href="listorganize" class="listlink">
           <strong>Organize Lists</strong>
           Change order of items
         </a>
