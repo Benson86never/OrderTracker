@@ -25,7 +25,7 @@
           type: 'post',
           data: {
             userId : userId,
-            active: -1
+            active: 0
           },
           success: function(data){
             location.reload();
@@ -57,27 +57,7 @@
       });
       $('#modal-showAlert').modal('show');
   });
-  $('.activateUser').click(function(){
-      var userId = $(this).attr('userid');
-      $('#modal-showAlert .modal-title').html('Reactivate User');
-      $('#modal-showAlert .modal-body').html('Are you sure you want to reactivate this user?');
-      $('#modal-showAlert .modal-footer .ok').hide();
-      $('#modal-showAlert .modal-footer .yes').show();
-      $('#modal-showAlert .modal-footer .no').show();
-      $('#modal-showAlert .modal-footer .yes').click(function(){
-        $.ajax({
-          url: 'index.cfm?action=ajax.manageUser',
-          type: 'post',
-          data: {
-            userId : userId,
-            active: 1,
-            sendmailtouser : 1
-          },
-          success: function(data){
-            location.reload();
-          }
-        });
-      });
-      $('#modal-showAlert').modal('show');
+  $('#status').change(function(){
+    location.href = 'index.cfm?action=admin.manageusers&status=' + $(this).val();
   });
 </script>

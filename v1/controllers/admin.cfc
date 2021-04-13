@@ -6,12 +6,14 @@ component accessors="true" {
     }
     public void function manageusers(rc){
       param name="rc.businessId" default = 0;
+      param name="rc.status" default = 1;
       if(session.secure.rolecode == 4)
       {
         rc.businessid = encrypt(session.secure.SubAccount, application.uEncryptKey, "BLOWFISH", "Hex");
       }
       rc.userDetails = adminService.getUserDetails(
-      businessId = rc.businessId).users;
+      businessId = rc.businessId,
+      status = rc.status).users;
     }
     
      public void function manageBusiness(rc){
@@ -49,7 +51,8 @@ component accessors="true" {
           }
     }
     public void function adduser(rc){
-      rc.getuserInfo = adminService.adduserBasicInfo(countryId = 1);
+      param name = "url.businessid" default = "";
+      rc.getuserInfo = adminService.adduserBasicInfo(businessId = url.businessid);
       rc.countries = rc.getuserInfo.countries;
       rc.states = rc.getuserInfo.states;
       rc.roles = rc.getuserInfo.roles;

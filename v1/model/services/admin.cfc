@@ -3,6 +3,7 @@ component  extends ="business" {
     numeric includeActiveOnly = 0,
     numeric userId = 0,
     string businessId = 0,
+    string status = 1,
     numeric includeSupplierOnly = 0
   ){
     local.result = {'error' : false};
@@ -20,6 +21,9 @@ component  extends ="business" {
     local.businessId = decrypt(arguments.BusinessId, application.uEncryptKey, "BLOWFISH", "Hex");
     if(val(local.businessId) > 0) {
       local.condition &= " AND P.businessId = #local.businessId#";
+    }
+    if(arguments.status != '') {
+      local.condition &= " AND P.active = #arguments.status#";
     }
     local.userDetails = queryExecute("
       SELECT
@@ -50,7 +54,6 @@ component  extends ="business" {
           INNER JOIN business b ON p.businessId = b.businessid
       WHERE 1=1
       #local.condition#
-      AND p.active = 1
       ORDER BY P.active DESC, P.firstName;
       ",{},{datasource: application.dsn}
     );
@@ -337,13 +340,33 @@ component  extends ="business" {
   }
 
   public any function adduserBasicInfo(
-    numeric countyId
+    string businessId = ""
   ){
     local.result = {
       'countries' : [],
       'states' : [],
       'roles' : [],
       'accounts' : []
+    }
+    local.businessTypeId = 0;
+    if(arguments.businessId != '') {
+      try {
+        arguments.BusinessId = decrypt(url.businessid, application.uEncryptKey, "BLOWFISH", "Hex");
+        local.businesstypeDetails = queryExecute("
+          SELECT
+            typeId
+          FROM
+            joinbusinesstotype
+          WHERE
+            businessId = :businessId
+        ",{
+          businessId = {cfsqltype = "integer", value = arguments.BusinessId}
+        },{datasource: application.dsn}
+        );
+        local.businessTypeId = local.businesstypeDetails.typeId;
+      } catch(any e) {
+        local.businessTypeId = 0;
+      }
     }
     try {
       /*local.countryDetails = queryExecute("
@@ -384,14 +407,12 @@ component  extends ="business" {
         local.details['stateCode'] = local.stateDetails.stateCode;
         arrayAppend(local.result.states, local.details);
       }*/
-      if(session.secure.RoleCode == 4)
-      {
-        
-        local.rolecondition  = "where roleid!=1";
+      local.rolecondition  = "";
+      if(session.secure.RoleCode == 4) {
+        local.rolecondition  &= " AND roleid != 1";
       }
-      else
-      {
-        local.rolecondition  = "";
+      if(local.businessTypeId == 2) {
+        local.rolecondition  &= " AND roleid != 2";
       }
       local.roleDetails = queryExecute("
         SELECT
@@ -399,6 +420,8 @@ component  extends ="business" {
           name
         FROM
           roles
+        WHERE
+          1 = 1
            #local.rolecondition# 
       ",{},{datasource: application.dsn}
       );

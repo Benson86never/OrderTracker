@@ -78,6 +78,40 @@ table.table .form-control.error {
 .list-item p {
 	margin: 0;
 }
+
+.simple-pagination ul {
+	margin: 0 0 20px;
+	padding: 0;
+	list-style: none;
+	text-align: center;
+}
+
+.simple-pagination li {
+	display: inline-block;
+	margin-right: 5px;
+}
+
+.simple-pagination li a,
+.simple-pagination li span {
+	color: #666;
+	padding: 5px 10px;
+	text-decoration: none;
+	border: 1px solid #EEE;
+	background-color: #FFF;
+	box-shadow: 0px 0px 10px 0px #EEE;
+}
+
+.simple-pagination .current {
+	color: #FFF;
+	background-color: #FF7182;
+	border-color: #FF7182;
+}
+
+.simple-pagination .prev.current,
+.simple-pagination .next.current {
+	background: #e04e60;
+}
+
 .uploadfile
 {
   border:0;
@@ -95,7 +129,7 @@ table.table .form-control.error {
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel"></h4>
       </div>
-      <div class="modal-body">Please Upload only XLSX file types.</div>
+      <div class="modal-body">Please Select Supplier and Upload only XLSX file types.</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default ok" data-dismiss="modal"><cfoutput>OK</cfoutput></button>
       </div>
@@ -121,14 +155,34 @@ table.table .form-control.error {
             <cfif session.secure.RoleCode EQ 1>   
             <div class="col-md-6">   
                  <div id="dialog-form" title="Add Items">                
-					            <cfform id="addItem" action="add_item_action.cfm" method="post" enctype="multipart/form-data">
-						              <cfinput type="file" name="uploadfile" required="yes" message="You must select a file." class="form-control" style="width:200px;display:inline-flex;">
-                          <input type="submit" name="Submit2" value="Upload" class="btn btn-info " style="width:70px;display:inline-flex;">
-                           <a href="DownloadItem.cfm"  class="btn btn-info  "style="width:110px;display:inline-flex;" >Download Item List</a>
-                           <a href="DownloadTemplate.cfm"  class="btn btn-info  "style="width:110px;display:inline-flex;" >Download Template</a>
-					            </cfform>					
-			  	       </div>  
-            </div>     
+                    <cfform id="addItem" action="add_item_action.cfm" method="post" enctype="multipart/form-data">
+                        <cfif session.secure.RoleCode eq 1>
+                          <cfset local.accounts = CreateObject("Component","v1.model.services.admin").getSupplierDetails()>
+                          <div style="padding-bottom:20px;" >
+                            Supplier:&nbsp;
+                            <select name="business" id="business" onchange="chgBusiness(this.value)" class="form-select form-select-lg mb-3" >
+                              <option value="0">Select</option>
+                              <cfloop array="#local.accounts#" item="account">
+                            
+                                <option
+                                <cfif isdefined("url.businessid") and url.businessid eq account.id>
+                                  selected
+                                </cfif>
+                                value="#account.id#">
+                                #account.name#
+                                </option>
+                              </cfloop>
+                            </select>
+                          </div>
+                      </cfif>
+                      <cfinput type="file" name="uploadfile" required="yes" message="You must select a file." class="form-control" style="width:200px;display:inline-flex;">
+                      <input type="submit" name="Submit2" value="Upload" class="btn btn-info " style="width:70px;display:inline-flex;">                          
+                      <input type="hidden" name="hdnbusiness" id="hdnbusiness" value="1">
+                      <input type="button" id="Submit3" name="Submit3" class="btn btn-info  "style="width:130px;display:inline-flex;" value="Download Item List" onclick="downloadlist();">                          
+                      <a href="DownloadTemplate.cfm"  class="btn btn-info  "style="width:110px;display:inline-flex;" >Download Template</a>
+                    </cfform>
+                 </div>
+              </div>
             </cfif>
             <div class="col-md-1 text-right" >
               <input type="search" id="search" name="search" class="form-control" onkeyup="searchTable();" placeholder="Search" style="width:150px;"/> 
@@ -342,11 +396,9 @@ table.table .form-control.error {
   });
   
 
-  
-
   var items = $(".list-wrapper .list-item");
   var numItems = items.length;
-  var perPage = 12;
+  var perPage = 10;
   items.slice(perPage).hide();
     $("#pagination-container").pxpaginate({
       currentpage: 1,
@@ -402,4 +454,30 @@ function searchTable() {
     }
   }  
 }
+</script>
+<script>
+function chgBusiness(businessid)
+{ 
+ document.getElementById('hdnbusiness').value = businessid;
+}
+
+	function downloadlist() { 
+    if(document.getElementById('business').value == 0)
+    {
+      $('#modal-showAlert').modal('show');
+      $('.modal-header').css('background-color','white');
+      $('#headerText').html('Download Item');
+      $('.close').css('color','black');
+      $('#modal-showAlert .modal-body').html("Please select a supplier.");
+      $('#modal-showAlert .modal-footer .ok').show();
+       $('#modal-showAlert .modal-footer .yes').hide();
+      $('#modal-showAlert .modal-footer .no').hide();
+    }
+    else
+    {
+    var businessid = document.getElementById('hdnbusiness').value;
+		location.href = 'downloaditem.cfm?businessid=' + businessid
+    }
+
+	}
 </script>

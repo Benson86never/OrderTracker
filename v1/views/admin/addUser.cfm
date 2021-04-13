@@ -141,7 +141,12 @@
         </div>
         <div class="col-md-2 labelname">
         <cfif isdefined("url.businessid")>
-        <cfset urlbusinessid = decrypt(url.businessid, application.uEncryptKey, "BLOWFISH", "Hex")>
+          <cftry>
+            <cfset urlbusinessid = decrypt(url.businessid, application.uEncryptKey, "BLOWFISH", "Hex")>
+            <cfcatch>
+              <cfset urlbusinessid = 0>
+            </cfcatch>
+          </cftry>
         </cfif>
          Business<span style="color: red"><b>*<b></span>:
         </div>
