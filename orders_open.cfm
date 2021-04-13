@@ -87,37 +87,8 @@ table.table .form-control.error {
 	margin: 0;
 }
 
-.simple-pagination ul {
-	margin: 0 0 20px;
-	padding: 0;
-	list-style: none;
-	text-align: center;
-}
-
-.simple-pagination li {
-	display: inline-block;
-	margin-right: 5px;
-}
-
-.simple-pagination li a,
-.simple-pagination li span {
-	color: #666;
-	padding: 5px 10px;
-	text-decoration: none;
-	border: 1px solid #EEE;
-	background-color: #FFF;
-	box-shadow: 0px 0px 10px 0px #EEE;
-}
-
-.simple-pagination .current {
-	color: #FFF;
-	background-color: #FF7182;
-	border-color: #FF7182;
-}
-
-.simple-pagination .prev.current,
-.simple-pagination .next.current {
-	background: #e04e60;
+#pagination-container{
+  margin-bottom: 20px;
 }
 </style>
 <cfoutput>
@@ -174,7 +145,7 @@ table.table .form-control.error {
         <table class="list-wrapper table table-bordered table-responsive-md table-striped" cellspacing="0" cellpadding="0">
           <thead>
             <tr>
-            <th width="2%" style="text-align:center;">Order ID</th>
+            <th width = "5%" style="text-align:center;">Order ID</th>
             <th  width="98%" style="text-align:center;">Order Details</th>
             </tr>
           </thead>
@@ -209,7 +180,8 @@ table.table .form-control.error {
 </cfoutput>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/jquery.simplePagination.js"></script>
+<script type="text/javascript" src="js/px-pagination.js"></script>
+<link href = "js/px-pagination.css" rel = "stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script>
   $(document).ready(function(){
@@ -220,17 +192,23 @@ table.table .form-control.error {
   var numItems = items.length;
   var perPage = 15;
   items.slice(perPage).hide();
-  $('#pagination-container').pagination({
-        items: numItems,
-        itemsOnPage: perPage,
-        prevText: "&laquo;",
-        nextText: "&raquo;",
-        onPageClick: function (pageNumber) {
-            var showFrom = perPage * (pageNumber - 1);
-            var showTo = showFrom + perPage;
-            items.hide().slice(showFrom, showTo).show();
-        }
-    });
+  $("#pagination-container").pxpaginate({
+    currentpage: 1,
+    totalPageCount: items.length/12,
+    maxBtnCount: 5,
+    align: 'center',
+    nextPrevBtnShow: true,
+    firstLastBtnShow: true,
+    prevPageName: '<',
+    nextPageName: '>',
+    lastPageName: '<<',
+    firstPageName: '>>',
+    callback: function(pagenumber){
+      var showFrom = perPage * (pagenumber - 1);
+      var showTo = showFrom + perPage;
+      items.hide().slice(showFrom, showTo).show();
+    }
+  });
     $('[data-search]').on('keyup', function() {
     var searchVal = $(this).val();
     var filterItems = $('[data-filter-item]');

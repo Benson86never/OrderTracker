@@ -16,7 +16,7 @@ component accessors="true" {
         rc.decryptuserid = decrypt(rc.userid, application.uEncryptKey, "BLOWFISH", "Hex");
         rc.userDetails = adminService.getUserDetails(userid = rc.decryptuserid).users;
         rc.params = "&userId=#rc.userid#";
-        rc.active = rc.userDetails[1]["active"];
+        rc.active = 1;
       }
       if(structKeyExists(form, 'EMAIL')) {
         session.userResult = adminService.saveUser(userDetails = form);
@@ -33,7 +33,7 @@ component accessors="true" {
           rc.decryptuserid = decrypt(rc.userid, application.uEncryptKey, "BLOWFISH", "Hex");
           rc.userDetails = adminService.getUserDetails(userid = rc.decryptuserid).users;
           rc.params = "&userId=#rc.userid#";
-          rc.active = rc.userDetails[1]["active"];
+          rc.active = 1;
         }
      
           //session.userResult = adminService.saveUser(userDetails = form);

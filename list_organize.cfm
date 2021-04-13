@@ -76,31 +76,37 @@
 </style>
 <cfoutput>
   <div class="container">
-    <cfloop array="#Lists#" index="list" >
-      <div class="panel panel-default">
-        <div class="panel-heading">#list.name#</div>
-        <div class="panel-body">
-          <div class="page-content">
-            <!--- <div class="list-item"><a href="#cgi.script_name#?ListID=#list.id#">#list.name#</a></div>--->
-            <cfif arraylen(list.items)>
-              <ul id="sortable" class="sortable">
-                <cfloop array="#list.items#" index="item" >
-                  <li class="ui-state-default itemelement" id="item_#item.id#">
-                    <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-                    <span >#item.name#</span>
-                  </li>
-                </cfloop>
-              </ul>
-            <cfelse>
-              No items available.
-            </cfif>
+    <cfif arraylen(lists)>
+      <cfloop array="#Lists#" index="list" >
+        <div class="panel panel-default">
+          <div class="panel-heading">#list.name#</div>
+          <div class="panel-body">
+            <div class="page-content">
+              <!--- <div class="list-item"><a href="#cgi.script_name#?ListID=#list.id#">#list.name#</a></div>--->
+              <cfif arraylen(list.items)>
+                <ul id="sortable" class="sortable">
+                  <cfloop array="#list.items#" index="item" >
+                    <li class="ui-state-default itemelement" id="item_#item.id#">
+                      <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+                      <span >#item.name#</span>
+                    </li>
+                  </cfloop>
+                </ul>
+              <cfelse>
+                No items available.
+              </cfif>
+            </div>
           </div>
         </div>
+      </cfloop>
+      <div class="buttondiv pull-right">
+        <input type="button" id="saveBtn" value="Save" class="btn btn-success" >
       </div>
-    </cfloop>
-    <div class="buttondiv pull-right">
-      <input type="button" id="saveBtn" value="Save" class="btn btn-success" >
-    </div>
+    <cfelse>
+      <div class="panel panel-default">
+        <div class="panel-heading">No lists available</div>
+      </div>
+    </cfif>
   </div>
 </cfoutput>
 <script>
