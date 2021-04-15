@@ -13,9 +13,10 @@
   });
   $('.deactivateUser').click(function(){
       var userId = $(this).attr('userid');
+      var username = $(this).attr('username');
       $('#modal-showAlert .modal-title').html('Deactivate User');
       $('#modal-showAlert .modal-header').addClass('alert-danger');
-      $('#modal-showAlert .modal-body').html('Are you sure you want to deactivate this user?');
+      $('#modal-showAlert .modal-body').html('Are you sure you want to deactivate the user "'+ username + '"?');
       $('#modal-showAlert .modal-footer .ok').hide();
       $('#modal-showAlert .modal-footer .yes').show();
       $('#modal-showAlert .modal-footer .no').show();
@@ -36,9 +37,10 @@
   });
   $('.reactivateUser').click(function(){
       var userId = $(this).attr('userid');
+      var username = $(this).attr('username');
       $('#modal-showAlert .modal-header').addClass('alert-success');
       $('#modal-showAlert .modal-title').html('Reactivate User');
-      $('#modal-showAlert .modal-body').html('Are you sure you want to reactivate this user?');
+      $('#modal-showAlert .modal-body').html('Are you sure you want to reactivate the user "'+ username + '"?');
       $('#modal-showAlert .modal-footer .ok').hide();
       $('#modal-showAlert .modal-footer .yes').show();
       $('#modal-showAlert .modal-footer .no').show();

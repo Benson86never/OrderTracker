@@ -225,7 +225,7 @@ table.table .form-control.error {
                     <i class="fa fa-plus" aria-hidden="true"></i>
                   </button>
                   <button class="edit btn btn-warning" title="Edit">
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                    <i class="fas fa-pencil-alt"></i>
                   </button>
                   <button class="add save btn btn-success" action = "update" id="#item.id#" title="save">
                     <i class="fa fa-save" aria-hidden="true"></i>

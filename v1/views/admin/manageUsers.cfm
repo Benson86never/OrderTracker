@@ -43,17 +43,19 @@
           <td class="text-center">
             <cfif userdetail.active EQ 1
               AND session.secure.PersonID NEQ userdetail.personId>
-              <button class="btn btn-danger deactivateUser" userid="#userdetail.personId#">
+              <button class="btn btn-danger deactivateUser" userid="#userdetail.personId#"
+                username = "#userdetail.firstname# #userdetail.lastName#">
                 <i class="fa fa-user-times" aria-hidden="true"></i>
               </button>
             <cfelseif userdetail.active EQ 0>
-              <button class="btn btn-warning reactivateUser" userid="#userdetail.personId#">
+              <button class="btn btn-warning reactivateUser" userid="#userdetail.personId#"
+                username = "#userdetail.firstname# #userdetail.lastName#">
                 <i class="fa fa-user-plus" aria-hidden="true"></i>
               </button>
             </cfif>
             <a href="index.cfm?action=admin.adduser&userid=#encrypt(userdetail.personId, application.uEncryptKey, "BLOWFISH", "Hex")#"
               class = "btn btn-success">
-              <i class="fa fa-pencil" aria-hidden="true"></i>
+              <i class="fas fa-pencil-alt"></i>
             </a>
           </td>
         </tr>

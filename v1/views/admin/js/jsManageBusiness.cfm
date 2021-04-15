@@ -5,10 +5,12 @@
 <script type="text/javascript">
 
   
-  $('.deactivateUser').click(function(){
-      var businessId = $(this).attr('businessId'); 
+  $('.deactivateBusiness').click(function(){
+      var businessId = $(this).attr('businessId');
+      var businessname = $(this).attr('businessname');
       $('#modal-showAlert .modal-title').html('Deactivate Business');
-      $('#modal-showAlert .modal-body').html('Are you sure you want to deactivate this Business?');
+      $('#modal-showAlert .modal-header').addClass('alert-danger');
+      $('#modal-showAlert .modal-body').html('Are you sure you want to deactivate the Business "' + businessname + '"?');
       $('#modal-showAlert .modal-footer .ok').hide();
       $('#modal-showAlert .modal-footer .yes').show();
       $('#modal-showAlert .modal-footer .no').show();
@@ -27,19 +29,22 @@
       });
       $('#modal-showAlert').modal('show');
   });
- /* $('.reactivateUser').click(function(){
-      var userId = $(this).attr('userid');
-      $('#modal-showAlert .modal-title').html('Reactivate User');
-      $('#modal-showAlert .modal-body').html('Are you sure you want to reactivate this user?');
+  
+  $('.reactivateBusiness').click(function(){
+      var businessId = $(this).attr('businessId');
+      var businessname = $(this).attr('businessname');
+      $('#modal-showAlert .modal-header').addClass('alert-success');
+      $('#modal-showAlert .modal-title').html('Reactivate Business');
+      $('#modal-showAlert .modal-body').html('Are you sure you want to reactivate the Business "' + businessname + '"?');
       $('#modal-showAlert .modal-footer .ok').hide();
       $('#modal-showAlert .modal-footer .yes').show();
       $('#modal-showAlert .modal-footer .no').show();
       $('#modal-showAlert .modal-footer .yes').click(function(){
         $.ajax({
-          url: 'index.cfm?action=ajax.manageUser',
+          url: '../v1/model/services/admin.cfc?method=manageBusiness',
           type: 'post',
           data: {
-            userId : userId,
+            businessId : businessId,
             active: 1
           },
           success: function(data){
@@ -49,27 +54,7 @@
       });
       $('#modal-showAlert').modal('show');
   });
-  $('.activateUser').click(function(){
-      var userId = $(this).attr('userid');
-      $('#modal-showAlert .modal-title').html('Reactivate User');
-      $('#modal-showAlert .modal-body').html('Are you sure you want to reactivate this user?');
-      $('#modal-showAlert .modal-footer .ok').hide();
-      $('#modal-showAlert .modal-footer .yes').show();
-      $('#modal-showAlert .modal-footer .no').show();
-      $('#modal-showAlert .modal-footer .yes').click(function(){
-        $.ajax({
-          url: 'index.cfm?action=ajax.manageUser',
-          type: 'post',
-          data: {
-            userId : userId,
-            active: 1,
-            sendmailtouser : 1
-          },
-          success: function(data){
-            location.reload();
-          }
-        });
-      });
-      $('#modal-showAlert').modal('show');
-  });*/
+  $('#status').change(function(){
+    location.href = 'index.cfm?action=admin.manageBusiness&status=' + $(this).val();
+  });
 </script>

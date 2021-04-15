@@ -1,68 +1,89 @@
-<cfoutput>    
-    <div class="container table-responsive">
-    <div class = "col-xs-12 sectionHeader" style="font-size:22px;padding-top:40px;">
-      Manage Business
+<cfoutput>
+  <cfparam name="url.status" default="1">
+  <cfif NOT listfind('1,0, ', url.status)>
+      <cfset url.status = 1>
+  </cfif>
+  <div class="container table-responsive">
+    <div class="row">
+      <div class = "col-xs-2 sectionHeader" style="font-size:22px;padding-top:40px;">
+        Manage Business
+      </div>  
+      <div class="col-xs-2" style="padding-top:40px;">
+        <select name="status" id="status" class="form-control">
+          <option value="1" <cfif url.status EQ 1>selected</cfif>>Active</option>
+          <option value="0" <cfif url.status EQ 0>selected</cfif>>InActive</option>
+          <option value="" <cfif url.status EQ "">selected</cfif>>All</option>
+        </select>
+      </div>
     </div>
-      <table class="table table-bordered table-hover table-striped" cellspacing = "0" id="sortTable">
-        <thead>
+    <table class="table table-bordered table-hover table-striped" cellspacing = "0" id="sortTable">
+      <thead>
+        <tr>
+            <th style="display:none;">&nbsp;</th>
+            <th style="text-align:center;">Business Name</th>
+            <th style="text-align:center;">Business Type</th>
+            <th class="hidden-xs" style="text-align:center;">Email</th>
+            <th class="hidden-xs hidden-sm" style="text-align:center;">Mobile Number</th>
+            <th class="hidden-xs hidden-sm" style="text-align:center;">Zip</th>
+            <th class="hidden-xs hidden-sm" style="text-align:center;">City</th>
+            <th class="hidden-xs hidden-sm" style="text-align:center;">State</th>
+            <th class="no-sort text-center">              
+              Action
+              <cfif session.secure.rolecode eq 1>
+              <a class="btn btn-success" href="index.cfm?action=admin.addBusiness">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+              </a>
+              </cfif>
+            </th>
+        </tr>
+      </thead>
+      <tbody>
+        <cfif NOT arrayLen(rc.businessDetails)>
           <tr>
-              <th style="display:none;">&nbsp;</th>
-              <th style="text-align:center;">Business Name</th>
-              <th style="text-align:center;">Business Type</th>
-              <th class="hidden-xs" style="text-align:center;">Email</th>
-              <th class="hidden-xs hidden-sm" style="text-align:center;">Mobile Number</th>
-              <th class="hidden-xs hidden-sm" style="text-align:center;">Zip</th>
-              <th class="hidden-xs hidden-sm" style="text-align:center;">City</th>
-              <th class="hidden-xs hidden-sm" style="text-align:center;">State</th>
-              <th class="no-sort text-center">              
-                Action
-                <cfif session.secure.rolecode eq 1>
-                <a class="btn btn-success" href="index.cfm?action=admin.addBusiness">
-                  <i class="fa fa-plus" aria-hidden="true"></i>
-                </a>
-                </cfif>
-              </th>
+            <td colspan="7">No Business available</td>
           </tr>
-        </thead>
-        <tbody>
-          <cfif NOT arrayLen(rc.businessDetails)>
+        <cfelse>
+          <cfloop array="#rc.businessDetails#" item="business">
             <tr>
-              <td colspan="7">No Business available</td>
-            </tr>
-          <cfelse>
-            <cfloop array="#rc.businessDetails#" item="business">
-              <tr>
-                <td style="display:none;">#business.sortBusinessName#</td>
-                <td width=300px; >
-                  <span class="business-#listlen(business.sortBusinessName,'~~')#">
-                      #business.BusinessName#
-                  </span>
-                </td>
-                <td>#business.businessTypes#</td>
-                <td class="hidden-xs">#business.Email#</td>
-                <td class="hidden-xs hidden-sm">#business.Phone#</td>
-                <td class="hidden-xs hidden-sm">#business.zip#</td>
-                <td class="hidden-xs hidden-sm">#business.City#</td>
-                <td class="hidden-xs hidden-sm">#business.State#</td>
-                <td class="text-center">
+              <td style="display:none;">#business.sortBusinessName#</td>
+              <td width=300px; >
+                <span class="business-#listlen(business.sortBusinessName,'~~')#">
+                    #business.BusinessName#
+                </span>
+              </td>
+              <td>#business.businessTypes#</td>
+              <td class="hidden-xs">#business.Email#</td>
+              <td class="hidden-xs hidden-sm">#business.Phone#</td>
+              <td class="hidden-xs hidden-sm">#business.zip#</td>
+              <td class="hidden-xs hidden-sm">#business.City#</td>
+              <td class="hidden-xs hidden-sm">#business.State#</td>
+              <td class="text-center">
                 <cfif session.secure.rolecode eq 1>
-                    <button class="btn btn-danger deactivateUser" businessId="#business.BusinessId#">
-                      <i class="fa fa-trash" aria-hidden="true"></i>
+                  <cfif business.active EQ 1>
+                    <button class="btn btn-danger deactivateBusiness" businessname = "#business.BusinessName#"
+                      businessId="#business.BusinessId#">
+                      <i class="fas fa-store-slash"></i>
                     </button>
+                  <cfelse>
+                    <button class="btn btn-warning reactivateBusiness" businessname = "#business.BusinessName#"
+                      businessId="#business.BusinessId#">
+                      <i class="fas fa-store"></i>
+                    </button>
+                  </cfif>
                 </cfif>
-                    <a href="index.cfm?action=admin.addBusiness&businessId=#encrypt(business.BusinessId, application.uEncryptKey, "BLOWFISH", "Hex")#"
-                      class = "btn btn-success">
-                      <i class="fa fa-pencil" aria-hidden="true"></i>
-                    </a>
-                    <a href="index.cfm?action=admin.manageusers&businessId=#encrypt(business.BusinessId, application.uEncryptKey, "BLOWFISH", "Hex")#"
-                      class = "btn btn-info">
-                      <i class="fa fa-user" aria-hidden="true"></i>
-                    </a>
-                </td>
-              </tr>  
-            </cfloop>
-          </cfif>
-        </tbody>
-      </table>
-    </div>
+                  <a href="index.cfm?action=admin.addBusiness&businessId=#encrypt(business.BusinessId, application.uEncryptKey, "BLOWFISH", "Hex")#"
+                    class = "btn btn-success">
+                    <i class="fas fa-pencil-alt"></i>
+                  </a>
+                  <a href="index.cfm?action=admin.manageusers&businessId=#encrypt(business.BusinessId, application.uEncryptKey, "BLOWFISH", "Hex")#"
+                    class = "btn btn-info">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                  </a>
+              </td>
+            </tr>  
+          </cfloop>
+        </cfif>
+      </tbody>
+    </table>
+  </div>
 </cfoutput>

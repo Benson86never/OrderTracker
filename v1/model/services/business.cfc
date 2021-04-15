@@ -435,7 +435,8 @@ component  {
   }
 
   public any function getBusinessDetails(
-    numeric businessId = 0
+    numeric businessId = 0,
+    string status = 1
   ){
     local.result = {'error' : false};
     local.business = [];
@@ -443,6 +444,9 @@ component  {
     
     if(val(arguments.businessId) > 0) {
       local.condition &= "AND B.BusinessId = #arguments.businessId#";
+    }
+    if(arguments.status != "") {
+      local.condition &= " AND B.active = #arguments.status#";
     }
     local.result['supplier'] = [];
     local.result['list'] = [];
@@ -462,13 +466,14 @@ component  {
         B.parentBusinessId,
         fngetBusinees(B.BusinessId) as sortbusinessname,
         GROUP_CONCAT(BT.name) AS businessTypes,
-        GROUP_CONCAT(BT.businesstype_id) AS businessTypeIds
+        GROUP_CONCAT(BT.businesstype_id) AS businessTypeIds,
+        B.active
       FROM
         Business B
         INNER JOIN joinbusinesstotype JBT ON JBT.businessId = B.BusinessId
         INNER JOIN businesstype BT ON BT.businesstype_id = JBT.typeId
       WHERE
-        B.active <> 0
+        1 = 1
         #local.condition#
       GROUP BY B.BusinessId
       order by JBT.typeId,sortbusinessname;
@@ -495,6 +500,7 @@ component  {
       local.details['Country'] = local.BusinessDetails.Country;
       local.details['parentBusinessId'] = local.BusinessDetails.parentBusinessId;
       local.details['sortbusinessname'] = local.BusinessDetails.sortbusinessname;
+      local.details['active'] = local.BusinessDetails.active;
       local.details['sellers'] = getUserDetails(
         businessId = encrypt(local.BusinessDetails.BusinessId, application.uEncryptKey, "BLOWFISH", "Hex"),
         includeSupplierOnly = 1).users;

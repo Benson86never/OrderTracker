@@ -7,7 +7,8 @@
       <title>86Never.com OrderTracker Lists</title>
       <link rel="stylesheet" href="v1/css/bootstrap.css" />
       <link rel="stylesheet" href="v1/css/default.css?<cfoutput>#rand()#</cfoutput>" />
-      <link rel="stylesheet" href="v1/css/fontawesome/css/font-awesome.min.css" />
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
       <style>
         .nav .nav-item .dropdown-menu{ display: none; }
         .nav .nav-item:hover .nav-link{ color: #337ab7;  }
