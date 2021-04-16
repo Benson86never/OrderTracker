@@ -54,8 +54,8 @@ table.table .form-control.error {
 .cancel, .add {
   display: none;
 }
-.delete {
-  display: inline-block;
+.deleteitem {
+  display: inline-block !important;
 }
 .list-wrapper {
   font-size: 12px;
@@ -218,7 +218,7 @@ table.table .form-control.error {
                   <button class="cancel btn btn-danger" title="cancel">
                     <i class="fa fa-times" aria-hidden="true"></i>
                   </button>
-                  <button class="add delete btn btn-danger"  action = "delete" id="#item.id#" title="Delete">
+                  <button class="deleteitem btn btn-danger"  action = "delete" id="#item.id#" title="Delete">
                     <i class="fa fa-trash-alt" aria-hidden="true"></i>
                   </button>
                   <button class="add btn btn-success"  id="#item.id#" action = "add"  title="Add">
@@ -308,7 +308,7 @@ table.table .form-control.error {
           supplierid : $(this).parents("tr").find('#supplier').val(),
           itemid : $(this).attr('id')
         };
-        $(this).parents("tr").find(".save, .edit, .delete, .cancel").toggle();
+        $(this).parents("tr").find(".save, .edit, .deleteitem, .cancel").toggle();
            caction = $(this).attr('action');
         $.ajax({
           url: 'v1/model/services/admin.cfc?method=manageItem',
@@ -329,7 +329,7 @@ table.table .form-control.error {
               location.href = "";
             } else {
               location.href = window.location.href;
-            }            
+            }
           }
         });
       }
@@ -353,7 +353,7 @@ table.table .form-control.error {
           $(this).html('<input type="text" class="form-control" id="'+id+'" value="' + $(this).text() + '">');
         }
       });		
-      $(this).parents("tr").find(".save, .edit, .delete, .cancel").toggle();
+      $(this).parents("tr").find(".save, .edit, .deleteitem, .cancel").toggle();
       $(".add-new").attr("disabled", "disabled");
     });
     $(document).on("click", ".cancel", function(){
@@ -364,9 +364,9 @@ table.table .form-control.error {
         }
         $(this).html(currentValue);
       });		
-      $(this).parents("tr").find(".save, .edit, .delete, .cancel").toggle();
+      $(this).parents("tr").find(".save, .edit, .deleteitem, .cancel").toggle();
     });
-    $(document).on("click", ".delete", function(){
+    $(document).on("click", ".deleteitem", function(){
       eid = $(this).attr('id');
       action = $(this).attr('action');
       parenttr = $(this).closest("tr");

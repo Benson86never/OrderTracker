@@ -846,7 +846,16 @@ component  {
               itemId = :itemId;
             ",{
               itemId = {cfsqltype = "integer", value = arguments.itemDetails.itemId}
-            },{datasource: application.dsn, result = "local.itemResult"}
+            },{datasource: application.dsn}
+          );
+          local.qaddlist = queryExecute("
+            DELETE FROM
+              joinItemToList
+            WHERE
+              itemId = :itemId;
+            ",{
+              itemId = {cfsqltype = "integer", value = arguments.itemDetails.itemId}
+            },{datasource: application.dsn}
           );
           local.qaddlist = queryExecute("
             DELETE FROM
@@ -855,7 +864,7 @@ component  {
               itemId = :itemId;
             ",{
               itemId = {cfsqltype = "integer", value = arguments.itemDetails.itemId}
-            },{datasource: application.dsn, result = "local.itemResult"}
+            },{datasource: application.dsn}
           );
         }
         transaction action="commit";
