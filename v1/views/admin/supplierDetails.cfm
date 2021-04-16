@@ -181,15 +181,17 @@ input:checked + .slider:before {
                             <td>
                                 <button class="deletesupplier btn btn-danger" supplierid="#supplier.id#"
                                   sellerid ="#sellerid#" title="Delete" >
-                                  <i class="fa fa-trash"></i>
+                                  <i class="fa fa-trash-alt"></i>
                                 </button>
                                 <button class="addsupplier btn btn-success" supplierid="#supplier.id#" title="Add" >
                                   <i class="fa fa-plus"></i>
                                 </button>
-                                <button class="editsupplier btn btn-success" supplierid="#supplier.id#"
-                                sellerid ="#sellerid#" title="Edit" >
-                                  <i class="fa fa-pencil"></i>
-                                </button>
+                                <cfif isNumeric(sellerid)>
+                                  <button class="editsupplier btn btn-success" supplierid="#supplier.id#"
+                                  sellerid ="#sellerid#" title="Edit" >
+                                    <i class="fa fa-pencil-alt"></i>
+                                  </button>
+                                </cfif>
                                 <button class="cancelsupplier btn btn-danger" supplierid="#supplier.id#" title="Cancel" >
                                   <i class="fa fa-times"></i>
                                 </button>
@@ -206,6 +208,8 @@ input:checked + .slider:before {
                   </cfoutput>
                   <input type="hidden" name="sellerid" id="sellerid" value="0">
                   <input type="hidden" name="supplierid" id="supplierid" value="0">
+                  <input type="hidden" name="suppliername" id="suppliername" value="">
+                  <input type="hidden" name="sellername" id="sellername" value="">
                 </tbody>
               </table>
             </div>

@@ -29,6 +29,7 @@
         variables.roleid = rc.userDetails[1]["typeid"];
         variables.zip = rc.userDetails[1]["zip"];
         variables.PhoneExtension = rc.userDetails[1]["PhoneExtension"];
+        variables.businesstypeId = rc.userDetails[1]["businesstypeId"];
         variables.personid = rc.userDetails[1]["personid"];
      //   variables.password = "********";
         variables.sectionHeader = "Update User";
@@ -54,7 +55,8 @@
       variables.personid = 0;
      // variables.password = "";
       variables.PhoneExtension = "";
-      variables.sectionHeader = "Add User"
+      variables.sectionHeader = "Add User";
+      variables.businesstypeId = 0;
     }
   </cfscript>
   <cfparam  name="variables.countryid" default="1">
@@ -129,13 +131,16 @@
         <div class="col-md-2 ">
           <select class="form-control selectElement" name="userType" style="width: 100%;">
             <cfloop array="#rc.roles#" item="role">
-              <option
-                <cfif variables.roleid EQ role.id>
-                  selected
-                </cfif>
-                value="#role.id#">
-                #role.name#
-              </option>
+              <cfif NOT listfind(variables.businesstypeId, 2)
+                OR role.id NEQ 2>
+                <option
+                  <cfif variables.roleid EQ role.id>
+                    selected
+                  </cfif>
+                  value="#role.id#">
+                  #role.name#
+                </option>
+              </cfif>
             </cfloop>
           </select>
         </div>

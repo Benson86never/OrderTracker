@@ -26,15 +26,15 @@
                             <td>#list.name#</td>
                             <td>
                                 <button class="delete btn btn-danger" id="#list.id#" title="Delete" >
-                                  <i class="fa fa-trash"></i>
+                                  <i class="fa fa-trash-alt"></i>
                                 </button>
                                 <button class="addlist btn btn-success" id="#list.id#" title="Add" >
                                   <i class="fa fa-plus"></i>
                                 </button>
                                 <button class="editlist btn btn-success" id="#list.id#" title="Edit" >
-                                  <i class="fa fa-pencil"></i>
+                                  <i class="fa fa-pencil-alt"></i>
                                 </button>
-                                <button class="cancel btn btn-danger" id="#list.id#" title="Cancel" >
+                                <button class="cancel cancellist btn btn-danger" id="#list.id#" title="Cancel" >
                                   <i class="fa fa-times"></i>
                                 </button>
                                 <button class="save btn btn-success" id="#list.id#" title="Save" >
@@ -54,8 +54,8 @@
 <script>
   $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
-    var actions = '<button class="delete btn btn-danger" id="0" title="Delete" ><i class="fa fa-trash"></i></button>'+
-                  '<button class="editlist btn btn-success" style="margin-left: 8px !important;" id="0" title="Edit" ><i class="fa fa-pencil"></i></button>'+
+    var actions = '<button class="delete btn btn-danger" id="0" title="Delete" ><i class="fa fa-trash-alt"></i></button>'+
+                  '<button class="editlist btn btn-success" style="margin-left: 8px !important;" id="0" title="Edit" ><i class="fa fa-pencil-alt"></i></button>'+
                   '<button class="addlist btn btn-success" id="0" title="Add" ><i class="fa fa-plus"></i></button>';
     // Append table with add row form on add new button click
       $(".add-newlist").click(function(){
@@ -111,6 +111,14 @@
       $(this).parents("tr").find(".save, .cancel").toggle();
       $(".add-newlist").attr("disabled", "disabled");
     });
+    $(document).on("click", ".cancellist", function(){		
+          $(this).parents("tr").find("input").each(function(){
+            $(this).parent("td").html($(this).val());
+          });
+        $(this).parents("tr").find(".delete, .editlist").toggle();
+        $(this).parents("tr").find(".save, .cancellist").toggle();
+        $(".add-newlist").removeAttr("disabled");
+      });
     // Delete row on delete button click
     $(document).on("click", ".delete", function(){
       $(this).parents("tr").remove();

@@ -219,7 +219,7 @@ table.table .form-control.error {
                     <i class="fa fa-times" aria-hidden="true"></i>
                   </button>
                   <button class="add delete btn btn-danger"  action = "delete" id="#item.id#" title="Delete">
-                    <i class="fa fa-trash" aria-hidden="true"></i>
+                    <i class="fa fa-trash-alt" aria-hidden="true"></i>
                   </button>
                   <button class="add btn btn-success"  id="#item.id#" action = "add"  title="Add">
                     <i class="fa fa-plus" aria-hidden="true"></i>

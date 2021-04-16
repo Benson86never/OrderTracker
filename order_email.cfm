@@ -2,7 +2,10 @@
 <cfset Yesterday=#DateAdd("d",-1,Today)#>
 <cfset ORMToday = #DateTimeFormat(Today,"yyyy-mm-dd HH:nn:ss")#>
 <cfset ORMYesterday = #DateTimeFormat(Yesterday,"yyyy-mm-dd HH:nn:ss")#>
-<cfset CCEmail = "orders@porthousegrill.com">
+<cfquery name="qryGetBusinessMail" datasource="#application.datasource#">
+select email from business where businessid = <cfqueryparam value="#session.secure.subaccount#" cfsqltype="cf_sql_integer">
+</cfquery>
+<cfset CCEmail = "#qryGetBusinessMail.email#">
 <cfset FromEmail = "orders@porthousegrill.com">
 <cfoutput>
 	<cftry>
@@ -97,7 +100,7 @@
 							</table>
 						<!---</cfmailpart>
 					</cfmail>---->
-					---Mail Sent---<br />
+					---Mail Sent to #rep.email#---<br />
 					
 				</cfif>
 			</cfloop>

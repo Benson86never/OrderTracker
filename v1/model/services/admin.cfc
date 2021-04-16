@@ -47,7 +47,16 @@ component  extends ="business" {
         R.name,
         b.businessname AS subAccountName,
         p.account_active,
-        p.PhoneExtension
+        p.PhoneExtension,
+        (
+          SELECT
+            GROUP_CONCAT(JBT.typeId)
+          FROM
+            joinBusinessToType JBT
+          WHERE
+            JBT.businessId = b.businessid
+          GROUP BY JBT.businessId
+        ) AS businesstypeId
       FROM 
           person P
           INNER JOIN roles R ON R.roleId = P.type
@@ -80,6 +89,7 @@ component  extends ="business" {
       local.details['PhoneExtension'] = local.userDetails.PhoneExtension;
       local.details['accountid'] = local.userDetails.businessId;
       local.details['typeid'] = local.userDetails.Type;
+      local.details['businesstypeId'] = local.userDetails.businesstypeId;
       arrayAppend(local.users, local.details);
     }
     local.result['users'] = local.users;

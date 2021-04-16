@@ -270,7 +270,8 @@ component  {
       SELECT
         S.businessId AS supplierId,
         S.BusinessName AS NAME,
-        JS.businessId AS businessId
+        JS.businessId AS businessId,
+        S.email AS businessEmail
       FROM 
         business S
         INNER JOIN joinbusinesstotype JBT ON JBT.businessId = S.businessId
@@ -306,11 +307,18 @@ component  {
         },{datasource: application.dsn}
       );
       local.details['seller'] = [];
-      cfloop(query = "local.qsellerDetails" ) {
-        local.sellerdetails = {};
-        local.sellerdetails['id'] = local.qsellerDetails.personId;
-        local.sellerdetails['name'] = local.qsellerDetails.firstname & " " & local.qsellerDetails.lastname;
-        arrayAppend(local.details['seller'], local.sellerdetails);
+      if(local.qsellerDetails.recordcount) {
+        cfloop(query = "local.qsellerDetails" ) {
+          local.sellerdetails = {};
+          local.sellerdetails['id'] = local.qsellerDetails.personId;
+          local.sellerdetails['name'] = local.qsellerDetails.firstname & " " & local.qsellerDetails.lastname;
+          arrayAppend(local.details['seller'], local.sellerdetails);
+        }
+      } else {
+        arrayAppend(local.details['seller'], {
+          'name' : local.supplierDetails.businessEmail,
+          'id' : local.supplierDetails.businessEmail
+        });
       }
       if(arguments.includeItems) {
         local.details['items'] = [];
@@ -507,6 +515,42 @@ component  {
       arrayAppend(local.business, local.details);
     }
     local.result['business'] = local.business;
+    return local.result;
+  }
+
+  public any function getSellerDetails(){
+    local.result = {'error' : false};
+    local.condition = "";
+    
+    local.qsellerDetails = queryExecute("
+      SELECT
+        P.personId,
+        P.firstName,
+        P.lastname,
+        B.businessId,
+        B.Email
+      FROM 
+        business b
+        INNER JOIN joinBusinesstoType JBT ON JBT.businessId = B.businessId
+          AND JBT.typeId = 2
+        LEFT JOIN person P ON p.businessId = b.businessid
+          AND P.type = 3
+          AND IFNULL(P.email,'') <> ''
+        LEFT JOIN roles R ON R.roleId = P.type
+      ORDER BY b.businessId,P.firstName, P.lastname;
+      ",{},{datasource: application.dsn}
+    );
+    local.sellers = []; 
+    cfloop(query = "local.qsellerDetails" ) {
+      local.sellerDetails = {};
+      local.sellerDetails['firstname'] = local.qsellerDetails.firstName
+      local.sellerDetails['lastname'] = local.qsellerDetails.lastname
+      local.sellerDetails['personid'] = local.qsellerDetails.personId
+      local.sellerDetails['businessid'] = local.qsellerDetails.businessId
+      local.sellerDetails['businessemail'] = local.qsellerDetails.Email
+      arrayAppend(local.sellers, local.sellerDetails);
+    }
+    local.result = local.sellers;
     return local.result;
   }
 
@@ -953,7 +997,7 @@ component  {
   }
 
   remote any function addSupplierSeller(
-    numeric sellerid,
+    string sellerid,
     numeric supplierid,
     numeric businessId
   ){
@@ -972,22 +1016,24 @@ component  {
           businessId = {cfsqltype = "integer", value = arguments.businessId}
         },{datasource: application.dsn}
       );
-      local.qaddseller = queryExecute("
-        INSERT INTO joinsuppliertoperson (
-          SupplierID,
-          PersonID,
-          BusinessId
-        ) VALUES (
-          :supplierId,
-          :personId,
-          :businessId
-        )
-        ",{
-          supplierId = {cfsqltype = "integer", value = arguments.supplierId},
-          personId = {cfsqltype = "integer", value = arguments.sellerId},
-          businessId = {cfsqltype = "integer", value = arguments.businessId}
-        },{datasource: application.dsn}
-      );
+      if(isNumeric(arguments.sellerid)) {
+        local.qaddseller = queryExecute("
+          INSERT INTO joinsuppliertoperson (
+            SupplierID,
+            PersonID,
+            BusinessId
+          ) VALUES (
+            :supplierId,
+            :personId,
+            :businessId
+          )
+          ",{
+            supplierId = {cfsqltype = "integer", value = arguments.supplierId},
+            personId = {cfsqltype = "integer", value = arguments.sellerId},
+            businessId = {cfsqltype = "integer", value = arguments.businessId}
+          },{datasource: application.dsn}
+        );
+      }
     } catch (any e) {
       local.result['error'] = true;
       writeDump(e);abort;
@@ -996,7 +1042,7 @@ component  {
   }
 
   remote any function deleteSupplier(
-    numeric sellerid,
+    string sellerid,
     numeric supplierid,
     numeric businessId
   ){
@@ -1013,18 +1059,20 @@ component  {
           businessId = {cfsqltype = "integer", value = arguments.businessId}
         },{datasource: application.dsn}
       );
-      local.qaddseller = queryExecute("
-        DELETE FROM joinsuppliertoperson
-        WHERE
-          SupplierID = :supplierId
-          AND BusinessId = :businessId
-          AND personId = :personId
-        ",{
-          supplierId = {cfsqltype = "integer", value = arguments.supplierId},
-          personId = {cfsqltype = "integer", value = arguments.sellerId},
-          businessId = {cfsqltype = "integer", value = arguments.businessId}
-        },{datasource: application.dsn}
-      );
+      if(isNumeric(arguments.sellerId)) {
+        local.qaddseller = queryExecute("
+          DELETE FROM joinsuppliertoperson
+          WHERE
+            SupplierID = :supplierId
+            AND BusinessId = :businessId
+            AND personId = :personId
+          ",{
+            supplierId = {cfsqltype = "integer", value = arguments.supplierId},
+            personId = {cfsqltype = "integer", value = arguments.sellerId},
+            businessId = {cfsqltype = "integer", value = arguments.businessId}
+          },{datasource: application.dsn}
+        );
+      }
     } catch (any e) {
       local.result['error'] = true;
       writeDump(e);abort;

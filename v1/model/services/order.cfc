@@ -16,7 +16,7 @@ component  {
           JCI.CartQuantity AS Quantity,
           JCI.ID AS CartItemID,
           I.ItemID,
-          S.SupplierID,
+          JCI.SupplierID,
           C.DateTime,
           C.cartId,
           C.SubaccountID AS businessId
@@ -413,7 +413,8 @@ component  {
           I.sku AS sku,
           U.name AS unitName,
           S.BusinessName AS supplierName,
-          B.businessName
+          B.businessName,
+          S.email as businessEmail
           FROM
             orders O
             INNER JOIN business S ON S.businessId = O.supplierId
@@ -451,11 +452,19 @@ component  {
           },{datasource: application.dsn}
         );
         local.details['reps'] = [];
-        cfloop(query="local.getreps") {
+        if(local.getreps.recordcount) {
+          cfloop(query="local.getreps") {
+            local.repDetails = {};
+            local.repDetails['firstname'] = local.getreps.firstname;
+            local.repDetails['lastname'] = local.getreps.lastname;
+            local.repDetails['email'] = local.getreps.email;
+            arrayAppend(local.details['reps'], local.repDetails)
+          }
+        } else {
           local.repDetails = {};
-          local.repDetails['firstname'] = local.getreps.firstname;
-          local.repDetails['lastname'] = local.getreps.lastname;
-          local.repDetails['email'] = local.getreps.email;
+          local.repDetails['firstname'] = local.getOrders.supplierName;
+          local.repDetails['lastname'] = '';
+          local.repDetails['email'] = local.getOrders.businessEmail;
           arrayAppend(local.details['reps'], local.repDetails)
         }
         local.details['items'] = [];

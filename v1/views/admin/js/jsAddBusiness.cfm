@@ -33,37 +33,24 @@
     AND listfind(variables.businessType,1)>
     $(document).ready(function(){
       $('[data-toggle="tooltip"]').tooltip();
-      var actions = '<button class="deletesupplier btn btn-danger" id="0" title="Delete" ><i class="fa fa-trash"></i></button>'+
-                  '<button class="editsupplier btn btn-success" style="margin-left: 8px !important;" id="0" title="Edit" ><i class="fa fa-pencil"></i></button>'+
+      var actions = '<button class="deletesupplier btn btn-danger" id="0" title="Delete" ><i class="fa fa-trash-alt"></i></button>'+
+                  '<button class="editsupplier btn btn-success" style="margin-left: 8px !important;" id="0" title="Edit" ><i class="fa fa-pencil-alt"></i></button>'+
                   '<button class="addsupplier btn btn-success" id="0" title="Add" ><i class="fa fa-plus"></i></button>';
       // Append table with add row form on add new button click
       $(".add-newsupplier").click(function(){
         $('#supplierid').val(0);
+        $('#suppliername').val('');
         $('#sellerid').val(0);
         $(this).attr("disabled", "disabled");
         var index = $(".suppliertable tr").length;
         var row = '<tr>' +
           '<td><input type="text" class="form-control inputelement supplier" name="supplier" id="supplier"></td>' +
-          '<td><input type="text" class="form-control inputelement seller" name="seller" id="seller"></td>' +
+          '<td><input type="text" disabled class="form-control inputelement seller" name="seller" id="seller"></td>' +
           '<td>' + actions + '</td>' +
           '</tr>';
         $(".suppliertable").append(row);
         $(".suppliertable tbody tr").eq(index - 1).find(".addsupplier, .editsupplier").toggle();
         <cfoutput>
-          $('.seller').autocomplete({
-            source: [
-              <cfloop array="#rc.businessDetails[1].sellers#" index="i" item="seller">
-                { label: "#seller.firstname# #seller.lastname#", value: "#seller.personid#" }
-                <cfif i NEQ arraylen(rc.businessDetails[1].sellers)>,</cfif>
-              </cfloop>
-            ],
-            select: function (event, ui) {
-              // Set selection
-              $('##seller').val(ui.item.label); // display the selected text
-              $('##sellerid').val(ui.item.value); // save selected id to input
-              return false;
-            }
-          });
           $('.supplier').autocomplete({
             source: [
               <cfloop array="#rc.newsupplierDetails#" index="i" item="supplier">
@@ -75,6 +62,31 @@
               // Set selection
               $('##supplier').val(ui.item.label); // display the selected text
               $('##supplierid').val(ui.item.value); // save selected id to input
+              $('##suppliername').val(ui.item.label);
+              $('.seller').removeAttr('disabled');
+              sarray = [];
+              <cfloop array="#rc.sellerInfo#" index="seller">
+                if(ui.item.value == '#seller.businessid#') {
+                  <cfif len(trim(seller.firstname))>
+                    sarray.push({ label: "#seller.firstname# #seller.lastname#", value: "#seller.personid#" });
+                  <cfelse>
+                    $('.seller').val('#seller.businessemail#');
+                    $('##sellerid').val('#seller.businessemail#');
+                    $('##seller').attr('disabled', 'disabled');
+                  </cfif>
+                }
+              </cfloop>
+              if(sarray.length > 0) {
+                $('.seller').autocomplete({
+                  source: sarray,
+                  select: function (event, ui) {
+                    // Set selection
+                    $('##seller').val(ui.item.label); // display the selected text
+                    $('##sellerid').val(ui.item.value); // save selected id to input
+                    return false;
+                  }
+                });
+              }
               return false;
             }
           });
@@ -112,20 +124,6 @@
           $('#modal-supplierNotfound').modal('show');
           $('.modal-header').css('background-color','white');
           $('.close').css('color','black');
-          $('#modal-showAlert .modal-footer .yes').click(function(){
-            itemdetails = {itemid : eid}
-            $.ajax({
-              url: 'v1/model/services/admin.cfc?method=manageItem',
-              type: 'post',
-              data: {
-                itemDetails : JSON.stringify(itemdetails),
-                action : action
-              },
-              success: function(data){
-                parenttr.remove();
-              }
-            });
-          });
           $('#supplier').addClass("error");
         }
         $(this).parents("tr").find(".error").first().focus();
@@ -151,20 +149,27 @@
       });
 
       // Edit row on edit button click
-      $(document).on("click", ".editsupplier", function(){		
+      $(document).on("click", ".editsupplier", function(){
+        supplierid = $(this).attr('supplierid');
+        console.log(supplierid);
         $(this).parents("tr").find("td:not(:last-child)").each(function(){
           element = $(this).attr('element');
           if(element == 'seller') {
             $(this).html('<input type="text" class="form-control inputelement seller" name="seller" id="seller" value="' +$.trim($(this).text()) + '">');
           }
+          sarray = [];
+          <cfloop array="#rc.sellerInfo#" index="seller">
+            businessid = '<cfoutput>#seller.businessid#</cfoutput>';
+            console.log(businessid);
+            if(supplierid == businessid) {
+              sarray.push({ label: "<cfoutput>#seller.firstname# #seller.lastname#</cfoutput>",
+              value: "<cfoutput>#seller.personid#</cfoutput>" });
+            }
+          </cfloop>
+          console.log(sarray);
           <cfoutput>
             $('.seller').autocomplete({
-              source: [
-                <cfloop array="#rc.businessDetails[1].sellers#" index="i" item="seller">
-                  { label: "#seller.firstname# #seller.lastname#", value: "#seller.personid#" }
-                  <cfif i NEQ arraylen(rc.businessDetails[1].sellers)>,</cfif>
-                </cfloop>
-              ],
+              source:sarray,
               select: function (event, ui) {
                 // Set selection
                 $('##seller').val(ui.item.label); // display the selected text
@@ -206,7 +211,22 @@
             });
         }
       });
-      // save seller
+      $(document).on('input', '#supplier', function() {
+        if($('#suppliername').val().length > 0) {
+          $('#suppliername').val('');
+          $('#supplierid').val(0);
+          $('#seller').val('');
+          $('#sellerid').val(0);
+          $('#seller').attr('disabled', 'disabled');
+        }
+      })
+      $(document).on('input', '#seller', function() {
+        if($('#sellername').val().length > 0) {
+          $('#sellername').val('');
+          $('#sellerid').val(0);
+        }
+      })
+       // save seller
       $(document).on("click", ".savesupplier", function(){
         if($('#sellerid').val() > 0
           && $(this).attr('supplierid') > 0) {
@@ -230,65 +250,5 @@
         }
       });
     });
-
-    <cfoutput>
-      $(function() {
-        $(".seller").each(function(){
-          var element = $(this).attr('id');
-          var target = $(this).attr('target');
-          $('##'+ element).autocomplete({
-            source: [
-              <cfloop array="#rc.businessDetails[1].sellers#" index="i" item="seller">
-                { label: "#seller.firstname# #seller.lastname#", value: "#seller.personid#" }
-                <cfif i NEQ arraylen(rc.businessDetails[1].sellers)>,</cfif>
-              </cfloop>
-            ],
-            select: function (event, ui) {
-              // Set selection
-              $('##'+element).val(ui.item.label); // display the selected text
-              $('##'+target).val(ui.item.value); // save selected id to input
-              return false;
-            }
-          });
-        })
-      });
-      $('.saveseller').click(function() {
-        var sellers = {};
-        var suppliers = {};
-        currentlist = "";
-        <cfloop array="#rc.supplierDetails#" item="supplier" >
-          <cfif arraylen(supplier.seller)>
-            <cfloop array="#supplier.seller#" index="sellerindex" item="seller">
-              supplierid = 'sellerid_#supplier.id#_#sellerindex#';
-              currentvalue = $('##'+ supplierid).val();
-              if(currentlist.length > 0) {
-                currentlist = currentlist + ',' + currentvalue;
-              } else {
-                currentlist = currentvalue
-              }
-              
-            </cfloop>
-          <cfelse>
-            supplierid = 'sellerid_#supplier.id#_1';
-            currentvalue = $('##'+ supplierid).val();
-            currentlist = currentvalue;
-          </cfif>
-          sellers[supplierid] = currentlist;
-          suppliers['supplier_#supplier.id#'] = $( "##supplier_#supplier.id#" ).prop("checked");
-        </cfloop>
-        $.ajax({
-          url: '../v1/model/services/admin.cfc?method=manageSeller',
-          type: 'post',
-          data: {
-            sellers : JSON.stringify(sellers),
-            suppliers : JSON.stringify(suppliers),
-            businessid : '#variables.businessId#'
-          },
-          success: function(data){
-            //location.href = "";
-          }
-        });
-      })
-    </cfoutput>
   </cfif>
 </script>
