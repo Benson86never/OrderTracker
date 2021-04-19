@@ -183,6 +183,7 @@ component  {
             City = :City,
             PhoneExtension = :PhoneExtension,
             Country = :Country,
+            state = :state,
             parentBusinessId = :parentBusinessId
           WHERE
             BusinessId = :BusinessId
@@ -484,7 +485,7 @@ component  {
         1 = 1
         #local.condition#
       GROUP BY B.BusinessId
-      order by JBT.typeId,sortbusinessname;
+      order by sortbusinessname;
       ",{},{datasource: application.dsn}
     );
     if(val(arguments.businessId) > 0) {

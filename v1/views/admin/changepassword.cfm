@@ -331,7 +331,9 @@ label
     </div>
     <div style="padding-top:20px;">   
      <input type="password" class="form-control inputelement" id="password" placeholder="Password" name="password" value="" autocomplete="off" required  minlength="8" maxlength="8">
-          <i class="fa fa-2x fa-eye" aria-hidden="true" id="showPaasword"></i>
+          <a id="showPaasword">
+            <i class="fa fa-2x fa-eye" aria-hidden="true"></i>
+          </a>
           <!--- <span style="margin-top: 1%;font-size: 10px;margin-left:35px;float:left;"><i>Password should contain Uppercase letters, Lowercase letters,Numbers and Symbol</i></span>  --->
            <label id="labelPassword" style="display:none;">Password</label>    
           <span id="errorPasswordText" style="display:none;margin-left:45px;font-size:12px;" align="left"><image src="/ordertracker/images/errorimage.PNG">Enter a Password</span>

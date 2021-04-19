@@ -1,6 +1,7 @@
 <cfoutput>
 <cfparam name="url.status" default="1">
-<cfif NOT listfind('1,0, ', url.status)>
+<cfif NOT listfind('1,0', url.status)
+  AND url.status NEQ ''>
     <cfset url.status = 1>
 </cfif>
 <div class="container table-responsive">

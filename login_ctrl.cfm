@@ -30,6 +30,8 @@
 		<cfset session.secure.SubAccount="#qrySelectBusinessname.businessid#">
 		<cfset session.secure.SubAccountName="#qrySelectBusinessname.businessname#">
 		<cfset session.secure.PersonID="#qrySelectUser.personid#">
+		<cfset session.secure.firstname ="#qrySelectUser.firstname#">
+		<cfset session.secure.lastname ="#qrySelectUser.lastname#">
 		<cfset session.secure.RoleCode="#qrySelectUser.type#">
 		<cflocation url="list.cfm" addtoken="no">
 	<cfelse>

@@ -29,15 +29,16 @@
       <!--- Main Nav --->      
       <cfif url.action neq "admin.changepassword" and url.action neq "admin.forgotpassword" and url.action neq "user.viewTroubleHelp">
         <div class="pageHeader">
-        <span>Order Tracker</span>       
-        <cfif structKeyExists(session, 'secure') AND session.secure.loggedin>               
-          <a href="../login_ctrl.cfm?action=logout" class="logOut mt-5">             
+        <span>Order Tracker</span>
+        <cfif structKeyExists(session, 'secure') AND session.secure.loggedin>
+          <a href="../login_ctrl.cfm?action=logout" class="logOut mt-5">
             <i class="fa fa-power-off" aria-hidden="true"></i>
             LogOut
           </a>
           <cfoutput>
-          <a href="../v1/index.cfm?action=user.viewHelp&userid=#encrypt(session.secure.personId, application.uEncryptKey, "BLOWFISH", "Hex")#" class="logOut mt-5">Help</a>           
+            <a href="../v1/index.cfm?action=user.viewHelp&userid=#encrypt(session.secure.personId, application.uEncryptKey, "BLOWFISH", "Hex")#" class="logOut mt-5">Help</a>           
             <a href="index.cfm?action=user.viewProfile&userid=#encrypt(session.secure.personId, application.uEncryptKey, "BLOWFISH", "Hex")#" class="logOut">
+              <font style="vertical-align: 5px;margin-right: 5px;">#session.secure.firstname# #session.secure.lastname#</font>
               <i class="fa fa-2x fa-user-circle" aria-hidden="true"></i>
             </a>
           </cfoutput>
