@@ -138,11 +138,14 @@ table.table .form-control.error {
 </div>
 </cfif>
 <cfoutput>
+  <cfparam name="url.supplierid" default="1">
   <cfif listfind(session.secure.businessType, 2)
     AND session.secure.RoleCode NEQ 1>
     <cfset supplierid = session.secure.SubAccount>
   <cfelse>
-    <cfset supplierId = 0>
+    <cfset supplierId = isnumeric(url.supplierid)
+      ? url.supplierid
+      : 0>
   </cfif>
   <cfset items = CreateObject("Component","v1.model.services.admin").getItems(supplierId = supplierId).items>
   <cfset units = CreateObject("Component","v1.model.services.admin").getUnitDetails()>
@@ -151,10 +154,10 @@ table.table .form-control.error {
     <div class="table-wrapper">
       <div class="table-title">
          <div class="row">
-            <div class="col-md-2"><h2>Item Details</h2></div>    
-            <cfif session.secure.RoleCode EQ 1>   
-            <div class="col-md-6">   
-                 <div id="dialog-form" title="Add Items">                
+            <div class="col-md-2"><h2>Item Details</h2></div>
+            <cfif session.secure.RoleCode EQ 1>
+            <div class="col-md-6">
+                 <div id="dialog-form" title="Add Items">
                     <cfform id="addItem" action="add_item_action.cfm" method="post" enctype="multipart/form-data">
                         <cfif session.secure.RoleCode eq 1>
                           <cfset local.accounts = CreateObject("Component","v1.model.services.admin").getSupplierDetails()>
@@ -165,7 +168,7 @@ table.table .form-control.error {
                               <cfloop array="#local.accounts#" item="account">
                             
                                 <option
-                                <cfif isdefined("url.businessid") and url.businessid eq account.id>
+                                <cfif isdefined("url.supplierid") and url.supplierid eq account.id>
                                   selected
                                 </cfif>
                                 value="#account.id#">
@@ -177,7 +180,7 @@ table.table .form-control.error {
                       </cfif>
                       <cfinput type="file" name="uploadfile" required="yes" message="You must select a file." class="form-control" style="width:200px;display:inline-flex;">
                       <input type="submit" name="Submit2" value="Upload" class="btn btn-info " style="width:70px;display:inline-flex;">                          
-                      <input type="hidden" name="hdnbusiness" id="hdnbusiness" value="1">
+                      <input type="hidden" name="hdnbusiness" id="hdnbusiness" value="#url.supplierid#">
                       <input type="button" id="Submit3" name="Submit3" class="btn btn-info  "style="width:130px;display:inline-flex;" value="Download Item List" onclick="downloadlist();">                          
                       <a href="DownloadTemplate.cfm"  class="btn btn-info  "style="width:110px;display:inline-flex;" >Download Template</a>
                     </cfform>
@@ -402,7 +405,7 @@ table.table .form-control.error {
   items.slice(perPage).hide();
     $("#pagination-container").pxpaginate({
       currentpage: 1,
-      totalPageCount: items.length/12,
+      totalPageCount: items.length/10,
       maxBtnCount: 5,
       align: 'center',
       nextPrevBtnShow: true,
@@ -459,6 +462,7 @@ function searchTable() {
 function chgBusiness(businessid)
 { 
  document.getElementById('hdnbusiness').value = businessid;
+ location.href = 'manageitem.cfm?supplierid=' + businessid;
 }
 
 	function downloadlist() { 

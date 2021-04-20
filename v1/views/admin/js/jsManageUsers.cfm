@@ -63,7 +63,7 @@
     <cfif rc.businessid EQ 0>
       location.href = 'index.cfm?action=admin.manageusers&status=' + $(this).val();
     <cfelse>
-      location.href = 'index.cfm?action=admin.manageusers&businessid=<cfoutput>#url.businessId#</cfoutput>&status=' + $(this).val();
+      location.href = 'index.cfm?action=admin.manageusers&businessid=<cfoutput>#rc.businessid#</cfoutput>&status=' + $(this).val();
     </cfif>
   });
 </script>
