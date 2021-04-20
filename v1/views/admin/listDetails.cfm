@@ -97,6 +97,7 @@
             });
             actions.toggle();
             $(".add-newlist").removeAttr("disabled");
+            location.reload();
           }
         });
       }		
@@ -135,6 +136,7 @@
             });
             $(this).parents("tr").find(".addlist, .editlist").toggle();
             $(".add-newlist").removeAttr("disabled");
+            location.reload();
           }
         });
     });
@@ -156,6 +158,7 @@
             });
             actions.toggle();
             $(".add-newlist").removeAttr("disabled");
+            location.reload();
           }
         });
     });

@@ -4,7 +4,8 @@
 <title>Add Item Action</title> 
 <cfif structKeyExists(form, "uploadfile")>
 	<cffile action="upload" filefield="uploadfile" destination="#GetTempDirectory()#" nameConflict="makeUnique"  result="upload" >   
-<cfif ListLast(upload.SERVERFILE,".") eq "xlsx">
+<cfif ListLast(upload.SERVERFILE,".") eq "xlsx"
+  OR ListLast(upload.SERVERFILE,".") eq "xls">
 <cftransaction> 
 <cftry>
     <cfif upload.fileWasSaved>    

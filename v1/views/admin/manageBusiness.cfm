@@ -8,14 +8,16 @@
     <div class="row">
       <div class = "col-xs-2 sectionHeader" style="font-size:22px;padding-top:40px;">
         Manage Business
-      </div>  
-      <div class="col-xs-2" style="padding-top:40px;">
-        <select name="status" id="status" class="form-control">
-          <option value="1" <cfif url.status EQ 1>selected</cfif>>Active</option>
-          <option value="0" <cfif url.status EQ 0>selected</cfif>>InActive</option>
-          <option value="" <cfif url.status EQ "">selected</cfif>>All</option>
-        </select>
       </div>
+      <cfif session.secure.rolecode EQ 1>
+        <div class="col-xs-2" style="padding-top:40px;">
+          <select name="status" id="status" class="form-control">
+            <option value="1" <cfif url.status EQ 1>selected</cfif>>Active</option>
+            <option value="0" <cfif url.status EQ 0>selected</cfif>>InActive</option>
+            <option value="" <cfif url.status EQ "">selected</cfif>>All</option>
+          </select>
+        </div>
+      </cfif>
     </div>
     <table class="table table-bordered table-hover table-striped" cellspacing = "0" id="sortTable">
       <thead>

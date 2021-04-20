@@ -142,7 +142,7 @@
               supplierid : $('#supplierid').val()
             },
             success: function(data){
-              //location.reload();
+              location.reload();
             }
           });
         }		
@@ -183,9 +183,9 @@
         $(this).parents("tr").find(".savesupplier, .cancelsupplier").toggle();
         $(".add-newsupplier").attr("disabled", "disabled");
       });
-      $(document).on("click", ".cancelsupplier", function(){		
+      $(document).on("click", ".cancelsupplier", function(){
           $(this).parents("tr").find("input").each(function(){
-            $(this).parent("td").html($(this).val());
+            $(this).parent("td").html($('#dbsellername').val());
           });
         $(this).parents("tr").find(".deletesupplier, .editsupplier").toggle();
         $(this).parents("tr").find(".savesupplier, .cancelsupplier").toggle();
@@ -207,6 +207,7 @@
               success: function(data){
                 $(this).parents("tr").find(".addsupplier, .editsupplier").toggle();
                 $(".add-newsupplier").removeAttr("disabled");
+                location.reload();
               }
             });
         }

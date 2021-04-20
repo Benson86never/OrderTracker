@@ -151,26 +151,26 @@ table.table .form-control.error {
           </thead>
           <tbody>
             <cfif arraylen(orders)>
-			<cfloop array="#Orders#" index="order">			   
-				<cfoutput>
-				<tr class="list-item items" data-filter-item data-filter-name="#order.id#">
-					<cfif order.closed eq 1>					
-							<td>#order.id#</td>
-							<td><a href="order_detail.cfm?orderid=#order.id#&supplier=#order.supplierName#" class="text-success">
-								#order.supplierName# - #dateTimeFormat(order.dateTime,"m/d/y h:nn:ss tt")# - #order.email#</a></td>						
-					<cfelse>					
-							<td>#order.id#</td>
-							<td><a href="order_detail.cfm?orderid=#order.id#&supplier=#order.supplierName#" class="text-danger">
-								#order.supplierName# - #dateTimeFormat(order.dateTime,"m/d/y h:nn:ss tt")# - #order.email#</a></td>						
-					</cfif>
-					 </tr>
-				</cfoutput>			  
-			</cfloop>
-		<cfelse>
-			<div class="orders" style="padding-bottom:20px;">
-				No orders.
-			</div>
-		</cfif>
+              <cfloop array="#Orders#" index="order">			   
+                <cfoutput>
+                <tr class="list-item items" data-filter-item data-filter-name="#order.id#">
+                  <cfif order.closed eq 1>					
+                      <td>#order.id#</td>
+                      <td><a href="order_detail.cfm?orderid=#order.id#&supplier=#order.supplierName#" class="text-success">
+                        #order.supplierName# - #dateTimeFormat(order.dateTime,"m/d/y h:nn:ss tt")# - #order.email#</a></td>						
+                  <cfelse>					
+                      <td>#order.id#</td>
+                      <td><a href="order_detail.cfm?orderid=#order.id#&supplier=#order.supplierName#" class="text-danger">
+                        #order.supplierName# - #dateTimeFormat(order.dateTime,"m/d/y h:nn:ss tt")# - #order.email#</a></td>						
+                  </cfif>
+                  </tr>
+                </cfoutput>
+              </cfloop>
+            <cfelse>
+              <tr class="orders" style="padding-bottom:20px;">
+                <td colspan="2">No orders.</td>
+              </tr>
+            </cfif>
           </tbody>
         </table>
       </div>
@@ -192,24 +192,30 @@ table.table .form-control.error {
   var numItems = items.length;
   var perPage = 15;
   items.slice(perPage).hide();
-  $("#pagination-container").pxpaginate({
-    currentpage: 1,
-    totalPageCount: items.length/12,
-    maxBtnCount: 5,
-    align: 'center',
-    nextPrevBtnShow: true,
-    firstLastBtnShow: true,
-    prevPageName: '<',
-    nextPageName: '>',
-    lastPageName: '<<',
-    firstPageName: '>>',
-    callback: function(pagenumber){
-      var showFrom = perPage * (pagenumber - 1);
-      var showTo = showFrom + perPage;
-      items.hide().slice(showFrom, showTo).show();
+  if(numItems > 0) {
+    $("#pagination-container").pxpaginate({
+      currentpage: 1,
+      totalPageCount: items.length/12,
+      maxBtnCount: 5,
+      align: 'center',
+      nextPrevBtnShow: true,
+      firstLastBtnShow: true,
+      prevPageName: '<',
+      nextPageName: '>',
+      lastPageName: '<<',
+      firstPageName: '>>',
+      callback: function(pagenumber){
+        var showFrom = perPage * (pagenumber - 1);
+        var showTo = showFrom + perPage;
+        items.hide().slice(showFrom, showTo).show();
+      }
+    });
+    if(numItems < 15) {
+      $('.px-btn-prev, .px-btn-next').hide();
     }
-  });
-    $('[data-search]').on('keyup', function() {
+  }
+  
+  $('[data-search]').on('keyup', function() {
     var searchVal = $(this).val();
     var filterItems = $('[data-filter-item]');
 

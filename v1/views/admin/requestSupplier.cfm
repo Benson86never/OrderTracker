@@ -41,7 +41,8 @@
 </cfsavecontent>
 <cfmail from = "info@porthousegrill.com"
   to = "info@porthousegrill.com,bmadaveni@infoane.com"
-  subject = "New Supplier Request">
+  subject = "New Supplier Request"
+  type="text/html">
   #mailcontent#
 </cfmail>
 <cflocation url="index.cfm?action=admin.addBusiness&businessId=#form.encBusinessId#"  addtoken="false">

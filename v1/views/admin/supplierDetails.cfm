@@ -165,6 +165,7 @@ input:checked + .slider:before {
                 </thead>
                 <tbody>
                   <cfoutput>
+                    <cfset sellername = "">
                     <cfset rc.newsupplierDetails = []>
                     <cfset rc.suppliernames = []>
                     <cfloop array="#rc.supplierDetails#" item="supplier">
@@ -175,6 +176,7 @@ input:checked + .slider:before {
                             <td element="seller">
                               <cfloop array="#supplier.seller#" index="sellerindex" item="seller">
                                 #seller.name#
+                                <cfset sellername = seller.name>
                                 <cfset sellerid = seller.id>
                               </cfloop>
                             </td>
@@ -209,6 +211,7 @@ input:checked + .slider:before {
                   <input type="hidden" name="sellerid" id="sellerid" value="0">
                   <input type="hidden" name="supplierid" id="supplierid" value="0">
                   <input type="hidden" name="suppliername" id="suppliername" value="">
+                  <input type="hidden" name="dbsellername" id="dbsellername" value="<cfoutput>#sellername#</cfoutput>">
                   <input type="hidden" name="sellername" id="sellername" value="">
                 </tbody>
               </table>

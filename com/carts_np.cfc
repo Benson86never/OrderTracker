@@ -71,21 +71,21 @@
 		<cfargument name="dsn" required="Yes" type="string">
 		<cfset var GetPerson="">
 		<cfquery name="CartQuery" datasource="#dsn#">
-			select Supplier.Name as SupplierName, 
+			select business.businessName as SupplierName, 
 			Item.Name as ItemName, 
 			Units.Name as UnitName, 
 			JoinCartToItem.CartQuantity as Quantity,
 			JoinCartToItem.ID as CartItemID,
 			Item.ItemID as ItemID, 
-			Supplier.SupplierID as SupplierID,
+			business.businessID as SupplierID,
 			Carts.DateTime as DateTime
 			from JoinCartToItem
 			join Carts on JoinCartToItem.CartID = Carts.CartID
 			join Item on JoinCartToItem.ItemID = Item.ItemID
-			join Supplier on JoinCartToItem.SupplierID = Supplier.SupplierID
+			join business on JoinCartToItem.SupplierID = business.businessId
 			join Units on Item.UnitID = Units.UnitID
 			Where Carts.CartID = <cfqueryparam value="#variables.instance.CartID#" CFSQLType="CF_SQL_INTEGER">
-			Order By Supplier.SupplierID asc, Item.ItemID asc
+			Order By business.businessId asc, Item.ItemID asc
 		</cfquery>
 		<cfset cartJSON = serializeJSON(CartQuery)>
 		<cfreturn CartJSON>

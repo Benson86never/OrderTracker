@@ -60,6 +60,10 @@
       $('#modal-showAlert').modal('show');
   });
   $('#status').change(function(){
-    location.href = 'index.cfm?action=admin.manageusers&status=' + $(this).val();
+    <cfif rc.businessid EQ 0>
+      location.href = 'index.cfm?action=admin.manageusers&status=' + $(this).val();
+    <cfelse>
+      location.href = 'index.cfm?action=admin.manageusers&businessid=<cfoutput>#url.businessId#</cfoutput>&status=' + $(this).val();
+    </cfif>
   });
 </script>

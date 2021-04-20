@@ -129,7 +129,7 @@ table.table .form-control.error {
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel"></h4>
       </div>
-      <div class="modal-body">Please Select Supplier and Upload only XLSX file types.</div>
+      <div class="modal-body">Please Select Supplier and Upload only XLS,XLSX file types.</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default ok" data-dismiss="modal"><cfoutput>OK</cfoutput></button>
       </div>
