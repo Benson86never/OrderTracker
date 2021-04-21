@@ -14,40 +14,49 @@
         .nav .nav-item:hover .nav-link{ color: #337ab7;  }
         .nav .nav-item:hover .dropdown-menu{ display: block; }
         .nav .nav-item .dropdown-menu{ margin-top:0; }
-      </style>
+         
+          /*a .fa {
+            font-size: 2em;
+          }*/
+         }
+  </style>
     </head>
     <body>
       <div>
         <!--- Main Nav --->
         <div class="pageHeader">
+        <div class="row">
           <span>Order Tracker</span>
           <cfif structKeyExists(session, 'secure') AND session.secure.loggedin>
             <a href="login_ctrl.cfm?action=logout" class="logOut mt-5">
-              <i class="fa fa-power-off" aria-hidden="true"></i>
-              LogOut
+              <i class="fa fa-power-off fa-fw" aria-hidden="true"></i>
+              <abbr class="hidden-xs">LogOut</abbr>
             </a>
             <cfoutput>
-            <a href="v1/index.cfm?action=user.viewHelp&userid=#encrypt(session.secure.personId, application.uEncryptKey, "BLOWFISH", "Hex")#" class="logOut mt-5">Help</a>
-            <a href="v1/index.cfm?action=user.viewProfile&userid=#encrypt(session.secure.personId, application.uEncryptKey, "BLOWFISH", "Hex")#" class="logOut">
-              <font style="vertical-align: 5px;margin-right: 5px;">#session.secure.firstname# #session.secure.lastname#</font>
-              <i class="fa fa-2x fa-user-circle" aria-hidden="true"></i>
+            <a href="v1/index.cfm?action=user.viewHelp&userid=#encrypt(session.secure.personId, application.uEncryptKey, "BLOWFISH", "Hex")#" class="logOut mt-5"><i class="fa fa-phone fa-fw" aria-hidden="true"></i><abbr class="hidden-xs"> Help</abbr></a>
+            <a href="v1/index.cfm?action=user.viewProfile&userid=#encrypt(session.secure.personId, application.uEncryptKey, "BLOWFISH", "Hex")#" class="logOut mt-5">
+              <font><abbr class="hidden-xs">#session.secure.firstname# #session.secure.lastname# </abbr></font>
+               <i class="fa fa-user fa-fw" aria-hidden="true"></i>
             </a>
             </cfoutput>
           </cfif>
+          </div>
         </div>
+        <div class="row">
         <cfif structKeyExists(session, 'secure')
           AND session.secure.loggedin>
           <div class="tabbar">
             <ul class="nav nav-tabs">
-              <li class="nav-item">
+              <!---<li class="nav-item">
                 <a class="nav-link 
                 <cfif cgi.script_name contains "list.cfm">
                  active
                 </cfif>" href="list.cfm">List</a>
-              </li>
+              </li>--->
               <li class="nav-item">
                 <a class="nav-link
-                  <cfif cgi.script_name contains "orders_open.cfm"
+                  <cfif cgi.script_name contains "list.cfm"
+                    OR cgi.script_name contains "orders_open.cfm"
                     OR cgi.script_name contains "order_email.cfm"
                     OR cgi.script_name contains "cart.cfm">
                     active
@@ -55,6 +64,7 @@
                   Orders <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="order_email.cfm">Create New Order</a></li>
                   <li><a class="dropdown-item" href="orders_open.cfm">Open Orders</a></li>
                   <li><a class="dropdown-item" href="order_email.cfm">Send Orders</a></li>
                   <cfif isDefined('session.cart')>
@@ -92,6 +102,7 @@
             </ul>
           </div>
         </cfif>
+        </div>
       </div>
       <div class="main-content">
         <div class="">

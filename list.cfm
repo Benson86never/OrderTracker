@@ -15,13 +15,23 @@
     text-align: center;
     font-size: 24px;
 }
+    @media (max-width: 767px) {
+     .panel-body {
+       text-align: center !important;
+   }
+	}
+	@media (min-width: 767px){
+	.panel-body {
+		margin-left: 200px;
+	}
+	}
 </style>
 <cfinclude template="includes/header.cfm" >
 <cfoutput>
  <div class="container">
    <div class="panel panel-default">
       <div class="panel-heading">Lists</div>
-      <div class="panel-body" style="margin-left: 200px;">
+      <div class="panel-body">
 		<cfform name="Order" action="cart_ctrl.cfm">
 			<cfloop array="#listdetails#" index="list" >
 				<cfif NOT val(url.ListID)>
