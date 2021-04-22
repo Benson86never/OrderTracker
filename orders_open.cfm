@@ -11,6 +11,12 @@ input, select{
   height: 30px;
     width: 300px;
 }
+ /*@media (max-width: 767px) {
+  .container {
+  margin-left: -8px !important;
+	margin-right: -13px !important;
+}
+ }*/
 .table-wrapper {
     background: #fff;
     padding: 20px;	

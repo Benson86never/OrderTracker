@@ -18,18 +18,23 @@
     @media (max-width: 767px) {
      .panel-body {
        text-align: center !important;
-   }
-   .txtalign {
+      }
+     .txtalign {
 	   display: flex;
 		margin: 10px;
 		/*float: left;*/
-   }
-   .c1 {
+       }
+     .c1 {
 	   margin:5px;
-      }
-	 }
-	
-	
+        }
+	  .container {
+         /*padding: 0 !important;*/
+        padding: 0 !important;
+		margin: 0 !important;
+		margin-left: -8px !important;
+		 margin-right: -13px !important;
+       }
+	}
 </style>
 <cfinclude template="includes/header.cfm" >
 <cfoutput>

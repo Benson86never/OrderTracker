@@ -14,11 +14,10 @@
         .nav .nav-item:hover .nav-link{ color: #337ab7;  }
         .nav .nav-item:hover .dropdown-menu{ display: block; }
         .nav .nav-item .dropdown-menu{ margin-top:0; }
-         
           /*a .fa {
             font-size: 2em;
           }*/
-         }
+         
   </style>
     </head>
     <body>
