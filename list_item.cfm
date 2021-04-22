@@ -45,7 +45,7 @@
       font-size: 12px;
       text-shadow: none;
       min-width: 100px;
-      border-radius: 50px;
+      border-radius: 4px;
       line-height: 13px;
     }
     .table-title .add-new i {

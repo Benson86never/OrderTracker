@@ -50,6 +50,40 @@ input, select{
                       </div>
                   </div>
               </div>
+              <cfif session.secure.RoleCode eq 1>
+                <cfscript>
+                  local.accounts = [];
+                  local.accountDetails = queryExecute("
+                  SELECT
+                    B.businessId as businessId,
+                    B.businessname as name
+                  FROM
+                    business B
+                    INNER JOIN joinbusinesstotype JBT ON JBT.businessId = B.businessId AND JBT.typeId = 1
+                  WHERE
+                    B.Active = 1
+                  ",{},{datasource: application.dsn}
+                  );
+                  cfloop(query = "local.accountDetails") {
+                    local.details = {};
+                    local.details['id'] = local.accountDetails.businessId;
+                    local.details['name'] = local.accountDetails.name;
+                    arrayAppend(local.accounts, local.details);
+                  }
+                </cfscript>
+                Business: &nbsp;
+                <select name="business" onchange="changeBusinesslist(this.value)" class="form-select form-select-lg mb-3" >
+                <cfloop array="#local.accounts#" item="account">
+                    <option
+                      <cfif isdefined("url.businessid") and url.businessid eq account.id>
+                        selected
+                      </cfif>
+                      value="<cfoutput>#account.id#</cfoutput>">
+                      <cfoutput>#account.name#</cfoutput>
+                    </option>
+                  </cfloop>
+                </select>
+              </cfif>
               <table class="listtable table table-bordered">
                   <thead>
                       <tr>
@@ -213,4 +247,8 @@ input, select{
         });
     });
   });
+  
+  function changeBusinesslist(businessId) {
+      location.href = 'manageitem.cfm?page=lists&businessid=' + businessId
+    }
   </script>
