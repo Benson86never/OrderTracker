@@ -25,11 +25,8 @@
 		/*float: left;*/
    }
 	}
-	@media (min-width: 767px){
-	.panel-body {
-		margin-left: 200px;
-	}
-	}
+	
+	
 </style>
 <cfinclude template="includes/header.cfm" >
 <cfoutput>

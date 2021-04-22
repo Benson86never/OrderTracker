@@ -10,15 +10,8 @@
     text-align: center;
     font-size: 24px;
     }
-	.panel-body {
-		margin-left: 200px;
-	}
-	@media (max-width: 767px) {
-	.panel-body {
-		/*text-align: center !important;*/
-		margin-left: 20px;
-      }
-	}
+	
+	
 </style>
 <cfinclude template="includes/header.cfm" >
 	<div class="container">
