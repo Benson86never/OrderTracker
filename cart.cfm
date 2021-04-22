@@ -6,17 +6,26 @@
 	.page-content{
 		padding-left: 20px;
 	}
+	.panel-body {
+		margin-left: 200px;
+	}
 	.panel-default > .panel-heading {
     text-align: center;
     font-size: 24px;
 }
+    @media (max-width: 767px) {
+	.panel-body {
+		/*text-align: center !important;*/
+		margin-left: 20px;
+      }
+	}
 </style>
 <cfinclude template="includes/header.cfm" >
 <cfoutput>
 	<div class="container">
    <div class="panel panel-default">
       <div class="panel-heading">Cart</div>
-      <div class="panel-body" style="margin-left: 200px;">
+      <div class="panel-body">
 	<div class="page-content">
 		<cfif isDefined("Session.cart.id")>
 			<cfscript>

@@ -9,13 +9,22 @@
 	.panel-default > .panel-heading {
     text-align: center;
     font-size: 24px;
-}
+    }
+	.panel-body {
+		margin-left: 200px;
+	}
+	@media (max-width: 767px) {
+	.panel-body {
+		/*text-align: center !important;*/
+		margin-left: 20px;
+      }
+	}
 </style>
 <cfinclude template="includes/header.cfm" >
 	<div class="container">
    <div class="panel panel-default">
       <div class="panel-heading">Complete Order</div>
-      <div class="panel-body" style="margin-left: 200px;">
+      <div class="panel-body">
 <cfoutput>
 	<div class="page-content">
 		<div class="order-item"> 

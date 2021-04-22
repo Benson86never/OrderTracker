@@ -19,6 +19,11 @@
      .panel-body {
        text-align: center !important;
    }
+   .txtalign {
+	   display: flex;
+		margin: 10px;
+		/*float: left;*/
+   }
 	}
 	@media (min-width: 767px){
 	.panel-body {
@@ -41,7 +46,7 @@
 					<!---Order Form Begins--->
 					<cfif arraylen(list.items)>
 						<cfloop array="#list.items#" index="item" >
-							<div class="listItem">
+							<div class="listItem txtalign">
 								<cfinput type="text" class="items" name="#item.itemId#;#item.SupplierID#;ITEM"
 									size="3" validate="integer"
 									message="#item.name# Quantity must be an integer.">

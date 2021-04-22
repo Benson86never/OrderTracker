@@ -64,7 +64,7 @@
                   Orders <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="order_email.cfm">Create New Order</a></li>
+                  <li><a class="dropdown-item" href="list.cfm">Create New Order</a></li>
                   <li><a class="dropdown-item" href="orders_open.cfm">Open Orders</a></li>
                   <li><a class="dropdown-item" href="order_email.cfm">Send Orders</a></li>
                   <cfif isDefined('session.cart')>
