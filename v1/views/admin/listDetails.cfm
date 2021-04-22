@@ -1,5 +1,43 @@
+<cfif NOT isdefined('rc.listDetails')>
+  <cfset page = "manageitem">
+  <cfparam  name="url.businessid" default="#session.secure.subaccount#">
+  <cfset variables.businessid = url.businessid>
+  <cfset rc.listDetails = CreateObject("Component","v1.model.services.admin").getListDetails(businessId = url.businessid)>
+  <style>
+    
+input, select{
+  font-size: 12px !important;
+}
+.table-wrapper {
+    background: #fff;
+    padding: 20px;	
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    font-size: 12px !important;
+}
+    .save, .cancel {
+      display: none;
+    }
+    .savesupplier, .cancelsupplier {
+      display: none;
+    }
+    .addlist, .addsupplier {
+        display: none;
+        margin-left: 8px;
+    }
+    input[type="text"] {
+      width: 90% !important;
+    }
+    .editlist, .editsupplier {
+      margin-left: 5px;
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+</cfif>
 <div class="panel panel-default">
-  <div class="panel-heading">List Details</div>
+  <cfif NOT isdefined('page')>
+    <div class="panel-heading">List Details</div>
+  </cfif>
   <div class="panel-body">
     <div class="container-lg">
       <div class="table-responsive">
@@ -84,7 +122,7 @@
       if(!empty){
         actions = $(this).parents("tr").find(".addlist, .editlist");
         $.ajax({
-          url: '../v1/model/services/admin.cfc?method=addList',
+          url: 'v1/model/services/admin.cfc?method=addList',
           type: 'post',
           data: {
             name : $(this).parents("tr").find('#name').val(),
@@ -97,7 +135,11 @@
             });
             actions.toggle();
             $(".add-newlist").removeAttr("disabled");
-            location.reload();
+            <cfif NOT isdefined('page')>
+              location.reload();
+            <cfelse>
+              location.href = 'manageitem.cfm?page=lists';
+            </cfif>
           }
         });
       }		
@@ -125,7 +167,7 @@
       $(this).parents("tr").remove();
       $(".add-newlist").removeAttr("disabled");
       $.ajax({
-          url: '../v1/model/services/admin.cfc?method=deleteList',
+          url: 'v1/model/services/admin.cfc?method=deleteList',
           type: 'post',
           data: {
             listId : $(this).attr('id')
@@ -136,7 +178,11 @@
             });
             $(this).parents("tr").find(".addlist, .editlist").toggle();
             $(".add-newlist").removeAttr("disabled");
-            location.reload();
+            <cfif NOT isdefined('page')>
+              location.reload();
+            <cfelse>
+              location.href = 'manageitem.cfm?page=lists';
+            </cfif>
           }
         });
     });
@@ -146,7 +192,7 @@
       var actions = $(this).parents("tr").find(".save, .cancel, .editlist, .delete");
       var listname = $(this).parents("tr").find('#name').val();
       $.ajax({
-          url: '../v1/model/services/admin.cfc?method=updatelist',
+          url: 'v1/model/services/admin.cfc?method=updatelist',
           type: 'post',
           data: {
             listId : $(this).attr('id'),
@@ -158,7 +204,11 @@
             });
             actions.toggle();
             $(".add-newlist").removeAttr("disabled");
-            location.reload();
+            <cfif NOT isdefined('page')>
+              location.reload();
+            <cfelse>
+              location.href = 'manageitem.cfm?page=lists';
+            </cfif>
           }
         });
     });
