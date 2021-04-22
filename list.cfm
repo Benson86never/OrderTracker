@@ -24,7 +24,10 @@
 		margin: 10px;
 		/*float: left;*/
    }
-	}
+   .c1 {
+	   margin:5px;
+      }
+	 }
 	
 	
 </style>
@@ -52,7 +55,7 @@
 									<cfelse>
 										<span class="text-success">
 									</cfif>
-									#item.unitName#
+									<span class="c1">#item.unitName#</span>
 									</span> - #item.name# <span style="color:blue">#item.supplierName#</span><br />
 							</div>
 						</cfloop>

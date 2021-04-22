@@ -5,6 +5,7 @@
 		checkedIn = 0,
 		businessId = url.businessid).openOrders>
 <style>
+
 input, select{
   font-size: 12px !important;
   height: 30px;
@@ -36,14 +37,14 @@ input, select{
 .table-title .add-new i {
     margin-right: 4px;
 }
-table.table {
+/*table.table {
     table-layout: fixed;
 }
 table.table tr th, table.table tr td {
     border-color: #e9e9e9;
         overflow: hidden;
     text-overflow: ellipsis;
-}
+}*/
 table.table th i {
     cursor: pointer;
 }
@@ -97,7 +98,7 @@ table.table .form-control.error {
       <div class="table-title">
         <div class="row">
           <div class="col-xs-6"><h2>Open Orders</h2></div>
-          <div class="col-xs-2">
+          <div class="col-xs-3">
             <!---<div class="search">
               <input type="text" placeholder="search" data-search ="" class="form-control"/>
             </div>--->
@@ -142,11 +143,11 @@ table.table .form-control.error {
           </select>
           </div>
 			  </cfif>
-        <table class="list-wrapper table table-bordered table-responsive-md table-striped" cellspacing="0" cellpadding="0">
+        <table class="list-wrapper table table-bordered table-responsive-sm table-striped" cellspacing="0" cellpadding="0">
           <thead>
             <tr>
-            <th width = "5%" style="text-align:center;">Order ID</th>
-            <th  width="98%" style="text-align:center;">Order Details</th>
+            <th style="text-align:center;">Order ID</th>
+            <th style="text-align:center;">Order Details</th>
             </tr>
           </thead>
           <tbody>
