@@ -21,24 +21,27 @@
       }
      .txtalign {
 	   display: flex;
-		margin: 10px;
+		margin: 5px;
 		/*float: left;*/
        }
      .c1 {
 	   margin:5px;
         }
-	  .container {
+      .container {
          /*padding: 0 !important;*/
         padding: 0 !important;
 		margin: 0 !important;
-		margin-left: -8px !important;
-		 margin-right: -13px !important;
+		
        }
-	}
+	   .items {
+		   width: 40px;
+	   }
+	   	}
 </style>
 <cfinclude template="includes/header.cfm" >
 <cfoutput>
  <div class="container">
+ <div class="row">
    <div class="panel panel-default">
       <div class="panel-heading">Lists</div>
       <div class="panel-body">
@@ -52,7 +55,7 @@
 					<cfif arraylen(list.items)>
 						<cfloop array="#list.items#" index="item" >
 							<div class="listItem txtalign">
-								<cfinput type="text" class="items" name="#item.itemId#;#item.SupplierID#;ITEM"
+								<input type="text" class="items" id="d" name="#item.itemId#;#item.SupplierID#;ITEM"
 									size="3" validate="integer"
 									message="#item.name# Quantity must be an integer.">
 									<cfif item.unitId eq 2>
@@ -65,7 +68,7 @@
 							</div>
 						</cfloop>
 						<input type="button" onclick="window.location.href='list.cfm'" class="btn btn-danger" class="btn btn-cancel" value="Cancel"/>
-						<input type="submit" name="Submit" value="Add To Cart" class="btn btn-success" onclick="this.disabled=true;this.value='Sending, please wait...';this.form.submit();" />
+						<input type="submit" id="sub"name="Submit" value="Add To Cart" class="btn btn-success" onclick="this.disabled=true;this.value='Sending, please wait...';this.form.submit();" />
 					<cfelse>
 						No items available.
 					</cfif>
@@ -76,6 +79,7 @@
 		</div>
 			</div>
 				</div>
+				 </div>
 </cfoutput>
 <cfinclude template="includes/footer.cfm" >
 <script>
@@ -84,4 +88,20 @@
            event.preventDefault();
        }
    });
+
+$(document).ready(function(){
+    $('input[type="submit"]').attr('disabled','disabled');
+	//var inputval =$(this).val();
+		//console.log(inputval)
+    $('.items').keyup(function(){
+	if( $('.items').filter(function() 
+	{ return !!this.value; }).length > 0 ) {
+            $('input[type="submit"]').removeAttr('disabled');
+        } 
+		else{
+			 $('input[type="submit"]').attr('disabled','disabled');
+			}
+	});
+});
+
 </script>

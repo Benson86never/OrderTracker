@@ -11,12 +11,12 @@ input, select{
   height: 30px;
     width: 300px;
 }
- /*@media (max-width: 767px) {
+ @media (max-width: 767px) {
   .container {
-  margin-left: -8px !important;
-	margin-right: -13px !important;
+  margin: 0 !important;
+	padding: 0 !important;
 }
- }*/
+ }
 .table-wrapper {
     background: #fff;
     padding: 20px;	
@@ -100,6 +100,7 @@ table.table .form-control.error {
 </style>
 <cfoutput>
   <div class="container table-responsive">
+  <div class="row">
     <div class="table-wrapper">
       <div class="table-title">
         <div class="row">
@@ -182,6 +183,7 @@ table.table .form-control.error {
         </table>
       </div>
       <div id="pagination-container"></div>
+    </div>
     </div>
   </div>
 </cfoutput>

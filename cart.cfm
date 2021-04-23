@@ -16,14 +16,16 @@
             /*padding: 0 !important;*/
             padding: 0 !important;
 			margin: 0 !important;
-			margin-left: -8px !important;
-		    margin-right: -13px !important;
-            }
+			}
+		.cartItem{
+		margin-right: 10px;
+	    }
        }
 </style>
 <cfinclude template="includes/header.cfm" >
 <cfoutput>
 	<div class="container">
+	<div class="row">
    <div class="panel panel-default">
       <div class="panel-heading">Cart</div>
       <div class="panel-body">
@@ -40,7 +42,7 @@
 		<cfif NOT CartItems.recordcount>
 			No Items in Cart
 		<cfelse>
-			<div>#CartItems.DateTime#</div>
+			<div>#CartItems.DateTime#</div></br>
 			<div style="margin-bottom:1em;">Check items if you want to delete them. <strong>You are not required to check items to order them.</strong></div>
 			<cfform action="order_ctrl.cfm">
 			<cfloop query="CartItems" >
@@ -54,6 +56,7 @@
 			</cfform>	
 		</cfif>
 		<cfinclude template="includes/bootstrap_js.cfm" >
+	</div>
 	</div>
 	</div>
 	</div>
