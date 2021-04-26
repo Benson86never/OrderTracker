@@ -146,8 +146,8 @@ table.table .form-control.error {
         <table class="list-wrapper table table-bordered table-responsive-sm table-striped" cellspacing="0" cellpadding="0">
           <thead>
             <tr>
-            <th style="text-align:center;">Order ID</th>
-            <th style="text-align:center;">Order Details</th>
+              <th width = "5%" style="text-align:center;">Order ID</th>
+              <th  width="98%" style="text-align:center;">Order Details</th>
             </tr>
           </thead>
           <tbody>

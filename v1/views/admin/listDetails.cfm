@@ -44,46 +44,49 @@ input, select{
           <div class="table-wrapper">
               <div class="table-title">
                   <div class="row">
-                      <div class="col-sm-6"></div>
+                      <div class="col-sm-6">
+                        <cfif isdefined('page')>
+                          <cfif session.secure.RoleCode eq 1>
+                            <cfscript>
+                              local.accounts = [];
+                              local.accountDetails = queryExecute("
+                              SELECT
+                                B.businessId as businessId,
+                                B.businessname as name
+                              FROM
+                                business B
+                                INNER JOIN joinbusinesstotype JBT ON JBT.businessId = B.businessId AND JBT.typeId = 1
+                              WHERE
+                                B.Active = 1
+                              ",{},{datasource: application.dsn}
+                              );
+                              cfloop(query = "local.accountDetails") {
+                                local.details = {};
+                                local.details['id'] = local.accountDetails.businessId;
+                                local.details['name'] = local.accountDetails.name;
+                                arrayAppend(local.accounts, local.details);
+                              }
+                            </cfscript>
+                            Business: &nbsp;
+                            <select name="business" onchange="changeBusinesslist(this.value)" class="form-select form-select-lg mb-3" >
+                            <cfloop array="#local.accounts#" item="account">
+                                <option
+                                  <cfif isdefined("url.businessid") and url.businessid eq account.id>
+                                    selected
+                                  </cfif>
+                                  value="<cfoutput>#account.id#</cfoutput>">
+                                  <cfoutput>#account.name#</cfoutput>
+                                </option>
+                              </cfloop>
+                            </select>
+                          </cfif>
+                        </cfif>
+                      </div>
                       <div class="col-sm-5 text-right">
                           <button type="button" class="btn btn-info add-newlist"><i class="fa fa-plus"></i> Add New</button>
                       </div>
                   </div>
               </div>
-              <cfif session.secure.RoleCode eq 1>
-                <cfscript>
-                  local.accounts = [];
-                  local.accountDetails = queryExecute("
-                  SELECT
-                    B.businessId as businessId,
-                    B.businessname as name
-                  FROM
-                    business B
-                    INNER JOIN joinbusinesstotype JBT ON JBT.businessId = B.businessId AND JBT.typeId = 1
-                  WHERE
-                    B.Active = 1
-                  ",{},{datasource: application.dsn}
-                  );
-                  cfloop(query = "local.accountDetails") {
-                    local.details = {};
-                    local.details['id'] = local.accountDetails.businessId;
-                    local.details['name'] = local.accountDetails.name;
-                    arrayAppend(local.accounts, local.details);
-                  }
-                </cfscript>
-                Business: &nbsp;
-                <select name="business" onchange="changeBusinesslist(this.value)" class="form-select form-select-lg mb-3" >
-                <cfloop array="#local.accounts#" item="account">
-                    <option
-                      <cfif isdefined("url.businessid") and url.businessid eq account.id>
-                        selected
-                      </cfif>
-                      value="<cfoutput>#account.id#</cfoutput>">
-                      <cfoutput>#account.name#</cfoutput>
-                    </option>
-                  </cfloop>
-                </select>
-              </cfif>
               <table class="listtable table table-bordered">
                   <thead>
                       <tr>
@@ -172,7 +175,7 @@ input, select{
             <cfif NOT isdefined('page')>
               location.reload();
             <cfelse>
-              location.href = 'manageitem.cfm?page=lists';
+              location.href = 'manageitem.cfm?page=lists&businessid=<cfoutput>#variables.businessid#</cfoutput>';
             </cfif>
           }
         });
@@ -215,7 +218,7 @@ input, select{
             <cfif NOT isdefined('page')>
               location.reload();
             <cfelse>
-              location.href = 'manageitem.cfm?page=lists';
+              location.href = 'manageitem.cfm?page=lists&businessid=<cfoutput>#variables.businessid#</cfoutput>';
             </cfif>
           }
         });
@@ -241,7 +244,7 @@ input, select{
             <cfif NOT isdefined('page')>
               location.reload();
             <cfelse>
-              location.href = 'manageitem.cfm?page=lists';
+              location.href = 'manageitem.cfm?page=lists&businessid=<cfoutput>#variables.businessid#</cfoutput>';
             </cfif>
           }
         });
