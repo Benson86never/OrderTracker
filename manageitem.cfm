@@ -22,7 +22,7 @@
   display: block;
   /* border: 1px solid #ddd; */
   padding: 12px 50px 7px 50px; 
-  width: 290px;
+  width: 185px;
   height: 40px;
 }
 
@@ -146,6 +146,14 @@ OR session.secure.RoleCode EQ 1>
         </span><i></i>
       </li>
     </cfif>
+    <li <cfif url.page EQ "lists">class="active"</cfif>>
+      <span>
+        <a data-toggle="tab" href="lists" class="listlink">
+          <strong>Manage Lists</strong>
+          Add/edit/delete lists
+        </a>
+      </span><i></i>
+    </li>
     <li <cfif url.page EQ "listitems">class="active"</cfif>>
       <span>
         <a data-toggle="tab" href="listitems" class="listlink">
@@ -165,9 +173,10 @@ OR session.secure.RoleCode EQ 1>
   </ul>
   <div class="tab-content">
     <div id="items" class="tab-pane">
-
       <cfinclude template="item.cfm">
-
+    </div>
+    <div id="lists" class="tab-pane">
+      <cfinclude template="v1/views/admin/listdetails.cfm">
     </div>
     <div id="listitems" class="tab-pane">
       <cfinclude template="list_item.cfm">

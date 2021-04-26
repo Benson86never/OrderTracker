@@ -22,7 +22,7 @@ input, select{
     font-size: 12px;
     text-shadow: none;
     min-width: 100px;
-    border-radius: 50px;
+    border-radius: 4px;
     line-height: 13px;
 }
 .table-title .add-new i {
@@ -201,7 +201,11 @@ table.table .form-control.error {
             </cfif>
           </div>                
         </div>
+<<<<<<< HEAD
         <table class="list-wrapper table table-bordered table-responsive-sm table-striped" cellspacing="0" cellpadding="0" id="searchTab">
+=======
+        <table class="list-wrapper itemtable table table-bordered table-responsive-md table-striped" cellspacing="0" cellpadding="0" id="searchTab">
+>>>>>>> 404f62d46b3968f10f8ecb137b421e180e135a5f
           <thead>
             <tr>
             <th width="40%" style="text-align:center;">Name</th>
@@ -262,7 +266,8 @@ table.table .form-control.error {
     $('#modal-showAlert').modal('show');   
     </cfif>
    // $('[data-toggle="tooltip"]').tooltip();
-    var actions = $("table td:last-child").html();
+   var itemactions = '<button action = "delete" class="deleteitem btn btn-danger" id="0" title="Delete" ><i class="fa fa-trash-alt"></i></button>'+
+                  '<button action = "add" class="add btn btn-success" id="0" title="Add" ><i class="fa fa-plus"></i></button>';
     var unithtml = "";
     var supplierhtml = "";
     <cfoutput>
@@ -276,14 +281,14 @@ table.table .form-control.error {
     // Append table with add row form on add new button click
     $(".add-new").click(function(){
       $(this).attr("disabled", "disabled");
-      var index = $("table tbody tr:last-child").index();
+      var index = $("itemtable tbody tr:last-child").index();
       var row = '<tr>' +
         '<td><input type="text" class="form-control" name="name" id="name"></td>' +
         '<td><input type="text" class="form-control" name="sku" id="sku"></td>' +
         '<td><input type="text" class="form-control" name="photourl" id="photourl"></td>' +
         '<td><select class="form-control" name="units" id="units">'+unithtml+'</select></td>' +
         '<td><select class="form-control" name="supplier" id="supplier">'+supplierhtml+'</select></td>' +
-        '<td>' + actions + '</td>' +
+        '<td>' + itemactions + '</td>' +
         '</tr>';
         $("table").append(row);
         $("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
