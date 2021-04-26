@@ -1,15 +1,38 @@
+<style>
+#div1 {
+     padding-top:40px;
+}
+.sectionHeader {
+        font-size:22px;
+        padding-top:40px;
+}
+@media (max-width: 767px) {
+       .container {
+           padding: 0 !important;
+           margin: 0 !important;
+        }
+       .sectionHeader {
+            font-size: 12px;
+        }
+        #status {
+              width: 100px !important;
+           }
+
+      }
+
+</style>
 <cfoutput>
 <cfparam name="url.status" default="1">
 <cfif NOT listfind('1,0', url.status)
   AND url.status NEQ ''>
     <cfset url.status = 1>
 </cfif>
-<div class="container table-responsive">
+<div class="container">
   <div class="row">
-    <div class = "col-xs-2 sectionHeader" style="font-size:22px;padding-top:40px;">
+    <div class = "col-xs-2 sectionHeader">
       Manage Users
     </div>  
-    <div class="col-xs-2" style="padding-top:40px;">
+    <div class="col-xs-2" id="div1">
       <select name="status" id="status" class="form-control">
         <option value="1" <cfif url.status EQ 1>selected</cfif>>Active</option>
         <option value="0" <cfif url.status EQ 0>selected</cfif>>InActive</option>
@@ -17,7 +40,7 @@
       </select>
     </div>
   </div>
-  <table class="table table-bordered table-hover table-striped" cellspacing = "0" id="sortTable">
+  <table class="table table-bordered table-hover table-striped table-responsive-sm"  id="sortTable">
     <thead>
       <tr>
           <th style="text-align:center;">First Name</th>

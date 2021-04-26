@@ -97,9 +97,15 @@ table.table .form-control.error {
 #pagination-container{
   margin-bottom: 20px;
 }
+@media (max-width: 767px) {
+      .container {
+         padding: 0 !important;
+		     margin: 0 !important;
+		 }
+   }
 </style>
 <cfoutput>
-  <div class="container table-responsive">
+  <div class="container">
   <div class="row">
     <div class="table-wrapper">
       <div class="table-title">

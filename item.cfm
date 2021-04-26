@@ -119,12 +119,17 @@ table.table .form-control.error {
 #pagination-container{
   margin-bottom: 20px;
 }
+#submit3 {
+         width:130px;
+         display:inline-flex;
+}
+
 </style>
 <cfif isdefined("url.err") and url.err eq 1>
 <div class="modal fade modal-warning" id="modal-showAlert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index: 9000;">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header alert alert-danger" >
+      <div class="modal-header alert alert-danger">
         <span id="headerText"></span>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel"></h4>
@@ -150,20 +155,21 @@ table.table .form-control.error {
   <cfset items = CreateObject("Component","v1.model.services.admin").getItems(supplierId = supplierId).items>
   <cfset units = CreateObject("Component","v1.model.services.admin").getUnitDetails()>
   <cfset suppliers = CreateObject("Component","v1.model.services.admin").getSupplierDetails(businessId = session.secure.subaccount)>
-  <div class="container table-responsive">
+  <div class="container">
+  <div class="row">
     <div class="table-wrapper">
       <div class="table-title">
          <div class="row">
-            <div class="col-md-2"><h2>Item Details</h2></div>
+            <div class="col-sm-2"><h2>Item Details</h2></div>
             <cfif session.secure.RoleCode EQ 1>
-            <div class="col-md-6">
+            <div class="col-sm-6">
                  <div id="dialog-form" title="Add Items">
                     <cfform id="addItem" action="add_item_action.cfm" method="post" enctype="multipart/form-data">
                         <cfif session.secure.RoleCode eq 1>
                           <cfset local.accounts = CreateObject("Component","v1.model.services.admin").getSupplierDetails()>
                           <div style="padding-bottom:20px;" >
                             Supplier:&nbsp;
-                            <select name="business" id="business" onchange="chgBusiness(this.value)" class="form-select form-select-lg mb-3" >
+                            <select name="business" id="business" onchange="chgBusiness(this.value)" class="form-select form-select-sm mb-3" >
                               <option value="0">Select</option>
                               <cfloop array="#local.accounts#" item="account">
                             
@@ -179,23 +185,23 @@ table.table .form-control.error {
                           </div>
                       </cfif>
                       <cfinput type="file" name="uploadfile" required="yes" message="You must select a file." class="form-control" style="width:200px;display:inline-flex;">
-                      <input type="submit" name="Submit2" value="Upload" class="btn btn-info " style="width:70px;display:inline-flex;">                          
+                      <input type="submit" name="Submit2" value="Upload" class="btn btn-info" style="width:70px;display:inline-flex;">                          
                       <input type="hidden" name="hdnbusiness" id="hdnbusiness" value="#url.supplierid#">
-                      <input type="button" id="Submit3" name="Submit3" class="btn btn-info  "style="width:130px;display:inline-flex;" value="Download Item List" onclick="downloadlist();">                          
-                      <a href="DownloadTemplate.cfm"  class="btn btn-info  "style="width:110px;display:inline-flex;" >Download Template</a>
+                      <input type="button" id="Submit3" name="Submit3" class="btn btn-info" value="Download Item List" onclick="downloadlist();">                          
+                      <a href="DownloadTemplate.cfm"  class="btn btn-info" style="width:110px;display:inline-flex;" >Download Template</a>
                     </cfform>
                  </div>
               </div>
             </cfif>
-            <div class="col-md-1 text-right" >
+            <div class="col-sm-1 text-right" >
               <input type="search" id="search" name="search" class="form-control" onkeyup="searchTable();" placeholder="Search" style="width:150px;"/> 
             </div>
             <cfif session.secure.RoleCode EQ 1>
-            <div class="col-md-1 text-right" style="margin-left:50px;"><button type="button" class="btn btn-info add-new"  ><i class="fa fa-plus"></i> Add New</button></div>
+            <div class="col-sm-1 text-right" style="margin-left:50px;"><button type="button" class="btn btn-info add-new"  ><i class="fa fa-plus"></i> Add New</button></div>
             </cfif>
           </div>                
         </div>
-        <table class="list-wrapper table table-bordered table-responsive-md table-striped" cellspacing="0" cellpadding="0" id="searchTab">
+        <table class="list-wrapper table table-bordered table-responsive-sm table-striped" cellspacing="0" cellpadding="0" id="searchTab">
           <thead>
             <tr>
             <th width="40%" style="text-align:center;">Name</th>
@@ -242,6 +248,7 @@ table.table .form-control.error {
       </div>
       <div id="pagination-container"></div>
     </div>
+  </div>
   </div>
 </cfoutput>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

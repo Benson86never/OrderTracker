@@ -1,10 +1,26 @@
+<style>
+  @media (max-width: 767px) {
+     .sectionHeader {
+        font-size:12px !important;
+        margin-left: 10px !important;
+
+     }
+    #status {
+      width: 100px !important;
+       }
+       .container {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+   }
+</style>
 <cfoutput>
   <cfparam name="url.status" default="1">
   <cfif NOT listfind('1,0', url.status)
     AND url.status NEQ ''>
       <cfset url.status = 1>
   </cfif>
-  <div class="container table-responsive">
+  <div class="container">
     <div class="row">
       <div class = "col-xs-2 sectionHeader" style="font-size:22px;padding-top:40px;">
         Manage Business
@@ -19,7 +35,7 @@
         </div>
       </cfif>
     </div>
-    <table class="table table-bordered table-hover table-striped" cellspacing = "0" id="sortTable">
+    <table class="table table-bordered table-hover table-striped table-responsive-sm" cellspacing = "0" id="sortTable">
       <thead>
         <tr>
             <th style="display:none;">&nbsp;</th>

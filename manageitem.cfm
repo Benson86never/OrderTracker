@@ -26,7 +26,7 @@
   height: 40px;
 }
 
-@media (min-width: 768px) {
+/*@media (min-width: 768px) {*/
   .steps>li { float: left; cursor: pointer}
   .steps li { color: #45afe4; background: rgb(216, 241, 255); }
   .steps li a { color: #45afe4; text-decoration: none;}
@@ -83,7 +83,8 @@
     border-top-color: white;
     border-bottom-color: white;
   }
-}
+  
+/*}*/
 .tab-pane{
   position: relative;
   top: 40px;
@@ -93,6 +94,37 @@
   height: 40px;
   display: block;
 }
+@media (max-width: 767px) {
+      
+     .steps>li {
+           position: relative;
+           /* border: 1px solid #ddd; 
+            padding: 12px 50px 7px 50px;*/ 
+            width: 60px;
+            height: 30px;
+         }
+         .steps {
+           font-size: 10px;
+         }
+          .listlink{
+               width: 150px;
+               
+            }
+            .steps li > span:after,
+             .steps li > span:before {
+                   content: "";
+                   display: block;
+                   width: 0px;
+                   height: 0px;
+                   position: absolute;
+                   top: 0;
+                   left: 0;
+                   border: solid transparent;
+                   border-left-color: rgb(216, 241, 255);
+                   border-width: 25px;
+             }
+             
+            }
 </style>
 <cfif listfind(session.secure.businessType, 2)
 OR session.secure.RoleCode EQ 1>
@@ -101,6 +133,7 @@ OR session.secure.RoleCode EQ 1>
   <cfparam  name="url.page" default="listitems">
 </cfif>
 <div class="container">
+<div class="row">
   <ul class="steps">
     <cfif listfind(session.secure.businessType, 2)
       OR session.secure.RoleCode EQ 1>
@@ -143,6 +176,7 @@ OR session.secure.RoleCode EQ 1>
       <cfinclude template="list_organize.cfm">
     </div>
   </div>
+</div>
 </div>
 <cfinclude template="includes/footer.cfm" >
 <script>
