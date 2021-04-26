@@ -267,6 +267,14 @@
 		padding-right: 3px;
 		font-weight: normal !important;
 	}
+	.r1 {
+		margin-left:35px;
+	}
+	.text-right {
+		margin-left:15px;
+
+	}
+	
 </style>
     <link rel="stylesheet" href="v1/css/bootstrap.css" />
      <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -315,10 +323,10 @@
 			</cfif>	
 		  </div>	 
 		<div  class="row" style="padding-top:5px;">		 
-				<div class="col-md-4" style="margin-left:35px;">
+				<div class="col-xs-4 r1">
 				<input type="checkbox" name="rememberme" id="rememberme" value="Yes" <cfif IsDefined("cookie.rememberme") and cookie.rememberme eq "Yes">CHECKED</cfif> ><span id="rememberme" style="margin-right: 20px;" >&nbsp;Remember Me</span> 					
 				</div>
-				<div class="col-md-4 text-right" style="margin-left:15px;">
+				<div class="col-xs-4 text-right">
 				<a class="underlineHover" href="v1/index.cfm?action=admin.forgotpassword" >Forgot Password?</a>					
 				</div>
 		</div>

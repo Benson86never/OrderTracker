@@ -10,11 +10,22 @@
     text-align: center;
     font-size: 24px;
     }
-	
+   @media (max-width: 767px) {
+      .container {
+         /*padding: 0 !important;*/
+         padding: 0 !important;
+		 margin: 0 !important;
+		 
+        }
+		.page-content {
+			text-align: center !important;
+		}
+	   }
 	
 </style>
 <cfinclude template="includes/header.cfm" >
 	<div class="container">
+	<div class="row">
    <div class="panel panel-default">
       <div class="panel-heading">Complete Order</div>
       <div class="panel-body">
@@ -31,6 +42,7 @@
 		</div>
 	</div>
 </cfoutput>
+</div>
 </div>
 </div>
 </div>

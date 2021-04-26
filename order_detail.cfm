@@ -11,10 +11,18 @@
 	.panel-default > .panel-heading {
   text-align: center;
   font-size: 24px;
-}
+  }
+   @media (max-width: 767px) {
+      .container {
+         /*padding: 0 !important;*/
+         padding: 0 !important;
+		 margin: 0 !important;
+		 }
+   }
 </style>
 <cfinclude template="includes/header.cfm" >
 <div class="container">
+<div class="row">
     <div class="panel panel-default">
       <div class="panel-heading">Order Details</div>
       <div class="panel-body">
@@ -41,6 +49,7 @@
 			</cfif>
 		</cfform>
 	</div>
+</div>
 </div>
 </div>
 </div>
