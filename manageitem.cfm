@@ -100,7 +100,7 @@
            position: relative;
            /* border: 1px solid #ddd; 
             padding: 12px 50px 7px 50px;*/ 
-            width: 60px;
+            width: 25px;
             height: 30px;
          }
          .steps {
@@ -123,6 +123,9 @@
                    border-left-color: rgb(216, 241, 255);
                    border-width: 25px;
              }
+            /* ul {
+               display: inline-flex;
+             }*/
              
             }
 </style>
@@ -134,7 +137,7 @@ OR session.secure.RoleCode EQ 1>
 </cfif>
 <div class="container">
 <div class="row">
-  <ul class="steps">
+  <ul class="nav nav-tabs steps">
     <cfif listfind(session.secure.businessType, 2)
       OR session.secure.RoleCode EQ 1>
       <li <cfif url.page EQ "items">class="active"</cfif>>

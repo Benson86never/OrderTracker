@@ -123,6 +123,24 @@ table.table .form-control.error {
          width:130px;
          display:inline-flex;
 }
+@media (max-width: 767px) {
+       #business {
+         width: 30%;
+       }
+       .fsize {
+         font-size: 14px !important;
+       }
+       #search {
+         width: 50px !important;
+       }
+       .table-wrapper {
+           padding: 0px !important;
+       }
+       /*.t1 {
+         margin-left: 5px !important;
+       }*/
+       
+}
 
 </style>
 <cfif isdefined("url.err") and url.err eq 1>
@@ -160,9 +178,9 @@ table.table .form-control.error {
     <div class="table-wrapper">
       <div class="table-title">
          <div class="row">
-            <div class="col-sm-2"><h2>Item Details</h2></div>
+            <div class="col-xs-2"><h2 class="fsize">Item Details</h2></div>
             <cfif session.secure.RoleCode EQ 1>
-            <div class="col-sm-6">
+            <div class="col-xs-6">
                  <div id="dialog-form" title="Add Items">
                     <cfform id="addItem" action="add_item_action.cfm" method="post" enctype="multipart/form-data">
                         <cfif session.secure.RoleCode eq 1>
@@ -193,11 +211,11 @@ table.table .form-control.error {
                  </div>
               </div>
             </cfif>
-            <div class="col-sm-1 text-right" >
+            <div class="col-xs-1 text-right" >
               <input type="search" id="search" name="search" class="form-control" onkeyup="searchTable();" placeholder="Search" style="width:150px;"/> 
             </div>
             <cfif session.secure.RoleCode EQ 1>
-            <div class="col-sm-1 text-right" style="margin-left:50px;"><button type="button" class="btn btn-info add-new"  ><i class="fa fa-plus"></i> Add New</button></div>
+            <div class="col-xs-1 text-right t1" style="margin-left:50px;"><button type="button" class="btn btn-info add-new"  ><i class="fa fa-plus"></i> Add New</button></div>
             </cfif>
           </div>                
         </div>

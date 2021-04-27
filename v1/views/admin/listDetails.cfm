@@ -39,7 +39,7 @@ input, select{
     <div class="panel-heading">List Details</div>
   </cfif>
   <div class="panel-body">
-    <div class="container-lg">
+    <div class="container">
       <div class="table-responsive">
           <div class="table-wrapper">
               <div class="table-title">

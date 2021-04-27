@@ -137,11 +137,11 @@
   </style>
   <div class="page-content">
     <cfoutput >
-      <div class="container table-responsive">
+      <div class="container">
         <div class="table-wrapper">
           <div class="table-title">
             <cfform name="LinkLists" action="list_ctrl.cfm">
-              <table class="list-wrapper table table-bordered table-responsive-md table-striped" cellspacing="0" cellpadding="0" >
+              <table class="list-wrapper table table-bordered table-responsive-sm table-striped" cellspacing="0" cellpadding="0" >
                 <thead>
                   <tr>
                     <th  style="text-align:center;">List Items
