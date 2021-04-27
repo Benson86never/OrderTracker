@@ -201,11 +201,7 @@ table.table .form-control.error {
             </cfif>
           </div>                
         </div>
-<<<<<<< HEAD
-        <table class="list-wrapper table table-bordered table-responsive-sm table-striped" cellspacing="0" cellpadding="0" id="searchTab">
-=======
         <table class="list-wrapper itemtable table table-bordered table-responsive-md table-striped" cellspacing="0" cellpadding="0" id="searchTab">
->>>>>>> 404f62d46b3968f10f8ecb137b421e180e135a5f
           <thead>
             <tr>
             <th width="40%" style="text-align:center;">Name</th>
