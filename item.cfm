@@ -143,14 +143,15 @@ table.table .form-control.error {
 }
 
 </style>
+<link href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel = "stylesheet">
 <cfif isdefined("url.err") and url.err eq 1>
 <div class="modal fade modal-warning" id="modal-showAlert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index: 9000;">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header alert alert-danger">
+      <div class="modal-header alert alert-warning">
         <span id="headerText"></span>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel"></h4>
+        <h4 class="modal-title" id="myModalLabel">Upload Items</h4>
       </div>
       <div class="modal-body">Please Select Supplier and Upload only XLS,XLSX file types.</div>
       <div class="modal-footer">
@@ -277,7 +278,8 @@ table.table .form-control.error {
 <script>
   $(document).ready(function(){
     <cfif isdefined("url.err") and url.err eq 1>
-    $('#modal-showAlert').modal('show');   
+      $('#modal-showAlert .modal-header').addClass('alert-danger');
+      $('#modal-showAlert').modal('show');
     </cfif>
    // $('[data-toggle="tooltip"]').tooltip();
    var itemactions = '<button action = "delete" class="removeRow btn btn-danger" id="0" title="Delete" ><i class="fa fa-trash-alt"></i></button>'+
