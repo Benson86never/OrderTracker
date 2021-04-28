@@ -9,6 +9,7 @@
   line-height: 1;
   margin: 30px auto;
   border-radius: 3px;
+  font-weight: normal !important;
 }
 
 .steps strong {
