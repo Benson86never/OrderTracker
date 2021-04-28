@@ -1,4 +1,17 @@
-
+<style>
+.labelname{
+  margin-left: 100px;
+}
+@media (max-width: 992px){
+  .inputelement {
+    width: 90% !important;
+  }
+  /*.container {
+    padding: 0px !important;
+    margin: 0px !important;
+  }*/
+}
+</style>
 <cfoutput>
   <cfif structKeyExists(session, 'userResult')
     AND session.userResult.error>
@@ -62,10 +75,15 @@
   <cfparam  name="variables.roleid" default="2">
   <cfparam  name="variables.accountid" default="1">
 
-  <div class = "col-xs-12 sectionHeader">
+ <!--- <div class = "col-xs-12 sectionHeader">
     #variables.sectionHeader#
-  </div>
+  </div>--->
+
   <div class="container">
+  <div class="row">
+  <div class="panel panel-default">
+      <div class="panel-heading">#variables.sectionHeader#</div>
+      <div class="panel-body">
     <form class="form-inline" method = "post" id="formSubmit" name="formSubmit">
       <div class="row">
         <div class="col-md-1 labelname">
@@ -95,10 +113,10 @@
         <div class="col-md-1 labelname">
           Phone:
         </div>
-        <div class="col-md-1">
+        <div class="col-md-2 ">
           <input type="text" class="form-control inputelement" id="Phone" placeholder="(___)-___-____" name="Phone" value="#variables.phone#" autocomplete="off" style="width: 95%"> 
         </div>
-        <div class="col-md-1 ">
+        <div class="col-md-2 ">
           <input type="text" class="form-control inputelement" id="phoneExtension" placeholder="12345" name="phoneExtension" value="#variables.PhoneExtension#" autocomplete="off" style="width: 43%">  
         </div>
       </div>
@@ -161,7 +179,7 @@
         <div class="col-md-1 labelname">
           Password<span style="color: red"><b>*<b></span>:
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2 ">
           <input type="password" class="form-control inputelement" id="password" placeholder="Enter Password" name="password" value="#variables.password#" autocomplete="off" required  minlength="8">
           <i class="fa fa-2x fa-eye" aria-hidden="true" id="showPaasword"></i>
            <span style="margin-top: 1%;font-size: 10px"><i>Password should contain Uppercase letters, Lowercase letters,Numbers and Symbol</i></span>
@@ -177,7 +195,7 @@
         <div class="col-md-12" id="passwordERR" style="color: red;text-align: center"></div>
       </div>
       <div class="row">
-        <div class="col-md-7 text-right">
+        <div class="col-md-9 text-right">
           <cfif structKeyExists(session, 'secure')
             AND session.secure.loggedin>
             <a class="btn btn-danger" href="index.cfm?action=admin.manageUsers">
@@ -194,6 +212,9 @@
         </div>
       </div>
     </form>
+  </div>
+  </div>
+  </div>
   </div>
 </cfoutput>
  

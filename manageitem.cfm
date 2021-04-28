@@ -95,12 +95,12 @@
   height: 40px;
   display: block;
 }
-@media (max-width: 767px) {
+@media (max-width: 992px) {
       
      .steps>li {
            position: relative;
            /* border: 1px solid #ddd; */
-            padding: 12px 40px 7px 40px;
+            padding: 25px 45px 10px 45px;
             width: 0px !important;
             height: 20px !important;
          }
@@ -119,13 +119,13 @@
                    left: 0;
                    /*border: solid transparent;
                    border-left-color: rgb(216, 241, 255);*/
-                   border-width: 20px;
+                   border-width: 28px;
              }
              .steps li > span:after {
                      top: -5px;
                      z-index: 1;
                      border-left-color: white;
-                     border-width: 24px;
+                     border-width: 33px;
                 }
              ul {
                display: inline-flex;
@@ -159,7 +159,8 @@ OR session.secure.RoleCode EQ 1>
         <a data-toggle="tab" href="lists" class="listlink">
          <span class="hidden-xs"> <strong>Manage Lists</strong>
           Add/edit/delete lists</span>
-
+          <i class="fa fa-plus hidden-lg" aria-hidden="true"></i>
+          <i class="fa fa-edit hidden-lg" aria-hidden="true"></i>
         </a>
       </span><i></i>
     </li>
@@ -168,6 +169,9 @@ OR session.secure.RoleCode EQ 1>
         <a data-toggle="tab" href="listitems" class="listlink">
          <span class="hidden-xs"> <strong>Manage List Items</strong>
           Add/remove items to list</span>
+           <i class="fa fa-plus hidden-lg" aria-hidden="true"></i>
+          <i class="fa fa-trash hidden-lg" aria-hidden="true"></i>
+        </a>
         </a>
       </span><i></i>
     </li>
@@ -220,5 +224,6 @@ OR session.secure.RoleCode EQ 1>
     if (lastTab) {
         $('[href="' + lastTab + '"]').tab('show');
     }*/
+
 });
 </script>
