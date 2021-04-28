@@ -90,15 +90,7 @@ component extends="framework.one" {
         session.startTime = getTickCount();
     // Reset application
     /* bock access to site for specific site */
-    if(StructKeyExists(CGI, 'HTTP_X_FORWARDED_FOR') AND  len(trim(cgi.HTTP_X_FORWARDED_FOR))){
-      if(listFindNoCase(application.blockedIPs, cgi.HTTP_X_FORWARDED_FOR)){
-        /*mail=new mail();
-        mail.setSubject("Access Blocked");
-        mail.addPart(type="html", charset="utf-8", body="Access blocked... #cgi.HTTP_X_FORWARDED_FOR#");
-        mail.send();*/
-        abort;
-      } 
-    }
+    
     if(isDefined("url.reinit")){
       setupApplication();
     }

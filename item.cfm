@@ -284,7 +284,7 @@ table.table .form-control.error {
     $('#modal-showAlert').modal('show');   
     </cfif>
    // $('[data-toggle="tooltip"]').tooltip();
-   var itemactions = '<button action = "delete" class="deleteitem btn btn-danger" id="0" title="Delete" ><i class="fa fa-trash-alt"></i></button>'+
+   var itemactions = '<button action = "delete" class="removeRow btn btn-danger" id="0" title="Delete" ><i class="fa fa-trash-alt"></i></button>'+
                   '<button action = "add" class="add btn btn-success" id="0" title="Add" ><i class="fa fa-plus"></i></button>';
     var unithtml = "";
     var supplierhtml = "";
@@ -299,7 +299,7 @@ table.table .form-control.error {
     // Append table with add row form on add new button click
     $(".add-new").click(function(){
       $(this).attr("disabled", "disabled");
-      var index = $("itemtable tbody tr:last-child").index();
+      var index = $(".itemtable tbody tr:last-child").index();
       var row = '<tr>' +
         '<td><input type="text" class="form-control" name="name" id="name"></td>' +
         '<td><input type="text" class="form-control" name="sku" id="sku"></td>' +
@@ -308,10 +308,10 @@ table.table .form-control.error {
         '<td><select class="form-control" name="supplier" id="supplier">'+supplierhtml+'</select></td>' +
         '<td>' + itemactions + '</td>' +
         '</tr>';
-        $("table").append(row);
-        $("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
-        $("table tbody tr").eq(index + 1).find(".save, .cancel").toggle();
-        $("table tbody tr").eq(index + 1).find(".cancel").addClass('removeRow');
+        $(".itemtable").append(row);
+        $(".itemtable tbody tr").eq(index + 1).find(".add, .edit").toggle();
+        $(".itemtable tbody tr").eq(index + 1).find(".save, .cancel").toggle();
+        $(".itemtable tbody tr").eq(index + 1).find(".cancel").addClass('removeRow');
          // $('[data-toggle="tooltip"]').tooltip();
     });
     $(document).on("click", ".removeRow", function(){
