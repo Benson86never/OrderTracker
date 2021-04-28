@@ -136,6 +136,10 @@ table.table .form-control.error {
        .table-wrapper {
            padding: 0px !important;
        }
+       .f1 {
+         width: 50px !important;
+
+       }
        /*.t1 {
          margin-left: 5px !important;
        }*/
@@ -202,7 +206,7 @@ table.table .form-control.error {
                             </select>
                           </div>
                       </cfif>
-                      <cfinput type="file" name="uploadfile" required="yes" message="You must select a file." class="form-control" style="width:200px;display:inline-flex;">
+                      <cfinput type="file" name="uploadfile" required="yes" message="You must select a file." class="form-control f1" style="width:200px;display:inline-flex;">
                       <input type="submit" name="Submit2" value="Upload" class="btn btn-info" style="width:70px;display:inline-flex;">                          
                       <input type="hidden" name="hdnbusiness" id="hdnbusiness" value="#url.supplierid#">
                       <input type="button" id="Submit3" name="Submit3" class="btn btn-info" value="Download Item List" onclick="downloadlist();">                          
@@ -219,7 +223,7 @@ table.table .form-control.error {
             </cfif>
           </div>                
         </div>
-        <table class="list-wrapper itemtable table table-bordered table-responsive-md table-striped" cellspacing="0" cellpadding="0" id="searchTab">
+        <table class="list-wrapper itemtable table table-bordered table-responsive-sm table-striped" cellspacing="0" cellpadding="0" id="searchTab">
           <thead>
             <tr>
             <th width="40%" style="text-align:center;">Name</th>

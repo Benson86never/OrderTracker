@@ -98,34 +98,37 @@
       
      .steps>li {
            position: relative;
-           /* border: 1px solid #ddd; 
-            padding: 12px 50px 7px 50px;*/ 
-            width: 25px;
-            height: 30px;
+           /* border: 1px solid #ddd; */
+            padding: 12px 40px 7px 40px;
+            width: 0px !important;
+            height: 20px !important;
          }
          .steps {
            font-size: 10px;
+
          }
-          .listlink{
-               width: 150px;
-               
-            }
-            .steps li > span:after,
-             .steps li > span:before {
-                   content: "";
+          .steps li > span:after,
+          .steps li > span:before {
+                   /*content: "";
                    display: block;
                    width: 0px;
                    height: 0px;
-                   position: absolute;
+                   position: absolute;*/
                    top: 0;
                    left: 0;
-                   border: solid transparent;
-                   border-left-color: rgb(216, 241, 255);
-                   border-width: 25px;
+                   /*border: solid transparent;
+                   border-left-color: rgb(216, 241, 255);*/
+                   border-width: 20px;
              }
-            /* ul {
+             .steps li > span:after {
+                     top: -5px;
+                     z-index: 1;
+                     border-left-color: white;
+                     border-width: 24px;
+                }
+             ul {
                display: inline-flex;
-             }*/
+             }
              
             }
 </style>
@@ -143,8 +146,9 @@ OR session.secure.RoleCode EQ 1>
       <li <cfif url.page EQ "items">class="active"</cfif>>
         <span>
           <a data-toggle="tab" href="items" class="listlink">
-            <strong>Items</strong>
-            Add/edit/delete list of items
+            <span class="hidden-xs"><strong>Items</strong>
+            Add/edit/delete list of items</span>
+            <i class="fa fa-list hidden-lg" aria-hidden="true"></i>
           </a>
         </span><i></i>
       </li>
@@ -152,24 +156,26 @@ OR session.secure.RoleCode EQ 1>
     <li <cfif url.page EQ "lists">class="active"</cfif>>
       <span>
         <a data-toggle="tab" href="lists" class="listlink">
-          <strong>Manage Lists</strong>
-          Add/edit/delete lists
+         <span class="hidden-xs"> <strong>Manage Lists</strong>
+          Add/edit/delete lists</span>
+
         </a>
       </span><i></i>
     </li>
     <li <cfif url.page EQ "listitems">class="active"</cfif>>
       <span>
         <a data-toggle="tab" href="listitems" class="listlink">
-          <strong>Manage List Items</strong>
-          Add/remove items to list
+         <span class="hidden-xs"> <strong>Manage List Items</strong>
+          Add/remove items to list</span>
         </a>
       </span><i></i>
     </li>
     <li <cfif url.page EQ "listorganize">class="active"</cfif>>
       <span>
         <a data-toggle="tab" href="listorganize" class="listlink">
-          <strong>Organize Lists</strong>
-          Change order of items
+          <span class="hidden-xs"><strong>Organize Lists</strong>
+          Change order of items</span>
+         <i class="fa fa-edit hidden-lg" aria-hidden="true"></i>
         </a>
       </span><i></i>
     </li>
