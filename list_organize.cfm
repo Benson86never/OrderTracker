@@ -62,20 +62,21 @@
       background-color: #ff0000; /* Green */
     }
     .panel-default > .panel-heading {
-  text-align: center;
-  font-size: 24px;
-}
-}
-.buttondiv{
-  margin-bottom: 20px;
-}
-.itemelement span {
-  position: relative;
-  top: 8px;
-}
+        text-align: center;
+        font-size: 24px;
+      }
+  }
+    .buttondiv{
+        margin-bottom: 20px;
+   }
+    .itemelement span {
+        position: relative;
+        top: 8px;
+    }
 </style>
 <cfoutput>
   <div class="container">
+  <div class="row">
     <cfif arraylen(lists)>
       <cfloop array="#Lists#" index="list" >
         <div class="panel panel-default">
@@ -107,6 +108,7 @@
         <div class="panel-heading">No lists available</div>
       </div>
     </cfif>
+  </div>
   </div>
 </cfoutput>
 <script>
