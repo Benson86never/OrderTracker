@@ -292,11 +292,11 @@ label
     <div style="padding-top:20px;">    
     <input type="text" id="Email" class="second" name="Email" placeholder="Email"  autocomplete="off">
     <label id="labelEmail" style="display:none;">Email</label>    
-    <span id="errorEmailText" style="display:none;margin-left:45px;font-size:12px;" align="left"><image src="/ordertracker/images/errorimage.PNG">Enter a valid email</span>       
+    <span id="errorEmailText" style="display:none;margin-left:45px;font-size:12px;" align="left"><image src="../images/errorimage.PNG">Enter a valid email</span>       
     </div>
     <div style="margin-left:45px;font-size:12px;" align="left">
     <cfif isdefined("url.err") and url.err eq 1>
-       <image src="/ordertracker/images/errorimage.PNG" id="errimage"><font color="red" size="2px;"><span id="errmessage"  >Couldn't find your Order Tracker Account</span></font>
+       <image src="../images/errorimage.PNG" id="errimage"><font color="red" size="2px;"><span id="errmessage"  >Couldn't find your Order Tracker Account</span></font>
     </cfif> 
     </div>
     <div style="padding-top:20px;" class="row">

@@ -1,6 +1,6 @@
 
 <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/jquery.inputmask.bundle.js"></script>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/smoothness/jquery-ui.css" />
+<link rel="stylesheet" href="../js/jquery-ui.css" />
 <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script>
   $(document).ready(function(){
