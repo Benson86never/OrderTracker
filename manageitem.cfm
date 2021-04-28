@@ -23,7 +23,7 @@
   display: block;
   /* border: 1px solid #ddd; */
   padding: 12px 50px 7px 50px; 
-  width: 200px;
+  width: 280px;
   height: 60px;
 }
 
