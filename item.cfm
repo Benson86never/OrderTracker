@@ -132,6 +132,8 @@ table.table .form-control.error {
        }
        #search {
          width: 50px !important;
+         margin-left: -90px !important;
+         padding: 0px !important;
        }
        .table-wrapper {
            padding: 0px !important;
@@ -140,10 +142,10 @@ table.table .form-control.error {
          width: 50px !important;
 
        }
-       /*.t1 {
-         margin-left: 5px !important;
-       }*/
-       
+       .t1 {
+         margin-left: 0px !important;
+       }
+              
 }
 
 </style>
@@ -219,7 +221,7 @@ table.table .form-control.error {
               <input type="search" id="search" name="search" class="form-control" onkeyup="searchTable();" placeholder="Search" style="width:150px;"/> 
             </div>
             <cfif session.secure.RoleCode EQ 1>
-            <div class="col-xs-1 text-right t1" style="margin-left:50px;"><button type="button" class="btn btn-info add-new"  ><i class="fa fa-plus"></i> <span class="hidden-xs">Add New</span></button></div>
+            <div class="col-xs-1 text-right t1" style="margin-left:50px;"><button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> <span class="hidden-xs">Add New</span></button></div>
             </cfif>
           </div>                
         </div>

@@ -23,8 +23,8 @@
   display: block;
   /* border: 1px solid #ddd; */
   padding: 12px 50px 7px 50px; 
-  width: 280px;
-  height: 60px;
+  width: 180px;
+  height: 40px;
 }
 
 /*@media (min-width: 768px) {*/
@@ -100,9 +100,9 @@
      .steps>li {
            position: relative;
            /* border: 1px solid #ddd; */
-            padding: 10px 45px 5px 45px;
+            padding: 12px 45px 7px 45px;
             width: 0px !important;
-            height: 40px !important;
+            height: 16px !important;
          }
          .steps {
            font-size: 10px;
@@ -120,13 +120,13 @@
                    bottom: 0;
                    /*border: solid transparent;
                    border-left-color: rgb(216, 241, 255);*/
-                   border-width: 20px;
+                   border-width: 15px;
              }
              .steps li > span:after {
                      top: -5px;
                      z-index: 1;
                      border-left-color: white;
-                     border-width: 26px;
+                     border-width: 20px;
                 }
              ul {
                display: inline-flex;
@@ -172,7 +172,6 @@ OR session.secure.RoleCode EQ 1>
           Add/remove items to list</span>
            <i class="fa fa-plus hidden-lg" aria-hidden="true"></i>
           <i class="fa fa-trash hidden-lg" aria-hidden="true"></i>
-        </a>
         </a>
       </span><i></i>
     </li>
