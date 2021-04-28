@@ -17,8 +17,8 @@
     }
     #showPaasword {
         float: right;
-        margin-right: 6px;
-        margin-top: -32px;
+        right: -5px;
+        top: 5px;
         position: relative;
         z-index: 2;
         color: #807b7b;

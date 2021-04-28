@@ -176,7 +176,7 @@
     </div>
     <cfif structKeyExists(rc, "businessDetails")>
       <cfinclude template = "supplierDetails.cfm">
-      <cfinclude template = "ListDetails.cfm">
+      <!---<cfinclude template = "ListDetails.cfm">--->
     </cfif>
   </div>
 </cfoutput>

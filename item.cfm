@@ -147,7 +147,6 @@ table.table .form-control.error {
 }
 
 </style>
-<link href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel = "stylesheet">
 <cfif isdefined("url.err") and url.err eq 1>
 <div class="modal fade modal-warning" id="modal-showAlert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index: 9000;">
   <div class="modal-dialog" role="document">

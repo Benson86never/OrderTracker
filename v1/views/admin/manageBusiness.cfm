@@ -46,7 +46,7 @@
             <th class="hidden-xs hidden-sm" style="text-align:center;">Zip</th>
             <th class="hidden-xs hidden-sm" style="text-align:center;">City</th>
             <th class="hidden-xs hidden-sm" style="text-align:center;">State</th>
-            <th class="no-sort text-center">              
+            <th class="no-sort text-center">
               Action
               <cfif session.secure.rolecode eq 1>
               <a class="btn btn-success" href="index.cfm?action=admin.addBusiness">
@@ -90,6 +90,7 @@
                     </button>
                   </cfif>
                 </cfif>
+                <cfif business.active EQ 1>
                   <a href="index.cfm?action=admin.addBusiness&businessId=#encrypt(business.BusinessId, application.uEncryptKey, "BLOWFISH", "Hex")#"
                     class = "btn btn-success">
                     <i class="fas fa-pencil-alt"></i>
@@ -98,6 +99,7 @@
                     class = "btn btn-info">
                     <i class="fa fa-user" aria-hidden="true"></i>
                   </a>
+                </cfif>
               </td>
             </tr>  
           </cfloop>

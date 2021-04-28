@@ -181,7 +181,9 @@
         </div>
         <div class="col-md-2 ">
           <input type="password" class="form-control inputelement" id="password" placeholder="Enter Password" name="password" value="#variables.password#" autocomplete="off" required  minlength="8">
-          <i class="fa fa-2x fa-eye" aria-hidden="true" id="showPaasword"></i>
+          <a id="showPaasword">
+            <i class="fa fa-2x fa-eye" aria-hidden="true"></i>
+          </a>
            <span style="margin-top: 1%;font-size: 10px"><i>Password should contain Uppercase letters, Lowercase letters,Numbers and Symbol</i></span>
         </div>
         <div class="col-md-1 labelname">
