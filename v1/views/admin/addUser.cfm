@@ -1,4 +1,10 @@
-
+<style>
+@media (max-width: 992px){
+  .inputelement {
+    width: 90% !important;
+  }
+}
+</style>
 <cfoutput>
   <cfif structKeyExists(session, 'userResult')
     AND session.userResult.error>
@@ -65,6 +71,7 @@
   <cfparam  name="variables.accountid" default="1">
 
   <div class="container">
+  <div class="row">
   <div class="panel panel-default">
       <div class="panel-heading">Add User</div>
       <div class="panel-body">

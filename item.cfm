@@ -136,6 +136,10 @@ table.table .form-control.error {
        .table-wrapper {
            padding: 0px !important;
        }
+       .f1 {
+         width: 50px !important;
+
+       }
        /*.t1 {
          margin-left: 5px !important;
        }*/
@@ -202,7 +206,7 @@ table.table .form-control.error {
                             </select>
                           </div>
                       </cfif>
-                      <cfinput type="file" name="uploadfile" required="yes" message="You must select a file." class="form-control" style="width:200px;display:inline-flex;">
+                      <cfinput type="file" name="uploadfile" required="yes" message="You must select a file." class="form-control f1" style="width:200px;display:inline-flex;">
                       <input type="submit" name="Submit2" value="Upload" class="btn btn-info" style="width:70px;display:inline-flex;">                          
                       <input type="hidden" name="hdnbusiness" id="hdnbusiness" value="#url.supplierid#">
                       <input type="button" id="Submit3" name="Submit3" class="btn btn-info" value="Download Item List" onclick="downloadlist();">                          
@@ -215,11 +219,11 @@ table.table .form-control.error {
               <input type="search" id="search" name="search" class="form-control" onkeyup="searchTable();" placeholder="Search" style="width:150px;"/> 
             </div>
             <cfif session.secure.RoleCode EQ 1>
-            <div class="col-xs-1 text-right t1" style="margin-left:50px;"><button type="button" class="btn btn-info add-new"  ><i class="fa fa-plus"></i> Add New</button></div>
+            <div class="col-xs-1 text-right t1" style="margin-left:50px;"><button type="button" class="btn btn-info add-new"  ><i class="fa fa-plus"></i> <span class="hidden-xs">Add New</span></button></div>
             </cfif>
           </div>                
         </div>
-        <table class="list-wrapper itemtable table table-bordered table-responsive-md table-striped" cellspacing="0" cellpadding="0" id="searchTab">
+        <table class="list-wrapper itemtable table table-bordered table-responsive-sm table-striped" cellspacing="0" cellpadding="0" id="searchTab">
           <thead>
             <tr>
             <th width="40%" style="text-align:center;">Name</th>
