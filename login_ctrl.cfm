@@ -2,6 +2,7 @@
 <cfif isDefined('form.Submit') and form.submit is "login">
 	<cfquery name="qrySelectUser" datasource="ordertracker">
 		select * from person where email='#form.username#'
+		and active = 1
 	</cfquery>
 	<cfif qrySelectUser.recordCount eq 0>
 		<cflocation url="index.cfm?err=2" addtoken="no">
