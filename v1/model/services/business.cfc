@@ -194,7 +194,7 @@ component  {
             phoneExtension = {cfsqltype = "varchar", value = arguments.businessDetails.phoneExtension},
             StreetAddress1 = {cfsqltype = "varchar", value = arguments.businessDetails.address1},
             StreetAddress2 = {cfsqltype = "varchar", value = arguments.businessDetails.address2},
-            Zip = {cfsqltype = "integer", value =  arguments.businessDetails.Zip},
+            Zip = {cfsqltype = "varchar", value =  arguments.businessDetails.Zip},
             City = {cfsqltype = "varchar", value = arguments.businessDetails.City},
             State = {cfsqltype = "varchar", value = arguments.businessDetails.State},
             Country = {cfsqltype = "varchar", value = arguments.businessDetails.Country},

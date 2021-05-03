@@ -296,7 +296,7 @@ table.table .form-control.error {
         unithtml = unithtml + '<option value="#unit.id#">#unit.name#</option>';
       </cfloop>
       <cfloop array="#suppliers#" index="supplier">
-        supplierhtml = supplierhtml + '<option value="#supplier.id#">#supplier.name#</option>';
+        supplierhtml = supplierhtml + '<option value="#supplier.id#" <cfif supplier.id EQ #supplierid#> selected</cfif>>#supplier.name#</option>';
       </cfloop>
     </cfoutput>
     // Append table with add row form on add new button click

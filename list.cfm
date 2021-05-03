@@ -55,7 +55,7 @@
 					<cfif arraylen(list.items)>
 						<cfloop array="#list.items#" index="item" >
 							<div class="listItem txtalign">
-								<input type="text" class="items" id="d" name="#item.itemId#;#item.SupplierID#;ITEM"
+								<input type="number" min="1" max="100" class="items" id="d" name="#item.itemId#;#item.SupplierID#;ITEM"
 									size="3" validate="integer"
 									message="#item.name# Quantity must be an integer.">
 									<cfif item.unitId eq 2>

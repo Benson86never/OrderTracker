@@ -1,4 +1,5 @@
 <cfif structKeyExists(form, "uploadfile")>
+  <cfset headerlist = "Name,PhotoUrl,SKU,UnitId">
 	<cffile action="upload" filefield="uploadfile" destination="#GetTempDirectory()#" nameConflict="makeUnique"  result="upload" >   
   <cfif ListLast(upload.SERVERFILE,".") eq "xlsx"
     OR ListLast(upload.SERVERFILE,".") eq "xls">
@@ -6,6 +7,10 @@
       <cftransaction action="begin"> 
         <cftry>
             <cfif upload.fileWasSaved>
+              <cfspreadsheet action="read" src="#GetTempDirectory()##upload.SERVERFILE#" query="qryHeader" headerrow="1" rows="1">
+              <cfif listsort(arraytolist(qryHeader.getColumnList()), 'text') NEQ headerlist>
+                <cflocation url="manageitem.cfm?err=1">
+              </cfif>
               <cfspreadsheet action="read" src="#GetTempDirectory()##upload.SERVERFILE#" query="qryItemData" headerrow="1">
               <cffile action = "delete" file = "#GetTempDirectory()##upload.SERVERFILE#">
               <cfloop query="qryItemData">

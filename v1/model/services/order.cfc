@@ -404,6 +404,7 @@ component  {
       local.getOrders = queryExecute("
         SELECT
           O.orderId,
+          O.DateTime AS orderedDate,
           JOI.orderId,
           JOI.itemId,
           JOI.CheckedIn,
@@ -414,19 +415,30 @@ component  {
           U.name AS unitName,
           S.BusinessName AS supplierName,
           B.businessName,
-          S.email as businessEmail
-          FROM
-            orders O
-            INNER JOIN business S ON S.businessId = O.supplierId
-            INNER JOIN person P ON P.personId = O.personId
-            INNER JOIN business B ON B.businessId = P.businessId
-            INNER JOIN joinordertoitem JOI ON JOI.OrderID = O.OrderID
-            INNER JOIN item I ON I.itemId = JOI.itemId
-            INNER JOIN Units U ON U.UnitID = I.UnitID
-          WHERE
-            O.closed = 0
-            #local.condition#
-          ORDER BY supplierId DESC
+          B.email as businessEmail,
+          B.Phone AS businessPhone,
+          B.StreetAddress1,
+          B.StreetAddress2,
+          B.City,
+          B.State,
+          B.Country,
+          S.email as supplierEmail,
+          P.firstName,
+          P.lastName,
+          P.email,
+          P.phone
+        FROM
+          orders O
+          INNER JOIN business S ON S.businessId = O.supplierId
+          INNER JOIN person P ON P.personId = O.personId
+          INNER JOIN business B ON B.businessId = P.businessId
+          INNER JOIN joinordertoitem JOI ON JOI.OrderID = O.OrderID
+          INNER JOIN item I ON I.itemId = JOI.itemId
+          INNER JOIN Units U ON U.UnitID = I.UnitID
+        WHERE
+          O.closed = 0
+          #local.condition#
+        ORDER BY supplierId DESC
       ",{},{datasource: application.dsn}
       );
       cfloop(query = "local.getOrders", group="SupplierID") {
@@ -434,6 +446,19 @@ component  {
         local.details['orderId'] = local.getOrders.orderId;
         local.details['supplierId'] = local.getOrders.supplierId;
         local.details['supplierName'] = local.getOrders.supplierName;
+        local.details['orderedDate'] = local.getOrders.orderedDate;
+        local.details['businessName'] = local.getOrders.businessName;
+        local.details['businessEmail'] = local.getOrders.businessEmail;
+        local.details['businessPhone'] = local.getOrders.businessPhone;
+        local.details['StreetAddress1'] = local.getOrders.StreetAddress1;
+        local.details['StreetAddress2'] = local.getOrders.StreetAddress2;
+        local.details['City'] = local.getOrders.City;
+        local.details['State'] = local.getOrders.State;
+        local.details['Country'] = local.getOrders.Country;
+        local.details['firstName'] = local.getOrders.firstName;
+        local.details['lastName'] = local.getOrders.lastName;
+        local.details['email'] = local.getOrders.email;
+        local.details['phone'] = local.getOrders.phone;
         local.getreps = queryExecute("
           SELECT
             Rep.firstname,
@@ -464,7 +489,7 @@ component  {
           local.repDetails = {};
           local.repDetails['firstname'] = local.getOrders.supplierName;
           local.repDetails['lastname'] = '';
-          local.repDetails['email'] = local.getOrders.businessEmail;
+          local.repDetails['email'] = local.getOrders.supplierEmail;
           arrayAppend(local.details['reps'], local.repDetails)
         }
         local.details['items'] = [];
