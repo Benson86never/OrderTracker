@@ -1,4 +1,4 @@
-<cfcomponent>
+<cfcomponent output="true">
 	
 	<cfinclude template="includes/useragent.cfm">
 	<cfinclude template="setappvariables.cfm">
@@ -22,7 +22,7 @@
 		this.datasource = "ordertracker";
 		this.dsn = "ordertracker";
 		this.publicpages = "admin.adduser,user.login,admin.changepassword,admin.forgotpassword,user.viewTroubleHelp";
-
+		this.erroremail = "anagarajan@infoane.com";
 		this.uEncryptKey = "password";
 	//this.name = "ORM_Search";
 	//this.ormSettings.datasource = "ordertracker";
@@ -33,8 +33,8 @@
 	//this.ormSettings.search.language = "English";
 	</cfscript>
 	
-	<!---<cferror type="exception" mailto="hud@zoominternet.net" template="exception.cfm" exception="any">
-	<cferror type="request" mailto="hud@zoominternet.net" template="exception.cfm">--->
+	<cferror type="exception" mailto="#application.erroremail#" template="exception.cfm" exception="any">
+	<cferror type="request" mailto="#application.erroremail#" template="exception.cfm">
 	<cffunction name="onApplicationStart" returnType="boolean" output="false">
 		<cfscript>
 		Application.URL = "/";
@@ -51,6 +51,11 @@
 
 		</cfscript>
 		<cfreturn true />
+	</cffunction>
+	<cffunction name="onError" returnType="boolean">
+		<cfargument type="String" name="exception" required=true/>
+		<cfdump var="#arguments#" abort>
+		<cfreturn Boolean>
 	</cffunction>
 	
 	

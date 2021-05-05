@@ -119,7 +119,17 @@ component extends="framework.one" {
     setting requesttimeout=0;
     request.context.exception=arguments.exception;
     request.context.eventname=arguments.eventname;
-    writedump(exception);abort;
+    savecontent variable="errorcontent" {
+      writeoutput('Error Occurred at #now()#<br>');
+      writeDump(var=arguments.exception);
+    }
+    mail=new mail();
+    mail.setSubject( "System Error" );
+    mail.setTo(application.erroremail);
+    mail.setFrom("info@porthousegrill.com");
+    mail.addPart( type="html", charset="utf-8", body="#errorcontent#" );
+    mail.send();
+	  location(url="../index.cfm?error=1", addtoken="false");
     
   }
   function onMissingView(){

@@ -71,16 +71,16 @@
                 username = "#userdetail.firstname# #userdetail.lastName#">
                 <i class="fa fa-user-times" aria-hidden="true"></i>
               </button>
+              <a href="index.cfm?action=admin.adduser&userid=#encrypt(userdetail.personId, application.uEncryptKey, "BLOWFISH", "Hex")#"
+                class = "btn btn-success">
+                <i class="fas fa-pencil-alt"></i>
+              </a>
             <cfelseif userdetail.active EQ 0>
               <button class="btn btn-warning reactivateUser" userid="#userdetail.personId#"
                 username = "#userdetail.firstname# #userdetail.lastName#">
                 <i class="fa fa-user-plus" aria-hidden="true"></i>
               </button>
             </cfif>
-            <a href="index.cfm?action=admin.adduser&userid=#encrypt(userdetail.personId, application.uEncryptKey, "BLOWFISH", "Hex")#"
-              class = "btn btn-success">
-              <i class="fas fa-pencil-alt"></i>
-            </a>
           </td>
         </tr>
       </cfloop>

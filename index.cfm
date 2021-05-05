@@ -36,38 +36,141 @@
 	
 	/* STRUCTURE */
 	
+	/* Mobile Styles */
+	@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+		#formContent {
+			width: 100% !important;
+		}
+		span, a, input {
+			font-family: "Poppins", sans-serif;
+			font-size:30px !important;
+		}
+		input[type=checkbox] {
+			height:35px;
+			width:35px;
+		}
+		input[type=button] {
+			height: 100px;
+			width: 300px;
+			margin-top: 50px;
+			margin-bottom: 50px;
+		}
+		input[type=text],input[type=password] {
+			width: 95% !important;
+			height: 120px !important;
+			font-size:40px !important;
+		}
+		label {
+			left: 40px;
+			font-size:25px !important;
+		}
+		.remebermetext {
+			margin-right: 20px;
+		}
+		.signin {
+			font-size: 60px !important;
+			padding: 40px;
+			color:##767272
+		}
+		.r1 {
+			margin-left:35px;
+		}
+	}
+
+	/* Tablet Styles */
+	@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
+		#formContent {
+			max-width:485px;
+		}
+		input[type=text],input[type=password] {
+			width: 100%;
+			height: 150px !important;
+			font-size:30px !important;
+		}
+		label {
+			left: 50px !important;
+		}
+		#remeberme {
+			font-size:30px !important;
+		}
+		.remebermetext {
+			margin-right: 20px;
+			font-size:30px !important;
+		}
+		input[type=text],input[type=password] {
+			font-size:16px !important;
+		}
+		.signin {
+			font-size: 30px !important;
+			padding: 30px;
+			color:##767272
+		}
+	}
+
+	/* Desktop Styles */
+	@media only screen  and (min-width : 1224px) {
+		#formContent {
+			max-width:485px;
+			-webkit-border-radius: 10px 10px 10px 10px;
+			border-radius: 10px 10px 10px 10px;
+			-webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+			box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+			width: 90%;
+		}
+		label {
+			left: 50px;
+		}
+		.remebermetext {
+			margin-right: 20px;
+		}
+		.signin {
+			font-size: 20px !important;
+			padding: 30px;
+			color:##767272
+		}
+		.r1 {
+			margin-left:50px;
+		}
+	}
 	.wrapper {
-	  display: flex;
-	  align-items: center;
-	  flex-direction: column; 
-	  justify-content: center;
-	  width: 98%;
-	  min-height: 100%;
-	  padding: 20px;
+		display: flex;
+		align-items: center;
+		flex-direction: column; 
+		justify-content: center;
+		width: 98%;
+		padding: 20px;
+		min-height: 100%;
 	}
-	
+		
 	#formContent {
-	  -webkit-border-radius: 10px 10px 10px 10px;
-	  border-radius: 10px 10px 10px 10px;
-	  background: #fff;
-	  padding: 30px;
-	  width: 90%;
-	  max-width: 450px;
-	  position: relative;
-	  padding: 0px;
-	  -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-	  box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-	  text-align: center;
-	  color: #92badd;
+		background: #fff;
+		padding: 30px;
+		position: relative;
+		padding: 0px;
+		text-align: center;
+		color: #92badd;
+	}
+		
+	#formFooter {
+		background-color: #f6f6f6;
+		border-top: 1px solid #dce8f1;
+		padding: 25px;
+		text-align: center;
+		-webkit-border-radius: 0 0 10px 10px;
+		border-radius: 0 0 10px 10px;
 	}
 	
-	#formFooter {
-	  background-color: #f6f6f6;
-	  border-top: 1px solid #dce8f1;
-	  padding: 25px;
-	  text-align: center;
-	  -webkit-border-radius: 0 0 10px 10px;
-	  border-radius: 0 0 10px 10px;
+	label
+	{
+		position: absolute;
+		top: -3px;
+		font-size: 15px;
+		background: white;
+		margin-top: 20px;
+		color: #C0C0C0;
+		padding-left: 3px;
+		padding-right: 3px;
+		font-weight: normal !important;
 	}
 		
 	/* TABS */
@@ -104,7 +207,6 @@
 	  text-align: left;
 	  text-decoration: none;
 	  display: inline-block;
-	  font-size: 16px;
 	  margin: 5px;
 	  width: 80%;
 	  border: 2px solid #f6f6f6;
@@ -253,26 +355,13 @@
 		border-radius: 4px;
 		padding: 15px;
 	}
-
-	label
-	{
-		position: absolute;
-		top: -3px;
-		font-size: 15px;
-		left: 50px;
-		background: white;
-		margin-top: 20px;
-		color: #C0C0C0;
-		padding-left: 3px;
-		padding-right: 3px;
-		font-weight: normal !important;
-	}
-	.r1 {
-		margin-left:35px;
-	}
 	.text-right {
 		margin-left:15px;
 
+	}
+	.errorEmailText {
+		color: red;
+		font-size: 13px !important;
 	}
 	
 </style>
@@ -290,18 +379,25 @@
 		</div>	
 		<!-- Login Form -->
 		<cfform action="login_ctrl.cfm" method="post" id="formSubmit" name="formSubmit">		
-		  <div style="font-size: 20px !important;padding: 30px;color:##767272">
+		  <div class="signIn">
 			Sign in
 		  </div>
+		  
+		<cfif structKeyExists(url, 'error')
+			AND url.error EQ 1>
+			<span class="errorEmailText" align="left">
+				System experienced unexpected error, please contact admin. 
+			</span>
+		</cfif>
 		  <div style="padding-top:20px;">
 			<label id="labelEmail" style="display: none;">Email</label>
 			 <cfif isdefined("cookie.rememberme") and cookie.rememberme eq "Yes">
-				<cfinput type="text" id="userName" class="second" name="userName" value="#cookie.userName#" placeholder="Email" autocomplete="off">			
+				<input type="text" id="userName" class="second" name="userName" value="#cookie.userName#" placeholder="Email" autocomplete="off">			
 			<cfelse> 
 			   <cfif isdefined("url.err") and url.err eq 1>
-				<cfinput type="text" id="userName" class="second" name="userName" value="#cookie.hdnUserName#" required="yes" placeholder="Email" autocomplete="off">	
+				<input type="text" id="userName" class="second" name="userName" value="#cookie.hdnUserName#" required="yes" placeholder="Email" autocomplete="off">	
 				<cfelse>
-				<cfinput type="text" id="userName" class="second" name="userName" value="" required="yes" placeholder="Email" autocomplete="off">
+				<input type="text" id="userName" class="second" name="userName" value="" required="yes" placeholder="Email" autocomplete="off">
 				</cfif>			
 			</cfif> 
 			<span id="errorEmailText" style="display:none;margin-left:45;font-size:12px;" align="left"><image src="images/errorimage.PNG">Enter a valid email</span>
@@ -309,9 +405,9 @@
 		  <div style="padding-top:20px;">
 			<label id="labelpassword" style="display: none;">Password</label>
 			 <cfif IsDefined("cookie.rememberme") and cookie.rememberme eq "Yes">
-				<cfinput type="password" id="password" class="second" name="password" value="#cookie.password#" placeholder="Password" >
+				<input type="password" id="password" class="second" name="password" value="#cookie.password#" placeholder="Password" >
 			<cfelse>
-				<cfinput type="password" id="password" class="second" name="password" required="yes" placeholder="Password" >
+				<input type="password" id="password" class="second" name="password" required="yes" placeholder="Password" >
 			 </cfif>
 			 <span id="errorPasswordText" style="display:none;margin-left:45;font-size:12px;" align="left"><image src="images/errorimage.PNG">Enter a password</span>
 		  </div>
@@ -323,12 +419,13 @@
 			</cfif>	
 		  </div>	 
 		<div  class="row" style="padding-top:5px;">		 
-				<div class="col-xs-4 r1">
-				<input type="checkbox" name="rememberme" id="rememberme" value="Yes" <cfif IsDefined("cookie.rememberme") and cookie.rememberme eq "Yes">CHECKED</cfif> ><span id="rememberme" style="margin-right: 20px;" >&nbsp;Remember Me</span> 					
-				</div>
-				<div class="col-xs-4 text-right">
-				<a class="underlineHover" href="v1/index.cfm?action=admin.forgotpassword" >Forgot Password?</a>					
-				</div>
+			<div class="col-xs-5 col-md-4 r1 text-left">
+				<input type="checkbox" name="rememberme" id="rememberme" value="Yes" <cfif IsDefined("cookie.rememberme") and cookie.rememberme eq "Yes">CHECKED</cfif> >
+				<span id="rememberme" class="remebermetext" >&nbsp;Remember Me</span> 					
+			</div>
+			<div class="col-xs-5 col-md-4 text-right">
+				<a class="underlineHover" href="v1/index.cfm?action=admin.forgotpassword" >Forgot Password?</a>
+			</div>
 		</div>
 		<div  class="row" style="padding-top:25px;">
 			<input type="button" class="btn btn-info" value="Submit" name="btnsubmit" id="btnsubmit" style="background-color:##1a73e8;">

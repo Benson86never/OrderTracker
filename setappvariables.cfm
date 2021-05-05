@@ -7,6 +7,7 @@
 		application.item_np=CreateObject("Component","#Application.ComPath#item_np");
 		application.listsequence_np=CreateObject("Component","#Application.ComPath#listsequence_np");
     application.uEncryptKey = "password";
+    application.erroremail = 'anagarajan@infoane.com';
     application.publicpages = "admin.adduser,user.login,admin.changepassword,admin.forgotpassword,user.viewTroubleHelp"
 		//application.adminobj =CreateObject("Component","v1/model/services.admin");
 </cfscript>
