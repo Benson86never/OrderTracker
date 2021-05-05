@@ -175,9 +175,18 @@ input:checked + .slider:before {
                             <td element="supplier">#supplier.name#</td>
                             <td element="seller">
                               <cfloop array="#supplier.seller#" index="sellerindex" item="seller">
-                                #seller.name#
+                                <span class="seller-names">
+                                  #seller.name#
+                                  <cfif isnumeric(seller.id)
+                                    AND arraylen(supplier.seller) GT 1>
+                                    <span class="cancel-seller deleteseller"
+                                      supplierid = "#supplier.id#"
+                                      sellerid = "#seller.id#"
+                                    >x</span>
+                                  </cfif>
+                                </span>
                                 <cfset sellername = seller.name>
-                                <cfset sellerid = seller.id>
+                                <cfset sellerid = sellerid & ',' & seller.id>
                               </cfloop>
                             </td>
                             <td>
@@ -188,12 +197,10 @@ input:checked + .slider:before {
                                 <button class="addsupplier btn btn-success" supplierid="#supplier.id#" title="Add" >
                                   <i class="fa fa-plus"></i>
                                 </button>
-                                <cfif isNumeric(sellerid)>
-                                  <button class="editsupplier btn btn-success" supplierid="#supplier.id#"
-                                  sellerid ="#sellerid#" title="Edit" >
-                                    <i class="fa fa-pencil-alt"></i>
-                                  </button>
-                                </cfif>
+                                <button class="editsupplier btn btn-success" supplierid="#supplier.id#"
+                                sellerid ="#sellerid#" title="Edit" >
+                                  <i class="fa fa-pencil-alt"></i>
+                                </button>
                                 <button class="cancelsupplier btn btn-danger" supplierid="#supplier.id#" title="Cancel" >
                                   <i class="fa fa-times"></i>
                                 </button>

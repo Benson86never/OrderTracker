@@ -40,8 +40,9 @@
       $(".add-newsupplier").click(function(){
         $('#supplierid').val(0);
         $('#suppliername').val('');
-        $('#sellerid').val(0);
+        $('#sellerid').val('');
         $(this).attr("disabled", "disabled");
+        $('.editsupplier').attr("disabled", "disabled");
         var index = $(".suppliertable tr").length;
         var row = '<tr>' +
           '<td><input type="text" class="form-control inputelement supplier" name="supplier" id="supplier"></td>' +
@@ -66,26 +67,66 @@
               $('.seller').removeAttr('disabled');
               sarray = [];
               <cfloop array="#rc.sellerInfo#" index="seller">
-                if(ui.item.value == '#seller.businessid#') {
+                if(ui.item.value == '#seller.businessid#'
+                  || '#seller.businessid#' == '#variables.businessId#') {
                   <cfif len(trim(seller.firstname))>
-                    sarray.push({ label: "#seller.firstname# #seller.lastname#", value: "#seller.personid#" });
+                    sarray.push({ label: "#seller.firstname# #seller.lastname# (#seller.businessname#)", value: "#seller.personid#" });
                   <cfelse>
-                    $('.seller').val('#seller.businessemail#');
-                    $('##sellerid').val('#seller.businessemail#');
-                    $('##seller').attr('disabled', 'disabled');
+                    $('.seller').parent().append('<span class="unsavedseller seller-names">#seller.businessemail#</span>');
+                    //$('##sellerid').val('#seller.businessemail#');
+                    //$('##seller').attr('disabled', 'disabled');
                   </cfif>
                 }
               </cfloop>
               if(sarray.length > 0) {
-                $('.seller').autocomplete({
-                  source: sarray,
-                  select: function (event, ui) {
-                    // Set selection
-                    $('##seller').val(ui.item.label); // display the selected text
-                    $('##sellerid').val(ui.item.value); // save selected id to input
-                    return false;
-                  }
-                });
+                function split( val ) {
+                  return val.split( /,\s*/ );
+                }
+                function extractLast( term ) {
+                  return split( term ).pop();
+                }
+                <cfoutput>
+                  el = $('.seller').parent();
+                  $('.seller').autocomplete({
+                    source: function (request, response) {
+                      response( $.ui.autocomplete.filter(
+                        sarray, extractLast( request.term ) ) );
+                    },
+                    focus: function() {
+                      // prevent value inserted on focus
+                      return false;
+                    },
+                    select: function (event, ui) {
+                      var terms = split( this.value );
+                      // remove the current input
+                      terms.pop();
+                      // add the selected item
+                      terms.push( ui.item.label );
+                      // add placeholder to get the comma-and-space at the end
+                      terms.push( "" );
+
+                      el.append('<span class="unsavedseller seller-names">'+ ui.item.label +' <span class="cancel-seller" sellerid="'+ui.item.value+'">x</span></span>');
+                      $(this).val('');
+                      //this.value = terms.join( ", " );
+                      var selected_label = ui.item.label;
+                      var selected_value = ui.item.value;
+                      
+                      var labels = $('##seller').val();
+                      var values = $('##sellerid').val();
+                      if(values == "")
+                      {
+                        // $('##seller').val(selected_label);
+                          $('##sellerid').val(selected_value);
+                      }
+                      else    
+                      {
+                        // $('##seller').val(labels+","+selected_label);
+                          $('##sellerid').val(values+","+selected_value);
+                      }   
+                      return false;
+                    }
+                  });
+                </cfoutput>
               }
               return false;
             }
@@ -98,20 +139,20 @@
       $(document).on("click", ".addsupplier", function(){
         var empty = false;
         var input = $(this).parents("tr").find('input[type="text"]');
-            input.each(function(){
+        /*input.each(function(){
           if(!$(this).val()){
             $(this).addClass("error");
             empty = true;
           } else{
             $(this).removeClass("error");
           }
-        });
+        });*/
         if(!empty){
-          if($('#sellerid').val() == 0) {
+          if($('#sellerid').length == 0) {
             empty = true;
             $('#seller').addClass("error");
           }
-          if($('#supplierid').val() == 0) {
+          if($('#supplierid').length == 0) {
             empty = true;
             $('#supplier').addClass("error");
           }
@@ -150,51 +191,92 @@
 
       // Edit row on edit button click
       $(document).on("click", ".editsupplier", function(){
+        $('.editsupplier').attr('disabled','');
         supplierid = $(this).attr('supplierid');
-        console.log(supplierid);
+        sellerid = $(this).attr('sellerid');
+        $('#sellerid').val(sellerid);
         $(this).parents("tr").find("td:not(:last-child)").each(function(){
           element = $(this).attr('element');
+          el = $(this);
           if(element == 'seller') {
-            $(this).html('<input type="text" class="form-control inputelement seller" name="seller" id="seller" value="' +$.trim($(this).text()) + '">');
-          }
-          sarray = [];
-          <cfloop array="#rc.sellerInfo#" index="seller">
-            businessid = '<cfoutput>#seller.businessid#</cfoutput>';
-            console.log(businessid);
-            if(supplierid == businessid) {
-              sarray.push({ label: "<cfoutput>#seller.firstname# #seller.lastname#</cfoutput>",
-              value: "<cfoutput>#seller.personid#</cfoutput>" });
-            }
-          </cfloop>
-          console.log(sarray);
-          <cfoutput>
-            $('.seller').autocomplete({
-              source:sarray,
-              select: function (event, ui) {
-                // Set selection
-                $('##seller').val(ui.item.label); // display the selected text
-                $('##sellerid').val(ui.item.value); // save selected id to input
-                return false;
+            $('#dbsellername').val($.trim($(this).text())); 
+            $(this).prepend('<input type="text" class="form-control inputelement seller" name="seller" id="seller" value="">');
+            sarray = [];
+            <cfloop array="#rc.sellerInfo#" index="seller">
+              businessid = '<cfoutput>#seller.businessid#</cfoutput>';
+              cbusinessid = '<cfoutput>#variables.businessId#</cfoutput>';
+              if(supplierid == businessid
+                || businessid == cbusinessid) {
+                sarray.push({ label: "<cfoutput>#seller.firstname# #seller.lastname# (#seller.businessname#)</cfoutput>",
+                value: "<cfoutput>#seller.personid#</cfoutput>" });
               }
-            });
-          </cfoutput>
+            </cfloop>
+            function split( val ) {
+              return val.split( /,\s*/ );
+            }
+            function extractLast( term ) {
+              return split( term ).pop();
+            }
+            <cfoutput>
+              $('.seller').autocomplete({
+                source: function (request, response) {
+                  response( $.ui.autocomplete.filter(
+                    sarray, extractLast( request.term ) ) );
+                },
+                focus: function() {
+                  // prevent value inserted on focus
+                  return false;
+                },
+                select: function (event, ui) {
+                  var terms = split( this.value );
+                  // remove the current input
+                  terms.pop();
+                  // add the selected item
+                  terms.push( ui.item.label );
+                  // add placeholder to get the comma-and-space at the end
+                  terms.push( "" );
+
+                  el.append('<span class="unsavedseller seller-names">'+ ui.item.label +' <span class="cancel-seller" sellerid="'+ui.item.value+'">x</span></span>');
+                  $(this).val('');
+                  //this.value = terms.join( ", " );
+                  var selected_label = ui.item.label;
+                  var selected_value = ui.item.value;
+                  
+                  var labels = $('##seller').val();
+                  var values = $('##sellerid').val();
+                  if(values == "")
+                  {
+                    // $('##seller').val(selected_label);
+                      $('##sellerid').val(selected_value);
+                  }
+                  else    
+                  {
+                    // $('##seller').val(labels+","+selected_label);
+                      $('##sellerid').val(values+","+selected_value);
+                  }   
+                  return false;
+                }
+              });
+            </cfoutput>
+          }
         });		
         $(this).parents("tr").find(".deletesupplier, .editsupplier").toggle();
         $(this).parents("tr").find(".savesupplier, .cancelsupplier").toggle();
         $(".add-newsupplier").attr("disabled", "disabled");
       });
       $(document).on("click", ".cancelsupplier", function(){
-          $(this).parents("tr").find("input").each(function(){
-            $(this).parent("td").html($('#dbsellername').val());
-          });
+        $(this).parents("tr").find("input").each(function(){
+          $(this).remove();
+        });
+        $(this).parents("tr").find(".unsavedseller").remove();
         $(this).parents("tr").find(".deletesupplier, .editsupplier").toggle();
         $(this).parents("tr").find(".savesupplier, .cancelsupplier").toggle();
-        $(".add-newsupplier").removeAttr("disabled");
+        $(".add-newsupplier, .editsupplier").removeAttr("disabled");
       });
       // Delete row on delete button click
       $(document).on("click", ".deletesupplier", function(){
         $(this).parents("tr").remove();
-        $(".add-newsupplier").removeAttr("disabled");
+        $(".add-newsupplier,.editsupplier").removeAttr("disabled");
         if($(this).attr('supplierid') > 0) {
             $.ajax({
               url: '../v1/model/services/admin.cfc?method=deleteSupplier',
@@ -212,24 +294,48 @@
             });
         }
       });
+      $(document).on("click", ".deleteseller", function(){
+        if($(this).attr('supplierid') > 0) {
+            $.ajax({
+              url: '../v1/model/services/admin.cfc?method=deleteSeller',
+              type: 'post',
+              data: {
+                businessid : <cfoutput>#variables.businessId#</cfoutput>,
+                sellerid : $(this).attr('sellerid'),
+                supplierid : $(this).attr('supplierid')
+              },
+              success: function(data){
+               location.reload();
+              }
+            });
+        }
+      });
+      $(document).on("click", ".cancel-seller", function(){
+        $(this).parent('.unsavedseller').remove();
+        sellerid = $(this).attr('sellerid');
+        svalue = $('#sellerid').val();
+        newvalue = svalue.replace(sellerid,'');
+        $('#sellerid').val(newvalue);
+      });
       $(document).on('input', '#supplier', function() {
         if($('#suppliername').val().length > 0) {
           $('#suppliername').val('');
           $('#supplierid').val(0);
           $('#seller').val('');
-          $('#sellerid').val(0);
+          $('#sellerid').val('');
+          $('.unsavedseller').remove();
           $('#seller').attr('disabled', 'disabled');
         }
       })
       $(document).on('input', '#seller', function() {
         if($('#sellername').val().length > 0) {
           $('#sellername').val('');
-          $('#sellerid').val(0);
+          $('#sellerid').val('');
         }
       })
        // save seller
       $(document).on("click", ".savesupplier", function(){
-        if($('#sellerid').val() > 0
+        if($('#sellerid').length > 0
           && $(this).attr('supplierid') > 0) {
             $(this).parents("tr").find(".deletesupplier, .editsupplier, .savesupplier, .cancelsupplier").toggle();
             $(".add-newsupplier").removeAttr("disabled");
@@ -245,7 +351,7 @@
                 supplierid : $(this).attr('supplierid')
               },
               success: function(data){
-                
+                location.reload();
               }
             });
         }
