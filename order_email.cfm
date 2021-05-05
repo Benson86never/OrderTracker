@@ -18,148 +18,155 @@ select email from business where businessid = <cfqueryparam value="#session.secu
 		<cfloop array="#TodayOrders#" index="orders">
 			<cfloop array="#orders.reps#" index="rep">
 				<cfif len(trim(rep.email)) >
-					<!---<cfmail from="#FromEmail#" subject="#orders.supplierName# order #orders.OrderID#" to="#rep.email#" cc="#CCEmail#" type="text/html">
-						
-						<cfmailpart type="html">--->
-							<table cellpadding="5" cellspacing="5">
-								<tr>
-									<td colspan="4" style="padding: 5px;">
-										Supplier is #orders.SupplierName#
-									</td>
-								</tr>
-								<tr>
-									<td colspan="4" style="padding: 5px;">
-										Dear #rep.FirstName#,
-									</td>
-								</tr>
-								<tr>
-									<td colspan="4" style="padding: 5px;">
-										Please deliver the following tomorrow.
-									</td>
-								</tr>
-							</table>
-							<table cellpadding="5" cellspacing="5">
-								<tr>
-									<th colspan="4" style="padding: 5px;text-align:left;">
-										Business Information
-									</th>
-								</tr>
-								<tr>
-									<td colspan="4" style="padding: 5px;">
-										#orders.businessName#,
-									</td>
-								</tr>
-								<tr>
-									<td colspan="4" style="padding: 5px;">
-										<cfif len(trim(orders.StreetAddress1))>
-											#orders.StreetAddress1#,
-										</cfif>
-										<cfif len(trim(orders.StreetAddress2))>
-											#orders.StreetAddress2#,
-										</cfif>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="4" style="padding: 5px;">
-										#orders.City#,#orders.State#,#orders.Country#
-									</td>
-								</tr>
-								<tr>
-									<td colspan="4" style="padding: 5px;">
-										#orders.businessEmail#
-									</td>
-								</tr>
-							</table>
-							<table cellpadding="5" cellspacing="5">
-								<tr>
-									<th colspan="4" style="padding: 5px;text-align:left;">
-										Customer Information
-									</th>
-								</tr>
-								<tr>
-									<td colspan="4" style="padding: 5px;">
-										#orders.firstName# #orders.lastName#
-									</td>
-								</tr>
-								<tr>
-									<td colspan="4" style="padding: 5px;">
-										<cfif len(trim(orders.email))>
-											#orders.email#
-										</cfif>
-										<cfif len(trim(orders.phone))>
-											,#orders.phone#
-										</cfif>
-									</td>
-								</tr>
-								<tr>
-									<th colspan="4" style="padding: 5px;text-align:left;">
-										Order Information
-									</th>
-								</tr>
-								<tr>
-									<td colspan="4" style="padding: 5px;text-align:left;">
-										Ordered on #dateformat(orders.orderedDate, 'dd mmm yyyy')#
-									</td>
-								</tr>
-							</table>
-							<table border="1" cellpadding="5" cellspacing="0">
-								<tr>
+					<cfsavecontent variable="emailcontent">
+						<table cellpadding="5" cellspacing="5">
+							<tr>
+								<td colspan="4" style="padding: 5px;">
+									Supplier is #orders.SupplierName#
+								</td>
+							</tr>
+							<tr>
+								<td colspan="4" style="padding: 5px;">
+									Dear #rep.FirstName#,
+								</td>
+							</tr>
+							<tr>
+								<td colspan="4" style="padding: 5px;">
+									Please deliver the following tomorrow.
+								</td>
+							</tr>
+						</table>
+						<table cellpadding="5" cellspacing="5">
+							<tr>
+								<th colspan="4" style="padding: 5px;text-align:left;">
+									Business Information
+								</th>
+							</tr>
+							<tr>
+								<td colspan="4" style="padding: 5px;">
+									#orders.businessName#,
+								</td>
+							</tr>
+							<tr>
+								<td colspan="4" style="padding: 5px;">
+									<cfif len(trim(orders.StreetAddress1))>
+										#orders.StreetAddress1#,
+									</cfif>
+									<cfif len(trim(orders.StreetAddress2))>
+										#orders.StreetAddress2#,
+									</cfif>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="4" style="padding: 5px;">
+									#orders.City#,#orders.State#,#orders.Country#
+								</td>
+							</tr>
+							<tr>
+								<td colspan="4" style="padding: 5px;">
+									#orders.businessEmail#
+								</td>
+							</tr>
+						</table>
+						<table cellpadding="5" cellspacing="5">
+							<tr>
+								<th colspan="4" style="padding: 5px;text-align:left;">
+									Customer Information
+								</th>
+							</tr>
+							<tr>
+								<td colspan="4" style="padding: 5px;">
+									#orders.firstName# #orders.lastName#
+								</td>
+							</tr>
+							<tr>
+								<td colspan="4" style="padding: 5px;">
+									<cfif len(trim(orders.email))>
+										#orders.email#
+									</cfif>
+									<cfif len(trim(orders.phone))>
+										,#orders.phone#
+									</cfif>
+								</td>
+							</tr>
+							<tr>
+								<th colspan="4" style="padding: 5px;text-align:left;">
+									Order Information
+								</th>
+							</tr>
+							<tr>
+								<td colspan="4" style="padding: 5px;text-align:left;">
+									Ordered on #dateformat(orders.orderedDate, 'dd mmm yyyy')# #timeformat(orders.orderedDate, 'HH:mm:ss')#
+								</td>
+							</tr>
+						</table>
+						<table border="1" cellpadding="5" cellspacing="0">
+							<tr>
+								<td style="text-align:center;padding: 5px;">
+									Name
+								</td>
+								<td style="text-align:center;padding: 5px;">
+									Quantity
+								</td>
+								<td style="text-align:center;padding: 5px;">
+									Units
+								</td>
+								<td style="text-align:center;padding: 5px;">
+									SKU
+								</td>
+							</tr>
+							<cfloop array="#orders.items#" index="item">
+								<tr style="border-left:1pt solid black;">
 									<td style="text-align:center;padding: 5px;">
-										Name
+										#item.itemname#
 									</td>
 									<td style="text-align:center;padding: 5px;">
-										Quantity
+										#item.quantity#
 									</td>
 									<td style="text-align:center;padding: 5px;">
-										Units
+										#item.unitname#
 									</td>
 									<td style="text-align:center;padding: 5px;">
-										SKU
+										<cfif item.sku is not 1> #item.sku#</cfif>
 									</td>
 								</tr>
-								<cfloop array="#orders.items#" index="item">
-									<tr style="border-left:1pt solid black;">
-										<td style="text-align:center;padding: 5px;">
-											#item.itemname#
-										</td>
-										<td style="text-align:center;padding: 5px;">
-											#item.quantity#
-										</td>
-										<td style="text-align:center;padding: 5px;">
-											#item.unitname#
-										</td>
-										<td style="text-align:center;padding: 5px;">
-											<cfif item.sku is not 1> #item.sku#</cfif>
-										</td>
-									</tr>
-									<!---<cfquery datasource="#application.datasource#">
+								<cfif find('https://86never.com/', CGI.HTTP_REFERER)>
+									<cfquery datasource="#application.datasource#">
 										Update Orders
 										Set Closed = 1
 										where OrderID = "#item.id#"
-									</cfquery>--->
-								</cfloop>
-							</table>
-							<table cellpadding="5" cellspacing="5">
-								<tr>
-									<td colspan="4" style="padding: 5px;">
-										Thank you from the Port House Grill team.
-									</td>
-								</tr> 
-								<tr>
-									<td colspan="4" style="padding: 5px;">
-										Please reply RECEIVED to this note to confirm your receipt.
-									</td>
-								</tr> 
-								<tr>
-									<td colspan="4" style="padding: 5px;">
-										POWERED BY ORDERTRACKER&trade;
-									</td>
-								</tr>
-							</table>
-						<!---</cfmailpart>
-					</cfmail>--->
+									</cfquery>
+								</cfif>
+							</cfloop>
+						</table>
+						<table cellpadding="5" cellspacing="5">
+							<tr>
+								<td colspan="4" style="padding: 5px;">
+									Thank you from the Port House Grill team.
+								</td>
+							</tr> 
+							<tr>
+								<td colspan="4" style="padding: 5px;">
+									Please reply RECEIVED to this note to confirm your receipt.
+								</td>
+							</tr> 
+							<tr>
+								<td colspan="4" style="padding: 5px;">
+									POWERED BY ORDERTRACKER&trade;
+								</td>
+							</tr>
+						</table>
+					</cfsavecontent>
+					<cfif find('https://86never.com/', CGI.HTTP_REFERER)>
+						<cfmail from="#FromEmail#" subject="#orders.supplierName# order #orders.OrderID#" to="#rep.email#" cc="#CCEmail#" type="text/html">
+							<cfmailpart type="html">
+								#emailcontent#
+							</cfmailpart>
+						</cfmail>
+					<cfelse>
+						#emailcontent#
+					</cfif>
 					---Mail Sent to #rep.email#---<br />
-					
 				</cfif>
 			</cfloop>
 		</cfloop>
@@ -170,5 +177,7 @@ select email from business where businessid = <cfqueryparam value="#session.secu
 			</cfmail>
 		</cfcatch>
 	</cftry>
-	<!---<cflocation url="list.cfm" addtoken="no">--->
+	<cfif find('https://86never.com/', CGI.HTTP_REFERER)>
+		<cflocation url="list.cfm" addtoken="no">
+	</cfif>
 </cfoutput>
