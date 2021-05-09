@@ -532,7 +532,9 @@ component  {
     return local.result;
   }
 
-  public any function getSellerDetails(){
+  public any function getSellerDetails(
+    numeric businessId = 0
+  ){
     local.result = {'error' : false};
     local.condition = "";
     
@@ -547,13 +549,21 @@ component  {
       FROM 
         business b
         INNER JOIN joinBusinesstoType JBT ON JBT.businessId = B.businessId
-          AND JBT.typeId = 2
+          AND (
+            JBT.typeId = 2
+            OR JBT.businessId = :businessId
+          )
         LEFT JOIN person P ON p.businessId = b.businessid
-          AND P.type = 3 AND P.active = 1
+          AND (
+            P.type = 3
+            OR p.businessId = :businessId
+          ) AND P.active = 1
           AND IFNULL(P.email,'') <> ''
         LEFT JOIN roles R ON R.roleId = P.type
       ORDER BY b.businessId,P.firstName, P.lastname;
-      ",{},{datasource: application.dsn}
+      ",{
+        businessId = {cfsqltype = "integer", value = arguments.businessId}
+      },{datasource: application.dsn}
     );
     local.sellers = []; 
     cfloop(query = "local.qsellerDetails" ) {
@@ -1036,6 +1046,17 @@ component  {
           :supplierId,
           :businessId
         )
+        ",{
+          supplierId = {cfsqltype = "integer", value = arguments.supplierId},
+          businessId = {cfsqltype = "integer", value = arguments.businessId}
+        },{datasource: application.dsn}
+      );
+      local.qdeleteseller = queryExecute("
+        DELETE FROM
+          joinsuppliertoperson
+        WHERE
+          SupplierID = :supplierId
+          AND BusinessId = :businessId
         ",{
           supplierId = {cfsqltype = "integer", value = arguments.supplierId},
           businessId = {cfsqltype = "integer", value = arguments.businessId}

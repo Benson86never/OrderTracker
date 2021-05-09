@@ -130,7 +130,8 @@ select email from business where businessid = <cfqueryparam value="#session.secu
 										<cfif item.sku is not 1> #item.sku#</cfif>
 									</td>
 								</tr>
-								<cfif find('https://86never.com/', CGI.HTTP_REFERER)>
+								<cfif find('https://86never.com/', CGI.HTTP_REFERER)
+									OR find('https://www.86never.com/', CGI.HTTP_REFERER)>
 									<cfquery datasource="#application.datasource#">
 										Update Orders
 										Set Closed = 1
@@ -157,7 +158,8 @@ select email from business where businessid = <cfqueryparam value="#session.secu
 							</tr>
 						</table>
 					</cfsavecontent>
-					<cfif find('https://86never.com/', CGI.HTTP_REFERER)>
+					<cfif find('https://86never.com/', CGI.HTTP_REFERER)
+						OR find('https://www.86never.com/', CGI.HTTP_REFERER)>
 						<cfmail from="#FromEmail#" subject="#orders.supplierName# order #orders.OrderID#" to="#rep.email#" cc="#CCEmail#" type="text/html">
 							<cfmailpart type="html">
 								#emailcontent#
@@ -177,7 +179,8 @@ select email from business where businessid = <cfqueryparam value="#session.secu
 			</cfmail>
 		</cfcatch>
 	</cftry>
-	<cfif find('https://86never.com/', CGI.HTTP_REFERER)>
+	<cfif find('https://86never.com/', CGI.HTTP_REFERER)
+		OR find('https://www.86never.com/', CGI.HTTP_REFERER)>
 		<cflocation url="list.cfm" addtoken="no">
 	</cfif>
 </cfoutput>

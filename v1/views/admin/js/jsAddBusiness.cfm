@@ -66,9 +66,12 @@
               $('##suppliername').val(ui.item.label);
               $('.seller').removeAttr('disabled');
               sarray = [];
+              slist = $('##sellerid').val();
+              sid = slist.split();
               <cfloop array="#rc.sellerInfo#" index="seller">
-                if(ui.item.value == '#seller.businessid#'
-                  || '#seller.businessid#' == '#variables.businessId#') {
+                if($.inArray( "#seller.personid#", sid )
+                  && (ui.item.value == '#seller.businessid#'
+                  || '#seller.businessid#' == '#variables.businessId#')) {
                   <cfif len(trim(seller.firstname))>
                     sarray.push({ label: "#seller.firstname# #seller.lastname# (#seller.businessname#)", value: "#seller.personid#" });
                   <cfelse>
@@ -199,14 +202,17 @@
           element = $(this).attr('element');
           el = $(this);
           if(element == 'seller') {
+            slist = $('#sellerid').val();
+            sid = slist.split(',');
             $('#dbsellername').val($.trim($(this).text())); 
             $(this).prepend('<input type="text" class="form-control inputelement seller" name="seller" id="seller" value="">');
             sarray = [];
             <cfloop array="#rc.sellerInfo#" index="seller">
               businessid = '<cfoutput>#seller.businessid#</cfoutput>';
               cbusinessid = '<cfoutput>#variables.businessId#</cfoutput>';
-              if(supplierid == businessid
-                || businessid == cbusinessid) {
+              if(sid.indexOf("<cfoutput>#seller.personid#</cfoutput>") == -1
+                && (supplierid == businessid
+                || businessid == cbusinessid)) {
                 sarray.push({ label: "<cfoutput>#seller.firstname# #seller.lastname# (#seller.businessname#)</cfoutput>",
                 value: "<cfoutput>#seller.personid#</cfoutput>" });
               }
@@ -241,7 +247,10 @@
                   //this.value = terms.join( ", " );
                   var selected_label = ui.item.label;
                   var selected_value = ui.item.value;
-                  
+                  var index = sarray.indexOf(ui.item.value);
+                  if (index > -1) {
+                    sarray.splice(index, 1);
+                  }
                   var labels = $('##seller').val();
                   var values = $('##sellerid').val();
                   if(values == "")

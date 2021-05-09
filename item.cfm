@@ -54,9 +54,6 @@ table.table .form-control.error {
 .cancel, .add {
   display: none;
 }
-.deleteitem {
-  display: inline-block !important;
-}
 .list-wrapper {
   font-size: 12px;
 }
