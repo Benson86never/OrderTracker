@@ -75,7 +75,7 @@
               <td class="hidden-xs hidden-sm">#business.Phone#</td>
               <td class="hidden-xs hidden-sm text-center" style="width:100px;">#business.zip#</td>
               <td class="hidden-xs hidden-sm text-center">#business.City#</td>
-              <td class="hidden-xs hidden-sm text-center">#business.State#</td>
+              <td class="hidden-xs hidden-sm text-center">#business.Statecode#</td>
               <td class="text-center">
                 <cfif session.secure.rolecode eq 1>
                   <cfif business.active EQ 1>

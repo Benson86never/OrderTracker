@@ -52,6 +52,61 @@ component  {
       );
       return local.getAdress;
   }
+  
+  remote any function getCountryState(
+    integer countryId = 1
+  ) {
+    local.result = {};
+    local.result.countries = [];
+    local.result.states = [];
+    try {
+      local.countryDetails = queryExecute("
+        SELECT
+          country_Id,
+          name,
+          code
+        FROM
+          country
+        WHERE
+          active = 1
+      ",{},{datasource: application.dsn}
+      );
+      cfloop(query = "local.countryDetails") {
+        local.details = {};
+        local.details['id'] = local.countryDetails.country_Id;
+        local.details['name'] = local.countryDetails.name;
+        local.details['code'] = local.countryDetails.code;
+        arrayAppend(local.result.countries, local.details);
+      }
+      local.stateDetails = queryExecute("
+        SELECT
+          state_Id,
+          name,
+          countryid,
+          code
+        FROM
+          state
+        WHERE
+          countryid = :countryId
+          AND active = 1
+      ",{
+         countryId = {cfsqltype = "integer", value = arguments.countryId}
+      },{datasource: application.dsn}
+      );
+      cfloop(query = "local.stateDetails") {
+        local.details = {};
+        local.details['id'] = local.stateDetails.state_Id;
+        local.details['name'] = local.stateDetails.name;
+        local.details['countryId'] = local.stateDetails.countryId;
+        local.details['code'] = local.stateDetails.code;
+        arrayAppend(local.result.states, local.details);
+      }
+      return local.result;
+    } catch(any e) {
+      writeDump(e); abort;
+      /* error email */
+    }
+  }
 
   public any function saveBusiness(
     struct businessDetails
@@ -483,8 +538,12 @@ component  {
         B.StreetAddress2,
         B.Zip,
         B.City,
-        B.State,
-        B.Country,
+        S.name AS State,
+        C.name AS Country,
+        S.code AS stateCode,
+        C.code AS CountryCode,
+        S.state_id AS stateid,
+        C.country_id AS Countryid,
         B.parentBusinessId,
         fngetBusinees(B.BusinessId) as sortbusinessname,
         GROUP_CONCAT(BT.name) AS businessTypes,
@@ -494,6 +553,8 @@ component  {
         Business B
         INNER JOIN joinbusinesstotype JBT ON JBT.businessId = B.BusinessId
         INNER JOIN businesstype BT ON BT.businesstype_id = JBT.typeId
+        INNER JOIN state S ON S.state_Id = B.state
+        INNER JOIN country C ON C.country_Id = B.country
       WHERE
         1 = 1
         #local.condition#
@@ -520,6 +581,10 @@ component  {
       local.details['City'] = local.BusinessDetails.City;
       local.details['State'] = local.BusinessDetails.State;
       local.details['Country'] = local.BusinessDetails.Country;
+      local.details['Stateid'] = local.BusinessDetails.Stateid;
+      local.details['Countryid'] = local.BusinessDetails.Countryid;
+      local.details['StateCode'] = local.BusinessDetails.StateCode;
+      local.details['CountryCode'] = local.BusinessDetails.CountryCode;
       local.details['parentBusinessId'] = local.BusinessDetails.parentBusinessId;
       local.details['sortbusinessname'] = local.BusinessDetails.sortbusinessname;
       local.details['active'] = local.BusinessDetails.active;

@@ -34,6 +34,9 @@ component accessors="true" {
   public void function AddBusiness(rc){
     rc.Business = adminService.getBusinessnames();
     rc.BusinessNamesDetails = rc.Business.business;
+    rc.countryStateDetails = adminService.getCountryState();
+    rc.countries = rc.countryStateDetails.countries;
+    rc.states = rc.countryStateDetails.states;
     rc.Businesstypes = rc.Business.types;
     rc.decryptbusinessid = 0;
     if(isDefined("url.businessId") && url.businessId NEQ 0) {
@@ -60,8 +63,6 @@ component accessors="true" {
   public void function adduser(rc){
     param name = "url.businessid" default = "";
     rc.getuserInfo = adminService.adduserBasicInfo(businessId = url.businessid);
-    rc.countries = rc.getuserInfo.countries;
-    rc.states = rc.getuserInfo.states;
     rc.roles = rc.getuserInfo.roles;
     rc.accounts = rc.getuserInfo.accounts;
     rc.params = "";

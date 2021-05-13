@@ -14,8 +14,8 @@
       variables.businessName = rc.businessDetails[1]["businessName"];
       variables.businessType = rc.businessDetails[1]["businessTypeIds"];
       variables.City = rc.businessDetails[1]["city"];
-      variables.Country = rc.businessDetails[1]["Country"];
-      variables.State = rc.businessDetails[1]["State"];
+      variables.Country = rc.businessDetails[1]["Stateid"];
+      variables.State = rc.businessDetails[1]["Stateid"];
       variables.email = rc.businessDetails[1]["email"];
       variables.phone = rc.businessDetails[1]["phone"];
       variables.PhoneExtension = rc.businessDetails[1]["PhoneExtension"];
@@ -111,13 +111,29 @@
                     State/Province:
                 </div>
                 <div class="col-md-2 ">
-                    <input type="text" class="form-control inputelement" id="state" placeholder="Enter State" name="state" value="#variables.State#" autocomplete="off" value="">
+                  <select name="state" class="form-control" id="state">
+                    <cfloop array = "#rc.states#" index="i">
+                      <option value="#i.id#"
+                      <cfif variables.State EQ i.id>
+                        selected
+                      </cfif>
+                      >#i.name#</option>
+                    </cfloop>
+                  </select>
                 </div>
                 <div class="col-md-2 labelname">
                       Country:
                 </div>
                 <div class="col-md-2 ">
-                    <input type="text" class="form-control inputelement" id="country" placeholder="Enter country" name="country" value="#variables.Country#" autocomplete="off" value="">
+                  <select name="country" class="form-control" id="country">
+                    <cfloop array = "#rc.countries#" index="i">
+                      <option value="#i.id#"
+                      <cfif variables.country EQ i.id>
+                        selected
+                      </cfif>
+                      >#i.name#</option>
+                    </cfloop>
+                  </select>
                 </div>
             </div>
             <div class="row">

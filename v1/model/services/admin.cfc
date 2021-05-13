@@ -33,8 +33,8 @@ component  extends ="business" {
         b.streetaddress1, 
 	      b.streetaddress2,
         b.City,
-        b.State,
-        b.Country,
+        S.name AS State,
+        C.name AS Country,
         b.zip,
         P.email,
         P.phone,
@@ -61,6 +61,8 @@ component  extends ="business" {
           person P
           INNER JOIN roles R ON R.roleId = P.type
           INNER JOIN business b ON p.businessId = b.businessid
+          INNER JOIN state S ON S.state_Id = b.state
+          INNER JOIN country C ON C.country_Id = b.country
       WHERE 1=1
       #local.condition#
       ORDER BY P.active DESC, P.firstName;
@@ -379,44 +381,6 @@ component  extends ="business" {
       }
     }
     try {
-      /*local.countryDetails = queryExecute("
-        SELECT
-          country_Id,
-          name,
-          countryCode
-        FROM
-          country
-      ",{},{datasource: application.dsn}
-      );
-      cfloop(query = "local.countryDetails") {
-        local.details = {};
-        local.details['id'] = local.countryDetails.country_Id;
-        local.details['name'] = local.countryDetails.name;
-        local.details['countrycode'] = local.countryDetails.countryCode;
-        arrayAppend(local.result.countries, local.details);
-      }
-      local.stateDetails = queryExecute("
-        SELECT
-          state_Id,
-          name,
-          countryid,
-          stateCode
-        FROM
-          state
-        WHERE
-          countryid = :countryId
-      ",{
-         countryId = {cfsqltype = "integer", value = arguments.countryId}
-      },{datasource: application.dsn}
-      );
-      cfloop(query = "local.stateDetails") {
-        local.details = {};
-        local.details['id'] = local.stateDetails.state_Id;
-        local.details['name'] = local.stateDetails.name;
-        local.details['countryId'] = local.stateDetails.countryId;
-        local.details['stateCode'] = local.stateDetails.stateCode;
-        arrayAppend(local.result.states, local.details);
-      }*/
       local.rolecondition  = "";
       if(session.secure.RoleCode == 4) {
         local.rolecondition  &= " AND roleid != 1";
@@ -472,18 +436,20 @@ component  extends ="business" {
     integer businessId
   )returnformat="JSON"{
     local.getAdress = queryExecute("
-        SELECT
-         sa.StreetAddress1,
-         sa.StreetAddress2,
-         sa.Zip,
-         sa.City,
-         sa.state,
-        sa.country
+      SELECT
+        b.StreetAddress1,
+        b.StreetAddress2,
+        b.Zip,
+        b.City,
+        S.name AS state,
+        C.name AS country
         FROM 
-          business sa
+          business b
+          INNER JOIN state S ON S.state_Id = b.state
+          INNER JOIN country C ON C.country_Id = b.country
         WHERE
-          businessId = :businessId
-          AND active = 1;
+          b.businessId = :businessId
+          AND b.active = 1;
         ",{
           businessId = {cfsqltype = "integer", value = arguments.businessId}
         },{datasource: application.dsn}
