@@ -137,10 +137,15 @@ table.table .form-control.error {
        }
        .f1 {
          width: 50px !important;
+         margin-left: -70px !important;
 
        }
        .t1 {
          margin-left: 0px !important;
+          width: 10px !important;
+       }
+       .add-new {
+         width: 10px !important;
        }
               
 }
@@ -206,7 +211,7 @@ table.table .form-control.error {
                           </div>
                       </cfif>
                       <cfinput type="file" name="uploadfile" required="yes" message="You must select a file." class="form-control f1" style="width:200px;display:inline-flex;">
-                      <input type="submit" name="Submit2" value="Upload" class="btn btn-info" style="width:70px;display:inline-flex;">                          
+                      <input type="submit" name="Submit2" value="Upload" class="btn btn-info " style="width:70px;display:inline-flex;">                        
                       <input type="hidden" name="hdnbusiness" id="hdnbusiness" value="#url.supplierid#">
                       <input type="button" id="Submit3" name="Submit3" class="btn btn-info" value="Download Item List" onclick="downloadlist();">                          
                       <a href="DownloadTemplate.cfm"  class="btn btn-info" style="width:110px;display:inline-flex;" >Download Template</a>

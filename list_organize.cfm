@@ -17,6 +17,7 @@
       list-style-type: none;
       padding: 1%;
       width: 90%;
+      display: block;
     }
     #sortable li {font-size: 1.0em; height: 35px; margin: 10px;}
     .button {

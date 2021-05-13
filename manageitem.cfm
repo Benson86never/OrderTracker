@@ -98,40 +98,41 @@
 @media (max-width: 767px) {
       
      .steps>li {
-           position: relative;
-           /* border: 1px solid #ddd; */
-            padding: 12px 45px 7px 45px;
+           /*position: relative;
+           border: 1px solid #ddd; */
             width: 0px !important;
-            height: 16px !important;
          }
-         .steps {
+         
+         /*.steps {
            font-size: 10px;
-
          }
           .steps li > span:after,
-          .steps li > span:before {
+          .steps li > span:before {*/
                    /*content: "";
                    display: block;
                    width: 0px;
                    height: 0px;
                    position: absolute;*/
-                   top: 0;
+                   /*top: 0;
                    left: 0;
-                   bottom: 0;
+                   bottom: 0;*/
                    /*border: solid transparent;
                    border-left-color: rgb(216, 241, 255);*/
-                   border-width: 15px;
+                   /*border-width: 15px;
              }
              .steps li > span:after {
                      top: -5px;
                      z-index: 1;
                      border-left-color: white;
                      border-width: 20px;
-                }
+                }*/
              ul {
                display: inline-flex;
              }
-             
+             .steps .active { color: #fff; background: #45afe4;}
+             .steps .active a { color: #fff; text-decoration: none;}
+             .steps li.active + li > span:before { border-left-color: #45afe4; }
+
             }
 </style>
 <cfif listfind(session.secure.businessType, 2)
@@ -142,7 +143,7 @@ OR session.secure.RoleCode EQ 1>
 </cfif>
 <div class="container">
 <div class="row">
-  <ul class="nav nav-tabs steps">
+  <ul class="nav steps">
     <cfif listfind(session.secure.businessType, 2)
       OR session.secure.RoleCode EQ 1>
       <li <cfif url.page EQ "items">class="active"</cfif>>
@@ -224,6 +225,7 @@ OR session.secure.RoleCode EQ 1>
     if (lastTab) {
         $('[href="' + lastTab + '"]').tab('show');
     }*/
+    
 
 });
 </script>
