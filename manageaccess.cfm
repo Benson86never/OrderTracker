@@ -24,8 +24,13 @@
 <!---<cfdump var="#role#">--->
         <div class="container">
             <div class="row">
-                <div class = "col-xs-2 sectionHeader" style="font-size:22px;padding-top:40px;">
-                     Manage Access
+               <div class="row">
+                    <div class = "col-xs-2 sectionHeader" style="font-size:22px;padding-top:40px;">
+                         Manage Access
+                    </div>
+                    <div class="col-xs-2" style="font-size:16px;padding-top:40px;float:right;">
+                        <a href="manageaccessroles.cfm">Manage Access/Roles</a>
+                    </div>
                 </div>
                 <table class="table table-hover table-responsive-sm table-bordered" cellspacing = "0">
                     <thead>
