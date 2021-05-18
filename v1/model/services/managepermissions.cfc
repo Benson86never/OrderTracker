@@ -2,14 +2,14 @@
     <cffunction name="getRoles" access="remote">
         <cfquery name="role" datasource="ordertracker">
              SELECT  RoleID,Name
-             FROM roles
+             FROM roles WHERE active=1;
         </cfquery>
              <cfreturn role>
     </cffunction>
     <cffunction name="getAccess" access="remote">
          <cfquery name="access" datasource="ordertracker">
              SELECT AccessID,Name 
-             FROM access
+             FROM access WHERE active=1;
          </cfquery>
          <!---<cfif access.recordcount gt 0>--->
             <cfreturn access>
@@ -43,7 +43,8 @@
     <cffunction name="deleteAccess" access="remote" returntype="boolean" returnFormat="plain" >
        <cfargument name="accessId" required="true">
         <cfquery name="delacs" datasource="ordertracker" result="res">
-              DELETE FROM access
+              UPDATE access 
+              SET active = 0
               WHERE AccessID = <cfqueryparam value='#arguments.accessId#' cfsqltype="cf_sql_integer">
         </cfquery>
         <cfif res.recordcount gt 0>
@@ -55,8 +56,10 @@
     <cffunction name="deleteRoles" access="remote" returntype="boolean" returnFormat="plain" >
        <cfargument name="roleId" required="true">
         <cfquery name="delrole" datasource="ordertracker" result="res">
-              DELETE FROM roles
+              UPDATE roles 
+              SET active = 0
               WHERE RoleID = <cfqueryparam value='#arguments.roleId#' cfsqltype="cf_sql_integer">
+              <cfdump var="#res#">
         </cfquery>
         <cfif res.recordcount gt 0>
            <cfreturn true>
@@ -85,6 +88,20 @@
               UPDATE roles
               set Name = <cfqueryparam value='#arguments.roleName#' cfsqltype="cf_sql_varchar">
               WHERE RoleID = <cfqueryparam value='#arguments.roleId#' cfsqltype="cf_sql_integer">
+        </cfquery>
+        <cfif res.recordcount gt 0>
+           <cfreturn true>
+        <cfelse>
+            <cfreturn false>
+        </cfif>
+    </cffunction>
+    <cffunction name="addAccessRoles" access="remote" returntype="boolean" returnFormat="plain">
+       <cfargument name="roleId" required="true">
+       <cfargument name="accessId" required="true">
+        <cfquery name="addaccessrole" datasource="ordertracker" result="res">
+              INSERT INTO accesspermission (Role_ID,Access_ID)
+              VALUES (<cfqueryparam value='#arguments.roleId#' cfsqltype="cf_sql_integer">,
+                      <cfqueryparam value='#arguments.accessId#' cfsqltype="cf_sql_integer">)
         </cfquery>
         <cfif res.recordcount gt 0>
            <cfreturn true>

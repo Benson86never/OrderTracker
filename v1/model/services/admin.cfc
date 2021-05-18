@@ -395,7 +395,7 @@ component  extends ="business" {
         FROM
           roles
         WHERE
-          1 = 1
+          active = 1
            #local.rolecondition# 
       ",{},{datasource: application.dsn}
       );

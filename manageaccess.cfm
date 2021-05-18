@@ -1,3 +1,7 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <style>
      th {
          font-size: 12px;
@@ -25,8 +29,8 @@
         <div class="container">
             <div class="row">
                <div class="row">
-                    <div class = "col-xs-2 sectionHeader" style="font-size:22px;padding-top:40px;">
-                         Manage Access
+                    <div class = "col-xs-4 sectionHeader" style="font-size:22px;padding-top:40px;">
+                         Manage Access Permissions
                     </div>
                     <div class="col-xs-2" style="font-size:16px;padding-top:40px;float:right;">
                         <a href="manageaccessroles.cfm">Manage Access/Roles</a>
@@ -52,6 +56,9 @@
                          </cfloop>
                     </tbody>
                 </table>
+                <div class="buttondiv pull-right">
+                    <input type="button" id="saveBtn" value="Save" class="btn btn-success" >
+                </div>
             </div>
         </div>
 </cfoutput>
@@ -65,7 +72,22 @@
                        for(var j = 0; j < datacheck.length; j++){
                             if(checkboxes[i].value == datacheck[j].value){
                                 datacheck[j].checked = true;
+                               /* $.ajax({
+                                   url: 'v1/model/services/managepermissions.cfc?method=addAccessRoles',
+                                   type: 'get',
+                                   data: {
+                                   roleId : checkboxes[i],
+                                   accessId : datacheck[j]
+                                   },
+                                  success: function(data){
+                                   console.log(data)
+                                  },
+                                  error: function(data){
+                                      alert(error)
+                                  }
+                                });*/
                             }
+
                         }
                 }
                 else{

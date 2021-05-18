@@ -31,7 +31,9 @@
 <cfinclude template="includes/header.cfm" >
 <cfset role = CreateObject("Component","v1.model.services.managepermissions").getRoles()>
 <cfset access = CreateObject("Component","v1.model.services.managepermissions").getAccess()>
-<cfoutput>
+<cfoutput><br>
+     <a href="manageaccess.cfm" style="margin-left:20px;"><button type="button" class="btn btn-success" title="Back">
+     <i class="fa fa-angle-double-left" aria-hidden="true"></i></button></a>
        <div class="container">
      <div class="row">
    <div class="panel panel-default">
@@ -292,7 +294,6 @@
       $(".add-newlist1").removeAttr("disabled");
       $.ajax({
           url: 'v1/model/services/managepermissions.cfc?method=deleteRoles',
-          type: 'post',
           data: {
             roleId : $(this).attr('id')
           },
