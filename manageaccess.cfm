@@ -23,6 +23,7 @@
     <cfoutput>
         <cfinclude template="includes/secure.cfm" >
         <cfinclude template="includes/header.cfm" >
+            <cfset accessroles = CreateObject("Component","v1.model.services.managepermissions").getAccessRoles()>
             <cfset role = CreateObject("Component","v1.model.services.managepermissions").getRoles()>
             <cfset access = CreateObject("Component","v1.model.services.managepermissions").getAccess()>
 <!---<cfdump var="#role#">--->
@@ -51,7 +52,19 @@
                                 <td>#access.Name#</td>
                                 <input type="hidden" id="hidval" name="hidval1" value="#access.AccessID#">
                                 <cfloop query="role">
-                                <td><input type="checkbox" id="#access.AccessID#" name="chk1" value="#role.RoleID#" class="c1"></td>
+                                    <cfset checked = "">
+                                    <cfif structKeyExists(accessroles, '#access.AccessID#')
+                                        AND structKeyExists(accessroles['#access.AccessID#'], '#role.roleId#')>
+                                        <cfset checked = "checked">
+                                    </cfif>
+                                    <td>
+                                        <input type="checkbox"
+                                            id="#access.AccessID#"
+                                            name="chk1"
+                                            value="#role.RoleID#"
+                                            class="c1"
+                                            #checked#>
+                                    </td>
                                 </cfloop>
                             </tr>
                          </cfloop>

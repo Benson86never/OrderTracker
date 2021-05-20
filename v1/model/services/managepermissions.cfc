@@ -72,7 +72,7 @@
         <cfquery name="upaccess" datasource="ordertracker" result="res">
               UPDATE access
               set Name = <cfqueryparam value='#arguments.accessName#' cfsqltype="cf_sql_varchar">
-              WHERE AccessID = <cfqueryparam value='#arguments.accessId#' cfsqltype="cf_sql_integer">
+              WHERE 0 = <cfqueryparam value='#arguments.accessId#' cfsqltype="cf_sql_integer">
         </cfquery>
         <cfif res.recordcount gt 0>
            <cfreturn true>
@@ -97,11 +97,19 @@
     <cffunction name="addAccessRoles" access="remote" returntype="boolean" returnFormat="plain">
        <cfargument name="roleId" required="true">
        <cfargument name="accessId" required="true">
-        <cfquery name="addaccessrole" datasource="ordertracker" result="res">
-              INSERT INTO accesspermission (Role_ID,Access_ID)
-              VALUES (<cfqueryparam value='#arguments.roleId#' cfsqltype="cf_sql_integer">,
-                      <cfqueryparam value='#arguments.accessId#' cfsqltype="cf_sql_integer">)
+       <cfquery name="accessrole" datasource="ordertracker">
+          SELECT 1 FROM accesspermission
+          WHERE
+          Role_ID = <cfqueryparam value='#arguments.roleId#' cfsqltype="cf_sql_integer">
+          AND Access_ID = <cfqueryparam value='#arguments.accessId#' cfsqltype="cf_sql_integer">
         </cfquery>
+        <cfif NOT accessrole.recordcount>
+            <cfquery name="addaccessrole" datasource="ordertracker" result="res">
+                INSERT INTO accesspermission (Role_ID,Access_ID)
+                VALUES (<cfqueryparam value='#arguments.roleId#' cfsqltype="cf_sql_integer">,
+                        <cfqueryparam value='#arguments.accessId#' cfsqltype="cf_sql_integer">)
+            </cfquery>
+        </cfif>
         <cfif res.recordcount gt 0>
            <cfreturn true>
         <cfelse>
@@ -109,9 +117,21 @@
         </cfif>
     </cffunction>
     <cffunction name="getAccessRoles" access="remote" returnFormat="JSON">
-              <cfquery name="getdata" datasource="ordertracker">
-                     SELECT * FROM accesspermission
-              </cfquery>
-         <cfreturn serializeJson(getdata)>
+        <cfset local.result = {}>
+        <cfquery name="getdata" datasource="ordertracker">
+            SELECT
+                access_Id,
+                role_Id
+            FROM
+                accesspermission
+            order by access_Id
+        </cfquery>
+        <cfloop query="getdata" group="access_Id">
+            <cfset local.result['#getdata.access_Id#'] = {}>
+            <cfloop>
+                <cfset local.result['#getdata.access_Id#']['#getdata.role_Id#'] = true>
+            </cfloop>
+        </cfloop>
+        <cfreturn local.result>
     </cffunction>
 </component>
