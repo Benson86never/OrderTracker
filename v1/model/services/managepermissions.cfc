@@ -59,7 +59,6 @@
               UPDATE roles 
               SET active = 0
               WHERE RoleID = <cfqueryparam value='#arguments.roleId#' cfsqltype="cf_sql_integer">
-              <cfdump var="#res#">
         </cfquery>
         <cfif res.recordcount gt 0>
            <cfreturn true>
@@ -95,6 +94,7 @@
             <cfreturn false>
         </cfif>
     </cffunction>
+    
     <cffunction name="addAccessRoles" access="remote" returntype="boolean" returnFormat="plain">
        <cfargument name="roleId" required="true">
        <cfargument name="accessId" required="true">

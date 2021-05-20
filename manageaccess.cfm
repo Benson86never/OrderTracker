@@ -49,35 +49,66 @@
                         <cfloop query="access">
                             <tr>
                                 <td>#access.Name#</td>
+                                <input type="hidden" id="hidval" name="hidval1" value="#access.AccessID#">
                                 <cfloop query="role">
-                                <td><input type="checkbox" id="check1" name="chk1" value="#role.RoleID#"></td>
+                                <td><input type="checkbox" id="#access.AccessID#" name="chk1" value="#role.RoleID#" class="c1"></td>
                                 </cfloop>
                             </tr>
                          </cfloop>
                     </tbody>
                 </table>
                 <div class="buttondiv pull-right">
-                    <input type="button" id="saveBtn" value="Save" class="btn btn-success" >
+                    <input type="button" id="saveBtn" value="Save" class="btn btn-success" onclick="savedata()">
                 </div>
             </div>
         </div>
 </cfoutput>
 <script>
-    function selectcheck(){
-        var checkboxes = document.getElementsByName("rolechk");
-        var datacheck=document.getElementsByName("chk1");
+    var checkboxes = document.getElementsByName("rolechk");
+    var datacheck=document.getElementsByName("chk1");
+    var dataval= document.getElementsByName("hidval1");
+
+       function selectcheck(){
             for (var i = 0; i < checkboxes.length; i++) {
                 if(checkboxes[i].checked){
-                    console.log(checkboxes[i].value);
+                    //console.log(checkboxes[i].value);
                        for(var j = 0; j < datacheck.length; j++){
                             if(checkboxes[i].value == datacheck[j].value){
                                 datacheck[j].checked = true;
-                               /* $.ajax({
+                            }
+
+                        }
+                }
+                else{
+                        //console.log(checkboxes[i].value);
+                        for(var j = 0; j < datacheck.length; j++){
+                            if(checkboxes[i].value == datacheck[j].value){
+                                //console.log(datacheck[j].value);
+                                datacheck[j].checked = false;
+                            }
+                        }
+                    }
+            }
+    }
+    function savedata(){
+      /*$('[name=chk1]:checked').each(function () {
+        alert('selected: ' + $('#hidval').val());
+            });     
+      }*/        
+           for(var i=0; i < checkboxes.length; i++){
+
+                if(checkboxes[i].checked){
+                  for(var k=0; k < dataval.length; k++){
+
+                    console.log(checkboxes[i].value);
+                    console.log(dataval[k].value);
+                //if(checkboxes[j].value == datacheck[i].value){
+                            $.ajax({
                                    url: 'v1/model/services/managepermissions.cfc?method=addAccessRoles',
                                    type: 'get',
                                    data: {
-                                   roleId : checkboxes[i],
-                                   accessId : datacheck[j]
+                                   roleId : checkboxes[i].value,
+                                   accessId : dataval[k].value
                                    },
                                   success: function(data){
                                    console.log(data)
@@ -85,20 +116,60 @@
                                   error: function(data){
                                       alert(error)
                                   }
-                                });*/
-                            }
+                            });
 
-                        }
                 }
-                else{
-                        console.log(checkboxes[i].value);
-                        for(var j = 0; j < datacheck.length; j++){
-                            if(checkboxes[i].value == datacheck[j].value){
-                                console.log(datacheck[j].value);
-                                datacheck[j].checked = false;
-                            }
-                        }
+                }
+                
+             
+             else{
+                    for(var j=0;j<datacheck.length;j++){
+                      //for(var k=0; k < dataval.length; k++){
+
+                     if(checkboxes[i].value == datacheck[j].value){
+
+                           if(datacheck[j].checked){
+                           console.log(checkboxes[i].value)
+                            console.log($(datacheck[j]).attr('id'));
+                             $.ajax({
+                                   url: 'v1/model/services/managepermissions.cfc?method=addAccessRoles',
+                                   type: 'get',
+                                   data: {
+                                   roleId : checkboxes[i].value,
+                                   accessId : $(datacheck[j]).attr('id')
+                                   },
+                                  success: function(data){
+                                   console.log(data)
+                                  },
+                                  error: function(data){
+                                      alert(error)
+                                  }
+                            });
+                           }
+                           }
+                    // }
+                    
                     }
-            }
+             
+                }
+           }
     }
+   /*function getdata(){
+       console.log(checkboxes.checked);
+       console.log(datacheck.value);
+       for(var i=0;i<checkboxes.length;i++){
+       for(var j=0;j<datacheck.length;j++){
+                  alert(datacheck[j].checked);
+                 if(datacheck[j].checked){ 
+                     $('[name=chk1]:checked').each(function () {
+                        alert('selected: ' + $('#hidval').val());
+                      });
+                      if(!(checkboxes.checked) && (datacheck.value > 0)){  
+                      alert("hi");
+                      }
+                      
+                      }
+   }
+       }
+   }*/
 </script>
