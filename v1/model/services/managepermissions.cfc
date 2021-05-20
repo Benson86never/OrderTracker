@@ -94,7 +94,6 @@
             <cfreturn false>
         </cfif>
     </cffunction>
-    
     <cffunction name="addAccessRoles" access="remote" returntype="boolean" returnFormat="plain">
        <cfargument name="roleId" required="true">
        <cfargument name="accessId" required="true">
@@ -108,5 +107,11 @@
         <cfelse>
             <cfreturn false>
         </cfif>
+    </cffunction>
+    <cffunction name="getAccessRoles" access="remote" returnFormat="JSON">
+              <cfquery name="getdata" datasource="ordertracker">
+                     SELECT * FROM accesspermission
+              </cfquery>
+         <cfreturn serializeJson(getdata)>
     </cffunction>
 </component>

@@ -64,6 +64,27 @@
         </div>
 </cfoutput>
 <script>
+$(document).ready(function() {
+    $.ajax({
+                                   url: 'v1/model/services/managepermissions.cfc?method=getAccessRoles',
+                                   type: 'get',
+                                   dataType: 'json',
+                                  success: function(data){
+                                    //var result="";
+                                   console.log(data)
+                                   /*$.each(data.COLUMNS, function(index,item) {
+                                   console.log(item.ROLE_ID);
+                                  });*/
+                                  for (var i in data) {
+                                  console.log(data[i])
+                                  }
+                                  },
+                                  error: function(data){
+                                      alert(error)
+                                  }
+                            });
+               
+});
     var checkboxes = document.getElementsByName("rolechk");
     var datacheck=document.getElementsByName("chk1");
     var dataval= document.getElementsByName("hidval1");
