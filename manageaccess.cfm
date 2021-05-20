@@ -64,7 +64,7 @@
         </div>
 </cfoutput>
 <script>
-$(document).ready(function() {
+<!---$(document).ready(function() {
     $.ajax({
                                    url: 'v1/model/services/managepermissions.cfc?method=getAccessRoles',
                                    type: 'get',
@@ -84,7 +84,7 @@ $(document).ready(function() {
                                   }
                             });
                
-});
+});--->
     var checkboxes = document.getElementsByName("rolechk");
     var datacheck=document.getElementsByName("chk1");
     var dataval= document.getElementsByName("hidval1");
