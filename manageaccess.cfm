@@ -23,8 +23,9 @@
 <cfoutput>
     <cfset permissionobj = CreateObject("Component","v1.model.services.managepermissions")>
     <cfif isDefined("form.role_access_Id")>
+        <cfdump var="#form#">
         <cfset add_access_role = permissionobj.addAccessRoles(data = form.chk1)>
-        <cflocation url="manageaccess.cfm">
+        <cflocation url="manageaccess.cfm" addtoken="no">
     </cfif>
     <cfinclude template="includes/secure.cfm" >
     <cfinclude template="includes/header.cfm" >
@@ -73,7 +74,7 @@
                                     </cfif>
                                     <td>
                                         <input type="checkbox"
-                                            id="#access.AccessID#"
+                                            id="#role.RoleID#"
                                             name="chk1"
                                             value="#role.RoleID#_#access.AccessID#"
                                             class="c1"
@@ -84,7 +85,7 @@
                          </cfloop>
                     </tbody>
                 </table>
-                <div class="buttondiv pull-right">
+                <div class="pull-right">
                     <input type="submit" id="saveBtn" value="Save" name="role_access_Id" class="btn btn-success">
                 </div>
             </form>
@@ -100,7 +101,8 @@
             if(checkboxes[i].checked){
                 //console.log(checkboxes[i].value);
                     for(var j = 0; j < datacheck.length; j++){
-                        if(checkboxes[i].value == datacheck[j].value){
+                        console.log($(datacheck[j]).attr("id"))
+                        if(checkboxes[i].value == $(datacheck[j]).attr("id")){
                             datacheck[j].checked = true;
                         }
 
@@ -109,7 +111,7 @@
             else{
                     //console.log(checkboxes[i].value);
                     for(var j = 0; j < datacheck.length; j++){
-                        if(checkboxes[i].value == datacheck[j].value){
+                        if(checkboxes[i].value == $(this).attr("id")){
                             console.log(datacheck[j].value);
                             datacheck[j].checked = false;
                         }

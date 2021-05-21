@@ -99,43 +99,39 @@
        <cftry>
             <cfquery name="local.accessrole" datasource="ordertracker">
                 SELECT
-                    Role_ID,
-                    Access_ID
+                   Role_ID,Access_ID,
+                   CONCAT(Role_ID,'_',
+                    Access_ID) AS result
                 FROM accesspermission
             </cfquery>
-            <cfloop query="local.accessrole">
-                <cfloop list="#arguments.data#" index="local.item">
-                    <cfset local.roleid = listfirst(local.item,'_')>
-                    <cfset local.accessid = listlast(local.item,'_')>
-                    <cfif local.accessrole.Access_ID EQ local.accessid
-                        AND local.accessrole.Role_ID EQ local.roleid>
-
-                    <cfelse>
-                        <cfquery name="local.checkaccessrole" dbtype="query">
+            <cfset local.permissionlist = valuelist(local.accessrole.result)>
+            <cfloop list="#local.permissionlist#" index="local.item">
+                <cfif NOT listfind(arguments.data, local.item)>
+                        <cfquery name="local.checkaccessrole" datasource="ordertracker">
                             DELETE
                             FROM accesspermission
                             WHERE
-                            Role_ID = <cfqueryparam value='#local.accessrole.Role_ID#' cfsqltype="integer">
-                            AND Access_ID = <cfqueryparam value='#local.accessrole.Access_ID#' cfsqltype="integer">
+                            Role_ID = <cfqueryparam value='#listfirst(local.item,'_')#' cfsqltype="integer">
+                            AND Access_ID = <cfqueryparam value='#listlast(local.item,'_')#' cfsqltype="integer">
                         </cfquery>
-                    </cfif>
-                </cfloop>
+                </cfif>
             </cfloop>
             <cfloop list="#arguments.data#" index="local.item">
                 <cfset local.roleid = listfirst(local.item,'_')>
                 <cfset local.accessid = listlast(local.item,'_')>
-                <cfquery name="local.checkaccessrole" dbtype="query">
+                <cfdump var="#local.accessrole#">
+                <cfquery name="local.checkaccessrole1" datasource="ordertracker">
                     SELECT 1
-                    FROM local.accessrole
+                    FROM accesspermission
                     WHERE
-                    Role_ID = <cfqueryparam value='#local.roleId#' cfsqltype="integer">
-                    AND Access_ID = <cfqueryparam value='#local.accessId#' cfsqltype="integer">
+                    Role_ID = <cfqueryparam value='#local.roleid#' cfsqltype="integer">
+                    AND Access_ID = <cfqueryparam value='#local.accessid#' cfsqltype="integer">
                 </cfquery>
-                <cfif NOT local.checkaccessrole.recordcount>
+                <cfif NOT local.checkaccessrole1.recordcount>
                     <cfquery name="addaccessrole" datasource="ordertracker">
                         INSERT INTO accesspermission (Role_ID,Access_ID)
-                        VALUES (<cfqueryparam value='#local.roleId#' cfsqltype="integer">,
-                                <cfqueryparam value='#local.accessId#' cfsqltype="integer">)
+                        VALUES (<cfqueryparam value='#local.roleid#' cfsqltype="integer">,
+                                <cfqueryparam value='#local.accessid#' cfsqltype="integer">)
                     </cfquery>
                 </cfif>
             </cfloop>
@@ -162,5 +158,15 @@
             </cfloop>
         </cfloop>
         <cfreturn local.result>
+    </cffunction>
+    <cffunction name="getManageId" access="remote">
+        <cfquery name="local.getMngId" datasource="ordertracker">
+              SELECT 
+              Access_ID 
+              FROM accesspermission
+              WHERE Role_ID = #session.secure.RoleCode# 
+        </cfquery>
+         <cfset local.getvalue = valuelist(local.getMngId.Access_ID)>
+        <cfreturn local.getvalue>
     </cffunction>
 </component>
