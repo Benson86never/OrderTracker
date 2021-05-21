@@ -1,4 +1,5 @@
 <cfoutput>
+    <cfdump  var="#error#" abort>
     <cfmail from="info@porthousegrill.com"
         subject="System Error"
         to="#error.mailto#"

@@ -20,61 +20,19 @@
           }
        }
 </style>
-    <cfoutput>
-    <cftry>
-        <cfinclude template="includes/secure.cfm" >
-        <cfinclude template="includes/header.cfm" >
-            <cfset accessroles = CreateObject("Component","v1.model.services.managepermissions").getAccessRoles()>
-            <cfset role = CreateObject("Component","v1.model.services.managepermissions").getRoles()>
-            <cfset access = CreateObject("Component","v1.model.services.managepermissions").getAccess()>
-            
-            <cfif isDefined("form.role_access_Id")>
-              <cfset add_access_role = CreateObject("Component","v1.model.services.managepermissions").addAccessRoles(roleId,accessId)>
-              <cflocation href="manageaccess.cfm">
-              </cfif>
-                <cfdump var="#form#">
-                <!---<cfloop list="#form.chk1#" index="role">
-                     <cfset roleId="#role#">
-
-                    <cfloop list="#form.hidval1#" index="access">
-                          <cfset accessId="#access#">--->
-                        <cfloop query="role">
-                        <cfset roleId="#role.RoleID#">
-                       <cfloop query="access">
-                         <cfset accessId="#access.AccessID#">
-                             <cfdump var="#add_access_role#">
-                             <cfif add_access_role eq true>
-                                 <cfif isDefined("form.chk1")>
-                                     Nothing<br>
-                                  <cfelse>
-                                        delete<br>
-                                 </cfif>
-                            <cfelse>insert<br>
-                            </cfif>
-                    </cfloop>
-                </cfloop>
-                <!---<cfloop query="role">
-                        <cfset roleId="#role.RoleID#">
-                       <cfloop query="access">
-                         <cfset accessId="#access.AccessID#">
-                <cfset add_access_role = CreateObject("Component","v1.model.services.managepermissions").addAccessRoles(roleId,accessId)>
-
-                      <!--- <cfdump var="#accessroles#">--->
-                       
-                            <cfif add_access_role eq true>
-                                 <cfif isDefined("form.chk1")>
-                                     Nothing
-                                  <cfelse>
-                                        delete
-                                 </cfif>
-                            <cfelse>insert
-                            </cfif>
-                       </cfloop>
-                </cfloop>--->
-            </cfif>
-<!---<cfdump var="#role#">--->
-        <div class="container">
-            <div class="row">
+<cfoutput>
+    <cfset permissionobj = CreateObject("Component","v1.model.services.managepermissions")>
+    <cfif isDefined("form.role_access_Id")>
+        <cfset add_access_role = permissionobj.addAccessRoles(data = form.chk1)>
+        <cflocation url="manageaccess.cfm">
+    </cfif>
+    <cfinclude template="includes/secure.cfm" >
+    <cfinclude template="includes/header.cfm" >
+    <cfset accessroles = permissionobj.getAccessRoles()>
+    <cfset role = permissionobj.getRoles()>
+    <cfset access = permissionobj.getAccess()>
+    <div class="container">
+        <div class="row">
             <form action="" method="post" name="role_access_Id">
                <div class="row">
                     <div class = "col-xs-4 sectionHeader" style="font-size:22px;padding-top:40px;">
@@ -117,7 +75,7 @@
                                         <input type="checkbox"
                                             id="#access.AccessID#"
                                             name="chk1"
-                                            value="#role.RoleID#"
+                                            value="#role.RoleID#_#access.AccessID#"
                                             class="c1"
                                             #checked#>
                                     </td>
@@ -129,142 +87,34 @@
                 <div class="buttondiv pull-right">
                     <input type="submit" id="saveBtn" value="Save" name="role_access_Id" class="btn btn-success">
                 </div>
-                </form>
-            </div>
+            </form>
         </div>
-        <cfcatch>
-           <cfdump var="#cfcatch#">
-        </cfcatch>
-        </cftry>
+    </div>
 </cfoutput>
 <script>
-<!---$(document).ready(function() {
-    $.ajax({
-                                   url: 'v1/model/services/managepermissions.cfc?method=getAccessRoles',
-                                   type: 'get',
-                                   dataType: 'json',
-                                  success: function(data){
-                                    //var result="";
-                                   console.log(data)
-                                   /*$.each(data.COLUMNS, function(index,item) {
-                                   console.log(item.ROLE_ID);
-                                  });*/
-                                  for (var i in data) {
-                                  console.log(data[i])
-                                  }
-                                  },
-                                  error: function(data){
-                                      alert(error)
-                                  }
-                            });
-               
-});--->
     var checkboxes = document.getElementsByName("rolechk");
     var datacheck=document.getElementsByName("chk1");
     var dataval= document.getElementsByName("hidval1");
-
-       function selectcheck(){
-            for (var i = 0; i < checkboxes.length; i++) {
-                if(checkboxes[i].checked){
-                    //console.log(checkboxes[i].value);
-                       for(var j = 0; j < datacheck.length; j++){
-                            if(checkboxes[i].value == datacheck[j].value){
-                                datacheck[j].checked = true;
-                            }
-
+    function selectcheck(){
+        for (var i = 0; i < checkboxes.length; i++) {
+            if(checkboxes[i].checked){
+                //console.log(checkboxes[i].value);
+                    for(var j = 0; j < datacheck.length; j++){
+                        if(checkboxes[i].value == datacheck[j].value){
+                            datacheck[j].checked = true;
                         }
-                }
-                else{
-                        //console.log(checkboxes[i].value);
-                        for(var j = 0; j < datacheck.length; j++){
-                            if(checkboxes[i].value == datacheck[j].value){
-                                console.log(datacheck[j].value);
-                                datacheck[j].checked = false;
-                            }
-                        }
+
                     }
             }
-    }
-    /*function savedata(){
-      $('[name=chk1]:checked').each(function () {
-        alert('selected: ' + $('#hidval').val());
-            });     
-      }        
-           for(var i=0; i < checkboxes.length; i++){
-
-                if(checkboxes[i].checked){
-                  for(var k=0; k < dataval.length; k++){
-
-                    console.log(checkboxes[i].value);
-                    console.log(dataval[k].value);
-                //if(checkboxes[j].value == datacheck[i].value){
-                            $.ajax({
-                                   url: 'v1/model/services/managepermissions.cfc?method=addAccessRoles',
-                                   type: 'get',
-                                   data: {
-                                   roleId : checkboxes[i].value,
-                                   accessId : dataval[k].value
-                                   },
-                                  success: function(data){
-                                   console.log(data)
-                                  },
-                                  error: function(data){
-                                      alert(error)
-                                  }
-                            });
-
-                }
-                }
-                
-             
-             else{
-                    for(var j=0;j<datacheck.length;j++){
-                      //for(var k=0; k < dataval.length; k++){
-
-                     if(checkboxes[i].value == datacheck[j].value){
-
-                           if(datacheck[j].checked){
-                           console.log(checkboxes[i].value)
-                            console.log($(datacheck[j]).attr('id'));
-                             $.ajax({
-                                   url: 'v1/model/services/managepermissions.cfc?method=addAccessRoles',
-                                   type: 'get',
-                                   data: {
-                                   roleId : checkboxes[i].value,
-                                   accessId : $(datacheck[j]).attr('id')
-                                   },
-                                  success: function(data){
-                                   console.log(data)
-                                  },
-                                  error: function(data){
-                                      alert(error)
-                                  }
-                            });
-                           }
-                           }
-                    // }
-                    
+            else{
+                    //console.log(checkboxes[i].value);
+                    for(var j = 0; j < datacheck.length; j++){
+                        if(checkboxes[i].value == datacheck[j].value){
+                            console.log(datacheck[j].value);
+                            datacheck[j].checked = false;
+                        }
                     }
-             
                 }
-           }
-    }*/
-   /*function getdata(){
-       console.log(checkboxes.checked);
-       console.log(datacheck.value);
-       for(var i=0;i<checkboxes.length;i++){
-       for(var j=0;j<datacheck.length;j++){
-                  alert(datacheck[j].checked);
-                 if(datacheck[j].checked){ 
-                     $('[name=chk1]:checked').each(function () {
-                        alert('selected: ' + $('#hidval').val());
-                      });
-                      if(!(checkboxes.checked) && (datacheck.value > 0)){  
-                      alert("hi");
-                      }
-                      
-                      }
-   }
-       }
-   }*/
+        }
+    }
 </script>
