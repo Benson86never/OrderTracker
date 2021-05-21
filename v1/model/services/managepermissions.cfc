@@ -104,18 +104,25 @@
           AND Access_ID = <cfqueryparam value='#arguments.accessId#' cfsqltype="cf_sql_integer">
         </cfquery>
         <cfif NOT accessrole.recordcount>
-            <cfquery name="addaccessrole" datasource="ordertracker" result="res">
+            <cfquery name="addaccessrole" datasource="ordertracker">
                 INSERT INTO accesspermission (Role_ID,Access_ID)
                 VALUES (<cfqueryparam value='#arguments.roleId#' cfsqltype="cf_sql_integer">,
                         <cfqueryparam value='#arguments.accessId#' cfsqltype="cf_sql_integer">)
             </cfquery>
         </cfif>
-        <cfif res.recordcount gt 0>
+        <cfif accessrole.recordcount gt 0>
            <cfreturn true>
         <cfelse>
             <cfreturn false>
         </cfif>
     </cffunction>
+    get all roles get all access loop through roles and access 
+    get record count from access permission 
+    if recordcount and 
+        form variable defined nothing
+        else delete access permission
+    else
+    form variable defined insert 
     <cffunction name="getAccessRoles" access="remote" returnFormat="JSON">
         <cfset local.result = {}>
         <cfquery name="getdata" datasource="ordertracker">

@@ -21,14 +21,61 @@
        }
 </style>
     <cfoutput>
+    <cftry>
         <cfinclude template="includes/secure.cfm" >
         <cfinclude template="includes/header.cfm" >
             <cfset accessroles = CreateObject("Component","v1.model.services.managepermissions").getAccessRoles()>
             <cfset role = CreateObject("Component","v1.model.services.managepermissions").getRoles()>
             <cfset access = CreateObject("Component","v1.model.services.managepermissions").getAccess()>
+            
+            <cfif isDefined("form.role_access_Id")>
+              <cfset add_access_role = CreateObject("Component","v1.model.services.managepermissions").addAccessRoles(roleId,accessId)>
+              <cflocation href="manageaccess.cfm">
+              </cfif>
+                <cfdump var="#form#">
+                <!---<cfloop list="#form.chk1#" index="role">
+                     <cfset roleId="#role#">
+
+                    <cfloop list="#form.hidval1#" index="access">
+                          <cfset accessId="#access#">--->
+                        <cfloop query="role">
+                        <cfset roleId="#role.RoleID#">
+                       <cfloop query="access">
+                         <cfset accessId="#access.AccessID#">
+                             <cfdump var="#add_access_role#">
+                             <cfif add_access_role eq true>
+                                 <cfif isDefined("form.chk1")>
+                                     Nothing<br>
+                                  <cfelse>
+                                        delete<br>
+                                 </cfif>
+                            <cfelse>insert<br>
+                            </cfif>
+                    </cfloop>
+                </cfloop>
+                <!---<cfloop query="role">
+                        <cfset roleId="#role.RoleID#">
+                       <cfloop query="access">
+                         <cfset accessId="#access.AccessID#">
+                <cfset add_access_role = CreateObject("Component","v1.model.services.managepermissions").addAccessRoles(roleId,accessId)>
+
+                      <!--- <cfdump var="#accessroles#">--->
+                       
+                            <cfif add_access_role eq true>
+                                 <cfif isDefined("form.chk1")>
+                                     Nothing
+                                  <cfelse>
+                                        delete
+                                 </cfif>
+                            <cfelse>insert
+                            </cfif>
+                       </cfloop>
+                </cfloop>--->
+            </cfif>
 <!---<cfdump var="#role#">--->
         <div class="container">
             <div class="row">
+            <form action="" method="post" name="role_access_Id">
                <div class="row">
                     <div class = "col-xs-4 sectionHeader" style="font-size:22px;padding-top:40px;">
                          Manage Access Permissions
@@ -42,7 +89,13 @@
                         <tr>
                             <th>AccessPermission</th>
                             <cfloop query="role">
-                            <th><input type="checkbox" id="rolechk1" name="rolechk" value="#role.RoleID#" onchange="selectcheck()">#role.Name#</th>
+                                 <th>
+                                    <input type="checkbox" 
+                                         id="rolechk1" 
+                                         name="rolechk" 
+                                         value="#role.RoleID#" 
+                                         onchange="selectcheck()">#role.Name#
+                                 </th>
                             </cfloop>
                         </tr>
                     </thead>
@@ -50,11 +103,14 @@
                         <cfloop query="access">
                             <tr>
                                 <td>#access.Name#</td>
-                                <input type="hidden" id="hidval" name="hidval1" value="#access.AccessID#">
+                                    <input type="hidden" 
+                                        id="hidval" 
+                                        name="hidval1" 
+                                        value="#access.AccessID#">
                                 <cfloop query="role">
                                     <cfset checked = "">
                                     <cfif structKeyExists(accessroles, '#access.AccessID#')
-                                        AND structKeyExists(accessroles['#access.AccessID#'], '#role.roleId#')>
+                                        AND structKeyExists(accessroles['#access.AccessID#'], '#role.RoleID#')>
                                         <cfset checked = "checked">
                                     </cfif>
                                     <td>
@@ -71,10 +127,15 @@
                     </tbody>
                 </table>
                 <div class="buttondiv pull-right">
-                    <input type="button" id="saveBtn" value="Save" class="btn btn-success" onclick="savedata()">
+                    <input type="submit" id="saveBtn" value="Save" name="role_access_Id" class="btn btn-success">
                 </div>
+                </form>
             </div>
         </div>
+        <cfcatch>
+           <cfdump var="#cfcatch#">
+        </cfcatch>
+        </cftry>
 </cfoutput>
 <script>
 <!---$(document).ready(function() {
@@ -117,18 +178,18 @@
                         //console.log(checkboxes[i].value);
                         for(var j = 0; j < datacheck.length; j++){
                             if(checkboxes[i].value == datacheck[j].value){
-                                //console.log(datacheck[j].value);
+                                console.log(datacheck[j].value);
                                 datacheck[j].checked = false;
                             }
                         }
                     }
             }
     }
-    function savedata(){
-      /*$('[name=chk1]:checked').each(function () {
+    /*function savedata(){
+      $('[name=chk1]:checked').each(function () {
         alert('selected: ' + $('#hidval').val());
             });     
-      }*/        
+      }        
            for(var i=0; i < checkboxes.length; i++){
 
                 if(checkboxes[i].checked){
@@ -187,7 +248,7 @@
              
                 }
            }
-    }
+    }*/
    /*function getdata(){
        console.log(checkboxes.checked);
        console.log(datacheck.value);
