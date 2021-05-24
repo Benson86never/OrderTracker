@@ -52,30 +52,30 @@
                  active
                 </cfif>" href="list.cfm">List</a>
               </li>--->
-              <cfif ListFind(session.secure.access,'9')>
-              <li class="nav-item">
-                <a class="nav-link
-                  <cfif cgi.script_name contains "list.cfm"
-                    OR cgi.script_name contains "orders_open.cfm"
-                    OR cgi.script_name contains "order_email.cfm"
-                    OR cgi.script_name contains "cart.cfm">
-                    active
-                  </cfif>" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                  Orders <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="list.cfm">Create New Order</a></li>
-                  <li><a class="dropdown-item" href="orders_open.cfm">Open Orders</a></li>
-                  <li><a class="dropdown-item" href="order_email.cfm">Send Orders</a></li>
-                  <cfif isDefined('session.cart')>
-                    <li><a class="dropdown-item" href="cart.cfm">View Cart</a></li>
-                  </cfif>
-                </ul>
-              </li>
+              <cfif ListFind(session.secure.access,'9')><!--Access check for orders for valid role-->
+                <li class="nav-item">
+                  <a class="nav-link
+                    <cfif cgi.script_name contains "list.cfm"
+                      OR cgi.script_name contains "orders_open.cfm"
+                      OR cgi.script_name contains "order_email.cfm"
+                      OR cgi.script_name contains "cart.cfm">
+                      active
+                    </cfif>" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    Orders <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="list.cfm">Create New Order</a></li>
+                    <li><a class="dropdown-item" href="orders_open.cfm">Open Orders</a></li>
+                    <li><a class="dropdown-item" href="order_email.cfm">Send Orders</a></li>
+                    <cfif isDefined('session.cart')>
+                      <li><a class="dropdown-item" href="cart.cfm">View Cart</a></li>
+                    </cfif>
+                  </ul>
+                </li>
               </cfif>
               <cfif structKeyExists(session, 'secure')
                 and ListFind('1,4',session.secure.RoleCode) 
-                and ListFind(session.secure.access,'10')>
+                and ListFind(session.secure.access,'10')><!--Access check for Admin for valid role-->
                 <!---<cfset getitem = CreateObject("Component","v1.model.services.managepermissions").getManageId()>
                  <cfset session.getvalue=#getitem#>--->
                 <li class="nav-item">
@@ -97,20 +97,20 @@
                         <li><a class="dropdown-item" href="list_organize.cfm">Organize Lists</a></li>
                         <li><a class="dropdown-item" href="list_item.cfm">Manage List Items</a></li>
                     </cfif>--->
-                    <cfif ListFind(session.secure.access,'7')>
-                    <li><a class="dropdown-item" href="manageitem.cfm">Manage Items & Lists</a></li>
+                    <cfif ListFind(session.secure.access,'7')><!--Access check for manageitem for valid role-->
+                      <li><a class="dropdown-item" href="manageitem.cfm">Manage Items & Lists</a></li>
                     </cfif>
-                    <cfif ListFind(session.secure.access,'8')>
-                    <li><a class="dropdown-item" href="v1/index.cfm?action=admin.manageUsers">Manage Users</a></li>
+                    <cfif ListFind(session.secure.access,'8')><!--Access check for manageusers for valid role-->
+                      <li><a class="dropdown-item" href="v1/index.cfm?action=admin.manageUsers">Manage Users</a></li>
                     </cfif>
-                    <cfif ListFind(session.secure.access,'11')>
-                    <li><a class="dropdown-item" href="v1/index.cfm?action=admin.manageBusiness">Manage Business</a></li>
+                    <cfif ListFind(session.secure.access,'11')><!--Access check for manage business for valid role-->
+                      <li><a class="dropdown-item" href="v1/index.cfm?action=admin.manageBusiness">Manage Business</a></li>
                     </cfif>
-                    <cfif ListFind(session.secure.access,'12')>
-                    <li><a class="dropdown-item" href="manageaccess.cfm">Manage Access</a></li>
+                    <cfif ListFind(session.secure.access,'12')><!--Access check for manageaccess for valid role-->
+                      <li><a class="dropdown-item" href="manageaccess.cfm">Manage Access</a></li>
                     </cfif>
                   </ul>
-                  </li>
+                </li>
               </cfif>
             </ul>
           </div>
