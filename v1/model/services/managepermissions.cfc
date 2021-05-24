@@ -159,7 +159,7 @@
         </cfloop>
         <cfreturn local.result>
     </cffunction>
-    <cffunction name="getManageId" access="remote">
+    <cffunction name="getAccessId" access="remote">
         <cfquery name="local.getMngId" datasource="ordertracker">
               SELECT 
               Access_ID 

@@ -1,4 +1,4 @@
-<cfset variables.numIterarions = 0 />
+<cfset variables.numIterarions = 0 />      
 <cfif isDefined('form.Submit') and form.submit is "login">
 	<cfquery name="qrySelectUser" datasource="ordertracker">
 		select * from person where email='#form.username#'
@@ -16,6 +16,7 @@
          </cfif> 
 		<cfset session.secure.loggedin="yes">
 		<cfset session.secure.MasterAccount="1">
+		
 		<cfquery name="qrySelectBusinessname" datasource="#application.datasource#">
 			SELECT
 				B.businessid,
@@ -34,6 +35,8 @@
 		<cfset session.secure.firstname ="#qrySelectUser.firstname#">
 		<cfset session.secure.lastname ="#qrySelectUser.lastname#">
 		<cfset session.secure.RoleCode="#qrySelectUser.type#">
+		<cfset getitem = CreateObject("Component","v1.model.services.managepermissions").getAccessId()>
+        <cfset session.secure.access="#getitem#"> 
 		<cflocation url="list.cfm" addtoken="no">
 	<cfelse>
 	 <cfcookie name="hdnUserName" value="#form.userName#" expires="never">

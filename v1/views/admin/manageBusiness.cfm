@@ -79,26 +79,34 @@
               <td class="text-center">
                 <cfif session.secure.rolecode eq 1>
                   <cfif business.active EQ 1>
+                   <cfif ListFind(session.secure.access,'14')>
                     <button class="btn btn-danger deactivateBusiness" businessname = "#business.BusinessName#"
                       businessId="#business.BusinessId#">
                       <i class="fas fa-store-slash"></i>
                     </button>
+                   </cfif>
                   <cfelse>
+                   <cfif ListFind(session.secure.access,'13')>
                     <button class="btn btn-warning reactivateBusiness" businessname = "#business.BusinessName#"
                       businessId="#business.BusinessId#">
                       <i class="fas fa-store"></i>
                     </button>
+                   </cfif>
                   </cfif>
                 </cfif>
                 <cfif business.active EQ 1>
+                 <cfif ListFind(session.secure.access,'1')>
                   <a href="index.cfm?action=admin.addBusiness&businessId=#encrypt(business.BusinessId, application.uEncryptKey, "BLOWFISH", "Hex")#"
                     class = "btn btn-success">
                     <i class="fas fa-pencil-alt"></i>
                   </a>
+                 </cfif>
+                 <cfif ListFind(session.secure.access,'8')>
                   <a href="index.cfm?action=admin.manageusers&businessId=#encrypt(business.BusinessId, application.uEncryptKey, "BLOWFISH", "Hex")#"
                     class = "btn btn-info">
                     <i class="fa fa-user" aria-hidden="true"></i>
                   </a>
+                 </cfif>
                 </cfif>
               </td>
             </tr>  

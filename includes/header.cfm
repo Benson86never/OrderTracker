@@ -52,6 +52,7 @@
                  active
                 </cfif>" href="list.cfm">List</a>
               </li>--->
+              <cfif ListFind(session.secure.access,'9')>
               <li class="nav-item">
                 <a class="nav-link
                   <cfif cgi.script_name contains "list.cfm"
@@ -71,9 +72,12 @@
                   </cfif>
                 </ul>
               </li>
-      <cfset getitem = CreateObject("Component","v1.model.services.managepermissions")>
+              </cfif>
               <cfif structKeyExists(session, 'secure')
-                and ListFind('1,4',session.secure.RoleCode)>
+                and ListFind('1,4',session.secure.RoleCode) 
+                and ListFind(session.secure.access,'10')>
+                <!---<cfset getitem = CreateObject("Component","v1.model.services.managepermissions").getManageId()>
+                 <cfset session.getvalue=#getitem#>--->
                 <li class="nav-item">
                   <a class="nav-link
                   <cfif cgi.script_name contains "item.cfm"
@@ -93,12 +97,18 @@
                         <li><a class="dropdown-item" href="list_organize.cfm">Organize Lists</a></li>
                         <li><a class="dropdown-item" href="list_item.cfm">Manage List Items</a></li>
                     </cfif>--->
-                    <cfset manageitem = getitem.getManageId()>
-                     <cfif listfind(manageitem,7)>
-                    <li><a class="dropdown-item" href="manageitem.cfm">Manage Items & Lists</a></li></cfif>
+                    <cfif ListFind(session.secure.access,'7')>
+                    <li><a class="dropdown-item" href="manageitem.cfm">Manage Items & Lists</a></li>
+                    </cfif>
+                    <cfif ListFind(session.secure.access,'8')>
                     <li><a class="dropdown-item" href="v1/index.cfm?action=admin.manageUsers">Manage Users</a></li>
+                    </cfif>
+                    <cfif ListFind(session.secure.access,'11')>
                     <li><a class="dropdown-item" href="v1/index.cfm?action=admin.manageBusiness">Manage Business</a></li>
+                    </cfif>
+                    <cfif ListFind(session.secure.access,'12')>
                     <li><a class="dropdown-item" href="manageaccess.cfm">Manage Access</a></li>
+                    </cfif>
                   </ul>
                   </li>
               </cfif>
