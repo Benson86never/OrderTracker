@@ -7,27 +7,13 @@
         <cfif isDefined('session.secure.rolecode') and session.secure.rolecode neq 1 and cgi.script_name contains "user.cfm">
         <cflocation url="index.cfm" addtoken="no">
         </cfif>
-        <cfswitch expression="#listlast(cgi.script_name, '/ =')#">
-            <cfcase value="manageaccess.cfm">
-                <cfif NOT ListFind(session.secure.access,'12')>
-                    <cflocation url="noaccess.cfm" addtoken="no">
-                </cfif>
-            </cfcase>
-            <cfcase value="admin.manageBusiness">
-                <cfif NOT ListFind(session.secure.access,'11')>
-                    <cflocation url="noaccess.cfm" addtoken="no">
-                </cfif>
-            </cfcase>
-            <cfcase value="manageitem.cfm">
-                <cfif NOT ListFind(session.secure.access,'7')>
-                    <cflocation url="noaccess.cfm" addtoken="no">
-                </cfif>
-            </cfcase>
-            <cfcase value="admin.manageUsers">
-                <cfif NOT ListFind(session.secure.access,'8')>
-                    <cflocation url="noaccess.cfm" addtoken="no">
-                </cfif>
-            </cfcase>
+        <cfif find('v1', cgi.script_name)>
+            <cfset local.querystring = listfirst(cgi.query_string, '&')>
+            <cfset local.expression = listlast(local.querystring, '=')>
+        <cfelse>
+            <cfset local.expression = listlast(cgi.script_name, '/')>
+        </cfif>
+        <cfswitch expression="#local.expression#">
             <cfcase value="list.cfm">
                 <cfif NOT ListFind(session.secure.access,'15')>
                     <cflocation url="noaccess.cfm" addtoken="no">
@@ -41,6 +27,26 @@
             <cfcase value="order_email.cfm">
                 <cfif NOT ListFind(session.secure.access,'17')>
                     <cflocation url="noaccess.cfm" addtoken="no">
+                </cfif>
+            </cfcase>
+            <cfcase value="manageaccess.cfm">
+                <cfif NOT ListFind(session.secure.access,'12')>
+                    <cflocation url="noaccess.cfm" addtoken="no">
+                </cfif>
+            </cfcase>
+            <cfcase value="manageitem.cfm">
+                <cfif NOT ListFind(session.secure.access,'7')>
+                    <cflocation url="noaccess.cfm" addtoken="no">
+                </cfif>
+            </cfcase>
+            <cfcase value="admin.manageBusiness">
+                <cfif NOT ListFind(session.secure.access,'11')>
+                    <cflocation url="../noaccess.cfm" addtoken="no">
+                </cfif>
+            </cfcase>
+            <cfcase value="admin.manageUsers">
+                <cfif NOT ListFind(session.secure.access,'8')>
+                    <cflocation url="../noaccess.cfm" addtoken="no">
                 </cfif>
             </cfcase>
         </cfswitch>
