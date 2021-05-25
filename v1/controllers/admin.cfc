@@ -1,5 +1,6 @@
 component accessors="true" {
   property adminService;
+  property managepermissionsService;
   public any function init( fw ) {
     variables.fw = fw;
     return this;
@@ -8,6 +9,7 @@ component accessors="true" {
   public void function manageusers(rc){
     param name="rc.businessId" default = 0;
     param name="rc.status" default = 1;
+    
     if(session.secure.rolecode == 4)
     {
       rc.businessid = encrypt(session.secure.SubAccount, application.uEncryptKey, "BLOWFISH", "Hex");
@@ -24,6 +26,7 @@ component accessors="true" {
     {
       rc.businessid =  session.secure.SubAccount;
     }
+    managepermissionsService.checkAccess();
     rc.businessDetails = adminService.getBusinessDetails(
       businessid = rc.businessid,
       status = rc.status).business;
