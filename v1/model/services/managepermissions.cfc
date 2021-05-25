@@ -13,6 +13,37 @@
                     <cflocation url="noaccess.cfm" addtoken="no">
                 </cfif>
             </cfcase>
+            <cfcase value="index.cfm?action=admin.manageBusiness">
+                <cfdump var="#listlast(cgi.script_name, '/')#">
+                <cfif NOT ListFind(session.secure.access,'11')>
+                    <cflocation url="noaccess.cfm" addtoken="no">
+                </cfif>
+            </cfcase>
+            <cfcase value="manageitem.cfm">
+                <cfif NOT ListFind(session.secure.access,'7')>
+                    <cflocation url="noaccess.cfm" addtoken="no">
+                </cfif>
+            </cfcase>
+            <cfcase value="index.cfm?action=admin.manageusers">
+                <cfif NOT ListFind(session.secure.access,'8')>
+                    <cflocation url="noaccess.cfm" addtoken="no">
+                </cfif>
+            </cfcase>
+            <cfcase value="list.cfm">
+                <cfif NOT ListFind(session.secure.access,'15')>
+                    <cflocation url="noaccess.cfm" addtoken="no">
+                </cfif>
+            </cfcase>
+            <cfcase value="orders_open.cfm">
+                <cfif NOT ListFind(session.secure.access,'16')>
+                    <cflocation url="noaccess.cfm" addtoken="no">
+                </cfif>
+            </cfcase>
+            <cfcase value="order_email.cfm">
+                <cfif NOT ListFind(session.secure.access,'17')>
+                    <cflocation url="noaccess.cfm" addtoken="no">
+                </cfif>
+            </cfcase>
         </cfswitch>
         <cfreturn true>
     </cffunction>

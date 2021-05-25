@@ -14,6 +14,7 @@ component accessors="true" {
     {
       rc.businessid = encrypt(session.secure.SubAccount, application.uEncryptKey, "BLOWFISH", "Hex");
     }
+    managepermissionsService.checkAccess();
     rc.userDetails = adminService.getUserDetails(
     businessId = rc.businessId,
     status = rc.status).users;

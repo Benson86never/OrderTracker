@@ -72,9 +72,15 @@
                   Orders <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="../list.cfm">Create New Order</a></li>
-                  <li><a class="dropdown-item" href="../orders_open.cfm">Open Orders</a></li>
-                  <li><a class="dropdown-item" href="../order_email.cfm">Send Orders</a></li>
+                  <cfif ListFind(session.secure.access,'15')><!--Access check for new orders-->
+                    <li><a class="dropdown-item" href="../list.cfm">Create New Order</a></li>
+                  </cfif>
+                  <cfif ListFind(session.secure.access,'16')><!--Access check for open orders-->
+                    <li><a class="dropdown-item" href="../orders_open.cfm">Open Orders</a></li>
+                  </cfif>
+                  <cfif ListFind(session.secure.access,'17')><!--Access check for send orders-->
+                    <li><a class="dropdown-item" href="../order_email.cfm">Send Orders</a></li>
+                  </cfif>
                   <cfif isDefined('session.cart')>
                     <li><a class="dropdown-item" href="../cart.cfm">View Cart</a></li>
                   </cfif>
