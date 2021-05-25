@@ -89,7 +89,7 @@
         <cfquery name="upaccess" datasource="ordertracker" result="res">
               UPDATE access
               set Name = <cfqueryparam value='#arguments.accessName#' cfsqltype="cf_sql_varchar">
-              WHERE 0 = <cfqueryparam value='#arguments.accessId#' cfsqltype="cf_sql_integer">
+              WHERE AccessID = <cfqueryparam value='#arguments.accessId#' cfsqltype="cf_sql_integer">
         </cfquery>
         <cfif res.recordcount gt 0>
            <cfreturn true>
