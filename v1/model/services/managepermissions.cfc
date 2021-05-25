@@ -7,14 +7,13 @@
         <cfif isDefined('session.secure.rolecode') and session.secure.rolecode neq 1 and cgi.script_name contains "user.cfm">
         <cflocation url="index.cfm" addtoken="no">
         </cfif>
-        <cfswitch expression="#listlast(cgi.script_name, '/')#">
+        <cfswitch expression="#listlast(cgi.script_name, '/ =')#">
             <cfcase value="manageaccess.cfm">
                 <cfif NOT ListFind(session.secure.access,'12')>
                     <cflocation url="noaccess.cfm" addtoken="no">
                 </cfif>
             </cfcase>
-            <cfcase value="index.cfm?action=admin.manageBusiness">
-                <cfdump var="#listlast(cgi.script_name, '/')#">
+            <cfcase value="admin.manageBusiness">
                 <cfif NOT ListFind(session.secure.access,'11')>
                     <cflocation url="noaccess.cfm" addtoken="no">
                 </cfif>
@@ -24,7 +23,7 @@
                     <cflocation url="noaccess.cfm" addtoken="no">
                 </cfif>
             </cfcase>
-            <cfcase value="index.cfm?action=admin.manageusers">
+            <cfcase value="admin.manageUsers">
                 <cfif NOT ListFind(session.secure.access,'8')>
                     <cflocation url="noaccess.cfm" addtoken="no">
                 </cfif>
