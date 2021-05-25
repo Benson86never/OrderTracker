@@ -62,7 +62,8 @@
     <cffunction name="getAccess" access="remote">
          <cfquery name="access" datasource="ordertracker">
              SELECT AccessID,Name 
-             FROM access WHERE active=1;
+             FROM access WHERE active=1
+             order by name;
          </cfquery>
          <!---<cfif access.recordcount gt 0>--->
             <cfreturn access>
