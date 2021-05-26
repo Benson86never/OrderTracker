@@ -201,7 +201,7 @@
                 $(".add-newlist").removeAttr("disabled");
               },
               error: function(xhr, textStatus, errorThrown){
-                alert(errorThrown);
+                alert("Access name already exist");
               }
             });
         }		
@@ -230,7 +230,10 @@
             success: function(data){
             location.reload();
             $(".add-newlist1").removeAttr("disabled");
-            }
+            },
+            error: function(xhr, textStatus, errorThrown){
+                alert("Role name already exist");
+              }
           });
       }		
     });
@@ -324,7 +327,11 @@
             });
             actions.toggle();
             $(".add-newlist").removeAttr("disabled");
-          }
+          },
+          error: function(xhr, textStatus, errorThrown){
+                alert("Access name already exist");
+                location.reload();
+              }
         });
     });
      //save for roles
@@ -345,7 +352,11 @@
             });
             actions.toggle();
             $(".add-newlist1").removeAttr("disabled");
-          }
+          },
+          error: function(xhr, textStatus, errorThrown){
+                alert("Role name already exist");
+                location.reload();
+              }
         });
     });
   });

@@ -101,7 +101,7 @@
                       <i class="fas fa-pencil-alt"></i>
                     </a>
                   </cfif>
-                  <cfif ListFind(session.secure.access,'8')><!--Access check for manage users for valid role-->
+                  <cfif ListFind(session.secure.access,'21')><!--Access check for Business User Information for valid role-->
                     <a href="index.cfm?action=admin.manageusers&businessId=#encrypt(business.BusinessId, application.uEncryptKey, "BLOWFISH", "Hex")#"
                       class = "btn btn-info">
                       <i class="fa fa-user" aria-hidden="true"></i>

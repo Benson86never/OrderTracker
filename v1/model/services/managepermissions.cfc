@@ -70,11 +70,17 @@
     </cffunction>
     <cffunction name="addAccess" access="remote" returntype="boolean" returnFormat="plain">
        <cfargument name="nameaccess" required="true">
-        <cfquery name="addacs" datasource="ordertracker" result="res">
-              INSERT INTO access (Name)
-              VALUES (<cfqueryparam value='#arguments.nameaccess#' cfsqltype="cf_sql_varchar">)
-
+        <cfquery name="checkaccess" datasource="ordertracker">
+               SELECT 1
+               FROM access
+               WHERE Name=<cfqueryparam value='#arguments.nameaccess#' cfsqltype="cf_sql_varchar">
         </cfquery>
+        <cfif NOT checkaccess.recordcount>
+            <cfquery name="addacs" datasource="ordertracker" result="res">
+                INSERT INTO access (Name)
+                VALUES (<cfqueryparam value='#arguments.nameaccess#' cfsqltype="cf_sql_varchar">)
+            </cfquery>
+        </cfif>
         <cfif res.recordcount gt 0>
            <cfreturn true>
         <cfelse>
@@ -83,11 +89,17 @@
     </cffunction>
     <cffunction name="addRoles" access="remote" returntype="boolean" returnFormat="plain">
        <cfargument name="nameroles" required="true">
-        <cfquery name="addrole" datasource="ordertracker" result="res">
-              INSERT INTO roles (Name)
-              VALUES (<cfqueryparam value='#arguments.nameroles#' cfsqltype="cf_sql_varchar">)
-
-        </cfquery>
+       <cfquery name="checkroles" datasource="ordertracker">
+            SELECT 1
+            FROM roles
+            WHERE Name=<cfqueryparam value='#arguments.nameroles#' cfsqltype="cf_sql_varchar">
+       </cfquery>
+       <cfif NOT checkroles.recordcount>
+            <cfquery name="addrole" datasource="ordertracker" result="res">
+                INSERT INTO roles (Name)
+                VALUES (<cfqueryparam value='#arguments.nameroles#' cfsqltype="cf_sql_varchar">)
+            </cfquery>
+        </cfif>
         <cfif res.recordcount gt 0>
            <cfreturn true>
         <cfelse>
@@ -123,11 +135,19 @@
     <cffunction name="updateaccess" access="remote" returntype="boolean" returnFormat="plain" >
        <cfargument name="accessId" required="true">
        <cfargument name="accessName" required="true">
-        <cfquery name="upaccess" datasource="ordertracker" result="res">
-              UPDATE access
-              set Name = <cfqueryparam value='#arguments.accessName#' cfsqltype="cf_sql_varchar">
-              WHERE AccessID = <cfqueryparam value='#arguments.accessId#' cfsqltype="cf_sql_integer">
+       <cfquery name="checkaccessupdate" datasource="ordertracker">
+            SELECT 1
+            FROM access
+            WHERE Name=<cfqueryparam value='#arguments.accessName#' cfsqltype="cf_sql_varchar">
+            AND AccessID != <cfqueryparam value='#arguments.accessId#' cfsqltype="cf_sql_integer">
+       </cfquery>
+       <cfif NOT checkaccessupdate.recordcount>
+       <cfquery name="upaccess" datasource="ordertracker" result="res">
+            UPDATE access
+            set Name = <cfqueryparam value='#arguments.accessName#' cfsqltype="cf_sql_varchar">
+            WHERE AccessID = <cfqueryparam value='#arguments.accessId#' cfsqltype="cf_sql_integer">
         </cfquery>
+        </cfif>
         <cfif res.recordcount gt 0>
            <cfreturn true>
         <cfelse>
@@ -137,11 +157,19 @@
     <cffunction name="updateroles" access="remote" returntype="boolean" returnFormat="plain" >
        <cfargument name="roleId" required="true">
        <cfargument name="roleName" required="true">
-        <cfquery name="uproles" datasource="ordertracker" result="res">
-              UPDATE roles
-              set Name = <cfqueryparam value='#arguments.roleName#' cfsqltype="cf_sql_varchar">
-              WHERE RoleID = <cfqueryparam value='#arguments.roleId#' cfsqltype="cf_sql_integer">
-        </cfquery>
+       <cfquery name="checkrolesupdate" datasource="ordertracker">
+           SELECT 1 
+           FROM roles
+           WHERE Name=<cfqueryparam value='#arguments.roleName#' cfsqltype="cf_sql_varchar"> 
+           AND RoleID != <cfqueryparam value='#arguments.roleId#' cfsqltype="integer">
+       </cfquery>
+        <cfif NOT checkrolesupdate.recordcount>
+            <cfquery name="uproles" datasource="ordertracker" result="res">
+                UPDATE roles
+                set Name = <cfqueryparam value='#arguments.roleName#' cfsqltype="cf_sql_varchar">
+                WHERE RoleID = <cfqueryparam value='#arguments.roleId#' cfsqltype="cf_sql_integer">
+            </cfquery>
+        </cfif>
         <cfif res.recordcount gt 0>
            <cfreturn true>
         <cfelse>

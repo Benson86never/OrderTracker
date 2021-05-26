@@ -210,11 +210,13 @@ table.table .form-control.error {
                             </select>
                           </div>
                       </cfif>
-                      <cfinput type="file" name="uploadfile" required="yes" message="You must select a file." class="form-control f1" style="width:200px;display:inline-flex;">
-                      <input type="submit" name="Submit2" value="Upload" class="btn btn-info " style="width:70px;display:inline-flex;">                        
-                      <input type="hidden" name="hdnbusiness" id="hdnbusiness" value="#url.supplierid#">
-                      <input type="button" id="Submit3" name="Submit3" class="btn btn-info" value="Download Item List" onclick="downloadlist();">                          
-                      <a href="DownloadTemplate.cfm"  class="btn btn-info" style="width:110px;display:inline-flex;" >Download Template</a>
+                      <cfif ListFind(session.secure.access,'20')>
+                        <cfinput type="file" name="uploadfile" required="yes" message="You must select a file." class="form-control f1" style="width:200px;display:inline-flex;">
+                        <input type="submit" name="Submit2" value="Upload" class="btn btn-info " style="width:70px;display:inline-flex;">                        
+                        <input type="hidden" name="hdnbusiness" id="hdnbusiness" value="#url.supplierid#">
+                        <input type="button" id="Submit3" name="Submit3" class="btn btn-info" value="Download Item List" onclick="downloadlist();">                          
+                        <a href="DownloadTemplate.cfm"  class="btn btn-info" style="width:110px;display:inline-flex;" >Download Template</a>
+                      </cfif>
                     </cfform>
                  </div>
               </div>
@@ -222,7 +224,7 @@ table.table .form-control.error {
             <div class="col-xs-1 text-right" >
               <input type="search" id="search" name="search" class="form-control" onkeyup="searchTable();" placeholder="Search" style="width:150px;"/> 
             </div>
-            <cfif session.secure.RoleCode EQ 1>
+            <cfif session.secure.RoleCode EQ 1 and ListFind(session.secure.access,'18')>
             <div class="col-xs-1 text-right t1" style="margin-left:50px;"><button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> <span class="hidden-xs">Add New</span></button></div>
             </cfif>
           </div>                
@@ -253,15 +255,19 @@ table.table .form-control.error {
                   <button class="cancel btn btn-danger" title="cancel">
                     <i class="fa fa-times" aria-hidden="true"></i>
                   </button>
-                  <button class="deleteitem btn btn-danger"  action = "delete" id="#item.id#" title="Delete">
-                    <i class="fa fa-trash-alt" aria-hidden="true"></i>
-                  </button>
+                  <cfif ListFind(session.secure.access,'19')>
+                    <button class="deleteitem btn btn-danger"  action = "delete" id="#item.id#" title="Delete">
+                      <i class="fa fa-trash-alt" aria-hidden="true"></i>
+                    </button>
+                  </cfif>
                   <button class="add btn btn-success"  id="#item.id#" action = "add"  title="Add">
                     <i class="fa fa-plus" aria-hidden="true"></i>
                   </button>
-                  <button class="edit btn btn-warning" title="Edit">
-                    <i class="fas fa-pencil-alt"></i>
-                  </button>
+                  <cfif ListFind(session.secure.access,'2')>
+                    <button class="edit btn btn-warning" title="Edit">
+                      <i class="fas fa-pencil-alt"></i>
+                    </button>
+                  </cfif>
                   <button class="add save btn btn-success" action = "update" id="#item.id#" title="save">
                     <i class="fa fa-save" aria-hidden="true"></i>
                   </button>

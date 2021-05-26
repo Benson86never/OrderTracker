@@ -17,6 +17,10 @@
           }
        }
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <cfoutput>
     <cfset permissionobj = CreateObject("Component","v1.model.services.managepermissions")>
     <cfif isDefined("form.role_access_Id")>
@@ -50,7 +54,7 @@
                                          id="rolechk1" 
                                          name="rolechk" 
                                          value="#role.RoleID#" 
-                                         onchange="selectcheck()">#role.Name#
+                                         onchange="selectcheck()"> #role.Name#
                                  </th>
                             </cfloop>
                         </tr>
@@ -79,7 +83,7 @@
                                     </td>
                                 </cfloop>
                             </tr>
-                         </cfloop>
+                        </cfloop>
                     </tbody>
                 </table>
                 <div class="pull-right">
@@ -95,9 +99,11 @@
     var dataval= document.getElementsByName("hidval1");
     function selectcheck(){
         for (var i = 0; i < checkboxes.length; i++) {
+           /* console.log(checkboxes[i].value)*/
             if(checkboxes[i].checked){
-                //console.log(checkboxes[i].value);
+                /*console.log(datacheck[i].value);*/
                     for(var j = 0; j < datacheck.length; j++){
+                        console.log(datacheck[j].value)
                         console.log($(datacheck[j]).attr("id"))
                         if(checkboxes[i].value == $(datacheck[j]).attr("id")){
                             datacheck[j].checked = true;
@@ -108,7 +114,7 @@
             else{
                     //console.log(checkboxes[i].value);
                     for(var j = 0; j < datacheck.length; j++){
-                        if(checkboxes[i].value == $(this).attr("id")){
+                        if(checkboxes[i].value == $(datacheck[j]).attr("id")){
                             console.log(datacheck[j].value);
                             datacheck[j].checked = false;
                         }
