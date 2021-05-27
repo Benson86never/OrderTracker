@@ -51,10 +51,10 @@
                             <cfloop query="role">
                                  <th>
                                     <input type="checkbox" 
-                                         id="rolechk1" 
+                                         id="rolechk_#role.RoleID#" 
                                          name="rolechk" 
-                                         value="#role.RoleID#" 
-                                         onchange="selectcheck()"> #role.Name#
+                                         value="#role.RoleID#"
+                                         class="roles_header"> #role.Name#
                                  </th>
                             </cfloop>
                         </tr>
@@ -75,10 +75,10 @@
                                     </cfif>
                                     <td>
                                         <input type="checkbox"
-                                            id="#role.RoleID#"
+                                            id="id_#role.RoleID#_#access.AccessID#"
                                             name="chk1"
                                             value="#role.RoleID#_#access.AccessID#"
-                                            class="c1"
+                                            class="c1_#RoleID#"
                                             #checked#>
                                     </td>
                                 </cfloop>
@@ -94,32 +94,36 @@
     </div>
 </cfoutput>
 <script>
-    var checkboxes = document.getElementsByName("rolechk");
-    var datacheck=document.getElementsByName("chk1");
-    var dataval= document.getElementsByName("hidval1");
-    function selectcheck(){
-        for (var i = 0; i < checkboxes.length; i++) {
-           /* console.log(checkboxes[i].value)*/
-            if(checkboxes[i].checked){
-                /*console.log(datacheck[i].value);*/
-                    for(var j = 0; j < datacheck.length; j++){
-                        console.log(datacheck[j].value)
-                        console.log($(datacheck[j]).attr("id"))
-                        if(checkboxes[i].value == $(datacheck[j]).attr("id")){
-                            datacheck[j].checked = true;
-                        }
-
+    var arr=[];
+    $(".roles_header").click(function(){
+        var id_val=$(this).attr("id");
+        var value=$(this).val();
+        //alert($(this).val());
+            if($('#'+id_val).is(':checked')){
+                //alert(id_val)
+                let class_value=($(".c1_"+value));
+                for (let i = 0; i < class_value.length; ++i)
+	                {
+                        let row_id=$(class_value[i]).attr("id");
+                            if($('#'+row_id).is(':checked'))
+                                {
+                                    //$(".c1_"+value).attr("checked",true);
+                                    arr.push(row_id);
+                                }
+                            else{
+                                    $('#'+row_id).attr("checked",true);
+                                }
                     }
             }
             else{
-                    //console.log(checkboxes[i].value);
-                    for(var j = 0; j < datacheck.length; j++){
-                        if(checkboxes[i].value == $(datacheck[j]).attr("id")){
-                            console.log(datacheck[j].value);
-                            datacheck[j].checked = false;
+                    //alert(arr);
+                    $(".c1_"+value).attr("checked",false);
+                    for(let i=0; i< arr.length; i++)
+                        {
+                         $('#'+arr[i]).attr("checked",true);
                         }
-                    }
                 }
-        }
-    }
+
+    })
+    
 </script>
