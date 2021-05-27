@@ -17,14 +17,9 @@
           }
        }
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <cfoutput>
     <cfset permissionobj = CreateObject("Component","v1.model.services.managepermissions")>
     <cfif isDefined("form.role_access_Id")>
-        <cfdump var="#form#">
         <cfset add_access_role = permissionobj.addAccessRoles(data = form.chk1)>
         <cflocation url="manageaccess.cfm" addtoken="no">
     </cfif>
@@ -93,37 +88,28 @@
         </div>
     </div>
 </cfoutput>
+<cfinclude template="includes/footer.cfm" >
 <script>
     var arr=[];
     $(".roles_header").click(function(){
         var id_val=$(this).attr("id");
         var value=$(this).val();
-        //alert($(this).val());
-            if($('#'+id_val).is(':checked')){
-                //alert(id_val)
-                let class_value=($(".c1_"+value));
-                for (let i = 0; i < class_value.length; ++i)
-	                {
-                        let row_id=$(class_value[i]).attr("id");
-                            if($('#'+row_id).is(':checked'))
-                                {
-                                    //$(".c1_"+value).attr("checked",true);
-                                    arr.push(row_id);
-                                }
-                            else{
-                                    $('#'+row_id).attr("checked",true);
-                                }
-                    }
-            }
-            else{
-                    //alert(arr);
-                    $(".c1_"+value).attr("checked",false);
-                    for(let i=0; i< arr.length; i++)
-                        {
-                         $('#'+arr[i]).attr("checked",true);
-                        }
+        if($('#'+id_val).is(':checked')) {
+            let class_value=($(".c1_"+value));
+            for (let i = 0; i < class_value.length; ++i) {
+                let row_id=$(class_value[i]).attr("id");
+                if($('#'+row_id).is(':checked')) {
+                    arr.push(row_id);
+                } else{
+                    $('#'+row_id).attr("checked",true);
                 }
-
-    })
-    
+            }
+        } else {
+            $(".c1_"+value).attr("checked",false);
+            for(let i=0; i< arr.length; i++)
+            {
+                $('#'+arr[i]).attr("checked",true);
+            }
+        }
+    });
 </script>
