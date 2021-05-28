@@ -462,9 +462,10 @@ table.table .form-control.error {
       }
     });
 
-    $('#search').on('keyup', function() {
+   /* $('#search').on('keyup', function() {
     var searchVal = $(this).val();
     var filterItems = $('[data-filter-item]');
+    console.log(filterItems);
     if ( searchVal != '' ) {
       filterItems.addClass('hidden');
       console.log('[data-filter-item][data-filter-name*="' + searchVal.toLowerCase() + '"]');
@@ -472,7 +473,7 @@ table.table .form-control.error {
     } else {
       filterItems.removeClass('hidden');
     }
-  });
+  });*/
   </script>
   <script>
 function searchTable() {
@@ -481,7 +482,7 @@ function searchTable() {
   input = document.getElementById('search');
   filter = input.value.toUpperCase();
   tab = document.getElementById("searchTab");
-  tr = tab.getElementsByTagName('tr');
+  tr = $('.list-item');
    
   // Loop through all list items, and hide those who don't match the search query
   for (i = 0; i < tr.length; i++) {
@@ -495,6 +496,11 @@ function searchTable() {
     if(filter == "")
     {
      window.location.reload();    
+    } else {
+      var items = $(".list-wrapper .list-item:visible");     
+      var numItems = items.length;
+      var perPage = 10;
+      items.slice(perPage).hide();
     }
   }  
 }
