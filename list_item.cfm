@@ -134,12 +134,21 @@
     .simple-pagination .next.current {
     background: #e04e60;
     }
+    .style1 {
+      width: 30%;
+    }
+    @media (max-width: 992px) {
+      .style1 {
+           width: 80%;
+      }
+    }
   </style>
   <div class="page-content">
     <cfoutput >
       <div class="container">
         <div class="table-wrapper">
           <div class="table-title">
+           <div class="row">
             <cfform name="LinkLists" action="list_ctrl.cfm">
               <table class="list-wrapper table table-bordered table-responsive-sm table-striped" cellspacing="0" cellpadding="0" >
                 <thead>
@@ -167,7 +176,8 @@
                           }
                         </cfscript>
                         for Business: &nbsp;
-                        <select name="business" onchange="changeBusiness(this.value)" class="form-select form-select-lg mb-3" >
+                        <center>
+                        <select name="business" onchange="changeBusiness(this.value)" class="form-select form-select-lg mb-3 form-control style1" >
                         <cfloop array="#local.accounts#" item="account">
                             <option
                               <cfif isdefined("url.businessid") and url.businessid eq account.id>
@@ -178,6 +188,7 @@
                             </option>
                           </cfloop>
                         </select>
+                        </center>
                       </cfif>
                     </th>
                   </tr>
@@ -231,6 +242,7 @@
                 </tbody>
               </table>
             </cfform>
+            </div>
           </div>
           <div id="pagination-container"></div>
         </div>

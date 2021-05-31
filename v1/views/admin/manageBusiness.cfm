@@ -1,17 +1,19 @@
 <style>
   @media (max-width: 767px) {
-     .sectionHeader {
-        font-size:12px !important;
-        margin-left: 10px !important;
-
-     }
+    .sectionHeader {
+      font-size:12px !important;
+      margin-left: 10px !important;
+      }
     #status {
       width: 100px !important;
-       }
-       .container {
-  padding: 0 !important;
-  margin: 0 !important;
-}
+      }
+    .container {
+      padding: 0 !important;
+      margin: 0 !important;
+      }
+    .btn1 {
+      width:10% !important;
+    }
    }
 </style>
 <cfoutput>
@@ -39,8 +41,8 @@
       <thead>
         <tr>
             <th style="display:none;">&nbsp;</th>
-            <th style="text-align:center;">Business Name</th>
-            <th style="text-align:center;">Business Type</th>
+            <th class="text-center">Business Name</th>
+            <th class="text-center">Business Type</th>
             <th class="hidden-xs" style="text-align:center;">Email</th>
             <th class="hidden-xs hidden-sm text-center">Mobile Number</th>
             <th class="hidden-xs hidden-sm text-center">Zip</th>
@@ -49,7 +51,7 @@
             <th class="no-sort text-center">
               Action
               <cfif session.secure.rolecode eq 1>
-              <a class="btn btn-success" href="index.cfm?action=admin.addBusiness">
+              <a class="btn btn-success btn1" href="index.cfm?action=admin.addBusiness">
                 <i class="fa fa-plus" aria-hidden="true"></i>
               </a>
               </cfif>

@@ -15,6 +15,7 @@ component accessors="true" {
       if(structKeyExists(rc, 'userid')) {
         rc.decryptuserid = decrypt(rc.userid, application.uEncryptKey, "BLOWFISH", "Hex");
         rc.userDetails = adminService.getUserDetails(userid = rc.decryptuserid).users;
+        //writeDump(rc.userDetails);
         rc.params = "&userId=#rc.userid#";
         rc.active = 1;
       }

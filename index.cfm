@@ -40,6 +40,10 @@
 	@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
 		#formContent {
 			width: 100% !important;
+			-webkit-border-radius: 10px 10px 10px 10px !important;
+			border-radius: 10px 10px 10px 10px !important;
+			-webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3) !important;
+			box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3) !important;
 		}
 		span, a, input {
 			font-family: "Poppins", sans-serif;
@@ -56,7 +60,7 @@
 			margin-bottom: 50px;
 		}
 		input[type=text],input[type=password] {
-			width: 95% !important;
+			width: 90% !important;
 			height: 120px !important;
 			font-size:40px !important;
 		}
@@ -65,7 +69,7 @@
 			font-size:25px !important;
 		}
 		.remebermetext {
-			margin-right: 20px;
+			margin-right: 30px;
 		}
 		.signin {
 			font-size: 60px !important;
@@ -80,8 +84,8 @@
 	/* Tablet Styles */
 	@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
 		#formContent {
-			max-width:485px;
-		}
+			max-width:485px !important;
+			}
 		input[type=text],input[type=password] {
 			width: 100%;
 			height: 150px !important;
@@ -371,6 +375,7 @@
 	<script type="text/javascript" src="v1/scripts/bootstrap.min.js"></script>
 	<cfinclude template="v1/views/_includes/modals.cfm"> 	
  <cfoutput>
+   <div class="container">
 	<div class="wrapper">
 	  <div id="formContent">
 		<!-- Tabs Titles -->
@@ -438,6 +443,7 @@
 		</div>
 	  </div>
 	</div>
+   </div>
 </cfoutput>
 <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/jquery.inputmask.bundle.js"></script>
 <script>

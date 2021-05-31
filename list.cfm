@@ -14,11 +14,14 @@
 	.panel-default > .panel-heading {
     text-align: center;
     font-size: 24px;
-}
+   }
+   .bleft {
+	   margin: 10px;
+   }
     @media (max-width: 767px) {
-     .panel-body {
-       text-align: center !important;
-      }
+      .bleft {
+		  margin: 15px;
+	  }
      .txtalign {
 	   display: flex;
 		margin: 5px;
@@ -27,12 +30,6 @@
      .c1 {
 	   margin:5px;
         }
-      .container {
-         /*padding: 0 !important;*/
-        padding: 0 !important;
-		margin: 0 !important;
-		
-       }
 	   .items {
 		   width: 40px;
 	   }
@@ -67,8 +64,8 @@
 									</span> - #item.name# <span style="color:blue">#item.supplierName#</span><br />
 							</div>
 						</cfloop>
-						<input type="button" onclick="window.location.href='list.cfm'" class="btn btn-danger" class="btn btn-cancel" value="Cancel"/>
-						<input type="submit" id="sub"name="Submit" value="Add To Cart" class="btn btn-success" onclick="this.disabled=true;this.value='Sending, please wait...';this.form.submit();" />
+						<input type="button" onclick="window.location.href='list.cfm'" class="btn btn-danger bleft" class="btn btn-cancel" value="Cancel"/>
+						<input type="submit" id="sub"name="Submit" value="Add To Cart" class="btn btn-success bleft" onclick="this.disabled=true;this.value='Sending, please wait...';this.form.submit();" />
 					<cfelse>
 						No items available.
 					</cfif>

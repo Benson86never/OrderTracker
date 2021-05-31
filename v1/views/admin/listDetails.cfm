@@ -30,6 +30,9 @@ input, select{
     .editlist, .editsupplier {
       margin-left: 5px;
     }
+    .style1 {
+      width: 55%;
+    }
   </style>
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
@@ -68,7 +71,7 @@ input, select{
                               }
                             </cfscript>
                             Business: &nbsp;
-                            <select name="business" onchange="changeBusinesslist(this.value)" class="form-select form-select-lg mb-3" >
+                            <select name="business" onchange="changeBusinesslist(this.value)" class="form-select form-select-lg mb-3 form-control style1" >
                             <cfloop array="#local.accounts#" item="account">
                                 <option
                                   <cfif isdefined("url.businessid") and url.businessid eq account.id>
@@ -83,7 +86,7 @@ input, select{
                         </cfif>
                       </div>
                       <div class="col-sm-5 text-right">
-                          <button type="button" class="btn btn-info add-newlist"><i class="fa fa-plus"></i> Add New</button>
+                          <button type="button" class="btn btn-info add-newlist"><i class="fa fa-plus"></i> <span class="hidden-xs">Add New</span></button>
                       </div>
                   </div>
               </div>

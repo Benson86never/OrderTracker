@@ -1,3 +1,28 @@
+<style>
+.panel-body {
+ margin-left: 200px;
+}
+.l1 {
+  margin-left: 60px;
+}
+.r1 {
+  margin-left:220px;
+}
+@media (max-width: 992px){
+  .panel-body {
+    margin-left: 15px !important;
+  }
+  .inputelement {
+    width: 90% !important;
+  }
+  .l1 {
+    margin-left: 10px !important;
+  }
+  .r1 {
+    margin-left: 130px;
+  }
+}
+</style>
 <cfoutput>
   <cfif structKeyExists(session, 'userResult') AND session.userResult.error>
     <div class="row">
@@ -22,7 +47,7 @@
   <div class="container" >
   <div class="panel panel-default">
       <div class="panel-heading">Trouble Logging In?</div>
-      <div class="panel-body" style="margin-left: 200px;">
+      <div class="panel-body">
     <form class="form-inline" method = "post" id="formSubmit" name="formSubmit">
       <div class="row" >
         <div class="col-md-1 labelname">
@@ -31,7 +56,7 @@
         <div class="col-md-2 ">
           <input type="text" class="form-control inputelement" id="firstName" name="firstName" value=""  autocomplete="off">
         </div>
-        <div class="col-md-1 labelname" style="margin-left: 60px;">
+        <div class="col-md-1 labelname l1">
           Email<span style="color: red"><b>*<b></span>:
         </div>
         <div class="col-md-2 ">
@@ -57,7 +82,7 @@
       <div class="row">
         <div class="col-md-12" id="passwordERR" style="color:red;text-align:center"></div>
       </div>
-      <div class="row" style="margin-left:220px;">
+      <div class="row r1">
         <div class="col-md-7 text-right">          
            <a class="btn btn-danger" href="../list.cfm">
               <i class="fa fa-times" aria-hidden="true"></i>
