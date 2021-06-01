@@ -221,21 +221,24 @@ table.table .form-control.error {
                  </div>
               </div>
             </cfif>
+            <span style="display:none;" id="disphid">
           <div class="col-xs-1 text-right"><h6>List:</h6></div>
           <cfscript> 
             local.accounts = [];
             local.accountDetails = queryExecute("
             SELECT
-              ListID,
-              Name
+              list.ListID,
+              list.Name,
+              business.BusinessName
             FROM
-              list
+              list INNER JOIN business WHERE list.SubAccountID=business.BusinessId
             ",{},{datasource: application.dsn}
             );
             cfloop(query = "local.accountDetails") {
               local.details = {};
               local.details['id'] = local.accountDetails.ListID;
               local.details['name'] = local.accountDetails.Name;
+              local.details['businessname'] = local.accountDetails.BusinessName
               arrayAppend(local.accounts, local.details);
             }
           </cfscript>
@@ -243,14 +246,15 @@ table.table .form-control.error {
                       <select name="noofitems" id="noofitems1" class="form-select-sm form-control subval">
                        <cfloop array="#local.accounts#" item="account">
                               <option value="#account.id#">
-                                  #account.name#
+                                  #account.name#(#account.businessname#)
                                 </option>
                        </cfloop>
                       </select>
             </div> 
           <div class="col-xs-1">
-              <input type="submit" class="btn btn-info sub1" value="Add To List">
-          </div> 
+              <input type="submit" class="btn btn-info sub1" value="Add To List" name="submit1">
+          </div>
+          </span>
             <div class="col-xs-1 text-right" >
               <input type="search" id="search" name="search" class="form-control" onkeyup="searchTable();" placeholder="Search" style="width:100px;"/> 
             </div>
@@ -260,7 +264,7 @@ table.table .form-control.error {
           </div>              
         </div>
           
-        <form>
+        <form action="" method="post">
         <table class="list-wrapper itemtable table table-bordered table-responsive-sm table-striped" cellspacing="0" cellpadding="0" id="searchTab">
           <thead>
             <tr>
@@ -323,7 +327,6 @@ table.table .form-control.error {
         </table>
         </form>
       </div>
-      <div id="pagination-container">
       <div class="col-xs-1 text-right"><h6>Items:</h6></div>
             <div class="col-xs-1 text-right">
                       <select name="noofitems" id="noofitems1" class="form-select-sm form-control c_value">
@@ -332,7 +335,9 @@ table.table .form-control.error {
                               <option value="#i#">#i#</option>
                        </cfloop>
                       </select>
-            </div></div>
+            </div>
+      <div id="pagination-container">
+      </div>
     </div>
   </div>
   </div>
@@ -495,15 +500,15 @@ table.table .form-control.error {
   });
   
 
- /*var items = $(".list-wrapper .list-item");
+ var items = $(".list-wrapper .list-item");
   var numItems = items.length;
-  var perPage = 20;
+  var perPage = 10;
   var showFrom,showTo;
   console.log(perPage)
   items.slice(perPage).hide();
     $("#pagination-container").pxpaginate({
       currentpage: 1,
-      totalPageCount: items.length/20,
+      totalPageCount: items.length/10,
       maxBtnCount: 5,
       align: 'center',
       nextPrevBtnShow: true,
@@ -517,9 +522,9 @@ table.table .form-control.error {
          showTo = showFrom + perPage;
         items.hide().slice(showFrom, showTo).show();
       }
-    });*/
+    });
     //list of items on click
-    var items = $(".list-wrapper .list-item");
+    /*var items = $(".list-wrapper .list-item");
     var numItems = items.length;
     $(".c_value").click(function(){
         var perPage = $('.c_value').val();
@@ -543,7 +548,7 @@ table.table .form-control.error {
         items.hide().slice(showFrom, showTo).show();
       }
     });
-    });
+    });*/
      var arr=[];
      $(".item_header").click(function(){
     var id_val=$(this).attr("id");
@@ -554,18 +559,37 @@ table.table .form-control.error {
     for (let i = 0; i < value.length; ++i) {
          value[i].checked = true;
           arr.push(value[i].value);
+          $("#disphid").css("display", "block");
     }
     }else {
       for (let i = 0; i < value.length; i++) {
          value[i].checked = false;
          arr=[];
+          $("#disphid").css("display", "none");
     }
     }
  });  
+ $(".c1").click(function(){
+   arr=[];
+   var val1=$('.c1');
+     if($('.c1').is(':checked')){
+       for(let i=0;i<val1.length;i++){
+       $("#disphid").css("display", "block");
+       var v1=$(val1[i]).attr('id');
+         if($('#'+v1).is(':checked')) {
+            arr.push($(val1[i]).val());
+            console.log($(val1[i]).val())
+          }
+        }
+      }
+    else{
+      $("#disphid").css("display", "none");
+    }
+ });
  $(".sub1").click(function(){
           console.log($('.subval').val());
           console.log(arr)
-    });
+  });
     $('#search').on('keyup', function() {
     var searchVal = $(this).val();
     var filterItems = $('[data-filter-item]');
