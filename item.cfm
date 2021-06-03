@@ -120,6 +120,9 @@ table.table .form-control.error {
          width:130px;
          display:inline-flex;
 }
+.padding0 {
+  padding: 0px !important;
+}
 @media (max-width: 767px) {
        #business {
          width: 30%;
@@ -147,7 +150,7 @@ table.table .form-control.error {
        .add-new {
          width: 10px !important;
        }
-              
+       
 }
 
 </style>
@@ -182,166 +185,176 @@ table.table .form-control.error {
   <cfset units = CreateObject("Component","v1.model.services.admin").getUnitDetails()>
   <cfset suppliers = CreateObject("Component","v1.model.services.admin").getSupplierDetails(businessId = session.secure.subaccount)>
   <div class="container">
-  <div class="row">
     <div class="table-wrapper">
       <div class="table-title">
-         <div class="row">
-            <div class="col-xs-1"><h4 class="fsize">Item Details</h4></div>
-            <cfif session.secure.RoleCode EQ 1>
-            <div class="col-xs-5">
-                 <div id="dialog-form" title="Add Items">
-                    <cfform id="addItem" action="add_item_action.cfm" method="post" enctype="multipart/form-data">
-                        <cfif session.secure.RoleCode eq 1>
-                          <cfset local.accounts = CreateObject("Component","v1.model.services.admin").getSupplierDetails()>
-                          <div style="padding-bottom:20px;" >
-                            Supplier:&nbsp;
-                            <select name="business" id="business" onchange="chgBusiness(this.value)" class="form-select form-select-sm mb-3" >
-                              <option value="0">Select</option>
-                              <cfloop array="#local.accounts#" item="account">
-                            
-                                <option
-                                <cfif isdefined("url.supplierid") and url.supplierid eq account.id>
-                                  selected
-                                </cfif>
-                                value="#account.id#">
-                                #account.name#
-                                </option>
-                              </cfloop>
-                            </select>
-                          </div>
-                      </cfif>
-                      <cfif ListFind(session.secure.access,'20')>
-                        <cfinput type="file" name="uploadfile" required="yes" message="You must select a file." class="form-control f1" style="width:130px;display:inline-flex;">
-                        <input type="submit" name="Submit2" value="Upload" class="btn btn-info " style="width:60px;display:inline-flex;">                        
-                        <input type="hidden" name="hdnbusiness" id="hdnbusiness" value="#url.supplierid#">
-                        <input type="button" id="Submit3" name="Submit3" class="btn btn-info" value="Download Item List" onclick="downloadlist();">                          
-                        <a href="DownloadTemplate.cfm"  class="btn btn-info" style="width:100px;display:inline-flex;" >Download Template</a>
-                      </cfif>
-                    </cfform>
-                 </div>
-              </div>
-            </cfif>
-            <span style="display:none;" id="disphid">
-          <div class="col-xs-1 text-right"><h6>List:</h6></div>
-          <cfscript> 
-            local.accounts = [];
-            local.accountDetails = queryExecute("
-            SELECT
-              list.ListID,
-              list.Name,
-              business.BusinessName,
-              business.BusinessId
-            FROM
-              list INNER JOIN business WHERE list.SubAccountID=business.BusinessId
-            ",{},{datasource: application.dsn}
-            );
-            cfloop(query = "local.accountDetails") {
-              local.details = {};
-              local.details['id'] = local.accountDetails.ListID;
-              local.details['name'] = local.accountDetails.Name;
-              local.details['businessname'] = local.accountDetails.BusinessName;
-              local.details['businessid'] = local.accountDetails.BusinessId;
-              arrayAppend(local.accounts, local.details);
-            }
-          </cfscript>
-          <div class="col-xs-1">
-                      <select name="noofitems" id="noofitems1" class="form-select-sm form-control subval">
-                       <cfloop array="#local.accounts#" item="account">
-                                <option value="#account.id#">
-                                  #account.name#(#account.businessname#)
-                                </option>
-                       </cfloop>
-                      </select>
-            </div> 
-          <div class="col-xs-1">
-              <input type="submit" class="btn btn-info sub1" value="Add To List" name="submit1">
-          </div>
-          </span>
-            <div class="col-xs-1 text-right" >
-              <input type="search" id="search" name="search" class="form-control" onkeyup="searchTable();" placeholder="Search" style="width:100px;"/> 
+        <div class="row">
+          <div class="col-xs-1"><h4 class="fsize">Item Details</h4></div>
+          <cfif session.secure.RoleCode EQ 1>
+            <div class="col-xs-4">
+              <cfform id="addItem" action="add_item_action.cfm" method="post" enctype="multipart/form-data">
+                <cfif session.secure.RoleCode eq 1>
+                  <cfset local.accounts = CreateObject("Component","v1.model.services.admin").getSupplierDetails()>
+                  <div style="padding-bottom:20px;" >
+                    Supplier:&nbsp;
+                    <select name="business" id="business" onchange="chgBusiness(this.value)" class="form-select form-select-sm mb-3" >
+                      <option value="0">Select</option>
+                      <cfloop array="#local.accounts#" item="account">
+                        <option
+                          <cfif isdefined("url.supplierid") and url.supplierid eq account.id>
+                            selected
+                          </cfif>
+                          value="#account.id#">
+                          #account.name#
+                        </option>
+                      </cfloop>
+                    </select>
+                  </div>
+                </cfif>
+              </cfform>
             </div>
-            <cfif session.secure.RoleCode EQ 1 and ListFind(session.secure.access,'18')>
-            <div class="col-xs-1 text-right t1"><button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> <span class="hidden-xs">Add New</span></button></div>
-            </cfif>
-          </div>              
+          </cfif>
+          <cfif ListFind(session.secure.access,'18')>
+            <div class="col-xs-6 padding0">
+              <div class="col-xs-2 pull-right t1">
+                <button type="button" class="btn btn-info add-new">
+                  <i class="fa fa-plus"></i>
+                  <span class="hidden-xs">Add New</span>
+                </button>
+              </div>
+              <div class="col-xs-5 pull-right" >
+                <input type="search" id="search" name="search" class="form-control" onkeyup="searchTable();" placeholder="Search"/> 
+              </div>
+            </div>
+          </cfif>
         </div>
-          
+        <div class="row">
+          <cfif ListFind(session.secure.access,'20')>
+            <div class="col-xs-5">
+              <input type="file" name="uploadfile" required="yes" message="You must select a file." class="form-control f1" style="width:130px;display:inline-flex;">
+              <input type="submit" name="Submit2" value="Upload" class="btn btn-info " style="width:60px;">
+              <input type="hidden" name="hdnbusiness" id="hdnbusiness" value="#url.supplierid#">
+              <input type="button" id="Submit3" name="Submit3" class="btn btn-info" value="Download Item List" onclick="downloadlist();">
+              <a href="DownloadTemplate.cfm"  class="btn btn-info">Download Template</a>
+            </div>
+          </cfif>
+          <div style="display:none;" id="disphid" class="col-xs-6 padding0">
+            <cfscript> 
+              local.accounts = [];
+              local.accountDetails = queryExecute("
+                SELECT
+                  L.ListID,
+                  L.Name,
+                  B.BusinessName,
+                  B.BusinessId
+                FROM
+                  LIST L
+                  INNER JOIN business B ON B.BusinessId =  L.SubAccountID
+              ",{},{datasource: application.dsn}
+              );
+              cfloop(query = "local.accountDetails") {
+                local.details = {};
+                local.details['id'] = local.accountDetails.ListID;
+                local.details['name'] = local.accountDetails.Name;
+                local.details['businessname'] = local.accountDetails.BusinessName;
+                local.details['businessid'] = local.accountDetails.BusinessId;
+                arrayAppend(local.accounts, local.details);
+              }
+            </cfscript>
+            <div class="col-xs-1 text-right">
+              <h6>List:</h6>
+            </div>
+            <div class="col-xs-4">
+              <select name="list" id="list" class="form-select-sm form-control">
+                <cfloop array="#local.accounts#" item="account">
+                  <option value="#account.id#">
+                    #account.name#(#account.businessname#)
+                  </option>
+                </cfloop>
+              </select>
+            </div>
+            <div class="col-xs-1">
+                <input type="button" class="btn btn-info additem" value="Add To List" name="additem">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          &nbsp;
+        </div>
         <form action="" method="post">
-        <table class="list-wrapper itemtable table table-bordered table-responsive-sm table-striped" cellspacing="0" cellpadding="0" id="searchTab">
-          <thead>
-            <tr>
-            <th width="5%">
-                 <input type="checkbox" 
-                 id="id" 
-                 name="itemcheck" 
-                 class="item_header">
-            </th>
-            <th width="35%" style="text-align:center;">Name</th>
-            <th width="10%" style="text-align:center;">SKU</th>
-            <th width="10%" style="text-align:center;">Photo URL</th>
-            <th width="10%" style="text-align:center;">Units</th>
-            <th width="20%" style="text-align:center;">Supplier</th>
-            <cfif session.secure.RoleCode EQ 1>
-              <th width="10%" style="text-align:center;">Actions</th>
-            </cfif>
-            </tr>
-          </thead>
-          <tbody>
-            <cfloop array="#items#" item="item">
-            <tr class="list-item items" data-filter-item data-filter-name="#lcase(item.name)# #lcase(item.supplierName)#">
-              <td><input type="checkbox"
-                  id="id_#item.id#"
-                  name="itemselect"
-                  value="#item.id#"
-                  class="c1">
-              </td>
-              <td fid="name">#item.name#</td>
-              <td fid="sku">#item.sku#</td>
-              <td fid="photourl" title="#item.photoUrl#">#item.photoUrl#</td>
-              <td fid="units" type="unit">#item.unitName#</td>
-              <td fid="supplier" type="supplier">#item.supplierName#</td>
+          <table class="list-wrapper itemtable table table-bordered table-responsive-sm table-striped" cellspacing="0" cellpadding="0" id="searchTab">
+            <thead>
+              <tr>
+              <th width="5%">
+                  <input type="checkbox" 
+                  id="id" 
+                  name="itemcheck" 
+                  class="item_header">
+              </th>
+              <th width="35%" style="text-align:center;">Name</th>
+              <th width="10%" style="text-align:center;">SKU</th>
+              <th width="10%" style="text-align:center;">Photo URL</th>
+              <th width="10%" style="text-align:center;">Units</th>
+              <th width="20%" style="text-align:center;">Supplier</th>
               <cfif session.secure.RoleCode EQ 1>
-                <td>
-                  <button class="cancel btn btn-danger" title="cancel">
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                  </button>
-                  <cfif ListFind(session.secure.access,'19')>
-                    <button class="deleteitem btn btn-danger"  action = "delete" id="#item.id#" title="Delete">
-                      <i class="fa fa-trash-alt" aria-hidden="true"></i>
-                    </button>
-                  </cfif>
-                  <button class="add btn btn-success"  id="#item.id#" action = "add"  title="Add">
-                    <i class="fa fa-plus" aria-hidden="true"></i>
-                  </button>
-                  <cfif ListFind(session.secure.access,'2')>
-                    <button class="edit btn btn-warning" title="Edit">
-                      <i class="fas fa-pencil-alt"></i>
-                    </button>
-                  </cfif>
-                  <button class="add save btn btn-success" action = "update" id="#item.id#" title="save">
-                    <i class="fa fa-save" aria-hidden="true"></i>
-                  </button>
-                </td>
+                <th width="10%" style="text-align:center;">Actions</th>
               </cfif>
-            </tr>
-            </cfloop>
-          </tbody>
-        </table>
+              </tr>
+            </thead>
+            <tbody>
+              <cfloop array="#items#" item="item">
+              <tr class="list-item items" data-filter-item data-filter-name="#lcase(item.name)# #lcase(item.supplierName)#">
+                <td><input type="checkbox"
+                    id="id_#item.id#"
+                    name="itemselect"
+                    value="#item.id#"
+                    class="checkitems">
+                </td>
+                <td fid="name">#item.name#</td>
+                <td fid="sku">#item.sku#</td>
+                <td fid="photourl" title="#item.photoUrl#">#item.photoUrl#</td>
+                <td fid="units" type="unit">#item.unitName#</td>
+                <td fid="supplier" type="supplier">#item.supplierName#</td>
+                <cfif session.secure.RoleCode EQ 1>
+                  <td>
+                    <button class="cancel btn btn-danger" title="cancel">
+                      <i class="fa fa-times" aria-hidden="true"></i>
+                    </button>
+                    <cfif ListFind(session.secure.access,'19')>
+                      <button class="deleteitem btn btn-danger"  action = "delete" id="#item.id#" title="Delete">
+                        <i class="fa fa-trash-alt" aria-hidden="true"></i>
+                      </button>
+                    </cfif>
+                    <button class="add btn btn-success"  id="#item.id#" action = "add"  title="Add">
+                      <i class="fa fa-plus" aria-hidden="true"></i>
+                    </button>
+                    <cfif ListFind(session.secure.access,'2')>
+                      <button class="edit btn btn-warning" title="Edit">
+                        <i class="fas fa-pencil-alt"></i>
+                      </button>
+                    </cfif>
+                    <button class="add save btn btn-success" action = "update" id="#item.id#" title="save">
+                      <i class="fa fa-save" aria-hidden="true"></i>
+                    </button>
+                  </td>
+                </cfif>
+              </tr>
+              </cfloop>
+            </tbody>
+          </table>
         </form>
       </div>
       <div class="col-xs-1 text-right"><h6>Items:</h6></div>
-            <div class="col-xs-1 text-right">
-                      <select name="noofitems" id="noofitems1" class="form-select-sm form-control c_value">
-                       <!---<cfloop array="#items#" item="item">--->
-                       <cfloop from=10 to="#arrayLen(items)#" index="i" step="10">
-                              <option value="#i#">#i#</option>
-                       </cfloop>
-                      </select>
-            </div>
-      <div id="pagination-container">
+        <div class="col-xs-1 text-right">
+          <select name="noofitems" id="noofitems1" class="form-select-sm form-control c_value">
+              <!---<cfloop array="#items#" item="item">--->
+              <cfloop from=10 to="#arrayLen(items)#" index="i" step="10">
+                    <option value="#i#">#i#</option>
+              </cfloop>
+          </select>
+        </div>
+        <div id="pagination-container"></div>
       </div>
     </div>
-  </div>
   </div>
 </cfoutput>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -502,115 +515,68 @@ table.table .form-control.error {
   });
   
 
- var items = $(".list-wrapper .list-item");
+  var items = $(".list-wrapper .list-item");
   var numItems = items.length;
   var perPage = 10;
   var showFrom,showTo;
   console.log(perPage)
   items.slice(perPage).hide();
-    $("#pagination-container").pxpaginate({
-      currentpage: 1,
-      totalPageCount: items.length/10,
-      maxBtnCount: 5,
-      align: 'center',
-      nextPrevBtnShow: true,
-      firstLastBtnShow: true,
-      prevPageName: '<',
-      nextPageName: '>',
-      lastPageName: '<<',
-      firstPageName: '>>',
-      callback: function(pagenumber){
-         showFrom = perPage * (pagenumber - 1);
-         showTo = showFrom + perPage;
-        items.hide().slice(showFrom, showTo).show();
-      }
-    });
-    //list of items on click
-    /*var items = $(".list-wrapper .list-item");
-    var numItems = items.length;
-    $(".c_value").click(function(){
-        var perPage = $('.c_value').val();
-        console.log(perPage)
-        var showFrom,showTo;
-        items.slice(perPage).hide();
-       $("#pagination-container").pxpaginate({
-      currentpage: 1,
-      totalPageCount: items.length/perPage,
-      maxBtnCount: 5,
-      align: 'center',
-      nextPrevBtnShow: true,
-      firstLastBtnShow: true,
-      prevPageName: '<',
-      nextPageName: '>',
-      lastPageName: '<<',
-      firstPageName: '>>',
-      callback: function(pagenumber){
-         showFrom = perPage * (pagenumber - 1);
-         showTo = showFrom + perPage;
-        items.hide().slice(showFrom, showTo).show();
-      }
-    });
-    });*/
-     var arr=[];
-     $(".item_header").click(function(){
-    var id_val=$(this).attr("id");
-     var value=$('.c1');
-    //console.log(showTo)
-    console.log(value.length)
-    if($('#'+id_val).is(':checked')) {
-    for (let i = 0; i < perPage; ++i) {
-         value[i].checked = true;
-          arr.push(value[i].value);
-          $("#disphid").css("display", "block");
+  $("#pagination-container").pxpaginate({
+    currentpage: 1,
+    totalPageCount: items.length/10,
+    maxBtnCount: 5,
+    align: 'center',
+    nextPrevBtnShow: true,
+    firstLastBtnShow: true,
+    prevPageName: '<',
+    nextPageName: '>',
+    lastPageName: '<<',
+    firstPageName: '>>',
+    callback: function(pagenumber){
+        showFrom = perPage * (pagenumber - 1);
+        showTo = showFrom + perPage;
+      items.hide().slice(showFrom, showTo).show();
     }
+  });
+    
+  var arr=[];
+  $(".item_header").click(function(){
+    if($(this).is(':checked')) {
+      $('.checkitems').prop('checked', true);
+      $("#disphid").show();
     }else {
-      for (let i = 0; i < perPage; i++) {
-         value[i].checked = false;
-         arr=[];
-          $("#disphid").css("display", "none");
+      $('.checkitems').prop('checked', false);
+      $("#disphid").hide();
     }
+  });  
+  $(".checkitems").click(function(){
+    if($(".checkitems:checked").length > 0) {
+      $("#disphid").show();
+    } else {
+      $("#disphid").hide();
     }
- });  
- $(".c1").click(function(){
-   arr=[];
-   var val1=$('.c1');
-     if($('.c1').is(':checked')){
-       for(let i=0;i<val1.length;i++){
-       $("#disphid").css("display", "block");
-       var v1=$(val1[i]).attr('id');
-         if($('#'+v1).is(':checked')) {
-            arr.push($(val1[i]).val());
-            console.log($(val1[i]).val())
-            console.log($('.subval').val())
-          }
-        }
+  });
+  $(".additem").click(function(){
+    var itemIds = "";
+    $(".checkitems:checked").each(function(){
+      if(itemIds == "") {
+        itemIds = $(this).val();
+      } else {
+        itemIds = itemIds + ',' + $(this).val();
       }
-    else{
-      $("#disphid").css("display", "none");
-    }
- });
- $(".sub1").click(function(){
-          console.log(arr)
-          //var myval=[];
-           var listitemval=$('.subval').val();
-          /* myval.push(listitemval);
-          var list=myval.slice(0,1);
-          var busid=myval.slice(1,2);
-          console.log(busid);*/
-
-           $.ajax({
-          url: 'v1/model/services/order.cfc?method=addItemtoList',
-          type: 'get',
-          data: {
-            listId : listitemval,
-            itemId : arr
-          },
-          success: function(data){
-            //location.href="list_organize.cfm?url.page=listorganize";
-            location.href = 'manageitem.cfm?page=items';
-            console.log(data)
-          }
-        });
+    });
+    var listval = $('#list').val();
+    $.ajax({
+      url: 'v1/model/services/order.cfc?method=addItemtoList',
+      type: 'get',
+      data: {
+        listId : listval,
+        itemId : itemIds
+      },
+      success: function(data){
+        location.href = 'manageitem.cfm?page=items';
+      }
+    });
   });
     $('#search').on('keyup', function() {
     var searchVal = $(this).val();
@@ -631,7 +597,7 @@ function searchTable() {
   input = document.getElementById('search');
   filter = input.value.toUpperCase();
   tab = document.getElementById("searchTab");
-  tr = tab.getElementsByTagName('tr');
+  tr = $('.list-item');
    
   // Loop through all list items, and hide those who don't match the search query
   for (i = 0; i < tr.length; i++) {
@@ -645,15 +611,20 @@ function searchTable() {
     if(filter == "")
     {
      window.location.reload();    
+    } else {
+      var items = $(".list-wrapper .list-item:visible");     
+      var numItems = items.length;
+      var perPage = 10;
+      items.slice(perPage).hide();
     }
   }  
 }
 </script>
 <script>
 function chgBusiness(businessid)
-{ 
- document.getElementById('hdnbusiness').value = businessid;
- location.href = 'manageitem.cfm?supplierid=' + businessid;
+{
+  document.getElementById('hdnbusiness').value = businessid;
+  location.href = 'manageitem.cfm?supplierid=' + businessid;
 }
 
 	function downloadlist() { 
