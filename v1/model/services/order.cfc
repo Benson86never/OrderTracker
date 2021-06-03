@@ -515,7 +515,7 @@ component  {
 
   remote any function addItemtoList(
     integer listId,
-     itemId=[]
+    string itemId
   ){
     transaction {
       try {
@@ -523,22 +523,51 @@ component  {
           'error' : false,
           'errorMsg' : ''
         }
-        cfloop(list=arguments.itemId,index="local.item"){
-        local.updateCheckin = queryExecute("
-          INSERT INTO joinitemtolist(
-            ItemID,
-            ListID,
+        local.qryGetList = queryExecute("
+          SELECT
+            itemId,
             OrderBy
-          ) VALUES (
-            :itemId,
-            :listId,
-            1
-          );
-        ",{
-            itemId = {cfsqltype = "integer",value = local.item},
-            listId = {cfsqltype = "integer", value = arguments.listId}
-          },{datasource: application.dsn}
+          FROM
+            joinitemtolist
+          WHERE
+            ListID = :listId
+          ORDER BY orderby DESC
+          ",{
+              listId = {cfsqltype = "integer", value = arguments.listId}
+            },{datasource: application.dsn}
         );
+        local.orderby = val(local.qryGetList.OrderBy);
+        for(local.item in arguments.itemId) {
+          local.qrycheck = queryExecute("
+            SELECT
+              1
+            FROM
+              [local].qryGetList
+            WHERE
+              ItemID = :itemId
+          ",{
+              itemId = {cfsqltype = "integer",value = local.item}
+            },{dbtype: 'query'}
+          );
+          if(!local.qrycheck.recordcount) {
+            local.orderby = local.orderby + 1;
+            local.updateCheckin = queryExecute("
+              INSERT INTO joinitemtolist(
+                ItemID,
+                ListID,
+                OrderBy
+              ) VALUES (
+                :itemId,
+                :listId,
+                :orderBy
+              );
+            ",{
+                itemId = {cfsqltype = "integer",value = local.item},
+                listId = {cfsqltype = "integer", value = arguments.listId},
+                orderBy = {cfsqltype = "integer", value = local.orderby}
+              },{datasource: application.dsn}
+            );
+          }
         }
         transaction action="commit";
       } catch (any e){
