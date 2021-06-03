@@ -533,6 +533,7 @@ component  {
             :itemId,
             :listId,
             1
+            
           );
         ",{
             itemId = {cfsqltype = "integer",value = local.item},
