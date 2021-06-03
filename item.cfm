@@ -1,178 +1,206 @@
 <style>
-input, select{
-  font-size: 12px !important;
-}
-.table-wrapper {
-    background: #fff;
-    padding: 20px;	
-    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+  input, select{
     font-size: 12px !important;
-}
-.table-title {
-   margin: 0 0 10px;
-}
-.table-title h2 {
-    margin: 6px 0 0;
-    font-size: 22px;
-}
-.table-title .add-new {
-    float: right;
-    height: 30px;
-    font-weight: bold;
+  }
+  .table-wrapper {
+      background: #fff;
+      padding: 20px;	
+      box-shadow: 0 1px 1px rgba(0,0,0,.05);
+      font-size: 12px !important;
+  }
+  .table-title {
+    margin: 0 0 10px;
+  }
+  .table-title h2 {
+      margin: 6px 0 0;
+      font-size: 22px;
+  }
+  .table-title .add-new {
+      float: right;
+      height: 30px;
+      font-weight: bold;
+      font-size: 12px;
+      text-shadow: none;
+      min-width: 100px;
+      border-radius: 4px;
+      line-height: 13px;
+  }
+  .table-title .add-new i {
+      margin-right: 4px;
+  }
+  table.table {
+      table-layout: fixed;
+  }
+  table.table tr th, table.table tr td {
+      border-color: #e9e9e9;
+          overflow: hidden;
+      text-overflow: ellipsis;
+  }
+  table.table th i {
+      cursor: pointer;
+  }
+  table.table th:last-child {
+      width: 100px;
+  }
+  table.table .form-control {
+      height: 32px;
+      line-height: 32px;
+      box-shadow: none;
+      border-radius: 2px;
+  }
+  table.table .form-control.error {
+      border-color: #f50000;
+  }
+  .cancel, .add {
+    display: none;
+  }
+  .list-wrapper {
     font-size: 12px;
-    text-shadow: none;
-    min-width: 100px;
-    border-radius: 4px;
-    line-height: 13px;
-}
-.table-title .add-new i {
-    margin-right: 4px;
-}
-table.table {
-    table-layout: fixed;
-}
-table.table tr th, table.table tr td {
-    border-color: #e9e9e9;
-        overflow: hidden;
-    text-overflow: ellipsis;
-}
-table.table th i {
-    cursor: pointer;
-}
-table.table th:last-child {
-    width: 100px;
-}
-table.table .form-control {
-    height: 32px;
-    line-height: 32px;
-    box-shadow: none;
-    border-radius: 2px;
-}
-table.table .form-control.error {
-    border-color: #f50000;
-}
-.cancel, .add {
-  display: none;
-}
-.list-wrapper {
-  font-size: 12px;
-}
+  }
 
-.list-item {
-	border: 1px solid #EEE;
-	background: #FFF;
-	margin-bottom: 10px;
-	padding: 10px;
-	box-shadow: 0px 0px 10px 0px #EEE;
-}
+  .list-item {
+    border: 1px solid #EEE;
+    background: #FFF;
+    margin-bottom: 10px;
+    padding: 10px;
+    box-shadow: 0px 0px 10px 0px #EEE;
+  }
 
-.list-item h4 {
-	color: #FF7182;
-	font-size: 18px;
-	margin: 0 0 5px;	
-}
+  .list-item h4 {
+    color: #FF7182;
+    font-size: 18px;
+    margin: 0 0 5px;	
+  }
 
-.list-item p {
-	margin: 0;
-}
+  .list-item p {
+    margin: 0;
+  }
 
-.simple-pagination ul {
-	margin: 0 0 20px;
-	padding: 0;
-	list-style: none;
-	text-align: center;
-}
+  .simple-pagination ul {
+    margin: 0 0 20px;
+    padding: 0;
+    list-style: none;
+    text-align: center;
+  }
 
-.simple-pagination li {
-	display: inline-block;
-	margin-right: 5px;
-}
+  .simple-pagination li {
+    display: inline-block;
+    margin-right: 5px;
+  }
 
-.simple-pagination li a,
-.simple-pagination li span {
-	color: #666;
-	padding: 5px 10px;
-	text-decoration: none;
-	border: 1px solid #EEE;
-	background-color: #FFF;
-	box-shadow: 0px 0px 10px 0px #EEE;
-}
+  .simple-pagination li a,
+  .simple-pagination li span {
+    color: #666;
+    padding: 5px 10px;
+    text-decoration: none;
+    border: 1px solid #EEE;
+    background-color: #FFF;
+    box-shadow: 0px 0px 10px 0px #EEE;
+  }
 
-.simple-pagination .current {
-	color: #FFF;
-	background-color: #FF7182;
-	border-color: #FF7182;
-}
+  .simple-pagination .current {
+    color: #FFF;
+    background-color: #FF7182;
+    border-color: #FF7182;
+  }
 
-.simple-pagination .prev.current,
-.simple-pagination .next.current {
-	background: #e04e60;
-}
+  .simple-pagination .prev.current,
+  .simple-pagination .next.current {
+    background: #e04e60;
+  }
 
-.uploadfile
-{
-  border:0;
-}
-#pagination-container{
-  margin-bottom: 20px;
-}
-#submit3 {
-         width:130px;
-         display:inline-flex;
-}
-.padding0 {
-  padding: 0px !important;
-}
-@media (max-width: 767px) {
-       #business {
-         width: 30%;
-       }
-       .fsize {
-         font-size: 12px !important;
-       }
-       #search {
-         width: 50px !important;
-         margin-left: -90px !important;
-         padding: 0px !important;
-       }
-       .table-wrapper {
-           padding: 0px !important;
-       }
-       .f1 {
-         width: 50px !important;
-         margin-left: -70px !important;
+  .uploadfile
+  {
+    border:0;
+  }
+  #pagination-container{
+    margin-bottom: 20px;
+  }
+  #submit3 {
+          width:130px;
+          display:inline-flex;
+  }
+  .padding0 {
+    padding: 0px !important;
+  }
+  ul, li {
+      list-style: none;
+  }
 
-       }
-       .t1 {
-         margin-left: 0px !important;
-          width: 10px !important;
-       }
-       .add-new {
-         width: 10px !important;
-       }
-       
-}
+  #wrapper {
+      width: 900px;
+      margin: 20px auto;
+  }
 
+  .data-container {
+      margin-top: 20px;
+  }
+
+  .data-container ul {
+      padding: 0;
+      margin: 0;
+  }
+
+  .data-container li {
+      margin-bottom: 5px;
+      padding: 5px 10px;
+      background: #eee;
+      color: #666;
+  }
+  .paginationjs {
+    position: relative;
+    left: 110px;
+    top: -32px;
+  }
+  @media (max-width: 767px) {
+    #business {
+      width: 30%;
+    }
+    .fsize {
+      font-size: 12px !important;
+    }
+    #search {
+      width: 50px !important;
+      margin-left: -90px !important;
+      padding: 0px !important;
+    }
+    .table-wrapper {
+        padding: 0px !important;
+    }
+    .f1 {
+      width: 50px !important;
+      margin-left: -70px !important;
+
+    }
+    .t1 {
+      margin-left: 0px !important;
+      width: 10px !important;
+    }
+    .add-new {
+      width: 10px !important;
+    }
+  }
 </style>
 <cfif isdefined("url.err") and url.err eq 1>
-<div class="modal fade modal-warning" id="modal-showAlert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index: 9000;">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header alert alert-warning">
-        <span id="headerText"></span>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Upload Items</h4>
-      </div>
-      <div class="modal-body">Please Select Supplier and Upload only XLS,XLSX file types.</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default ok" data-dismiss="modal"><cfoutput>OK</cfoutput></button>
+  <div class="modal fade modal-warning" id="modal-showAlert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index: 9000;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header alert alert-warning">
+          <span id="headerText"></span>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Upload Items</h4>
+        </div>
+        <div class="modal-body">Please Select Supplier and Upload only XLS,XLSX file types.</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default ok" data-dismiss="modal"><cfoutput>OK</cfoutput></button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </cfif>
 <cfoutput>
   <cfparam name="url.supplierid" default="0">
+  <cfparam name="url.noitems" default="10">
   <cfif listfind(session.secure.businessType, 2)
     AND session.secure.RoleCode NEQ 1>
     <cfset supplierid = session.secure.SubAccount>
@@ -281,78 +309,78 @@ table.table .form-control.error {
           &nbsp;
         </div>
         <form action="" method="post">
-          <table class="list-wrapper itemtable table table-bordered table-responsive-sm table-striped" cellspacing="0" cellpadding="0" id="searchTab">
-            <thead>
-              <tr>
-              <th width="5%">
-                  <input type="checkbox" 
-                  id="id" 
-                  name="itemcheck" 
-                  class="item_header">
-              </th>
-              <th width="35%" style="text-align:center;">Name</th>
-              <th width="10%" style="text-align:center;">SKU</th>
-              <th width="10%" style="text-align:center;">Photo URL</th>
-              <th width="10%" style="text-align:center;">Units</th>
-              <th width="20%" style="text-align:center;">Supplier</th>
-              <cfif session.secure.RoleCode EQ 1>
-                <th width="10%" style="text-align:center;">Actions</th>
-              </cfif>
-              </tr>
-            </thead>
-            <tbody>
-              <cfloop array="#items#" item="item">
-              <tr class="list-item items" data-filter-item data-filter-name="#lcase(item.name)# #lcase(item.supplierName)#">
-                <td><input type="checkbox"
-                    id="id_#item.id#"
-                    name="itemselect"
-                    value="#item.id#"
-                    class="checkitems">
-                </td>
-                <td fid="name">#item.name#</td>
-                <td fid="sku">#item.sku#</td>
-                <td fid="photourl" title="#item.photoUrl#">#item.photoUrl#</td>
-                <td fid="units" type="unit">#item.unitName#</td>
-                <td fid="supplier" type="supplier">#item.supplierName#</td>
+          <div class="data-container">
+            <table class="list-wrapper itemtable table table-bordered table-responsive-sm table-striped" cellspacing="0" cellpadding="0" id="searchTab">
+              <thead>
+                <tr>
+                <th width="5%">
+                    <input type="checkbox" 
+                    id="id" 
+                    name="itemcheck" 
+                    class="item_header">
+                </th>
+                <th width="35%" style="text-align:center;">Name</th>
+                <th width="10%" style="text-align:center;">SKU</th>
+                <th width="10%" style="text-align:center;">Photo URL</th>
+                <th width="10%" style="text-align:center;">Units</th>
+                <th width="20%" style="text-align:center;">Supplier</th>
                 <cfif session.secure.RoleCode EQ 1>
-                  <td>
-                    <button class="cancel btn btn-danger" title="cancel">
-                      <i class="fa fa-times" aria-hidden="true"></i>
-                    </button>
-                    <cfif ListFind(session.secure.access,'19')>
-                      <button class="deleteitem btn btn-danger"  action = "delete" id="#item.id#" title="Delete">
-                        <i class="fa fa-trash-alt" aria-hidden="true"></i>
-                      </button>
-                    </cfif>
-                    <button class="add btn btn-success"  id="#item.id#" action = "add"  title="Add">
-                      <i class="fa fa-plus" aria-hidden="true"></i>
-                    </button>
-                    <cfif ListFind(session.secure.access,'2')>
-                      <button class="edit btn btn-warning" title="Edit">
-                        <i class="fas fa-pencil-alt"></i>
-                      </button>
-                    </cfif>
-                    <button class="add save btn btn-success" action = "update" id="#item.id#" title="save">
-                      <i class="fa fa-save" aria-hidden="true"></i>
-                    </button>
-                  </td>
+                  <th width="10%" style="text-align:center;">Actions</th>
                 </cfif>
-              </tr>
-              </cfloop>
-            </tbody>
-          </table>
-        </form>
-      </div>
-      <div class="col-xs-1 text-right"><h6>Items:</h6></div>
-        <div class="col-xs-1 text-right">
-          <select name="noofitems" id="noofitems1" class="form-select-sm form-control c_value">
-              <!---<cfloop array="#items#" item="item">--->
+                </tr>
+              </thead>
+              <tbody>
+                <cfloop array="#items#" item="item" index="arrindex">
+                <tr class="list-item items itemrow#arrindex#" data-filter-item data-filter-name="#lcase(item.name)# #lcase(item.supplierName)#">
+                  <td type="checkbox"><input type="checkbox"
+                      id="id_#item.id#"
+                      name="itemselect"
+                      value="#item.id#"
+                      class="checkitems">
+                  </td>
+                  <td fid="name">#item.name#</td>
+                  <td fid="sku">#item.sku#</td>
+                  <td fid="photourl" title="#item.photoUrl#">#item.photoUrl#</td>
+                  <td fid="units" type="unit">#item.unitName#</td>
+                  <td fid="supplier" type="supplier">#item.supplierName#</td>
+                  <cfif session.secure.RoleCode EQ 1>
+                    <td>
+                      <button class="cancel btn btn-danger" title="cancel">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                      </button>
+                      <cfif ListFind(session.secure.access,'19')>
+                        <button class="deleteitem btn btn-danger"  action = "delete" id="#item.id#" title="Delete">
+                          <i class="fa fa-trash-alt" aria-hidden="true"></i>
+                        </button>
+                      </cfif>
+                      <button class="add btn btn-success"  id="#item.id#" action = "add"  title="Add">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                      </button>
+                      <cfif ListFind(session.secure.access,'2')>
+                        <button class="edit btn btn-warning" title="Edit">
+                          <i class="fas fa-pencil-alt"></i>
+                        </button>
+                      </cfif>
+                      <button class="add save btn btn-success" action = "update" id="#item.id#" title="save">
+                        <i class="fa fa-save" aria-hidden="true"></i>
+                      </button>
+                    </td>
+                  </cfif>
+                </tr>
+                </cfloop>
+              </tbody>
+            </table>
+          </div>
+          <div id="pagination-demo1">
+            <select name="noofitems" id="noofitems" class="form-select-sm form-control" style="width:100px;">
               <cfloop from=10 to="#arrayLen(items)#" index="i" step="10">
-                    <option value="#i#">#i#</option>
+                <option value="#i#"
+                  <cfif url.noitems EQ i>selected</cfif>
+                >#i#</option>
               </cfloop>
-          </select>
-        </div>
-        <div id="pagination-container"></div>
+            </select>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -361,8 +389,8 @@ table.table .form-control.error {
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <!---<script src="https://cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/jquery.simplePagination.js"></script>--->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-<script type="text/javascript" src="js/px-pagination.js"></script>
-<link href = "js/px-pagination.css" rel = "stylesheet">
+<script type="text/javascript" src="js/pagination.js"></script>
+<link href = "js/pagination.css" rel = "stylesheet">
 <script>
   $(document).ready(function(){
     <cfif isdefined("url.err") and url.err eq 1>
@@ -458,7 +486,8 @@ table.table .form-control.error {
       $(this).parents("tr").find("td:not(:last-child)").each(function(){
         currentValue = $(this).text();
         id = $(this).attr('fid');
-        if($(this).attr('type') == 'unit') {
+        if($(this).attr('type') == 'checkbox') {
+        } else if($(this).attr('type') == 'unit') {
           $(this).html('<select class="form-control" id="'+id+'">'+ unithtml +'</select>');
           $("#units option").filter(function() {
               return this.text == currentValue; 
@@ -474,16 +503,21 @@ table.table .form-control.error {
       });		
       $(this).parents("tr").find(".save, .edit, .deleteitem, .cancel").toggle();
       $(".add-new").attr("disabled", "disabled");
+      return false;
     });
     $(document).on("click", ".cancel", function(){
       $(this).parents("tr").find("td:not(:last-child)").each(function(){
-        currentValue = $(this).find('input').val();
-        if(currentValue == undefined) {
-          currentValue = $(this).find('select').find('option:selected').text();
+        if($(this).attr('type') == 'checkbox') {
+        } else {
+          currentValue = $(this).find('input').val();
+          if(currentValue == undefined) {
+            currentValue = $(this).find('select').find('option:selected').text();
+          }
+          $(this).html(currentValue);
         }
-        $(this).html(currentValue);
       });		
       $(this).parents("tr").find(".save, .edit, .deleteitem, .cancel").toggle();
+      return false;
     });
     $(document).on("click", ".deleteitem", function(){
       eid = $(this).attr('id');
@@ -518,31 +552,53 @@ table.table .form-control.error {
   var items = $(".list-wrapper .list-item");
   var numItems = items.length;
   var perPage = 10;
+  var noitems = "<cfoutput>#url.noitems#</cfoutput>";
   var showFrom,showTo;
   console.log(perPage)
   items.slice(perPage).hide();
-  $("#pagination-container").pxpaginate({
-    currentpage: 1,
-    totalPageCount: items.length/10,
-    maxBtnCount: 5,
-    align: 'center',
-    nextPrevBtnShow: true,
-    firstLastBtnShow: true,
-    prevPageName: '<',
-    nextPageName: '>',
-    lastPageName: '<<',
-    firstPageName: '>>',
-    callback: function(pagenumber){
-        showFrom = perPage * (pagenumber - 1);
-        showTo = showFrom + perPage;
-      items.hide().slice(showFrom, showTo).show();
-    }
+  (function(name) {
+    var container = $('#pagination-' + name);
+    var sources = function () {
+      var result = [];
+
+      for (var i = 1; i < numItems; i++) {
+        result.push(i);
+      }
+
+      return result;
+    }();
+
+    var options = {
+      dataSource: sources,
+      pageSize: noitems,
+      callback: function (response, pagination) {
+        window.console && console.log(response, pagination);
+        $('.list-item').hide();
+        $.each(response, function (index, item) {
+          $('.itemrow'+item).show();
+        });
+      }
+    };
+
+    //$.pagination(container, options);
+
+    container.addHook('beforeInit', function () {
+      window.console && console.log('beforeInit...');
+    });
+    container.pagination(options);
+
+    container.addHook('beforePageOnClick', function () {
+      window.console && console.log('beforePageOnClick...');
+      //return false
+    });
+  })('demo1');
+  $('#noofitems').change(function(){
+    items = $(this).val();
+    location.href = "manageitem.cfm?noitems="+items;
   });
-    
-  var arr=[];
   $(".item_header").click(function(){
     if($(this).is(':checked')) {
-      $('.checkitems').prop('checked', true);
+      $('.checkitems:visible').prop('checked', true);
       $("#disphid").show();
     }else {
       $('.checkitems').prop('checked', false);
@@ -578,54 +634,39 @@ table.table .form-control.error {
       }
     });
   });
-    $('#search').on('keyup', function() {
-    var searchVal = $(this).val();
-    var filterItems = $('[data-filter-item]');
-    if ( searchVal != '' ) {
-      filterItems.addClass('hidden');
-      console.log('[data-filter-item][data-filter-name*="' + searchVal.toLowerCase() + '"]');
-      $('[data-filter-item][data-filter-name*="' + searchVal.toLowerCase() + '"]').removeClass('hidden');
-    } else {
-      filterItems.removeClass('hidden');
-    }
-  });
-  </script>
-  <script>
-function searchTable() {
-  // Declare variables
-  var input, filter, tab, tr, a, i, txtValue;
-  input = document.getElementById('search');
-  filter = input.value.toUpperCase();
-  tab = document.getElementById("searchTab");
-  tr = $('.list-item');
-   
-  // Loop through all list items, and hide those who don't match the search query
-  for (i = 0; i < tr.length; i++) {
-    a = tr[i];
-    txtValue = a.textContent || a.innerText;
-    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-      tr[i].style.display = "";
-    } else {
-      tr[i].style.display = "none";
-    }
-    if(filter == "")
-    {
-     window.location.reload();    
-    } else {
-      var items = $(".list-wrapper .list-item:visible");     
-      var numItems = items.length;
-      var perPage = 10;
-      items.slice(perPage).hide();
-    }
-  }  
-}
-</script>
-<script>
-function chgBusiness(businessid)
-{
-  document.getElementById('hdnbusiness').value = businessid;
-  location.href = 'manageitem.cfm?supplierid=' + businessid;
-}
+  function searchTable() {
+    // Declare variables
+    var input, filter, tab, tr, a, i, txtValue;
+    input = document.getElementById('search');
+    filter = input.value.toUpperCase();
+    tab = document.getElementById("searchTab");
+    tr = $('.list-item');
+    
+    // Loop through all list items, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+      a = tr[i];
+      txtValue = a.textContent || a.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+      if(filter == "")
+      {
+      window.location.reload();    
+      } else {
+        var items = $(".list-wrapper .list-item:visible");     
+        var numItems = items.length;
+        var perPage = 10;
+        items.slice(perPage).hide();
+      }
+    }  
+  }
+  function chgBusiness(businessid)
+  {
+    document.getElementById('hdnbusiness').value = businessid;
+    location.href = 'manageitem.cfm?supplierid=' + businessid;
+  }
 
 	function downloadlist() { 
     if(document.getElementById('business').value == 0)
