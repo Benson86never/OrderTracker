@@ -8,6 +8,10 @@
 input, select{
   font-size: 12px !important;
 }
+
+.table-responsive {
+		width: 99%;
+	}
 .table-wrapper {
     background: #fff;
     padding: 20px;	
@@ -92,38 +96,41 @@ input, select{
                   </div>
               </div>
               <table class="listtable table table-bordered">
-                  <thead>
+                <thead>
+                    <tr>
+                        <th style="width:80%">Name</th>
+                        <th style="width:15%">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <cfoutput>
+                    <cfloop array="#rc.listDetails#" item="list">
                       <tr>
-                          <th>Name</th>
-                          <th>Actions</th>
+                          <td><a href="manageitem.cfm?page=listorganize&businessid=#variables.businessid#&ListID=#list.id#">#list.name#</a></td>
+                          <td>
+                              <button class="delete btn btn-danger" id="#list.id#" title="Delete" >
+                                <i class="fa fa-trash-alt"></i>
+                              </button>
+                              <button class="addlist btn btn-success" id="#list.id#" title="Add" >
+                                <i class="fa fa-plus"></i>
+                              </button>
+                              <button class="editlist btn btn-success" id="#list.id#" title="Edit" >
+                                <i class="fa fa-pencil-alt"></i>
+                              </button>
+                              <button class="cancel cancellist btn btn-danger" id="#list.id#" title="Cancel" >
+                                <i class="fa fa-times"></i>
+                              </button>
+                              <button class="save btn btn-success" id="#list.id#" title="Save" >
+                                <i class="fa fa-save"></i>
+                              </button>
+                              <button class="btn btn-primary view" id="#list.id#" title="Items" >
+                                <i class="fa fa-list" aria-hidden="true"></i>
+                              </button>
+                          </td>
                       </tr>
-                  </thead>
-                  <tbody>
-                    <cfoutput>
-                      <cfloop array="#rc.listDetails#" item="list">
-                        <tr>
-                            <td><a href="manageitem.cfm?page=listorganize&businessid=#variables.businessid#&ListID=#list.id#">#list.name#</a></td>
-                            <td>
-                                <button class="delete btn btn-danger" id="#list.id#" title="Delete" >
-                                  <i class="fa fa-trash-alt"></i>
-                                </button>
-                                <button class="addlist btn btn-success" id="#list.id#" title="Add" >
-                                  <i class="fa fa-plus"></i>
-                                </button>
-                                <button class="editlist btn btn-success" id="#list.id#" title="Edit" >
-                                  <i class="fa fa-pencil-alt"></i>
-                                </button>
-                                <button class="cancel cancellist btn btn-danger" id="#list.id#" title="Cancel" >
-                                  <i class="fa fa-times"></i>
-                                </button>
-                                <button class="save btn btn-success" id="#list.id#" title="Save" >
-                                  <i class="fa fa-save"></i>
-                                </button>
-                            </td>
-                        </tr>
-                      </cfloop>
-                    </cfoutput>
-                  </tbody>
+                    </cfloop>
+                  </cfoutput>
+                </tbody>
               </table>
           </div>
       </div>
@@ -252,6 +259,10 @@ input, select{
             </cfif>
           }
         });
+    });
+    $('.view').click(function(){
+      listid = $(this).attr('id');
+      location.href = 'manageitem.cfm?page=listorganize&businessid=<cfoutput>#variables.businessid#</cfoutput>&listid='+listid;
     });
   });
   
