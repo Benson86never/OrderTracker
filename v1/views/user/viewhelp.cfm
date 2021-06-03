@@ -24,12 +24,9 @@
                margin-left: 3% !important;
                /*font-size: 10px !important;*/
             }
-          .container {
-              padding: 0 !important;
-              margin: 0 !important;
-            }
+          
           .inputelement {
-            width: 95% !important;
+            width: 90% !important;
             margin-top: 6px !important;
           }
        .r1 {

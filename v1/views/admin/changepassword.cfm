@@ -284,6 +284,14 @@ label
         color: #807b7b;
         cursor:pointer;
     }
+ @media (max-width: 992px) {
+    #showPaasword {
+      left:230px;
+
+
+    }
+ }
+
   </style>
    <cfset personid = decrypt(url.userid, application.uEncryptKey, "BLOWFISH", "Hex")>
     <cfquery name="qrySelectPerson" datasource="#application.dsn#">
@@ -314,6 +322,7 @@ label
   </cfif>
   </cfif>
 <cfoutput> 
+<div class="container">
 <div class="wrapper">
   <div id="formContent">
   <!-- Tabs Titles -->
@@ -350,6 +359,7 @@ label
      </div>
   </form>
   </div>
+</div>
 </div>
 </cfoutput>
 

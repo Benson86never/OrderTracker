@@ -102,7 +102,6 @@
            border: 1px solid #ddd; */
             width: 0px !important;
          }
-         
          /*.steps {
            font-size: 10px;
          }
@@ -143,7 +142,7 @@ OR session.secure.RoleCode EQ 1>
 </cfif>
 <div class="container">
 <div class="row">
-  <ul class="nav steps">
+  <ul class="nav steps responsive">
     <cfif listfind(session.secure.businessType, 2)
       OR session.secure.RoleCode EQ 1>
       <li <cfif url.page EQ "items">class="active"</cfif>>
@@ -186,7 +185,7 @@ OR session.secure.RoleCode EQ 1>
       </span><i></i>
     </li>
   </ul>
-  <div class="tab-content">
+  <div class="tab-content responsive">
     <div id="items" class="tab-pane">
       <cfinclude template="item.cfm">
     </div>

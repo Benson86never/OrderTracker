@@ -1,7 +1,10 @@
+<!---<cfinclude template="includes/header.cfm" >
+<cfinclude template="includes/secure.cfm" >
+<cfinclude template="inclludes/footer.cfm" >--->
 <cfparam name="url.ListID" default="0">
 <cfset Lists = CreateObject("Component","v1.model.services.admin").getListDetails(
     ListID = url.ListID,
-    businessId = session.secure.subaccount,
+    businessId = url.businessid,
     includeItems = 1)>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <style>
@@ -91,6 +94,14 @@
                     <li class="ui-state-default itemelement" id="item_#item.id#">
                       <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
                       <span >#item.name#</span>
+                      <span style="float:right;text-align:center;">
+                      <button class="delete btn btn-danger" id="#item.id#" title="Delete" >
+                        <i class="fa fa-trash-alt"></i>
+                      </button>
+                      <button class="btn btn-primary" id="#item.id#" title="Add" >
+                        <i class="fa fa-plus"></i>
+                      </button>
+                      </span>
                     </li>
                   </cfloop>
                 </ul>

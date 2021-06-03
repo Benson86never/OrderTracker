@@ -123,6 +123,7 @@ component extends="framework.one" {
       writeoutput('Error Occurred at #now()#<br>');
       writeDump(var=arguments.exception);
     }
+    writeDump(arguments);abort;
     mail=new mail();
     mail.setSubject( "System Error" );
     mail.setTo(application.erroremail);

@@ -36,8 +36,12 @@
 		<cfset session.secure.lastname ="#qrySelectUser.lastname#">
 		<cfset session.secure.RoleCode="#qrySelectUser.type#">
 		<cfset getitem = CreateObject("Component","v1.model.services.managepermissions").getAccessId()>
-        <cfset session.secure.access="#getitem#"> 
+        <cfset session.secure.access="#getitem#">
+		<cfif ListFind(session.secure.access,'9') AND ListFind(session.secure.access,'15')> 
 		<cflocation url="list.cfm" addtoken="no">
+		<cfelse>
+		<cflocation url="noaccess.cfm" addtoken="no">
+		</cfif>
 	<cfelse>
 	 <cfcookie name="hdnUserName" value="#form.userName#" expires="never">
 		<cflocation url="index.cfm?err=1" addtoken="no">

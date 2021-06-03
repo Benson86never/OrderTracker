@@ -1,7 +1,23 @@
 <style>
+.stylelink{
+  margin-left: 58%; 
+  margin-top: 5%
+  }
 @media (max-width: 992px){
   .inputelement {
     width: 90% !important;
+  }
+  .selectelement {
+    width: 90% !important;
+  }
+  .style1top {
+    padding-top: 20px !important;
+  }
+  .labelname {
+    margin-left: -85px !important;
+  }
+  .stylelink {
+    margin-left: 68%;
   }
 }
 </style>
@@ -176,7 +192,7 @@
             </cfloop>
           </select>
           <cfif session.secure.rolecode eq 1>
-          <div style="margin-left: 58%; margin-top: 5%">
+          <div class="stylelink">
              <a href="index.cfm?action=admin.addBusiness">
               Add Business
             </a>
@@ -185,30 +201,30 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-2 labelname">
+        <div class="col-md-2 labelname hidden-xs">
           Street <br> Address 1:
         </div>
-        <div class="col-md-2 ">
+        <div class="col-md-2 style1top">
           <input type="text" class="form-control inputelement" id="address1" placeholder="Enter Street Address 1" name="address1" value="#variables.address1#" autocomplete="off" readonly>
         </div>
-        <div class="col-md-2 labelname">
+        <div class="col-md-2 labelname hidden-xs">
           Street <br> Address 2:
         </div>
-        <div class="col-md-2 ">
+        <div class="col-md-2 style1top">
           <input type="text" class="form-control inputelement" id="address2" placeholder="Enter  Street Address 2" name="address2" value="#variables.address2#" autocomplete="off" readonly >
         </div>
       </div>
       <div class="row">
-        <div class="col-md-2 labelname">
+        <div class="col-md-2 labelname hidden-xs">
           City:
         </div>
-        <div class="col-md-2 ">
+        <div class="col-md-2 style1top">
           <input type="text" class="form-control inputelement" id="City" placeholder="Enter City" name="City" value="#variables.city#" autocomplete="off" readonly >
         </div>
-        <div class="col-md-2 labelname">
+        <div class="col-md-2 labelname hidden-xs">
           State/Province:
         </div>
-        <div class="col-md-2 ">
+        <div class="col-md-2 style1top">
           <input type="text" class="form-control inputelement" id="state" placeholder="Enter State" name="state" value="#variables.state#" autocomplete="off" readonly>
         <!---<select class="form-control selectElement" name="state" style="width: 100%;" disabled>
             <cfloop array="#rc.states#" item="state">
@@ -224,16 +240,16 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-2 labelname">
+        <div class="col-md-2 labelname hidden-xs">
           Zip/Postal Code:
         </div>
-        <div class="col-md-2 ">
+        <div class="col-md-2 style1top">
           <input type="text" class="form-control inputelement" id="Zip" placeholder="Enter Zip" name="Zip"  value="#variables.zip#" autocomplete="off" readonly>
         </div>
-        <div class="col-md-2 labelname">
+        <div class="col-md-2 labelname hidden-xs">
           Country:
         </div>
-        <div class="col-md-2 ">
+        <div class="col-md-2 style1top">
           <input type="text" class="form-control inputelement" id="country" placeholder="Enter country" name="country" value="#variables.country#" autocomplete="off" readonly>        
           <!---<select class="form-control selectElement" name="country" style="width: 100%;" autocomplete="off" disabled>
             <cfloop array="#rc.countries#" item="country">

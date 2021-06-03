@@ -201,7 +201,6 @@
             <cfloop list="#arguments.data#" index="local.item">
                 <cfset local.roleid = listfirst(local.item,'_')>
                 <cfset local.accessid = listlast(local.item,'_')>
-                <cfdump var="#local.accessrole#">
                 <cfquery name="local.checkaccessrole1" datasource="ordertracker">
                     SELECT 1
                     FROM accesspermission

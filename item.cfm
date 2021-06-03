@@ -125,7 +125,7 @@ table.table .form-control.error {
          width: 30%;
        }
        .fsize {
-         font-size: 14px !important;
+         font-size: 12px !important;
        }
        #search {
          width: 50px !important;
@@ -186,9 +186,9 @@ table.table .form-control.error {
     <div class="table-wrapper">
       <div class="table-title">
          <div class="row">
-            <div class="col-xs-2"><h2 class="fsize">Item Details</h2></div>
+            <div class="col-xs-1"><h4 class="fsize">Item Details</h4></div>
             <cfif session.secure.RoleCode EQ 1>
-            <div class="col-xs-6">
+            <div class="col-xs-5">
                  <div id="dialog-form" title="Add Items">
                     <cfform id="addItem" action="add_item_action.cfm" method="post" enctype="multipart/form-data">
                         <cfif session.secure.RoleCode eq 1>
@@ -211,28 +211,72 @@ table.table .form-control.error {
                           </div>
                       </cfif>
                       <cfif ListFind(session.secure.access,'20')>
-                        <cfinput type="file" name="uploadfile" required="yes" message="You must select a file." class="form-control f1" style="width:200px;display:inline-flex;">
-                        <input type="submit" name="Submit2" value="Upload" class="btn btn-info " style="width:70px;display:inline-flex;">                        
+                        <cfinput type="file" name="uploadfile" required="yes" message="You must select a file." class="form-control f1" style="width:130px;display:inline-flex;">
+                        <input type="submit" name="Submit2" value="Upload" class="btn btn-info " style="width:60px;display:inline-flex;">                        
                         <input type="hidden" name="hdnbusiness" id="hdnbusiness" value="#url.supplierid#">
                         <input type="button" id="Submit3" name="Submit3" class="btn btn-info" value="Download Item List" onclick="downloadlist();">                          
-                        <a href="DownloadTemplate.cfm"  class="btn btn-info" style="width:110px;display:inline-flex;" >Download Template</a>
+                        <a href="DownloadTemplate.cfm"  class="btn btn-info" style="width:100px;display:inline-flex;" >Download Template</a>
                       </cfif>
                     </cfform>
                  </div>
               </div>
             </cfif>
+            <span style="display:none;" id="disphid">
+          <div class="col-xs-1 text-right"><h6>List:</h6></div>
+          <cfscript> 
+            local.accounts = [];
+            local.accountDetails = queryExecute("
+            SELECT
+              list.ListID,
+              list.Name,
+              business.BusinessName,
+              business.BusinessId
+            FROM
+              list INNER JOIN business WHERE list.SubAccountID=business.BusinessId
+            ",{},{datasource: application.dsn}
+            );
+            cfloop(query = "local.accountDetails") {
+              local.details = {};
+              local.details['id'] = local.accountDetails.ListID;
+              local.details['name'] = local.accountDetails.Name;
+              local.details['businessname'] = local.accountDetails.BusinessName;
+              local.details['businessid'] = local.accountDetails.BusinessId;
+              arrayAppend(local.accounts, local.details);
+            }
+          </cfscript>
+          <div class="col-xs-1">
+                      <select name="noofitems" id="noofitems1" class="form-select-sm form-control subval">
+                       <cfloop array="#local.accounts#" item="account">
+                                <option value="#account.id#">
+                                  #account.name#(#account.businessname#)
+                                </option>
+                       </cfloop>
+                      </select>
+            </div> 
+          <div class="col-xs-1">
+              <input type="submit" class="btn btn-info sub1" value="Add To List" name="submit1">
+          </div>
+          </span>
             <div class="col-xs-1 text-right" >
-              <input type="search" id="search" name="search" class="form-control" onkeyup="searchTable();" placeholder="Search" style="width:150px;"/> 
+              <input type="search" id="search" name="search" class="form-control" onkeyup="searchTable();" placeholder="Search" style="width:100px;"/> 
             </div>
             <cfif session.secure.RoleCode EQ 1 and ListFind(session.secure.access,'18')>
-            <div class="col-xs-1 text-right t1" style="margin-left:50px;"><button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> <span class="hidden-xs">Add New</span></button></div>
+            <div class="col-xs-1 text-right t1"><button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> <span class="hidden-xs">Add New</span></button></div>
             </cfif>
           </div>                
         </div>
+          
+        <form action="" method="post">
         <table class="list-wrapper itemtable table table-bordered table-responsive-sm table-striped" cellspacing="0" cellpadding="0" id="searchTab">
           <thead>
             <tr>
-            <th width="40%" style="text-align:center;">Name</th>
+            <th width="5%">
+                 <input type="checkbox" 
+                 id="id" 
+                 name="itemcheck" 
+                 class="item_header">
+            </th>
+            <th width="35%" style="text-align:center;">Name</th>
             <th width="10%" style="text-align:center;">SKU</th>
             <th width="10%" style="text-align:center;">Photo URL</th>
             <th width="10%" style="text-align:center;">Units</th>
@@ -245,6 +289,12 @@ table.table .form-control.error {
           <tbody>
             <cfloop array="#items#" item="item">
             <tr class="list-item items" data-filter-item data-filter-name="#lcase(item.name)# #lcase(item.supplierName)#">
+              <td><input type="checkbox"
+                  id="id_#item.id#"
+                  name="itemselect"
+                  value="#item.id#"
+                  class="c1">
+              </td>
               <td fid="name">#item.name#</td>
               <td fid="sku">#item.sku#</td>
               <td fid="photourl" title="#item.photoUrl#">#item.photoUrl#</td>
@@ -277,12 +327,24 @@ table.table .form-control.error {
             </cfloop>
           </tbody>
         </table>
+        </form>
       </div>
-      <div id="pagination-container"></div>
+      <div class="col-xs-1 text-right"><h6>Items:</h6></div>
+            <div class="col-xs-1 text-right">
+                      <select name="noofitems" id="noofitems1" class="form-select-sm form-control c_value">
+                       <!---<cfloop array="#items#" item="item">--->
+                       <cfloop from=10 to="#arrayLen(items)#" index="i" step="10">
+                              <option value="#i#">#i#</option>
+                       </cfloop>
+                      </select>
     </div>
+      <div id="pagination-container">
+  </div>
+  </div>
   </div>
   </div>
 </cfoutput>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <!---<script src="https://cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/jquery.simplePagination.js"></script>--->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
@@ -443,6 +505,8 @@ table.table .form-control.error {
   var items = $(".list-wrapper .list-item");
   var numItems = items.length;
   var perPage = 10;
+  var showFrom,showTo;
+  console.log(perPage)
   items.slice(perPage).hide();
     $("#pagination-container").pxpaginate({
       currentpage: 1,
@@ -456,13 +520,99 @@ table.table .form-control.error {
       lastPageName: '<<',
       firstPageName: '>>',
       callback: function(pagenumber){
-        var showFrom = perPage * (pagenumber - 1);
-        var showTo = showFrom + perPage;
+         showFrom = perPage * (pagenumber - 1);
+         showTo = showFrom + perPage;
         items.hide().slice(showFrom, showTo).show();
       }
     });
+    //list of items on click
+    /*var items = $(".list-wrapper .list-item");
+    var numItems = items.length;
+    $(".c_value").click(function(){
+        var perPage = $('.c_value').val();
+        console.log(perPage)
+        var showFrom,showTo;
+        items.slice(perPage).hide();
+       $("#pagination-container").pxpaginate({
+      currentpage: 1,
+      totalPageCount: items.length/perPage,
+      maxBtnCount: 5,
+      align: 'center',
+      nextPrevBtnShow: true,
+      firstLastBtnShow: true,
+      prevPageName: '<',
+      nextPageName: '>',
+      lastPageName: '<<',
+      firstPageName: '>>',
+      callback: function(pagenumber){
+         showFrom = perPage * (pagenumber - 1);
+         showTo = showFrom + perPage;
+        items.hide().slice(showFrom, showTo).show();
+      }
+    });
+    });*/
+     var arr=[];
+     $(".item_header").click(function(){
+    var id_val=$(this).attr("id");
+     var value=$('.c1');
+    //console.log(showTo)
+    console.log(value.length)
+    if($('#'+id_val).is(':checked')) {
+    for (let i = 0; i < perPage; ++i) {
+         value[i].checked = true;
+          arr.push(value[i].value);
+          $("#disphid").css("display", "block");
+    }
+    }else {
+      for (let i = 0; i < perPage; i++) {
+         value[i].checked = false;
+         arr=[];
+          $("#disphid").css("display", "none");
+    }
+    }
+ });  
+ $(".c1").click(function(){
+   arr=[];
+   var val1=$('.c1');
+     if($('.c1').is(':checked')){
+       for(let i=0;i<val1.length;i++){
+       $("#disphid").css("display", "block");
+       var v1=$(val1[i]).attr('id');
+         if($('#'+v1).is(':checked')) {
+            arr.push($(val1[i]).val());
+            console.log($(val1[i]).val())
+            console.log($('.subval').val())
+          }
+        }
+      }
+    else{
+      $("#disphid").css("display", "none");
+    }
+ });
+ $(".sub1").click(function(){
+          console.log(arr)
+          //var myval=[];
+           var listitemval=$('.subval').val();
+          /* myval.push(listitemval);
+          var list=myval.slice(0,1);
+          var busid=myval.slice(1,2);
+          console.log(busid);*/
 
-   /* $('#search').on('keyup', function() {
+           $.ajax({
+          url: 'v1/model/services/order.cfc?method=addItemtoList',
+          type: 'get',
+          data: {
+            listId : listitemval,
+            itemId : arr
+          },
+          success: function(data){
+            //location.href="list_organize.cfm?url.page=listorganize";
+            location.href = 'manageitem.cfm?page=items';
+            console.log(data)
+          }
+        });
+  });
+    $('#search').on('keyup', function() {
     var searchVal = $(this).val();
     var filterItems = $('[data-filter-item]');
     console.log(filterItems);

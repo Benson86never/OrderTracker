@@ -1,4 +1,19 @@
-
+<style>
+@media (max-width: 992px){
+  .inputelement {
+    width: 90% !important;
+  }
+  .labelname {
+    margin-left: -85px !important;
+  }
+  .businessType {
+    height: 45px !important;
+  }
+  .head1{
+    font-size:16px !important;
+  }
+}
+</style>
 <cfoutput>
   <cfif structKeyExists(session, 'userResult')
     AND session.userResult.error>
@@ -50,7 +65,7 @@
   <cfparam  name="variables.accountid" default="1">
   <div class="container">
     <div class="panel panel-default">
-      <div class="panel-heading">Business Details</div>
+      <div class="panel-heading head1">Business Details</div>
       <div class="panel-body">
         <form class="form-inline" method = "post" id="formSubmit" name="formSubmit">
             <div class="row">
