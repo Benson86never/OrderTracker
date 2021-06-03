@@ -784,6 +784,33 @@ component  {
       local.qaddlist = queryExecute("
         DELETE FROM joinitemtolist
         WHERE
+          listId = :listId
+        ",{
+          listId = {cfsqltype = "varchar", value = arguments.listId}
+        },{datasource: application.dsn}
+      );
+      local.qaddlist = queryExecute("
+        DELETE FROM list
+        WHERE
+          listId = :listId
+        ",{
+          listId = {cfsqltype = "varchar", value = arguments.listId}
+        },{datasource: application.dsn}
+      );
+    } catch (any e) {
+      local.result['error'] = true;
+      writeDump(e);abort;
+    }
+    return local.result;
+  }
+remote any function deleteListitem(
+    numeric listId
+  ){
+    local.result = {'error' : false};
+    try{
+      local.qaddlist = queryExecute("
+        DELETE FROM joinitemtolist
+        WHERE
           ID = :listId
         ",{
           listId = {cfsqltype = "varchar", value = arguments.listId}
@@ -795,7 +822,6 @@ component  {
     }
     return local.result;
   }
-
   remote any function updatelist(
     numeric listId,
     string listname

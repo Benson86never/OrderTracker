@@ -168,7 +168,7 @@
     console.log($(this).attr('id'));
     $(this).parents("li").remove();
     $.ajax({
-      url: 'v1/model/services/business.cfc?method=deleteList',
+      url: 'v1/model/services/business.cfc?method=deleteListitem',
       type: 'get',
       data: {
             listId : $(this).attr('id')
