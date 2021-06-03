@@ -79,6 +79,7 @@ input, select{
                                   </cfif>
                                   value="<cfoutput>#account.id#</cfoutput>">
                                   <cfoutput>#account.name#</cfoutput>
+                                  <cfset session.secure.bid="#account.id#">
                                 </option>
                               </cfloop>
                             </select>
@@ -101,7 +102,7 @@ input, select{
                     <cfoutput>
                       <cfloop array="#rc.listDetails#" item="list">
                         <tr>
-                            <td>#list.name#</td>
+                            <td><a href="manageitem.cfm?page=listorganize&businessid=#variables.businessid#&ListID=#list.id#">#list.name#</a></td>
                             <td>
                                 <button class="delete btn btn-danger" id="#list.id#" title="Delete" >
                                   <i class="fa fa-trash-alt"></i>

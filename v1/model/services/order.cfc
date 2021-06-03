@@ -513,9 +513,9 @@ component  {
     }
   }
 
-  public any function addItemtoList(
-    integer itemId,
-    integer listId
+  remote any function addItemtoList(
+    integer listId,
+     itemId=[]
   ){
     transaction {
       try {
@@ -523,6 +523,7 @@ component  {
           'error' : false,
           'errorMsg' : ''
         }
+        cfloop(list=arguments.itemId,index="local.item"){
         local.updateCheckin = queryExecute("
           INSERT INTO joinitemtolist(
             ItemID,
@@ -534,10 +535,11 @@ component  {
             1
           );
         ",{
-            itemId = {cfsqltype = "integer", value = arguments.itemId},
+            itemId = {cfsqltype = "integer",value = local.item},
             listId = {cfsqltype = "integer", value = arguments.listId}
           },{datasource: application.dsn}
         );
+        }
         transaction action="commit";
       } catch (any e){
         transaction action="rollback"; 
@@ -546,3 +548,4 @@ component  {
     }
   }
 }
+

@@ -1,7 +1,10 @@
+<!---<cfinclude template="includes/header.cfm" >
+<cfinclude template="includes/secure.cfm" >
+<cfinclude template="inclludes/footer.cfm" >--->
 <cfparam name="url.ListID" default="0">
 <cfset Lists = CreateObject("Component","v1.model.services.admin").getListDetails(
     ListID = url.ListID,
-    businessId = session.secure.subaccount,
+    businessId = url.businessid,
     includeItems = 1)>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <style>

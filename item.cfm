@@ -229,7 +229,8 @@ table.table .form-control.error {
             SELECT
               list.ListID,
               list.Name,
-              business.BusinessName
+              business.BusinessName,
+              business.BusinessId
             FROM
               list INNER JOIN business WHERE list.SubAccountID=business.BusinessId
             ",{},{datasource: application.dsn}
@@ -238,14 +239,15 @@ table.table .form-control.error {
               local.details = {};
               local.details['id'] = local.accountDetails.ListID;
               local.details['name'] = local.accountDetails.Name;
-              local.details['businessname'] = local.accountDetails.BusinessName
+              local.details['businessname'] = local.accountDetails.BusinessName;
+              local.details['businessid'] = local.accountDetails.BusinessId;
               arrayAppend(local.accounts, local.details);
             }
           </cfscript>
           <div class="col-xs-1">
                       <select name="noofitems" id="noofitems1" class="form-select-sm form-control subval">
                        <cfloop array="#local.accounts#" item="account">
-                              <option value="#account.id#">
+                                <option value="#account.id#">
                                   #account.name#(#account.businessname#)
                                 </option>
                        </cfloop>
@@ -556,13 +558,13 @@ table.table .form-control.error {
     //console.log(showTo)
     console.log(value.length)
     if($('#'+id_val).is(':checked')) {
-    for (let i = 0; i < value.length; ++i) {
+    for (let i = 0; i < perPage; ++i) {
          value[i].checked = true;
           arr.push(value[i].value);
           $("#disphid").css("display", "block");
     }
     }else {
-      for (let i = 0; i < value.length; i++) {
+      for (let i = 0; i < perPage; i++) {
          value[i].checked = false;
          arr=[];
           $("#disphid").css("display", "none");
@@ -579,6 +581,7 @@ table.table .form-control.error {
          if($('#'+v1).is(':checked')) {
             arr.push($(val1[i]).val());
             console.log($(val1[i]).val())
+            console.log($('.subval').val())
           }
         }
       }
@@ -587,8 +590,27 @@ table.table .form-control.error {
     }
  });
  $(".sub1").click(function(){
-          console.log($('.subval').val());
           console.log(arr)
+          //var myval=[];
+           var listitemval=$('.subval').val();
+          /* myval.push(listitemval);
+          var list=myval.slice(0,1);
+          var busid=myval.slice(1,2);
+          console.log(busid);*/
+
+           $.ajax({
+          url: 'v1/model/services/order.cfc?method=addItemtoList',
+          type: 'get',
+          data: {
+            listId : listitemval,
+            itemId : arr
+          },
+          success: function(data){
+            //location.href="list_organize.cfm?url.page=listorganize";
+            location.href = 'manageitem.cfm?page=items';
+            console.log(data)
+          }
+        });
   });
     $('#search').on('keyup', function() {
     var searchVal = $(this).val();
