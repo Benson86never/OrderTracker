@@ -104,7 +104,7 @@
                   <cfloop array="#list.items#" index="item" >
                     <li class="ui-state-default itemelement" id="item_#item.id#">
                       <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-                      <span >#item.name#</span>
+                      <span >#item.name# (#item.supplierName#)</span>
                       <span class="action-buttons">
                         <button class="delete btn btn-danger" itemid="#item.id#" title="Delete" >
                           <i class="fa fa-trash-alt"></i>
