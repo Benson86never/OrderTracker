@@ -106,10 +106,10 @@
                       <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
                       <span >#item.name# (#item.supplierName#)</span>
                       <span class="action-buttons">
-                        <button class="delete btn btn-danger" itemid="#item.id#" title="Delete" >
+                        <button class="delete1 btn btn-danger" id="#item.id#" title="Delete" >
                           <i class="fa fa-trash-alt"></i>
                         </button>
-                        <button class="btn btn-primary" itemid="#item.id#" title="Add" >
+                        <button class="btn btn-primary add1" id="#item.id#" title="Add" >
                           <i class="fa fa-plus"></i>
                         </button>
                       </span>
@@ -162,5 +162,20 @@
     jQuery.ajaxSettings.traditional = true;
     $(".sortable").sortable();
     $("#saveBtn").click(persist);
+  });
+  //delete a row 
+  $(document).on("click", ".delete1", function(){
+    console.log($(this).attr('id'));
+    $(this).parents("li").remove();
+    $.ajax({
+      url: 'v1/model/services/business.cfc?method=deleteList',
+      type: 'get',
+      data: {
+            listId : $(this).attr('id')
+          },
+      success: function(data){
+            console.log(data)
+      }
+    });
   });
 </script>

@@ -784,15 +784,7 @@ component  {
       local.qaddlist = queryExecute("
         DELETE FROM joinitemtolist
         WHERE
-          listId = :listId
-        ",{
-          listId = {cfsqltype = "varchar", value = arguments.listId}
-        },{datasource: application.dsn}
-      );
-      local.qaddlist = queryExecute("
-        DELETE FROM list
-        WHERE
-          listId = :listId
+          ID = :listId
         ",{
           listId = {cfsqltype = "varchar", value = arguments.listId}
         },{datasource: application.dsn}
