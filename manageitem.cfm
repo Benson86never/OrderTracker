@@ -23,7 +23,7 @@
   display: block;
   /* border: 1px solid #ddd; */
   padding: 12px 50px 7px 50px; 
-  width: 180px;
+  width: 200px;
   height: 40px;
 }
 
@@ -155,17 +155,18 @@ OR session.secure.RoleCode EQ 1>
         </span><i></i>
       </li>
     </cfif>
-    <li <cfif url.page EQ "lists">class="active"</cfif>>
+    <li <cfif url.page EQ "lists"
+      OR url.page EQ "listorganize">class="active"</cfif>>
       <span>
         <a data-toggle="tab" href="lists" class="listlink">
-         <span class="hidden-xs"> <strong>Manage Lists</strong>
-          Add/edit/delete lists</span>
+         <span class="hidden-xs"> <strong>Manage Lists Items</strong>
+          Add/edit/delete/change order items in list</span>
           <i class="fa fa-plus hidden-lg" aria-hidden="true"></i>
           <i class="fa fa-edit hidden-lg" aria-hidden="true"></i>
         </a>
       </span><i></i>
     </li>
-    <li <cfif url.page EQ "listitems">class="active"</cfif>>
+    <!---<li <cfif url.page EQ "listitems">class="active"</cfif>>
       <span>
         <a data-toggle="tab" href="listitems" class="listlink">
          <span class="hidden-xs"> <strong>Manage List Items</strong>
@@ -183,7 +184,7 @@ OR session.secure.RoleCode EQ 1>
          <i class="fa fa-edit hidden-lg" aria-hidden="true"></i>
         </a>
       </span><i></i>
-    </li>
+    </li>--->
   </ul>
   <div class="tab-content responsive">
     <div id="items" class="tab-pane">

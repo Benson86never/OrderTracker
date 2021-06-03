@@ -70,13 +70,24 @@
         font-size: 24px;
       }
   }
-    .buttondiv{
-        margin-bottom: 20px;
-   }
-    .itemelement span {
-        position: relative;
-        top: 8px;
-    }
+  .buttondiv{
+    margin-bottom: 20px;
+  }
+  .itemelement span {
+    position: relative;
+    top: 8px;
+  }
+  .action-buttons {
+    position: relative;
+    top: 6px !important;
+    right: 4px;
+    float: right;
+    text-align: center;
+  }
+  .action-buttons button {
+    font-size: 10px !important;
+    padding: 6px 8px !important;
+  }
 </style>
 <cfoutput>
   <div class="container">
@@ -84,7 +95,7 @@
     <cfif arraylen(lists)>
       <cfloop array="#Lists#" index="list" >
         <div class="panel panel-default">
-          <div class="panel-heading">#list.name#</div>
+          <div class="panel-heading">#list.name# (#list.businessname#)</div>
           <div class="panel-body">
             <div class="page-content">
               <!--- <div class="list-item"><a href="#cgi.script_name#?ListID=#list.id#">#list.name#</a></div>--->
@@ -94,13 +105,13 @@
                     <li class="ui-state-default itemelement" id="item_#item.id#">
                       <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
                       <span >#item.name#</span>
-                      <span style="float:right;text-align:center;">
-                      <button class="delete btn btn-danger" id="#item.id#" title="Delete" >
-                        <i class="fa fa-trash-alt"></i>
-                      </button>
-                      <button class="btn btn-primary" id="#item.id#" title="Add" >
-                        <i class="fa fa-plus"></i>
-                      </button>
+                      <span class="action-buttons">
+                        <button class="delete btn btn-danger" itemid="#item.id#" title="Delete" >
+                          <i class="fa fa-trash-alt"></i>
+                        </button>
+                        <button class="btn btn-primary" itemid="#item.id#" title="Add" >
+                          <i class="fa fa-plus"></i>
+                        </button>
                       </span>
                     </li>
                   </cfloop>
@@ -113,6 +124,7 @@
         </div>
       </cfloop>
       <div class="buttondiv pull-right">
+        <input type="button" id="backBtn" value="Back to Lists" class="btn btn-danger" >
         <input type="button" id="saveBtn" value="Save" class="btn btn-success" >
       </div>
     <cfelse>
@@ -124,6 +136,10 @@
   </div>
 </cfoutput>
 <script>
+  $('#backBtn').click(function(){
+    listid = $(this).attr('id');
+    location.href = 'manageitem.cfm?page=lists&businessid=<cfoutput>#url.businessid#</cfoutput>';
+  });
   function persist() {
     console.log('running persist....');
     $(".sortable").each(function(){
@@ -145,6 +161,6 @@
   $(document).ready(function(){
     jQuery.ajaxSettings.traditional = true;
     $(".sortable").sortable();
-    $("#saveBtn").click(persist)
+    $("#saveBtn").click(persist);
   });
 </script>

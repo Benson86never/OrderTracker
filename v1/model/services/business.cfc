@@ -454,9 +454,11 @@ component  {
       SELECT
         L.listId,
         L.NAME,
-        L.subAccountId
+        L.subAccountId,
+        B.BusinessName AS businessName
       FROM 
         List L
+        INNER JOIN business B ON B.businessId = L.subAccountId
       WHERE
         L.subAccountId = :businessId
         #local.condition#
@@ -467,7 +469,8 @@ component  {
     cfloop(query = "local.listDetails" ) {
       local.details = {};
       local.details['id'] = local.listDetails.listId;
-      local.details['name'] = local.listDetails.NAME;
+      local.details['name'] = local.listDetails.name;
+      local.details['businessName'] = local.listDetails.businessName;
       arrayAppend(local.list, local.details);
       if(arguments.includeItems) {
         local.details['items'] = [];
