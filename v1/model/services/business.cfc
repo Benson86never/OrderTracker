@@ -1287,4 +1287,37 @@ remote any function deleteListitem(
     }
     return local.result;
   }
+
+public any function getItemBYBusiness(
+    numeric businessId = 0
+  ) {
+    local.listdetails = [];
+    local.getItemDetails = queryExecute("
+      SELECT
+            I.`Name` AS ItemName,
+            I.`ItemId` AS Itemid,
+            S.BusinessName AS supplierName,
+            B.BusinessName AS businessname
+          FROM 
+            item I
+            INNER JOIN joinsuppliertoitem JSI ON JSI.itemId = I.itemId
+            INNER JOIN business S ON S.businessId = JSI.SupplierID
+            INNER JOIN joinmasteraccounttosupplier JMS ON JMS.`SupplierID` = JSI.SupplierID 
+            INNER JOIN business B ON B.businessId = JMS.businessId
+          WHERE
+            JMS.businessId = :businessId
+      ",{
+        businessId = {cfsqltype = "integer", value = arguments.BusinessId}
+      },{datasource: application.dsn}
+    );
+    cfloop(query = "local.getItemDetails" ) {
+      local.details = {};
+      local.details['iname'] = local.getItemDetails.ItemName;
+      local.details['iid'] = local.getItemDetails.Itemid;
+      local.details['sname'] = local.getItemDetails.supplierName;
+      local.details['bname'] = local.getItemDetails.businessname;
+      arrayAppend(local.listdetails, local.details);
+    }  
+    return local.listdetails;
+  }
 }

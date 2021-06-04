@@ -2,10 +2,13 @@
 <cfinclude template="includes/secure.cfm" >
 <cfinclude template="inclludes/footer.cfm" >--->
 <cfparam name="url.ListID" default="0">
-<cfset Lists = CreateObject("Component","v1.model.services.admin").getListDetails(
+<cfset ListItemobj = CreateObject("Component","v1.model.services.admin")>
+    <cfset Lists=ListItemobj.getListDetails(
     ListID = url.ListID,
     businessId = url.businessid,
     includeItems = 1)>
+  <cfset getItem = ListItemobj.getItemByBusiness(
+    businessId = url.businessid)>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <style>
   .page-content{
@@ -97,7 +100,7 @@
         <div class="panel panel-default">
           <div class="panel-heading">#list.name# (#list.businessname#)</div>
           <div class="panel-body">
-            <div class="page-content">
+            
               <!--- <div class="list-item"><a href="#cgi.script_name#?ListID=#list.id#">#list.name#</a></div>--->
               <cfif arraylen(list.items)>
                 <ul id="sortable" class="sortable">
@@ -106,10 +109,10 @@
                       <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
                       <span >#item.name# (#item.supplierName#)</span>
                       <span class="action-buttons">
-                        <button class="delete1 btn btn-danger" id="#item.id#" title="Delete" >
+                        <button class="deleteListItem btn btn-danger" id="#item.id#" title="Delete" >
                           <i class="fa fa-trash-alt"></i>
                         </button>
-                        <button class="btn btn-primary add1" id="#item.id#" title="Add" >
+                        <button class="btn btn-primary addListItem" id="#item.id#" title="Add" >
                           <i class="fa fa-plus"></i>
                         </button>
                       </span>
@@ -119,6 +122,9 @@
               <cfelse>
                 No items available.
               </cfif>
+              <input type="hidden" name="itemid" id="itemid" value="0">
+              <input type="hidden" name="itemname" id="itemname" value="">
+              <input type="hidden" name="lisid" id="listid" value="#url.ListID#">
             </div>
           </div>
         </div>
@@ -164,7 +170,7 @@
     $("#saveBtn").click(persist);
   });
   //delete a row 
-  $(document).on("click", ".delete1", function(){
+  $(document).on("click", ".deleteListItem", function(){
     console.log($(this).attr('id'));
     $(this).parents("li").remove();
     $.ajax({
@@ -178,4 +184,96 @@
       }
     });
   });
+  //add items to list
+  $(document).ready(function(){
+    var btnvalue;
+    $('[data-toggle="tooltip"]').tooltip();
+      var actions = '<button class="saveListnew btn btn-success" id="0" title="save" ><i class="fa fa-save"></i></button>'+
+                   '<button class="cancelList btn btn-danger" id="0" title="cancel" style="margin-left: 8px !important;"><i class="fa fa-times"></i></button>' ;
+  $(document).on("click", ".addListItem", function(){
+     $(this).attr("disabled", "disabled");
+     btnvalue=$(this).parents("li").index();
+     console.log(btnvalue)
+     var index = $(".sortable li").length;
+     console.log($(this).attr('id'));
+    /* var row = '<li><input type="text" class="form-control listdetails" name="listdetails" id="listdetails" style="width : 90% !important;"></li>' +
+              '<li>' + actions + '</li>' ;*/
+    var row = '<li>' + '<tr>' +
+              '<td><input type="text" class="form-control listdetails" name="listdetails" id="listdetails"></td>' +
+              '<td>' + actions + '</td>' +
+              '</tr> '+ '</li>';
+    $(".sortable").append(row);
+    $(".sortable li .action-buttons").eq(index).find("cancelList, .saveListnew").toggle();
+    <cfoutput>
+      $('.listdetails').autocomplete({
+      source: [
+        <cfloop array="#getItem#" index="i" item="gitem">
+          { label: "#gitem.iname#(#gitem.sname#)", value: "#gitem.iid#" }
+          <cfif i NEQ arraylen(getItem)>,</cfif>
+        </cfloop>
+          ],
+      select: function (event, ui) {
+      // Set selection
+      $('##listdetails').val(ui.item.label); // display the selected text
+      $('##itemid').val(ui.item.value); // save selected id to input
+      $('##itemname').val(ui.item.label);
+      console.log($('##itemid').val())
+      console.log($('##itemname').val())
+      return false;
+      }
+      });
+    </cfoutput>
+  });  
+  $(document).on("click", ".saveListnew", function(){
+  console.log($('#itemid').val())
+  console.log($('#listid').val())
+  $.ajax({
+    url: 'v1/model/services/order.cfc?method=addItemtoList',
+    type: 'get',
+    data: {
+      listId : $('#listid').val(),
+      itemId : $('#itemid').val()
+    },
+    returntype:'string',
+    success: function(data){
+      console.log(data)
+      var newrow='<li class="ui-state-default itemelement ui-sortable-handle" id="item_#item.id#">' +
+                      '<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>' + '<span >' + $('#itemname').val() + '</span>' + 
+                      '<span class="action-buttons">' +
+                        '<button class="deleteListItem btn btn-danger" id="#item.id#" title="Delete" > <i class="fa fa-trash-alt"></i></button>'+
+                        '<button class="btn btn-primary addListItem" id="#item.id#" style="margin-left: 5px !important;" title="Add" ><i class="fa fa-plus"></i></button>'+
+                      '</span>' + '</li>';
+      //var btnvalue=$(this).parents("li").index();
+      console.log(btnvalue)
+      $(".sortable li").eq(btnvalue).after(newrow);
+      //$(this).parent("li").html($(this).val());
+      //add li next to element for which the plus button is clicked
+      //sortable.each(function()) call savelistitems
+      //location.href = 'manageitem.cfm?page=listorganize&businessid=<cfoutput>#variables.businessid#</cfoutput>&ListID=<cfoutput>#url.ListID#</cfoutput>'   
+      $(".sortable").each(function(){
+      var data = $(this).sortable('toArray');
+      console.log(data)
+      $.post('v1/model/services/business.cfc?method=saveListItems',{listItems:data},function(res,txtStatus) {
+        console.log(txtStatus);
+        $('#modal-showAlert').modal('show');
+        $('.modal-header').css('background-color','white');
+        $('#headerText').html('Organize List Items');
+        $('.close').css('color','black');
+        $('#modal-showAlert .modal-body').html(txtStatus);
+        $('#modal-showAlert .modal-footer .ok').show();
+        $('#modal-showAlert .modal-footer .yes').hide();
+        $('#modal-showAlert .modal-footer .no').hide();
+      });
+    });
+    $(".listdetails").remove();
+    $(".cancelList, .saveListnew").remove();
+    $(".addListItem").removeAttr("disabled");
+    }
+  });
+  });
+  $(document).on("click", ".cancelList", function(){		
+    $(this).parents("li").remove();
+    $(".addListItem").removeAttr("disabled");
+  });
+});
 </script>

@@ -513,7 +513,7 @@ component  {
     }
   }
 
-  remote any function addItemtoList(
+  remote string function addItemtoList(
     integer listId,
     string itemId
   ){
@@ -565,8 +565,9 @@ component  {
                 itemId = {cfsqltype = "integer",value = local.item},
                 listId = {cfsqltype = "integer", value = arguments.listId},
                 orderBy = {cfsqltype = "integer", value = local.orderby}
-              },{datasource: application.dsn}
+              },{datasource: application.dsn, result = "local.listResult"}
             );
+            return local.listResult.generatedkey;
           }
         }
         transaction action="commit";
