@@ -237,11 +237,11 @@
     returntype:'string',
     success: function(data){
       console.log(data)
-      var newrow='<li class="ui-state-default itemelement ui-sortable-handle" id="item_#item.id#">' +
+      var newrow='<li class="ui-state-default itemelement ui-sortable-handle" id="item_'+ data +'">' +
                       '<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>' + '<span >' + $('#itemname').val() + '</span>' + 
                       '<span class="action-buttons">' +
-                        '<button class="deleteListItem btn btn-danger" id="#item.id#" title="Delete" > <i class="fa fa-trash-alt"></i></button>'+
-                        '<button class="btn btn-primary addListItem" id="#item.id#" style="margin-left: 5px !important;" title="Add" ><i class="fa fa-plus"></i></button>'+
+                        '<button class="deleteListItem btn btn-danger" id="'+ data +'" title="Delete" > <i class="fa fa-trash-alt"></i></button>'+
+                        '<button class="btn btn-primary addListItem" id="'+ data +'" style="margin-left: 5px !important;" title="Add" ><i class="fa fa-plus"></i></button>'+
                       '</span>' + '</li>';
       //var btnvalue=$(this).parents("li").index();
       console.log(btnvalue)

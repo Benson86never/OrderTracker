@@ -516,7 +516,7 @@ component  {
   remote string function addItemtoList(
     integer listId,
     string itemId
-  ){
+  )returnformat ="Json"{
     transaction {
       try {
         local.result = {
