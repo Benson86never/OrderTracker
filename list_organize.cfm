@@ -8,7 +8,8 @@
     businessId = url.businessid,
     includeItems = 1)>
   <cfset getItem = ListItemobj.getItemByBusiness(
-    businessId = url.businessid)>
+    businessId = url.businessid,
+    listId = url.ListID)>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <style>
   .page-content{
@@ -193,22 +194,22 @@
   $(document).ready(function(){
     var btnvalue;
     $('[data-toggle="tooltip"]').tooltip();
-     var actions = '<button class="saveListnew btn btn-success" id="0" title="save" ><i class="fa fa-save"></i></button>'+
-                   '<button class="cancelList btn btn-danger" id="0" title="cancel" style="margin-left: 8px !important;"><i class="fa fa-times"></i></button>' ;
+    var actions = '<button class="saveListnew btn btn-success" id="0" title="save" ><i class="fa fa-save"></i></button>'+
+                  '<button class="cancelList btn btn-danger" id="0" title="cancel" style="margin-left: 8px !important;"><i class="fa fa-times"></i></button>' ;
     $(document).on("click", ".addListItem", function(){
-      $(this).attr("disabled", "disabled");
-      //btnvalue=$(this).parents("li").index();
-      btnvalue = $(this).attr('addvalue');
-      console.log(btnvalue)
-      var index = $(".sortable li").length;
-      console.log(index)
-     // alert($('li .itemelement').index());
-      console.log($(this).attr('id'));
+    $(this).attr("disabled", "disabled");
+    //btnvalue=$(this).parents("li").index();
+    btnvalue = $(this).attr('addvalue');
+    console.log(btnvalue)
+    var index = $(".sortable li").length;
+    console.log(index)
+    // alert($('li .itemelement').index());
+    console.log($(this).attr('id'));
     /* var row = '<li>' + '<span>'+'<input type="text" class="form-control listdetails itemelement"" name="listdetails" id="listdetails">'+'</span>'+ '<span class="action-buttons>' + actions +'</span>'+ '</li>';*/
-     var row = '<tr>' + 
-              '<td><input type="text" class="listdetails" name="listdetails" id="listdetails_'+btnvalue+'"></td>' +
-              '<td class="action-buttons" style="padding-left:810px !important;">' + actions + '</td>' +
-              '</tr>';
+    var row = '<tr>' + 
+            '<td><input type="text" class="listdetails" name="listdetails" id="listdetails_'+btnvalue+'"></td>' +
+            '<td class="action-buttons" style="padding-left:810px !important;">' + actions + '</td>' +
+            '</tr>';
     //$(".sortable li").eq(btnvalue).append(row);
     //$(".sortable li").eq(btnvalue).after(row);
     //$(".sortable li .action-buttons").eq(btnvalue).after(row);
@@ -257,33 +258,28 @@
       console.log(data)
       var json_obj = $.parseJSON(data);
       for(var i=0;i<json_obj.length;i++) {
-      //$.each(data, function(i, item) {
-      var newrow='<li class="ui-state-default itemelement ui-sortable-handle" id="item_'+ json_obj[i].id +'">' +
+        var newrow='<li class="ui-state-default itemelement ui-sortable-handle" id="item_'+ json_obj[i].id +'">' +
                     '<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>' + '<span >' + json_obj[i].name+ '</span>' + 
                     '<span class="action-buttons">' +
                       '<button class="deleteListItem btn btn-danger" id="'+ json_obj[i].id +'" title="Delete" > <i class="fa fa-trash-alt"></i></button>'+
                       '<button class="btn btn-primary addListItem" id="'+ json_obj[i].id +'" style="margin-left: 5px !important;" title="Add" addvalue="item_'+ json_obj[i].id +'"><i class="fa fa-plus"></i></button>'+
                     '</span>' + 
                   '</li>';
-      //var btnvalue=$(this).parents("li").index();
-      console.log(btnvalue)
-      //$(".sortable li").eq(btnvalue).after(newrow);
-      $("#"+btnvalue).after(newrow);
-      $(".sortable").each(function(){
-      var data = $(this).sortable('toArray');
-      console.log(data)
-      $.post('v1/model/services/business.cfc?method=saveListItems',{listItems:data},function(res,txtStatus) {
-        console.log(txtStatus);
-        $('#modal-showAlert').modal('show');
-        $('.modal-header').css('background-color','white');
-        $('#headerText').html('Organize List Items');
-        $('.close').css('color','black');
-        $('#modal-showAlert .modal-body').html(txtStatus);
-        $('#modal-showAlert .modal-footer .ok').show();
-        $('#modal-showAlert .modal-footer .yes').hide();
-        $('#modal-showAlert .modal-footer .no').hide();
-      });
-    });
+        $("#"+btnvalue).after(newrow);
+        $(".sortable").each(function(){
+          var data = $(this).sortable('toArray');
+          $.post('v1/model/services/business.cfc?method=saveListItems',{listItems:data},function(res,txtStatus) {
+            console.log(txtStatus);
+            $('#modal-showAlert').modal('show');
+            $('.modal-header').css('background-color','white');
+            $('#headerText').html('Organize List Items');
+            $('.close').css('color','black');
+            $('#modal-showAlert .modal-body').html(txtStatus);
+            $('#modal-showAlert .modal-footer .ok').show();
+            $('#modal-showAlert .modal-footer .yes').hide();
+            $('#modal-showAlert .modal-footer .no').hide();
+          });
+        });
       }
     $("tr").remove();
     //$(".cancelList, .saveListnew").remove();

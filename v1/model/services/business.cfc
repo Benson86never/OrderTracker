@@ -1289,7 +1289,8 @@ remote any function deleteListitem(
   }
 
 public any function getItemBYBusiness(
-    numeric businessId = 0
+    numeric businessId = 0,
+    numeric listId = 0
   ) {
     local.listdetails = [];
     local.getItemDetails = queryExecute("
@@ -1306,8 +1307,17 @@ public any function getItemBYBusiness(
             INNER JOIN business B ON B.businessId = JMS.businessId
           WHERE
             JMS.businessId = :businessId
+            AND I.itemId NOT IN (
+              SELECT
+                JIL.itemId
+              FROM 
+                joinitemtolist JIL
+              WHERE
+                JIL.listId = :listId
+            )
       ",{
-        businessId = {cfsqltype = "integer", value = arguments.BusinessId}
+        businessId = {cfsqltype = "integer", value = arguments.BusinessId},
+        listId = {cfsqltype = "integer", value = arguments.listId}
       },{datasource: application.dsn}
     );
     cfloop(query = "local.getItemDetails" ) {
