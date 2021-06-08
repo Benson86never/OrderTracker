@@ -513,7 +513,7 @@ component  {
     }
   }
 
-  remote string function addItemtoList(
+  remote any function addItemtoList(
     integer listId,
     string itemId
   )returnformat ="Json"{
@@ -537,6 +537,7 @@ component  {
             },{datasource: application.dsn}
         );
         local.orderby = val(local.qryGetList.OrderBy);
+        local.idValues = [];
         for(local.item in arguments.itemId) {
           local.qrycheck = queryExecute("
             SELECT
@@ -567,10 +568,24 @@ component  {
                 orderBy = {cfsqltype = "integer", value = local.orderby}
               },{datasource: application.dsn, result = "local.listResult"}
             );
-            return local.listResult.generatedkey;
+            local.getItemName = queryExecute("
+              SELECT 
+                Name
+              FROM
+                item
+              WHERE 
+                ItemID = :itemId
+            ",{itemId = {cfsqltype = "integer",value = local.item}
+            },{datasource: application.dsn}
+            );
+             local.details = {};
+             local.details['id'] = local.listResult.generatedkey;
+             local.details['name'] = local.getItemName.Name;
+             arrayAppend(local.idValues, local.details);
           }
         }
         transaction action="commit";
+        return local.idValues;
       } catch (any e){
         transaction action="rollback"; 
         writeDump(e);abort;

@@ -17,6 +17,11 @@
   .list-item{
     padding: 10px;
   }
+  input[type="text"]{
+    width: 600% !important;
+    height: 35px !important;
+    margin-left: 10px !important;
+  }
   @media (orientation: portrait) {
     /* For vertical viewports */
     #sortable { 
@@ -112,7 +117,7 @@
                         <button class="deleteListItem btn btn-danger" id="#item.id#" title="Delete" >
                           <i class="fa fa-trash-alt"></i>
                         </button>
-                        <button class="btn btn-primary addListItem" id="#item.id#" title="Add" >
+                        <button class="btn btn-primary addListItem" id="#item.id#" title="Add" addvalue="item_#item.id#">
                           <i class="fa fa-plus"></i>
                         </button>
                       </span>
@@ -122,7 +127,7 @@
               <cfelse>
                 No items available.
               </cfif>
-              <input type="hidden" name="itemid" id="itemid" value="0">
+              <input type="hidden" name="itemid" id="itemid" class="itemid_class">
               <input type="hidden" name="itemname" id="itemname" value="">
               <input type="hidden" name="lisid" id="listid" value="#url.ListID#">
             </div>
@@ -180,7 +185,7 @@
             listId : $(this).attr('id')
           },
       success: function(data){
-            console.log(data)
+            //console.log(data)
       }
     });
   });
@@ -188,68 +193,82 @@
   $(document).ready(function(){
     var btnvalue;
     $('[data-toggle="tooltip"]').tooltip();
-      var actions = '<button class="saveListnew btn btn-success" id="0" title="save" ><i class="fa fa-save"></i></button>'+
+     var actions = '<button class="saveListnew btn btn-success" id="0" title="save" ><i class="fa fa-save"></i></button>'+
                    '<button class="cancelList btn btn-danger" id="0" title="cancel" style="margin-left: 8px !important;"><i class="fa fa-times"></i></button>' ;
-  $(document).on("click", ".addListItem", function(){
-     $(this).attr("disabled", "disabled");
-     btnvalue=$(this).parents("li").index();
-     console.log(btnvalue)
-     var index = $(".sortable li").length;
-     console.log($(this).attr('id'));
-    /* var row = '<li><input type="text" class="form-control listdetails" name="listdetails" id="listdetails" style="width : 90% !important;"></li>' +
-              '<li>' + actions + '</li>' ;*/
-    var row = '<li>' + '<tr>' +
-              '<td><input type="text" class="form-control listdetails" name="listdetails" id="listdetails"></td>' +
-              '<td>' + actions + '</td>' +
-              '</tr> '+ '</li>';
-    $(".sortable").append(row);
+    $(document).on("click", ".addListItem", function(){
+      $(this).attr("disabled", "disabled");
+      //btnvalue=$(this).parents("li").index();
+      btnvalue = $(this).attr('addvalue');
+      console.log(btnvalue)
+      var index = $(".sortable li").length;
+      console.log(index)
+     // alert($('li .itemelement').index());
+      console.log($(this).attr('id'));
+    /* var row = '<li>' + '<span>'+'<input type="text" class="form-control listdetails itemelement"" name="listdetails" id="listdetails">'+'</span>'+ '<span class="action-buttons>' + actions +'</span>'+ '</li>';*/
+     var row = '<tr>' + 
+              '<td><input type="text" class="listdetails" name="listdetails" id="listdetails_'+btnvalue+'"></td>' +
+              '<td class="action-buttons" style="padding-left:810px !important;">' + actions + '</td>' +
+              '</tr>';
+    //$(".sortable li").eq(btnvalue).append(row);
+    //$(".sortable li").eq(btnvalue).after(row);
+    //$(".sortable li .action-buttons").eq(btnvalue).after(row);
+    $("#"+btnvalue).after(row);
     $(".sortable li .action-buttons").eq(index).find("cancelList, .saveListnew").toggle();
     <cfoutput>
       $('.listdetails').autocomplete({
-      source: [
-        <cfloop array="#getItem#" index="i" item="gitem">
-          { label: "#gitem.iname#(#gitem.sname#)", value: "#gitem.iid#" }
-          <cfif i NEQ arraylen(getItem)>,</cfif>
-        </cfloop>
-          ],
-      select: function (event, ui) {
-      // Set selection
-      $('##listdetails').val(ui.item.label); // display the selected text
-      $('##itemid').val(ui.item.value); // save selected id to input
-      $('##itemname').val(ui.item.label);
-      console.log($('##itemid').val())
-      console.log($('##itemname').val())
-      return false;
-      }
+        source: [
+          <cfloop array="#getItem#" index="i" item="gitem">
+            { label: "#gitem.iname#(#gitem.sname#)", value: "#gitem.iid#" }
+            <cfif i NEQ arraylen(getItem)>,</cfif>
+          </cfloop>
+            ],
+        select: function (event, ui) {
+          // Set selection
+          elem=event.target.id;
+          $('##'+elem).val(ui.item.label); // display the selected text
+            itemval=$('##itemid').val();
+            console.log(itemval.length);
+            if(itemval == ""){
+              $('##itemid').val(ui.item.value); // save selected id to input
+              $('##itemname').val(ui.item.label);
+            } else{
+              newvalue = itemval + ',' + ui.item.value;
+              $('##itemid').val(newvalue);
+            }
+            console.log(event.target.id,ui);
+            return false;
+        }
       });
     </cfoutput>
   });  
   $(document).on("click", ".saveListnew", function(){
-  console.log($('#itemid').val())
-  console.log($('#listid').val())
+  //console.log($('#itemid').val())
+  var itemvalue = $('#itemid').val();
+  var listvalue = $('#listid').val();
+  console.log(itemvalue)
   $.ajax({
     url: 'v1/model/services/order.cfc?method=addItemtoList',
     type: 'get',
     data: {
-      listId : $('#listid').val(),
-      itemId : $('#itemid').val()
+      listId : listvalue,
+      itemId : itemvalue
     },
-    returntype:'string',
     success: function(data){
       console.log(data)
-      var newrow='<li class="ui-state-default itemelement ui-sortable-handle" id="item_'+ data +'">' +
-                      '<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>' + '<span >' + $('#itemname').val() + '</span>' + 
-                      '<span class="action-buttons">' +
-                        '<button class="deleteListItem btn btn-danger" id="'+ data +'" title="Delete" > <i class="fa fa-trash-alt"></i></button>'+
-                        '<button class="btn btn-primary addListItem" id="'+ data +'" style="margin-left: 5px !important;" title="Add" ><i class="fa fa-plus"></i></button>'+
-                      '</span>' + '</li>';
+      var json_obj = $.parseJSON(data);
+      for(var i=0;i<json_obj.length;i++) {
+      //$.each(data, function(i, item) {
+      var newrow='<li class="ui-state-default itemelement ui-sortable-handle" id="item_'+ json_obj[i].id +'">' +
+                    '<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>' + '<span >' + json_obj[i].name+ '</span>' + 
+                    '<span class="action-buttons">' +
+                      '<button class="deleteListItem btn btn-danger" id="'+ json_obj[i].id +'" title="Delete" > <i class="fa fa-trash-alt"></i></button>'+
+                      '<button class="btn btn-primary addListItem" id="'+ json_obj[i].id +'" style="margin-left: 5px !important;" title="Add" addvalue="item_'+ json_obj[i].id +'"><i class="fa fa-plus"></i></button>'+
+                    '</span>' + 
+                  '</li>';
       //var btnvalue=$(this).parents("li").index();
       console.log(btnvalue)
-      $(".sortable li").eq(btnvalue).after(newrow);
-      //$(this).parent("li").html($(this).val());
-      //add li next to element for which the plus button is clicked
-      //sortable.each(function()) call savelistitems
-      //location.href = 'manageitem.cfm?page=listorganize&businessid=<cfoutput>#variables.businessid#</cfoutput>&ListID=<cfoutput>#url.ListID#</cfoutput>'   
+      //$(".sortable li").eq(btnvalue).after(newrow);
+      $("#"+btnvalue).after(newrow);
       $(".sortable").each(function(){
       var data = $(this).sortable('toArray');
       console.log(data)
@@ -265,14 +284,15 @@
         $('#modal-showAlert .modal-footer .no').hide();
       });
     });
-    $(".listdetails").remove();
-    $(".cancelList, .saveListnew").remove();
+      }
+    $("tr").remove();
+    //$(".cancelList, .saveListnew").remove();
     $(".addListItem").removeAttr("disabled");
     }
   });
   });
   $(document).on("click", ".cancelList", function(){		
-    $(this).parents("li").remove();
+    $(this).parents("tr").remove();
     $(".addListItem").removeAttr("disabled");
   });
 });
