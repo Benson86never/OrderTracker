@@ -130,6 +130,7 @@
               </cfif>
               <input type="hidden" name="itemid" id="itemid" class="itemid_class">
               <input type="hidden" name="itemname" id="itemname" value="">
+              <input type="hidden" name="previtemval" id="previtemval" value="">
               <input type="hidden" name="lisid" id="listid" value="#url.ListID#">
             </div>
           </div>
@@ -192,52 +193,56 @@
   });
   //add items to list
   $(document).ready(function(){
-    var btnvalue;
+    var btnvalue,previousitem,itemarrayval;
     $('[data-toggle="tooltip"]').tooltip();
-    var actions = '<button class="saveListnew btn btn-success" id="0" title="save" ><i class="fa fa-save"></i></button>'+
-                  '<button class="cancelList btn btn-danger" id="0" title="cancel" style="margin-left: 8px !important;"><i class="fa fa-times"></i></button>' ;
+    var actions = '<button class="saveListnew btn btn-success" title="save" ><i class="fa fa-save"></i></button>'+
+                  '<button class="cancelListItem btn btn-danger" itemidval="0" title="cancel" style="margin-left: 8px !important;"><i class="fa fa-times"></i></button>' ;
     $(document).on("click", ".addListItem", function(){
     $(this).attr("disabled", "disabled");
-    //btnvalue=$(this).parents("li").index();
     btnvalue = $(this).attr('addvalue');
     console.log(btnvalue)
     var index = $(".sortable li").length;
     console.log(index)
-    // alert($('li .itemelement').index());
     console.log($(this).attr('id'));
-    /* var row = '<li>' + '<span>'+'<input type="text" class="form-control listdetails itemelement"" name="listdetails" id="listdetails">'+'</span>'+ '<span class="action-buttons>' + actions +'</span>'+ '</li>';*/
     var row = '<tr>' + 
-            '<td><input type="text" class="listdetails" name="listdetails" id="listdetails_'+btnvalue+'"></td>' +
+            '<td><input type="text" class="listdetails" name="listdetails" id="listdetails_'+btnvalue+'" addvalue1="'+btnvalue+'"></td>' +
             '<td class="action-buttons" style="padding-left:810px !important;">' + actions + '</td>' +
             '</tr>';
-    //$(".sortable li").eq(btnvalue).append(row);
-    //$(".sortable li").eq(btnvalue).after(row);
-    //$(".sortable li .action-buttons").eq(btnvalue).after(row);
     $("#"+btnvalue).after(row);
-    $(".sortable li .action-buttons").eq(index).find("cancelList, .saveListnew").toggle();
+    $(".sortable li .action-buttons").eq(index).find("cancelListItem, .saveListnew").toggle();
     <cfoutput>
+    previousitem = $('##itemid').val();
+    itemarrayval = previousitem.split(',');
+    var sourcearray = [];
+    <cfloop array="#getItem#" index="i" item="gitem">
+      if(itemarrayval.indexOf('#gitem.iid#') == -1) {
+        sourcearray.push({ label: "#gitem.iname#(#gitem.sname#)", value: "#gitem.iid#" });
+      }
+    </cfloop>
       $('.listdetails').autocomplete({
-        source: [
-          <cfloop array="#getItem#" index="i" item="gitem">
-            { label: "#gitem.iname#(#gitem.sname#)", value: "#gitem.iid#" }
-            <cfif i NEQ arraylen(getItem)>,</cfif>
-          </cfloop>
-            ],
+        source: sourcearray,
         select: function (event, ui) {
           // Set selection
           elem=event.target.id;
+           itemval = $('##itemid').val();
           $('##'+elem).val(ui.item.label); // display the selected text
-            itemval=$('##itemid').val();
-            console.log(itemval.length);
-            if(itemval == ""){
-              $('##itemid').val(ui.item.value); // save selected id to input
-              $('##itemname').val(ui.item.label);
-            } else{
-              newvalue = itemval + ',' + ui.item.value;
-              $('##itemid').val(newvalue);
-            }
-            console.log(event.target.id,ui);
-            return false;
+          if(itemval == ""){
+            $('##itemid').val(ui.item.value); // save selected id to input
+            $('##itemname').val(ui.item.label);
+            itemvalnew = $(this).attr('addvalue1') +'_'+ ui.item.value;
+            $('##previtemval').val(itemvalnew);
+          } else{
+            newvalue = itemval + ',' + ui.item.value;
+            $('##itemid').val(newvalue);
+            itemtextidval = $('##previtemval').val();
+            newitemid = $(this).attr('addvalue1') + '_' + ui.item.value;
+            itemidmultiple = itemtextidval +','+ newitemid;
+            $('##previtemval').val(itemidmultiple);
+          }
+          $('##'+elem).parents('.cancelListItem').attr('itemidval', ui.item.value);
+          console.log($('##'+elem).parents('.cancelListItem').attr('itemidval', ui.item.value));
+          console.log($(this).attr('addvalue1'),ui);
+          return false;
         }
       });
     </cfoutput>
@@ -246,7 +251,10 @@
   //console.log($('#itemid').val())
   var itemvalue = $('#itemid').val();
   var listvalue = $('#listid').val();
-  console.log(itemvalue)
+  var previtemids = $('#previtemval').val();
+  var arr = previtemids.split(",");
+  var curelem;
+  console.log(arr);
   $.ajax({
     url: 'v1/model/services/order.cfc?method=addItemtoList',
     type: 'get',
@@ -265,7 +273,18 @@
                       '<button class="btn btn-primary addListItem" id="'+ json_obj[i].id +'" style="margin-left: 5px !important;" title="Add" addvalue="item_'+ json_obj[i].id +'"><i class="fa fa-plus"></i></button>'+
                     '</span>' + 
                   '</li>';
-        $("#"+btnvalue).after(newrow);
+        var itemidval = json_obj[i].itemid;
+        for(let j=0; j<arr.length; ++j){
+          console.log(arr[j]);
+          var item = arr[j];
+          var idarrayval = item.split("_");
+          if(idarrayval[2] == itemidval){
+              curelem = $('#item_'+idarrayval[1]);
+              console.log(curelem);
+          }
+        }
+        $(curelem).after(newrow);
+        //$("#"+btnvalue).after(newrow);
         $(".sortable").each(function(){
           var data = $(this).sortable('toArray');
           $.post('v1/model/services/business.cfc?method=saveListItems',{listItems:data},function(res,txtStatus) {
@@ -287,9 +306,15 @@
     }
   });
   });
-  $(document).on("click", ".cancelList", function(){		
+  $(document).on("click", ".cancelListItem", function(){		
     $(this).parents("tr").remove();
     $(".addListItem").removeAttr("disabled");
+      var itemid = $(this).attr('itemidval');
+      console.log(itemid)
+      itemidlist = $('#itemid').val();
+      itemidlist.replace(itemid,'');
+      itemidlist.replace(',,',',');
+      console.log(itemidlist);
   });
 });
 </script>

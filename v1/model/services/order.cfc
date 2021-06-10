@@ -570,7 +570,8 @@ component  {
             );
             local.getItemName = queryExecute("
               SELECT 
-                Name
+                Name,
+                ItemID
               FROM
                 item
               WHERE 
@@ -581,6 +582,7 @@ component  {
              local.details = {};
              local.details['id'] = local.listResult.generatedkey;
              local.details['name'] = local.getItemName.Name;
+             local.details['itemid'] = local.getItemName.ItemID;
              arrayAppend(local.idValues, local.details);
           }
         }
