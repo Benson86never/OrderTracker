@@ -196,7 +196,7 @@
     var btnvalue,previousitem,itemarrayval;
     $('[data-toggle="tooltip"]').tooltip();
     var actions = '<button class="saveListnew btn btn-success" title="save" ><i class="fa fa-save"></i></button>'+
-                  '<button class="cancelListItem btn btn-danger" itemidval="0" title="cancel" style="margin-left: 8px !important;"><i class="fa fa-times"></i></button>' ;
+                  '<button class="cancelListItem btn btn-danger" itemidval="" title="cancel" style="margin-left: 8px !important;"><i class="fa fa-times"></i></button>' ;
     $(document).on("click", ".addListItem", function(){
     $(this).attr("disabled", "disabled");
     btnvalue = $(this).attr('addvalue');
@@ -239,8 +239,8 @@
             itemidmultiple = itemtextidval +','+ newitemid;
             $('##previtemval').val(itemidmultiple);
           }
-          $('##'+elem).parents('.cancelListItem').attr('itemidval', ui.item.value);
-          console.log($('##'+elem).parents('.cancelListItem').attr('itemidval', ui.item.value));
+          $('##'+elem).parents('tr').find('.cancelListItem').attr('itemidval', ui.item.value);
+          console.log($('##'+elem).parents('tr').find('.cancelListItem').attr('itemidval', ui.item.value));
           console.log($(this).attr('addvalue1'),ui);
           return false;
         }
@@ -311,10 +311,11 @@
     $(".addListItem").removeAttr("disabled");
       var itemid = $(this).attr('itemidval');
       console.log(itemid)
-      itemidlist = $('#itemid').val();
-      itemidlist.replace(itemid,'');
-      itemidlist.replace(',,',',');
-      console.log(itemidlist);
+      var itemidlist = $('#itemid').val();
+      var replacelist = itemidlist.replace(itemid, '');
+      var newreplace = replacelist.replace(',,', ',');
+      $('#itemid').val(newreplace);
+      console.log(newreplace);
   });
 });
 </script>
