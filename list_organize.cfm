@@ -100,13 +100,12 @@
 </style>
 <cfoutput>
   <div class="container">
-  <div class="row">
-    <cfif arraylen(lists)>
-      <cfloop array="#Lists#" index="list" >
-        <div class="panel panel-default">
-          <div class="panel-heading">#list.name# (#list.businessname#)</div>
-          <div class="panel-body">
-            
+    <div class="row">
+      <cfif arraylen(lists)>
+        <cfloop array="#Lists#" index="list" >
+          <div class="panel panel-default">
+            <div class="panel-heading">#list.name# (#list.businessname#)</div>
+            <div class="panel-body">
               <!--- <div class="list-item"><a href="#cgi.script_name#?ListID=#list.id#">#list.name#</a></div>--->
               <cfif arraylen(list.items)>
                 <ul id="sortable" class="sortable">
@@ -126,7 +125,7 @@
                   </cfloop>
                 </ul>
               <cfelse>
-                No items available.
+                  No items available.
               </cfif>
               <input type="hidden" name="itemid" id="itemid" class="itemid_class">
               <input type="hidden" name="itemname" id="itemname" value="">
@@ -134,18 +133,17 @@
               <input type="hidden" name="lisid" id="listid" value="#url.ListID#">
             </div>
           </div>
+        </cfloop>
+        <div class="buttondiv pull-right">
+          <input type="button" id="backBtn" value="Back to Lists" class="btn btn-danger" >
+          <input type="button" id="saveBtn" value="Save" class="btn btn-success" >
         </div>
-      </cfloop>
-      <div class="buttondiv pull-right">
-        <input type="button" id="backBtn" value="Back to Lists" class="btn btn-danger" >
-        <input type="button" id="saveBtn" value="Save" class="btn btn-success" >
-      </div>
-    <cfelse>
-      <div class="panel panel-default">
-        <div class="panel-heading">No lists available</div>
-      </div>
-    </cfif>
-  </div>
+      <cfelse>
+        <div class="panel panel-default">
+          <div class="panel-heading">No lists available</div>
+        </div>
+      </cfif>
+    </div>
   </div>
 </cfoutput>
 <script>
