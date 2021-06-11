@@ -114,7 +114,7 @@
                       <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
                       <span >#item.name# (#item.supplierName#)</span>
                       <span class="action-buttons">
-                        <button class="deleteListItem btn btn-danger" id="#item.id#" title="Delete" >
+                        <button class="deleteListItem btn btn-danger" id="#item.id#"  deleteitemid="#item.itemId#" title="Delete" >
                           <i class="fa fa-trash-alt"></i>
                         </button>
                         <button class="btn btn-primary addListItem" id="#item.id#" title="Add" addvalue="item_#item.id#">
@@ -174,21 +174,7 @@
     $(".sortable").sortable();
     $("#saveBtn").click(persist);
   });
-  //delete a row 
-  $(document).on("click", ".deleteListItem", function(){
-    console.log($(this).attr('id'));
-    $(this).parents("li").remove();
-    $.ajax({
-      url: 'v1/model/services/business.cfc?method=deleteListitem',
-      type: 'get',
-      data: {
-            listId : $(this).attr('id')
-          },
-      success: function(data){
-            //console.log(data)
-      }
-    });
-  });
+  
   //add items to list
   $(document).ready(function(){
     var btnvalue,previousitem,itemarrayval;
@@ -246,63 +232,63 @@
     </cfoutput>
   });  
   $(document).on("click", ".saveListnew", function(){
-  //console.log($('#itemid').val())
-  var itemvalue = $('#itemid').val();
-  var listvalue = $('#listid').val();
-  var previtemids = $('#previtemval').val();
-  var arr = previtemids.split(",");
-  var curelem;
-  console.log(arr);
-  $.ajax({
-    url: 'v1/model/services/order.cfc?method=addItemtoList',
-    type: 'get',
-    data: {
-      listId : listvalue,
-      itemId : itemvalue
-    },
-    success: function(data){
-      console.log(data)
-      var json_obj = $.parseJSON(data);
-      for(var i=0;i<json_obj.length;i++) {
-        var newrow='<li class="ui-state-default itemelement ui-sortable-handle" id="item_'+ json_obj[i].id +'">' +
-                    '<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>' + '<span >' + json_obj[i].name+ '</span>' + 
-                    '<span class="action-buttons">' +
-                      '<button class="deleteListItem btn btn-danger" id="'+ json_obj[i].id +'" title="Delete" > <i class="fa fa-trash-alt"></i></button>'+
-                      '<button class="btn btn-primary addListItem" id="'+ json_obj[i].id +'" style="margin-left: 5px !important;" title="Add" addvalue="item_'+ json_obj[i].id +'"><i class="fa fa-plus"></i></button>'+
-                    '</span>' + 
-                  '</li>';
-        var itemidval = json_obj[i].itemid;
-        for(let j=0; j<arr.length; ++j){
-          console.log(arr[j]);
-          var item = arr[j];
-          var idarrayval = item.split("_");
-          if(idarrayval[2] == itemidval){
+    var itemvalue = $('#itemid').val();
+    console.log(itemvalue);
+    var listvalue = $('#listid').val();
+    var previtemids = $('#previtemval').val();
+    var arr = previtemids.split(",");
+    var curelem;
+    console.log(arr);
+      $.ajax({
+        url: 'v1/model/services/order.cfc?method=addItemtoList',
+        type: 'get',
+        data: {
+          listId : listvalue,
+          itemId : itemvalue
+        },
+        success: function(data){
+        console.log(data)
+        var json_obj = $.parseJSON(data);
+        for(var i=0;i<json_obj.length;i++) {
+          var newrow='<li class="ui-state-default itemelement ui-sortable-handle" id="item_'+ json_obj[i].id +'">' +
+                      '<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>' + '<span >' + json_obj[i].name+ '</span>' + 
+                      '<span class="action-buttons">' +
+                        '<button class="deleteListItem btn btn-danger" id="'+ json_obj[i].id +'" deleteitemid="'+ json_obj[i].itemid +'" title="Delete" > <i class="fa fa-trash-alt"></i></button>'+
+                        '<button class="btn btn-primary addListItem" id="'+ json_obj[i].id +'" style="margin-left: 5px !important;" title="Add" addvalue="item_'+ json_obj[i].id +'"><i class="fa fa-plus"></i></button>'+
+                      '</span>' + 
+                    '</li>';
+          var itemidval = json_obj[i].itemid;
+          for(let j=0; j<arr.length; ++j){
+            console.log(arr[j]);
+            var item = arr[j];
+            var idarrayval = item.split("_");
+            if(idarrayval[2] == itemidval){
               curelem = $('#item_'+idarrayval[1]);
               console.log(curelem);
+            }
           }
-        }
-        $(curelem).after(newrow);
-        //$("#"+btnvalue).after(newrow);
-        $(".sortable").each(function(){
-          var data = $(this).sortable('toArray');
-          $.post('v1/model/services/business.cfc?method=saveListItems',{listItems:data},function(res,txtStatus) {
-            console.log(txtStatus);
-            $('#modal-showAlert').modal('show');
-            $('.modal-header').css('background-color','white');
-            $('#headerText').html('Organize List Items');
-            $('.close').css('color','black');
-            $('#modal-showAlert .modal-body').html(txtStatus);
-            $('#modal-showAlert .modal-footer .ok').show();
-            $('#modal-showAlert .modal-footer .yes').hide();
-            $('#modal-showAlert .modal-footer .no').hide();
+          $(curelem).after(newrow);
+          //$("#"+btnvalue).after(newrow);
+          $(".sortable").each(function(){
+            var data = $(this).sortable('toArray');
+            $.post('v1/model/services/business.cfc?method=saveListItems',{listItems:data},function(res,txtStatus) {
+              console.log(txtStatus);
+              $('#modal-showAlert').modal('show');
+              $('.modal-header').css('background-color','white');
+              $('#headerText').html('Organize List Items');
+              $('.close').css('color','black');
+              $('#modal-showAlert .modal-body').html(txtStatus);
+              $('#modal-showAlert .modal-footer .ok').show();
+              $('#modal-showAlert .modal-footer .yes').hide();
+              $('#modal-showAlert .modal-footer .no').hide();
+            });
           });
-        });
+       }
+        $("tr").remove();
+        //$(".cancelList, .saveListnew").remove();
+        $(".addListItem").removeAttr("disabled");
       }
-    $("tr").remove();
-    //$(".cancelList, .saveListnew").remove();
-    $(".addListItem").removeAttr("disabled");
-    }
-  });
+    });
   });
   $(document).on("click", ".cancelListItem", function(){		
     $(this).parents("tr").remove();
@@ -314,6 +300,28 @@
       var newreplace = replacelist.replace(',,', ',');
       $('#itemid').val(newreplace);
       console.log(newreplace);
+  });
+  //delete a row 
+  $(document).on("click", ".deleteListItem", function(){
+    var listval = $(this).attr('id');
+    var deleteitemval = $(this).attr('deleteitemid');
+    console.log(deleteitemval);
+    var itemidlistval = $('#itemid').val();
+    var delreplace = itemidlistval.replace(deleteitemval, '');
+    var newitemlistval =delreplace.replace(',,', ',');
+    $('#itemid').val(newitemlistval);
+    console.log(newitemlistval);
+    $(this).parents("li").remove();
+    $.ajax({
+      url: 'v1/model/services/business.cfc?method=deleteListitem',
+      type: 'get',
+      data: {
+            listId : listval
+          },
+      success: function(data){
+            //console.log(data)
+      }
+    });
   });
 });
 </script>
