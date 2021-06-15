@@ -125,7 +125,18 @@
                   </cfloop>
                 </ul>
               <cfelse>
+                <ul id="sortable" class="sortable">
+                 <li class="itemelement new_item" id="item_0">
+                 <span>
                   No items available.
+                 </span>
+                  <span class="action-buttons">
+                    <button class="btn btn-primary addListItem" id="0" title="Add" addvalue="item_0">
+                      <i class="fa fa-plus"></i>
+                    </button>
+                  </span>
+                  </li>
+                </ul>
               </cfif>
               <input type="hidden" name="itemid" id="itemid" class="itemid_class">
               <input type="hidden" name="itemname" id="itemname" value="">
@@ -285,6 +296,7 @@
           });
        }
         $("tr").remove();
+        $(".new_item").hide();
         //$(".cancelList, .saveListnew").remove();
         $(".addListItem").removeAttr("disabled");
       }
@@ -319,7 +331,10 @@
             listId : listval
           },
       success: function(data){
-            //console.log(data)
+            if($('#sortable li').length == 1){
+              console.log("true")
+              $(".new_item").show();
+            }
       }
     });
   });
