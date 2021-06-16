@@ -131,7 +131,6 @@
       width: 900px;
       margin: 20px auto;
   }
-
   .data-container {
       margin-top: 20px;
   }
@@ -181,6 +180,11 @@
     }
   }
 </style>
+<cfinclude template="includes/secure.cfm" >
+<cfinclude template="includes/header.cfm" >
+<cfinclude template="includes/footer.cfm" >
+<cfparam  name="url.businessid" default="#session.secure.subaccount#">
+<cfset businessid = url.businessid>
 <cfif isdefined("url.err") and url.err eq 1>
   <div class="modal fade modal-warning" id="modal-showAlert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index: 9000;">
     <div class="modal-dialog" role="document">
@@ -209,7 +213,7 @@
       ? url.supplierid
       : 0>
   </cfif>
-  <cfset items = CreateObject("Component","v1.model.services.admin").getItems(supplierId = supplierId).items>
+  <cfset items = CreateObject("Component","v1.model.services.admin").getItems(supplierId = supplierId,businessId = businessid).items>
   <cfset units = CreateObject("Component","v1.model.services.admin").getUnitDetails()>
   <cfset suppliers = CreateObject("Component","v1.model.services.admin").getSupplierDetails(businessId = session.secure.subaccount)>
   <div class="container">
@@ -222,9 +226,9 @@
               <cfform id="addItem" action="add_item_action.cfm" method="post" enctype="multipart/form-data">
                 <cfif session.secure.RoleCode eq 1>
                   <cfset local.accounts = CreateObject("Component","v1.model.services.admin").getSupplierDetails()>
-                  <div style="padding-bottom:20px;" >
+                  <div style="padding-bottom:0px;" >
                     Supplier:&nbsp;
-                    <select name="business" id="business" onchange="chgBusiness(this.value)" class="form-select form-select-sm mb-3" >
+                    <select name="business" id="business" onchange="chgBusiness(this.value)" class="form-select form-select-lg mb-3" style="width:50%;height:30px;">
                       <option value="0">Select</option>
                       <cfloop array="#local.accounts#" item="account">
                         <option
@@ -249,8 +253,45 @@
                   <span class="hidden-xs">Add New</span>
                 </button>
               </div>
-              <div class="col-xs-5 pull-right" >
+              <div class="col-xs-4 pull-right" >
                 <input type="search" id="search" name="search" class="form-control" onkeyup="searchTable();" placeholder="Search"/> 
+              </div>
+              <div class="col-xs-4">
+                          <cfif session.secure.RoleCode eq 1>
+                            <cfscript>
+                              local.accountinfo = [];
+                              local.accountDetails = queryExecute("
+                              SELECT
+                                B.businessId as businessId,
+                                B.businessname as name
+                              FROM
+                                business B
+                                INNER JOIN joinbusinesstotype JBT ON JBT.businessId = B.businessId AND JBT.typeId = 1
+                              WHERE
+                                B.Active = 1
+                              ",{},{datasource: application.dsn}
+                              );
+                              cfloop(query = "local.accountDetails") {
+                                local.details = {};
+                                local.details['id'] = local.accountDetails.businessId;
+                                local.details['name'] = local.accountDetails.name;
+                                arrayAppend(local.accountinfo, local.details);
+                              }
+                            </cfscript>
+                            Business: &nbsp;
+                            <select name="business" onchange=getBusiness(this.value) class="form-select form-select-lg mb-3" style="width:65%;height:30px;">
+                            <cfloop array="#local.accountinfo#" item="account">
+                                <option
+                                  <cfif isdefined("url.businessid") and url.businessid eq account.id>
+                                    selected
+                                  </cfif>
+                                  value="<cfoutput>#account.id#</cfoutput>">
+                                  <cfoutput>#account.name#</cfoutput>
+                                  <cfset session.secure.bid="#account.id#">
+                                </option>
+                              </cfloop>
+                            </select>
+                          </cfif>
               </div>
             </div>
           </cfif>
@@ -277,6 +318,7 @@
                 FROM
                   LIST L
                   INNER JOIN business B ON B.BusinessId =  L.SubAccountID
+                  Where B.BusinessId = #businessid#;
               ",{},{datasource: application.dsn}
               );
               cfloop(query = "local.accountDetails") {
@@ -345,7 +387,7 @@
                   <td fid="supplier" type="supplier">#item.supplierName#</td>
                   <cfif session.secure.RoleCode EQ 1>
                     <td>
-                      <button class="cancel btn btn-danger" title="cancel">
+                      <button class="cancel btn btn-danger" title="cancel" style="display:none;">
                         <i class="fa fa-times" aria-hidden="true"></i>
                       </button>
                       <cfif ListFind(session.secure.access,'19')>
@@ -353,7 +395,7 @@
                           <i class="fa fa-trash-alt" aria-hidden="true"></i>
                         </button>
                       </cfif>
-                      <button class="add btn btn-success"  id="#item.id#" action = "add"  title="Add">
+                      <button class="add btn btn-success"  id="#item.id#" action = "add"  title="Add" style="display:none;">
                         <i class="fa fa-plus" aria-hidden="true"></i>
                       </button>
                       <cfif ListFind(session.secure.access,'2')>
@@ -361,7 +403,7 @@
                           <i class="fas fa-pencil-alt"></i>
                         </button>
                       </cfif>
-                      <button class="add save btn btn-success" action = "update" id="#item.id#" title="save">
+                      <button class="additemval save btn btn-success" action = "update" id="#item.id#" title="save" style="display:none;">
                         <i class="fa fa-save" aria-hidden="true"></i>
                       </button>
                     </td>
@@ -391,30 +433,37 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script type="text/javascript" src="js/pagination.js"></script>
 <link href = "js/pagination.css" rel = "stylesheet">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script>
   $(document).ready(function(){
+    console.log(<cfoutput>#businessid#</cfoutput>)
     <cfif isdefined("url.err") and url.err eq 1>
       $('#modal-showAlert .modal-header').addClass('alert-danger');
       $('#modal-showAlert').modal('show');
     </cfif>
    // $('[data-toggle="tooltip"]').tooltip();
    var itemactions = '<button action = "delete" class="removeRow btn btn-danger" id="0" title="Delete" ><i class="fa fa-trash-alt"></i></button>'+
-                  '<button action = "add" class="add btn btn-success" id="0" title="Add" ><i class="fa fa-plus"></i></button>';
+                     '<button action = "add" class="additemval btn btn-success" id="0" title="Add" style="margin-left: 8px !important;"><i class="fa fa-plus"></i></button>';
     var unithtml = "";
     var supplierhtml = "";
     <cfoutput>
       <cfloop array="#units#" index="unit">
         unithtml = unithtml + '<option value="#unit.id#">#unit.name#</option>';
       </cfloop>
-      <cfloop array="#suppliers#" index="supplier">
-        supplierhtml = supplierhtml + '<option value="#supplier.id#" <cfif supplier.id EQ #supplierid#> selected</cfif>>#supplier.name#</option>';
-      </cfloop>
+      <cfif listfind(session.secure.businessType,'1') >
+          <cfloop array="#suppliers#" index="supplier">
+            supplierhtml = supplierhtml + '<option value="#supplier.id#" <cfif supplier.id EQ #supplierid#> selected</cfif>>#supplier.name#</option>';
+          </cfloop>
+      <cfelse>
+          supplierhtml = supplierhtml + '<option value="#session.secure.SubAccount#">#session.secure.SubAccountName#</option>';
+      </cfif>
     </cfoutput>
     // Append table with add row form on add new button click
     $(".add-new").click(function(){
       $(this).attr("disabled", "disabled");
       var index = $(".itemtable tbody tr:last-child").index();
       var row = '<tr>' +
+        '<td></td>' +
         '<td><input type="text" class="form-control" name="name" id="name"></td>' +
         '<td><input type="text" class="form-control" name="sku" id="sku"></td>' +
         '<td><input type="text" class="form-control" name="photourl" id="photourl"></td>' +
@@ -433,7 +482,7 @@
       $(".add-new").removeAttr("disabled");
     });
     // Add row on add button click
-    $(document).on("click", ".add", function(){
+    $(document).on("click", ".additemval", function(){
       var empty = false;
       var input = $(this).parents("tr").find('input[type="text"]');
       var select = $(this).parents("tr").find('select');
@@ -523,6 +572,7 @@
       eid = $(this).attr('id');
       action = $(this).attr('action');
       parenttr = $(this).closest("tr");
+      console.log(eid,action,parenttr)
       $('#modal-showAlert').modal('show');
       $('.modal-header').css('background-color','white');
       $('#headerText').html('Delete Item');
@@ -533,9 +583,10 @@
       $('#modal-showAlert .modal-footer .no').show();
       $('#modal-showAlert .modal-footer .yes').click(function(){
         itemdetails = {itemid : eid}
+        console.log(itemdetails)
         $.ajax({
           url: 'v1/model/services/admin.cfc?method=manageItem',
-          type: 'post',
+          type: 'get',
           data: {
             itemDetails : JSON.stringify(itemdetails),
             action : action
@@ -594,7 +645,7 @@
   })('demo1');
   $('#noofitems').change(function(){
     items = $(this).val();
-    location.href = "manageitem.cfm?noitems="+items;
+    location.href = "item.cfm?noitems="+items;
   });
   $(".item_header").click(function(){
     if($(this).is(':checked')) {
@@ -630,7 +681,7 @@
         itemId : itemIds
       },
       success: function(data){
-        location.href = 'manageitem.cfm?page=items';
+        location.href = 'item.cfm';
       }
     });
   });
@@ -665,7 +716,7 @@
   function chgBusiness(businessid)
   {
     document.getElementById('hdnbusiness').value = businessid;
-    location.href = 'manageitem.cfm?supplierid=' + businessid;
+    location.href = 'item.cfm?supplierid=' + businessid;
   }
 
 	function downloadlist() { 
@@ -687,4 +738,8 @@
     }
 
 	}
+  function getBusiness(businessId) {
+    var businessid = businessId;
+      location.href = 'item.cfm?businessid=' + businessId
+    }
 </script>

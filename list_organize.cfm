@@ -1,6 +1,6 @@
-<!---<cfinclude template="includes/header.cfm" >
+<cfinclude template="includes/header.cfm" >
 <cfinclude template="includes/secure.cfm" >
-<cfinclude template="inclludes/footer.cfm" >--->
+<cfinclude template="includes/footer.cfm" >
 <cfparam name="url.ListID" default="0">
 <cfset ListItemobj = CreateObject("Component","v1.model.services.admin")>
     <cfset Lists=ListItemobj.getListDetails(
@@ -160,7 +160,7 @@
 <script>
   $('#backBtn').click(function(){
     listid = $(this).attr('id');
-    location.href = 'manageitem.cfm?page=lists&businessid=<cfoutput>#url.businessid#</cfoutput>';
+    location.href = 'v1/index.cfm?action=admin.listDetails&businessid=<cfoutput>#url.businessid#</cfoutput>';
   });
   function persist() {
     console.log('running persist....');

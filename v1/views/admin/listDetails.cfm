@@ -1,6 +1,9 @@
 <cfif NOT isdefined('rc.listDetails')>
   <cfset page = "manageitem">
   <cfparam  name="url.businessid" default="#session.secure.subaccount#">
+  <cfif session.secure.rolecode NEQ 1>
+    <cfset url.businessid = session.secure.subaccount>
+  </cfif>
   <cfset variables.businessid = url.businessid>
   <cfset rc.listDetails = CreateObject("Component","v1.model.services.admin").getListDetails(businessId = url.businessid)>
   <style>
@@ -37,6 +40,9 @@ input, select{
     .style1 {
       width: 55%;
     }
+    td {
+      font-size: 16px;
+    }
   </style>
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
@@ -50,7 +56,7 @@ input, select{
       <div class="table-responsive">
           <div class="table-wrapper">
               <div class="table-title">
-                  <div class="row">
+                  <div class="row" style="padding-bottom:10px;">
                       <div class="col-sm-6">
                         <cfif isdefined('page')>
                           <cfif session.secure.RoleCode eq 1>
@@ -90,7 +96,7 @@ input, select{
                           </cfif>
                         </cfif>
                       </div>
-                      <div class="col-sm-5 text-right">
+                      <div class="col-sm-5 text-right" style="padding-top:15px;">
                           <button type="button" class="btn btn-info add-newlist"><i class="fa fa-plus"></i> <span class="hidden-xs">Add New</span></button>
                       </div>
                   </div>
@@ -106,7 +112,7 @@ input, select{
                   <cfoutput>
                     <cfloop array="#rc.listDetails#" item="list">
                       <tr>
-                          <td><a href="manageitem.cfm?page=listorganize&businessid=#variables.businessid#&ListID=#list.id#">#list.name#</a></td>
+                          <td><a href="../list_organize.cfm?&businessid=#variables.businessid#&ListID=#list.id#">#list.name#</a></td>
                           <td>
                               <button class="delete btn btn-danger" id="#list.id#" title="Delete" >
                                 <i class="fa fa-trash-alt"></i>
@@ -170,7 +176,7 @@ input, select{
       if(!empty){
         actions = $(this).parents("tr").find(".addlist, .editlist");
         $.ajax({
-          url: 'v1/model/services/admin.cfc?method=addList',
+          url: 'model/services/admin.cfc?method=addList',
           type: 'post',
           data: {
             name : $(this).parents("tr").find('#name').val(),
@@ -186,7 +192,7 @@ input, select{
             <cfif NOT isdefined('page')>
               location.reload();
             <cfelse>
-              location.href = 'manageitem.cfm?page=lists&businessid=<cfoutput>#variables.businessid#</cfoutput>';
+            location.href = 'index.cfm?action=admin.listDetails&businessid=<cfoutput>#variables.businessid#</cfoutput>';
             </cfif>
           }
         });
@@ -215,7 +221,7 @@ input, select{
       $(this).parents("tr").remove();
       $(".add-newlist").removeAttr("disabled");
       $.ajax({
-          url: 'v1/model/services/admin.cfc?method=deleteList',
+          url: 'model/services/admin.cfc?method=deleteList',
           type: 'post',
           data: {
             listId : $(this).attr('id')
@@ -229,7 +235,7 @@ input, select{
             <cfif NOT isdefined('page')>
               location.reload();
             <cfelse>
-              location.href = 'manageitem.cfm?page=lists&businessid=<cfoutput>#variables.businessid#</cfoutput>';
+              location.href = 'index.cfm?action=admin.listDetails&businessid=<cfoutput>#variables.businessid#</cfoutput>';
             </cfif>
           }
         });
@@ -240,7 +246,7 @@ input, select{
       var actions = $(this).parents("tr").find(".save, .cancel, .editlist, .delete");
       var listname = $(this).parents("tr").find('#name').val();
       $.ajax({
-          url: 'v1/model/services/admin.cfc?method=updatelist',
+          url: 'model/services/admin.cfc?method=updatelist',
           type: 'post',
           data: {
             listId : $(this).attr('id'),
@@ -255,18 +261,18 @@ input, select{
             <cfif NOT isdefined('page')>
               location.reload();
             <cfelse>
-              location.href = 'manageitem.cfm?page=lists&businessid=<cfoutput>#variables.businessid#</cfoutput>';
+              location.href = 'index.cfm?action=admin.listDetails&businessid=<cfoutput>#variables.businessid#</cfoutput>';
             </cfif>
           }
         });
     });
     $('.view').click(function(){
       listid = $(this).attr('id');
-      location.href = 'manageitem.cfm?page=listorganize&businessid=<cfoutput>#variables.businessid#</cfoutput>&listid='+listid;
+      location.href = '../list_organize.cfm?&businessid=<cfoutput>#variables.businessid#</cfoutput>&ListID='+listid;
     });
   });
   
   function changeBusinesslist(businessId) {
-      location.href = 'manageitem.cfm?page=lists&businessid=' + businessId
+      location.href = 'index.cfm?action=admin.listDetails&businessid=' + businessId
     }
   </script>

@@ -17,7 +17,16 @@
           /*a .fa {
             font-size: 2em;
           }*/
-         
+         .nav-item .submenu{ 
+		display: none;
+		position: absolute;
+		left:100%; top:-1px;
+	}
+	.nav-item .submenu-left{ 
+		right:100%; left:auto;
+	}
+	.dropdown-menu > li:hover{ background-color: #f1f1f1 }
+	.dropdown-menu > .newitem:hover > .submenu{ display: block; }
   </style>
     </head>
     <body>
@@ -103,9 +112,16 @@
                         <li><a class="dropdown-item" href="list_organize.cfm">Organize Lists</a></li>
                         <li><a class="dropdown-item" href="list_item.cfm">Manage List Items</a></li>
                     </cfif>--->
-                    <cfif ListFind(session.secure.access,'7')><!--Access check for manageitem for valid role-->
-                      <li><a class="dropdown-item" href="manageitem.cfm">Manage Items & Lists</a></li>
+                    <!---<cfif ListFind(session.secure.access,'7')><!--Access check for manageitem for valid role-->
+                      <li class="nav-item"><a class="dropdown-item" href="manageitem.cfm" data-toggle="dropdown" 
+                      href="#" role="button" aria-haspopup="true" aria-expanded="false">Manage Items & Lists</a>
+                      </li>
+                    </cfif>--->
+                    <cfif listfind(session.secure.businessType, 2)
+                     OR session.secure.RoleCode EQ 1>
+                      <li><a class="dropdown-item" href="item.cfm">Manage Items</a></li>
                     </cfif>
+                       <li><a class="dropdown-item" href="v1/index.cfm?action=admin.listDetails">Manage List Items</a></li>
                     <cfif ListFind(session.secure.access,'8')><!--Access check for manageusers for valid role-->
                       <li><a class="dropdown-item" href="v1/index.cfm?action=admin.manageUsers">Manage Users</a></li>
                     </cfif>

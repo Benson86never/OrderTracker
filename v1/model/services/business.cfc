@@ -650,17 +650,24 @@ component  {
 
   public any function getItems(
     numeric itemId = 0,
-    numeric supplierId = 0
+    numeric supplierId = 0,
+    numeric businessId
   ){
     local.result = {'error' : false};
     local.items = [];
     local.condition = "1 = 1";
-    
+    local.join = "";
     if(val(arguments.itemId) > 0) {
       local.condition &= " AND I.itemId = #arguments.itemId#";
     }
     if(val(arguments.supplierId) > 0) {
       local.condition &= " AND JSI.supplierId = #arguments.supplierId#";
+    }
+    if(!listfind(session.secure.businessType, 2)) {
+      local.join &= "INNER JOIN joinmasteraccounttosupplier JMS ON JMS.SupplierID = JSI.SupplierID";
+      if(val(arguments.businessId) > 0) {
+        local.condition &= " AND JMS.businessId = #arguments.businessId#";
+      }
     }
     local.itemDetails = queryExecute("
       SELECT
@@ -677,6 +684,7 @@ component  {
           INNER JOIN Units U ON U.UnitID = I.UnitID
           INNER JOIN JoinSupplierToItem JSI on JSI.ItemID = I.ItemID
           INNER JOIN business S ON S.businessId = JSI.SupplierID
+          #local.join#
         WHERE
           #local.condition#
         ORDER BY I.name asc
