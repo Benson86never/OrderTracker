@@ -397,7 +397,7 @@
                       <button class="add btn btn-success"  id="#item.id#" action = "add"  title="Add" style="display:none;">
                         <i class="fa fa-plus" aria-hidden="true"></i>
                       </button>
-                      <cfif ListFind(session.sec  ure.access,'2')>
+                      <cfif ListFind(session.secure.access,'2')>
                         <button class="edit btn btn-warning" title="Edit">
                           <i class="fas fa-pencil-alt"></i>
                         </button>
