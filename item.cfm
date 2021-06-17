@@ -279,6 +279,7 @@
                             </cfscript>
                             Business: &nbsp;
                             <select name="business" onchange=getBusiness(this.value) class="form-select form-select-lg mb-3" style="width:65%;height:30px;">
+                            <option value="0" id="allitemdropdown">All</option>
                             <cfloop array="#local.accountinfo#" item="account">
                                 <option
                                   <cfif isdefined("url.businessid") and url.businessid eq account.id>
@@ -359,6 +360,7 @@
                     id="id" 
                     name="itemcheck" 
                     class="item_header">
+                    <i class="fa fa-info-circle" aria-hidden="true" style="color:dodgerblue;padding:1px;font-size:16px;" data-toggle="tooltip" data-original-title="Check the items to add to list"></i>
                 </th>
                 <th width="35%" style="text-align:center;">Name</th>
                 <th width="10%" style="text-align:center;">SKU</th>
@@ -449,6 +451,7 @@
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script>
   $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
     console.log(<cfoutput>#businessid#</cfoutput>)
     <cfif isdefined("url.err") and url.err eq 1>
       $('#modal-showAlert .modal-header').addClass('alert-danger');
@@ -661,8 +664,23 @@
   });
   $(".item_header").click(function(){
     if($(this).is(':checked')) {
-      $('.checkitems:visible').prop('checked', true);
-      $("#disphid").show();
+      var bid = "<cfoutput>#businessid#</cfoutput>";
+      if(bid > 0){
+        $('.checkitems:visible').prop('checked', true);
+        $("#disphid").show();
+        } else {
+            $('#modal-showAlert').modal('show');
+            $('.modal-header').css('background-color','white');
+            $('#headerText').html('Business Alert');
+            $('.close').css('color','black');
+            $('#modal-showAlert .modal-body').html("Please select Business before adding item to list");
+            $('#modal-showAlert .modal-footer .ok').show();
+            $('#modal-showAlert .modal-footer .yes').hide();
+            $('#modal-showAlert .modal-footer .no').hide();
+            $('#modal-showAlert .modal-footer .ok').click(function(){
+              $('.item_header').prop('checked', false);
+            });
+          }
     }else {
       $('.checkitems').prop('checked', false);
       $("#disphid").hide();
@@ -670,10 +688,25 @@
   });  
   $(".checkitems").click(function(){
     if($(".checkitems:checked").length > 0) {
-      $("#disphid").show();
-    } else {
+     var bid = "<cfoutput>#businessid#</cfoutput>";
+      if(bid > 0){
+        $("#disphid").show();
+      } else {
+          $('#modal-showAlert').modal('show');
+          $('.modal-header').css('background-color','white');
+          $('#headerText').html('Business Alert');
+          $('.close').css('color','black');
+          $('#modal-showAlert .modal-body').html("Please select Business before adding item to list");
+          $('#modal-showAlert .modal-footer .ok').show();
+          $('#modal-showAlert .modal-footer .yes').hide();
+          $('#modal-showAlert .modal-footer .no').hide();
+          $('#modal-showAlert .modal-footer .ok').click(function(){
+              $('.checkitems').prop('checked', false);
+            });
+        }
+      } else {
       $("#disphid").hide();
-    }
+      }
   });
   $(".additem").click(function(){
     var itemIds = "";
