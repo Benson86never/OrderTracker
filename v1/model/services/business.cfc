@@ -667,8 +667,6 @@ component  {
       local.join &= "INNER JOIN joinmasteraccounttosupplier JMS ON JMS.SupplierID = JSI.SupplierID";
       if(val(arguments.businessId) > 0) {
         local.condition &= " AND JMS.businessId = #arguments.businessId#";
-      } else {
-          local.condition &= " AND 1=1";
       }
     }
     local.itemDetails = queryExecute("
