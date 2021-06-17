@@ -182,7 +182,6 @@
 </style>
 <cfinclude template="includes/secure.cfm" >
 <cfinclude template="includes/header.cfm" >
-<cfinclude template="includes/footer.cfm" >
 <cfparam  name="url.businessid" default="#session.secure.subaccount#">
 <cfset businessid = url.businessid>
 <cfif isdefined("url.err") and url.err eq 1>
@@ -391,14 +390,14 @@
                         <i class="fa fa-times" aria-hidden="true"></i>
                       </button>
                       <cfif ListFind(session.secure.access,'19')>
-                        <button class="deleteitem btn btn-danger"  action = "delete" id="#item.id#" title="Delete">
+                        <button type="button" class="deleteitem btn btn-danger"  action = "delete" id="#item.id#" title="Delete">
                           <i class="fa fa-trash-alt" aria-hidden="true"></i>
                         </button>
                       </cfif>
                       <button class="add btn btn-success"  id="#item.id#" action = "add"  title="Add" style="display:none;">
                         <i class="fa fa-plus" aria-hidden="true"></i>
                       </button>
-                      <cfif ListFind(session.secure.access,'2')>
+                      <cfif ListFind(session.sec  ure.access,'2')>
                         <button class="edit btn btn-warning" title="Edit">
                           <i class="fas fa-pencil-alt"></i>
                         </button>
@@ -426,11 +425,25 @@
       </div>
     </div>
   </div>
+  <div class="modal fade modal-warning" id="modal-showAlert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index: 9000;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span id="headerText"></span>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel"></h4>
+        </div>
+        <div class="modal-body"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default ok" data-dismiss="modal"><cfoutput>OK</cfoutput></button>
+          <button type="button" class="btn btn-default no" data-dismiss="modal"><cfoutput>Cancel</cfoutput></button>
+          <button type="button" class="btn btn-success yes" data-dismiss="modal"><cfoutput>Yes</cfoutput></button>
+        </div>
+      </div>
+    </div>
+  </div>
 </cfoutput>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<!---<script src="https://cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/jquery.simplePagination.js"></script>--->
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<cfinclude template="includes/footer.cfm" >
 <script type="text/javascript" src="js/pagination.js"></script>
 <link href = "js/pagination.css" rel = "stylesheet">
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -572,7 +585,6 @@
       eid = $(this).attr('id');
       action = $(this).attr('action');
       parenttr = $(this).closest("tr");
-      console.log(eid,action,parenttr)
       $('#modal-showAlert').modal('show');
       $('.modal-header').css('background-color','white');
       $('#headerText').html('Delete Item');
@@ -634,12 +646,12 @@
     //$.pagination(container, options);
 
     container.addHook('beforeInit', function () {
-      window.console && console.log('beforeInit...');
+      //window.console && console.log('beforeInit...');
     });
     container.pagination(options);
 
     container.addHook('beforePageOnClick', function () {
-      window.console && console.log('beforePageOnClick...');
+      //window.console && console.log('beforePageOnClick...');
       //return false
     });
   })('demo1');
