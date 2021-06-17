@@ -663,7 +663,7 @@ component  {
     if(val(arguments.supplierId) > 0) {
       local.condition &= " AND JSI.supplierId = #arguments.supplierId#";
     }
-    if(!listfind(session.secure.businessType, 2)) {
+    if(listfind(session.secure.businessType, 1)) {
       local.join &= "INNER JOIN joinmasteraccounttosupplier JMS ON JMS.SupplierID = JSI.SupplierID";
       if(val(arguments.businessId) > 0) {
         local.condition &= " AND JMS.businessId = #arguments.businessId#";
