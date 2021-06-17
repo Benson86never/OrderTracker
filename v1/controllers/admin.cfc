@@ -133,4 +133,13 @@ component accessors="true" {
 
   public void function requestSupplier()
   {}
+  
+  public void function listDetails() {
+    param name="url.businessid" default="#session.secure.subaccount#";
+    if(session.secure.rolecode != 1) {
+      url.businessid = session.secure.subaccount;
+    }
+    rc.businessid = url.businessid;
+    rc.listDetails = adminService.getListDetails(businessId = url.businessid);
+  }
 }

@@ -1,26 +1,19 @@
-<cfif NOT isdefined('rc.listDetails')>
-  <cfset page = "manageitem">
-  <cfparam  name="url.businessid" default="#session.secure.subaccount#">
-  <cfif session.secure.rolecode NEQ 1>
-    <cfset url.businessid = session.secure.subaccount>
-  </cfif>
-  <cfset variables.businessid = url.businessid>
-  <cfset rc.listDetails = CreateObject("Component","v1.model.services.admin").getListDetails(businessId = url.businessid)>
-  <style>
-    
-input, select{
-  font-size: 12px !important;
-}
 
-.table-responsive {
-		width: 99%;
-	}
-.table-wrapper {
-    background: #fff;
-    padding: 20px;	
-    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+<cfset page = "manageitem"> 
+<style>
+  input, select{
     font-size: 12px !important;
-}
+  }
+
+  .table-responsive {
+      width: 99%;
+    }
+  .table-wrapper {
+      background: #fff;
+      padding: 20px;	
+      box-shadow: 0 1px 1px rgba(0,0,0,.05);
+      font-size: 12px !important;
+  }
     .save, .cancel {
       display: none;
     }
@@ -43,10 +36,9 @@ input, select{
     td {
       font-size: 16px;
     }
-  </style>
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-</cfif>
+</style>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <div class="panel panel-default">
   <cfif NOT isdefined('page')>
     <div class="panel-heading">List Details</div>
@@ -112,7 +104,7 @@ input, select{
                   <cfoutput>
                     <cfloop array="#rc.listDetails#" item="list">
                       <tr>
-                          <td><a href="../list_organize.cfm?&businessid=#variables.businessid#&ListID=#list.id#">#list.name#</a></td>
+                          <td><a href="../list_organize.cfm?&businessid=#rc.businessid#&ListID=#list.id#">#list.name#</a></td>
                           <td>
                               <button class="delete btn btn-danger" id="#list.id#" title="Delete" >
                                 <i class="fa fa-trash-alt"></i>
@@ -180,7 +172,7 @@ input, select{
           type: 'post',
           data: {
             name : $(this).parents("tr").find('#name').val(),
-            businessId : '<cfoutput>#variables.businessId#</cfoutput>',
+            businessId : '<cfoutput>#rc.businessid#</cfoutput>',
             orderBy : $(this).parents("tr").length
           },
           success: function(data){
@@ -192,7 +184,7 @@ input, select{
             <cfif NOT isdefined('page')>
               location.reload();
             <cfelse>
-            location.href = 'index.cfm?action=admin.listDetails&businessid=<cfoutput>#variables.businessid#</cfoutput>';
+            location.href = 'index.cfm?action=admin.listDetails&businessid=<cfoutput>#rc.businessid#</cfoutput>';
             </cfif>
           }
         });
@@ -235,7 +227,7 @@ input, select{
             <cfif NOT isdefined('page')>
               location.reload();
             <cfelse>
-              location.href = 'index.cfm?action=admin.listDetails&businessid=<cfoutput>#variables.businessid#</cfoutput>';
+              location.href = 'index.cfm?action=admin.listDetails&businessid=<cfoutput>#rc.businessid#</cfoutput>';
             </cfif>
           }
         });
@@ -261,14 +253,14 @@ input, select{
             <cfif NOT isdefined('page')>
               location.reload();
             <cfelse>
-              location.href = 'index.cfm?action=admin.listDetails&businessid=<cfoutput>#variables.businessid#</cfoutput>';
+              location.href = 'index.cfm?action=admin.listDetails&businessid=<cfoutput>#rc.businessid#</cfoutput>';
             </cfif>
           }
         });
     });
     $('.view').click(function(){
       listid = $(this).attr('id');
-      location.href = '../list_organize.cfm?&businessid=<cfoutput>#variables.businessid#</cfoutput>&ListID='+listid;
+      location.href = '../list_organize.cfm?&businessid=<cfoutput>#rc.businessid#</cfoutput>&ListID='+listid;
     });
   });
   
