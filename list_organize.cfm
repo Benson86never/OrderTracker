@@ -211,7 +211,7 @@
     var sourcearray = [];
     <cfloop array="#getItem#" index="i" item="gitem">
       if(itemarrayval.indexOf('#gitem.iid#') == -1) {
-        sourcearray.push({ label: "#gitem.iname#(#gitem.sname#)", value: "#gitem.iid#" });
+        sourcearray.push({ label: "#jsstringformat(gitem.iname)#(#gitem.sname#)", value: "#gitem.iid#" });
       }
     </cfloop>
       $('.listdetails').autocomplete({
