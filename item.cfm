@@ -416,10 +416,15 @@
           </div>
           <div id="pagination-demo1">
             <select name="noofitems" id="noofitems" class="form-select-sm form-control" style="width:100px;">
-              <cfloop from=10 to="#arrayLen(items)#" index="i" step="10">
-                <option value="#i#"
-                  <cfif url.noitems EQ i>selected</cfif>
-                >#i#</option>
+              <cfset noofitems = arrayLen(items)>
+              <cfset newitem = noofitems MOD 10>
+              <cfset newdivitem = noofitems / 10>
+              <cfset totalpages = newdivitem + (newitem GT 0 ? 1 : 0)>
+              <cfloop from=1 to=#totalpages# index="i">
+                <cfset newvalpage = #i# * 10>
+                <option value="#newvalpage#"
+                  <cfif url.noitems EQ newvalpage>selected</cfif>
+                >#newvalpage#</option>
               </cfloop>
             </select>
           </div>
@@ -627,7 +632,7 @@
     var sources = function () {
       var result = [];
 
-      for (var i = 1; i < numItems; i++) {
+      for (var i = 1; i <= numItems; i++) {
         result.push(i);
       }
 
@@ -758,10 +763,12 @@
       }
     }  
   }
+  var bid = "<cfoutput>#businessid#</cfoutput>";
   function chgBusiness(businessid)
   {
     document.getElementById('hdnbusiness').value = businessid;
-    location.href = 'item.cfm?supplierid=' + businessid;
+    location.href = 'item.cfm?supplierid=' + businessid + '&businessid=' + bid;
+    console.log(bid);
   }
 
 	function downloadlist() { 
@@ -785,6 +792,8 @@
 	}
   function getBusiness(businessId) {
     var businessid = businessId;
-      location.href = 'item.cfm?businessid=' + businessId
+    var supid = document.getElementById('hdnbusiness').value;
+    console.log(supid);
+      location.href = 'item.cfm?supplierid=' + supid + '&businessid=' + businessId;
     }
 </script>

@@ -19,7 +19,7 @@
     padding: 10px;
   }
   input[type="text"]{
-    width: 600% !important;
+    width: 590% !important;
     height: 35px !important;
     margin-left: 10px !important;
   }
@@ -163,6 +163,18 @@
     location.href = 'v1/index.cfm?action=admin.listDetails&businessid=<cfoutput>#url.businessid#</cfoutput>';
   });
   function persist() {
+    var additemid = $(".addListItem").attr('id');
+    console.log($(".addListItem").attr('id'));
+    if(additemid == 0){
+      $('#modal-showAlert').modal('show');
+        $('.modal-header').css('background-color','white');
+        $('#headerText').html('Alert');
+        $('.close').css('color','black');
+        $('#modal-showAlert .modal-body').html('No List To save');
+        $('#modal-showAlert .modal-footer .ok').show();
+        $('#modal-showAlert .modal-footer .yes').hide();
+        $('#modal-showAlert .modal-footer .no').hide();
+    } else {
     console.log('running persist....');
     $(".sortable").each(function(){
       var data = $(this).sortable('toArray');
@@ -180,10 +192,11 @@
       });
     });
   }
+  }
   $(document).ready(function(){
     jQuery.ajaxSettings.traditional = true;
     $(".sortable").sortable();
-    $("#saveBtn").click(persist);
+       $("#saveBtn").click(persist);
   });
   
   //add items to list
@@ -201,7 +214,7 @@
     console.log($(this).attr('id'));
     var row = '<tr>' + 
             '<td><input type="text" class="listdetails" name="listdetails" id="listdetails_'+btnvalue+'" addvalue1="'+btnvalue+'"></td>' +
-            '<td class="action-buttons" style="padding-left:810px !important;">' + actions + '</td>' +
+            '<td class="action-buttons" style="padding-left:808px !important;">' + actions + '</td>' +
             '</tr>';
     $("#"+btnvalue).after(row);
     $(".sortable li .action-buttons").eq(index).find("cancelListItem, .saveListnew").toggle();
@@ -245,6 +258,16 @@
   $(document).on("click", ".saveListnew", function(){
     var itemvalue = $('#itemid').val();
     console.log(itemvalue);
+    if(itemvalue == ''){
+       $('#modal-showAlert').modal('show');
+        $('.modal-header').css('background-color','white');
+        $('#headerText').html('Alert');
+        $('.close').css('color','black');
+        $('#modal-showAlert .modal-body').html('No item is selected');
+        $('#modal-showAlert .modal-footer .ok').show();
+        $('#modal-showAlert .modal-footer .yes').hide();
+        $('#modal-showAlert .modal-footer .no').hide();
+    }else {
     var listvalue = $('#listid').val();
     var previtemids = $('#previtemval').val();
     var arr = previtemids.split(",");
@@ -301,6 +324,7 @@
         $(".addListItem").removeAttr("disabled");
       }
     });
+    }
   });
   $(document).on("click", ".cancelListItem", function(){		
     $(this).parents("tr").remove();
@@ -331,9 +355,22 @@
             listId : listval
           },
       success: function(data){
-            if($('#sortable li').length == 1){
+          var lastli = $('#sortable li').length;
+          console.log(lastli);
+            if(lastli == 1){
               console.log("true")
               $(".new_item").show();
+            }
+            if(lastli == 0){
+              var newrow = '<li class="itemelement new_item" id="item_0">'+
+                 '<span>No items available.</span>'+
+                  '<span class="action-buttons">'+
+                    '<button class="btn btn-primary addListItem" id="0" title="Add" addvalue="item_0">'+
+                      '<i class="fa fa-plus"></i>'+
+                    '</button>'+
+                  '</span>'+
+                  '</li>';
+                  $('.sortable').append(newrow);
             }
       }
     });

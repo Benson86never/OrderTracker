@@ -96,8 +96,8 @@
               <table class="listtable table table-bordered">
                 <thead>
                     <tr>
-                        <th style="width:80%">Name</th>
-                        <th style="width:15%">Actions</th>
+                        <th style="width:80%;padding-left:15px;">Name</th>
+                        <th style="width:15%;padding-left:15px;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
