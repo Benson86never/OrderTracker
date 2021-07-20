@@ -18,20 +18,27 @@
    .bleft {
 	   margin: 10px;
    }
+   
     @media (max-width: 767px) {
       .bleft {
 		  margin: 15px;
 	  }
      .txtalign {
-	   display: flex;
 		margin: 5px;
 		/*float: left;*/
        }
      .c1 {
-	   margin:5px;
+		 margin:5px;
         }
 	   .items {
 		   width: 40px;
+	   }
+	   .supname {
+		   display: block !important;
+		   margin-left: 95px;
+	   }
+	   .itemname {
+		   display: inline-flex;
 	   }
 	   	}
 </style>
@@ -61,7 +68,7 @@
 										<span class="text-success">
 									</cfif>
 									<span class="c1">#item.unitName#</span>
-									</span> - #item.name# <span style="color:blue">#item.supplierName#</span><br />
+									</span><span class="itemname"> - #item.name# </span><span style="color:blue" class="supname">#item.supplierName#</span><br />
 							</div>
 						</cfloop>
 						<input type="button" onclick="window.location.href='list.cfm'" class="btn btn-danger bleft" class="btn btn-cancel" value="Cancel"/>
