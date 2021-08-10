@@ -38,7 +38,14 @@
 		   margin-left: 95px;
 	   }
 	   .itemname {
-		   display: inline-flex;
+		   display: inline-block;
+		   text-overflow: ellipsis;
+		   overflow: hidden;
+		   width: 75%;
+		   white-space:nowrap;
+	   }
+	   .listItem {
+		   padding: 10px;
 	   }
 	   	}
 </style>
@@ -58,17 +65,19 @@
 					<!---Order Form Begins--->
 					<cfif arraylen(list.items)>
 						<cfloop array="#list.items#" index="item" >
-							<div class="listItem txtalign">
-								<input type="number" min="1" max="100" class="items" id="d" name="#item.itemId#;#item.SupplierID#;ITEM"
-									size="3" validate="integer"
-									message="#item.name# Quantity must be an integer.">
+							<div class="listItem txtalign row" style="display:block;padding-left: 0px;padding-right: 0px;">
+								<div class="col-xs-1">
+									<input type="number" min="1" max="100" class="items" id="d" name="#item.itemId#;#item.SupplierID#;ITEM"
+										size="3" validate="integer"
+										message="#item.name# Quantity must be an integer.">
+								</div>
+								<div class="col-xs-9 col-md-3" style="padding:0px;">
 									<cfif item.unitId eq 2>
-										<span class="text-danger">
+										<span class="text-danger c1">#item.unitName#</span>
 									<cfelse>
-										<span class="text-success">
-									</cfif>
-									<span class="c1">#item.unitName#</span>
-									</span><span class="itemname"> - #item.name# </span><span style="color:blue" class="supname">#item.supplierName#</span><br />
+										<span class="text-success c1">#item.unitName#</span>
+									</cfif> - <span class="itemname" title="#item.name#">#item.name#</span> </div>
+								<div style="color:blue" class="col-xs-8 col-md-3 itemname">#item.supplierName#</div><br />
 							</div>
 						</cfloop>
 						<input type="button" onclick="window.location.href='list.cfm'" class="btn btn-danger bleft" class="btn btn-cancel" value="Cancel"/>
